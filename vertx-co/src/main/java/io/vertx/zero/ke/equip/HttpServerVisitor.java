@@ -11,7 +11,7 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.em.ServerType;
-import io.vertx.zero.hors.zero.ServerConfigException;
+import io.vertx.zero.hors.ke.ServerConfigException;
 import io.vertx.zero.ke.Transformer;
 import io.vertx.zero.ke.config.JObjectBase;
 import io.vertx.zero.ke.config.ZeroServer;

@@ -67,4 +67,18 @@ public class HTry {
         }
         return ret;
     }
+
+    /**
+     * Zero for exception throw out
+     *
+     * @param logger
+     */
+    public static void execZero(final Annal logger,
+                                final ZeroException error)
+            throws ZeroException {
+        if (null != error) {
+            logger.zero(error);
+            throw error;
+        }
+    }
 }

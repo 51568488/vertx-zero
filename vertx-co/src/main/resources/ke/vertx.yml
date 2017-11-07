@@ -3,7 +3,7 @@ zero:
   vertx:
     clustered:
       enabled: false
-      type:
+      manager:
       options:
 
     instance:

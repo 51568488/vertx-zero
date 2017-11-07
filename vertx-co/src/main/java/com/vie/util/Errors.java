@@ -18,9 +18,9 @@ public final class Errors {
     private static final JsonObject MAP;
 
     static {
-        final JObjectBase NODE
+        final JObjectBase node
                 = Instance.singleton(ZeroError.class);
-        MAP = NODE.read();
+        MAP = node.read();
     }
 
     public static String normalize(final Class<?> clazz,

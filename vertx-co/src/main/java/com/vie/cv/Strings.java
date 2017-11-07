@@ -12,4 +12,6 @@ public interface Strings {
     String DOT = ".";
 
     String SLASH = "/";
+
+    String EMPTY = "";
 }

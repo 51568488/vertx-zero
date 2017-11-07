@@ -13,6 +13,7 @@ public final class Log {
 
     public static void jvm(final Logger logger, final Throwable ex) {
         HNull.exec(logger::warn, ex);
+        ex.printStackTrace();
     }
 
     public static void zero(final Logger logger, final ZeroException ex) {

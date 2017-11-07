@@ -55,17 +55,17 @@
             <dependency>
                 <groupId>io.vertx.up</groupId>
                 <artifactId>vertx-co</artifactId>
-                <version>${parent.version}</version>
+                <version>${project.parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vertx.up</groupId>
                 <artifactId>vertx-dot</artifactId>
-                <version>${parent.version}</version>
+                <version>${project.parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vertx.up</groupId>
                 <artifactId>vertx-pole</artifactId>
-                <version>${parent.version}</version>
+                <version>${project.parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>

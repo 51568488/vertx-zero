@@ -6,7 +6,7 @@ import com.vie.log.Annal;
 import com.vie.log.internal.Log4JAnnal;
 import com.vie.util.Instance;
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.ke.Opts;
+import io.vertx.zero.ke.node.Opts;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

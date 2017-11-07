@@ -7,16 +7,16 @@ import com.vie.util.Instance;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.ke.config.JObjectBase;
+import io.vertx.zero.ke.ZeroNode;
 import io.vertx.zero.ke.config.ZeroVertx;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class VertxVisitor implements PharosVisitor {
+public class VertxVisitor implements UprightVisitor {
     private static final Annal LOGGER = Annal.get(HttpServerVisitor.class);
 
-    private transient final JObjectBase NODE
+    private transient final ZeroNode<JsonObject> NODE
             = Instance.singleton(ZeroVertx.class);
 
     @Override

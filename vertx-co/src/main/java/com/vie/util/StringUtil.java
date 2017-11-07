@@ -3,6 +3,7 @@ package com.vie.util;
 import com.vie.cv.Strings;
 import com.vie.hoc.HFail;
 import com.vie.hoc.HNull;
+import io.vertx.core.json.JsonObject;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +12,14 @@ import java.util.Set;
  * @author lang
  */
 public class StringUtil {
+
+    public static String from(final Object value) {
+        return null == value ? Strings.EMPTY : value.toString();
+    }
+
+    public static String from(final JsonObject value) {
+        return null == value ? Strings.EMPTY : value.toString();
+    }
 
     public static Set<String> split(final String input, final String separator) {
         return HFail.exec(() -> {

@@ -8,6 +8,6 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Vert.x instance to read configuration
  */
-public interface PharosVisitor
+public interface UprightVisitor
         extends Visitor<ConcurrentMap<String, VertxOptions>> {
 }

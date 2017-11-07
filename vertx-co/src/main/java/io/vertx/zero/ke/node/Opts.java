@@ -1,12 +1,12 @@
-package io.vertx.zero.ke;
+package io.vertx.zero.ke.node;
 
-import com.vie.hoc.HNull;
 import com.vie.hoc.HPool;
 import com.vie.hors.DemonException;
 import com.vie.hors.ZeroException;
 import com.vie.util.Instance;
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.hors.zero.LimeFileException;
+import io.vertx.zero.hors.run.LimeFileException;
+import io.vertx.zero.ke.ZeroNode;
 import io.vertx.zero.ke.config.ZeroLime;
 import io.vertx.zero.ke.config.ZeroPlugin;
 
@@ -72,7 +72,10 @@ class YamlOpts implements Opts<JsonObject> {
         final ZeroNode<JsonObject> node =
                 HPool.exec(EXTENSIONS, key,
                         () -> Instance.instance(ZeroPlugin.class, key));
-        return HNull.get(node.read(),
-                new LimeFileException(getClass(), ZeroLime.calculatePath(key)));
+        final JsonObject data = node.read();
+        if (null == data) {
+            throw new LimeFileException(ZeroLime.calculatePath(key));
+        }
+        return data;
     }
 }

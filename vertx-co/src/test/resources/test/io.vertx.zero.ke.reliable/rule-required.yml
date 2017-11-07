@@ -1,0 +1,6 @@
+required:
+- instance
+rule:
+- name: instance
+  type: OBJECT
+  required: true

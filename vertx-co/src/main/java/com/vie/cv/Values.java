@@ -18,4 +18,8 @@ public interface Values {
     int IDX = 0;
     /** **/
     int ONE = 1;
+    /** **/
+    String TRUE = "true";
+    /** **/
+    String FALSE = "false";
 }

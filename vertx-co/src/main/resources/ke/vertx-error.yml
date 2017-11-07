@@ -1,2 +1,3 @@
-E20001: Lime node configured file = "{0}" is missing, please check the missed file
-E30001: Server config is missing in current data "{0}".
+E30001: Server config is missing in current data "{0}"
+E10001: (V) - This rule require all elements of array is JsonObject, Now the index = {0} does not match, it's {1}
+E10002: (V) - The data object {0} missed required field "{1}"

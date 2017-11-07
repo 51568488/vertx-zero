@@ -60,7 +60,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
         HJson.execIt(serverData, (item, index) -> {
             if (ServerType.HTTP.match(item.getString("type"))) {
                 // 1. Extract port
-                final int port = item.getInteger("port");
+                final int port = extractPort(item.getJsonObject("config"));
                 // 2. Convert JsonObject to HttpServerOptions
                 final HttpServerOptions options = this.TRANS.transform(item);
                 HNull.exec(() -> {
@@ -70,5 +70,12 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
             }
         });
         return map;
+    }
+
+    private static int extractPort(final JsonObject config) {
+        if (null != config) {
+            return config.getInteger("port", HttpServerOptions.DEFAULT_PORT);
+        }
+        return HttpServerOptions.DEFAULT_PORT;
     }
 }

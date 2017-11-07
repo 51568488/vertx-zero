@@ -1,5 +1,6 @@
 package io.vertx.zero.ke.equip;
 
+import com.vie.hoc.HNull;
 import com.vie.hors.ZeroException;
 import com.vie.log.Annal;
 import com.vie.util.Ensurer;
@@ -7,6 +8,7 @@ import com.vie.util.Instance;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.zero.ce.Ruler;
 import io.vertx.zero.ke.ZeroNode;
 import io.vertx.zero.ke.config.ZeroVertx;
 
@@ -26,7 +28,13 @@ public class VertxVisitor implements UprightVisitor {
         Ensurer.eqLength(getClass(), 0, keys);
         // 2. Visit the node for vertx
         final JsonObject data = this.NODE.read();
-        System.out.println(data);
+        // 3. Vertx node validation.
+        final JsonObject vertxData = data.getJsonObject(Key.VERTX);
+        HNull.execZero(() -> {
+            LOGGER.info(Message.INF_B_VERIFY, "vertx", vertxData);
+            Ruler.verify(Files.VERTX, vertxData);
+        }, vertxData);
+        // 4. Transfer Data
         return null;
     }
 
@@ -34,7 +42,7 @@ public class VertxVisitor implements UprightVisitor {
             throws ZeroException {
         final ConcurrentMap<String, VertxOptions> map =
                 new ConcurrentHashMap<>();
-        
+
         return map;
     }
 }

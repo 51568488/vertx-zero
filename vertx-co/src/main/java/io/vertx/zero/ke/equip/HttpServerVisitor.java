@@ -10,6 +10,7 @@ import com.vie.util.Instance;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.zero.ce.Ruler;
 import io.vertx.zero.em.ServerType;
 import io.vertx.zero.hors.ke.ServerConfigException;
 import io.vertx.zero.ke.Transformer;
@@ -54,7 +55,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
     private ConcurrentMap<Integer, HttpServerOptions> visit(final JsonArray serverData)
             throws ZeroException {
         LOGGER.info(Message.INF_B_VERIFY, "server", serverData.encode());
-        // TODO: Ignore validation steps
+        Ruler.verify(Files.SERVER, serverData);
         final ConcurrentMap<Integer, HttpServerOptions> map =
                 new ConcurrentHashMap<>();
         HJson.execIt(serverData, (item, index) -> {

@@ -49,7 +49,9 @@ public class Types {
                     final String literal = value.toString();
                     // Multi true literal such as "true", "TRUE" or 1
                     if (Values.TRUE.equalsIgnoreCase(literal)
-                            || Integer.valueOf(1).toString().equalsIgnoreCase(literal)) {
+                            || Integer.valueOf(1).toString().equalsIgnoreCase(literal)
+                            || Values.FALSE.equalsIgnoreCase(literal)
+                            || Integer.valueOf(0).toString().equalsIgnoreCase(literal)) {
                         logical = true;
                     }
                     return logical;

@@ -8,10 +8,11 @@ public class HttpServerStrada implements Transformer<HttpServerOptions> {
 
     @Override
     public HttpServerOptions transform(final JsonObject input) {
-        final HttpServerOptions options = new HttpServerOptions();
-        // 1. Set basic data for options
-        options.setHost(input.getString("host"));
-        options.setPort(input.getInteger("port"));
-        return options;
+        final JsonObject config = input.getJsonObject("config", null);
+        if (null != config) {
+            return new HttpServerOptions(config);
+        }
+
+        return new HttpServerOptions();
     }
 }

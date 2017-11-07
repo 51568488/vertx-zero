@@ -1,4 +1,4 @@
-package com.vie.ke.reliable.item;
+package com.vie.ke.reliable;
 
 interface Rules {
     /** **/

@@ -3,7 +3,7 @@ package com.vie.em;
 public enum DataType {
     STRING,
     INTEGER,
-    DECIAML,
+    DECIMAL,
     BOOLEAN,
     DATE,
     JOBJECT,

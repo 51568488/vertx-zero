@@ -1,9 +1,11 @@
-package com.vie.ke.reliable.item;
+package com.vie.ke.reliable;
 
 import com.vie.em.DataType;
 import com.vie.hoc.HJson;
 import com.vie.hoc.HNull;
+import com.vie.hoc.HTry;
 import com.vie.hors.ZeroException;
+import com.vie.hors.ensure.DataTypeWrongException;
 import com.vie.util.Types;
 import io.vertx.core.json.JsonObject;
 
@@ -14,7 +16,7 @@ import java.util.function.Function;
 /**
  * Type Validation
  */
-public class TypeInsurer extends AbstractInsurer {
+public class TypedInsurer extends AbstractInsurer {
 
     private static final ConcurrentMap<DataType, Function<Object, Boolean>>
             FUNS = new ConcurrentHashMap<DataType, Function<Object, Boolean>>() {
@@ -22,7 +24,7 @@ public class TypeInsurer extends AbstractInsurer {
             put(DataType.BOOLEAN, Types::isBoolean);
             put(DataType.STRING, (input) -> Boolean.TRUE);
             put(DataType.INTEGER, Types::isInteger);
-            put(DataType.DECIAML, Types::isDecimal);
+            put(DataType.DECIMAL, Types::isDecimal);
             put(DataType.DATE, Types::isDate);
             put(DataType.JOBJECT, Types::isJObject);
             put(DataType.JARRAY, Types::isJArray);
@@ -53,9 +55,13 @@ public class TypeInsurer extends AbstractInsurer {
                             item.toString());
                     final Function<Object, Boolean> fnTest
                             = FUNS.getOrDefault(key, (input) -> Boolean.TRUE);
-                    // 4. checking failure.
-                    if (!fnTest.apply(data.getValue(name))) {
-
+                    // 4. checking failure, the pre-condition is that data contains checked key.
+                    if (data.containsKey(name)) {
+                        final Object value = data.getValue(name);
+                        if (!fnTest.apply(data.getValue(name))) {
+                            HTry.execZero(getLogger(),
+                                    new DataTypeWrongException(getClass(), name, value, key));
+                        }
                     }
                 });
             }

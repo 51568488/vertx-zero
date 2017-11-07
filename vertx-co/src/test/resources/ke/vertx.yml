@@ -3,10 +3,8 @@ zero:
   vertx:
     clustered:
       enabled: false
-      type:
-      options:
+      manager:
 
     instance:
     - name: vx-test-tlk
       service: talk-test-service
-      options:

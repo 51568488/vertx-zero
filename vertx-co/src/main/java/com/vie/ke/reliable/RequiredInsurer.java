@@ -1,4 +1,4 @@
-package com.vie.ke.reliable.item;
+package com.vie.ke.reliable;
 
 import com.vie.hoc.HJson;
 import com.vie.hoc.HNull;
@@ -32,7 +32,8 @@ public class RequiredInsurer extends AbstractInsurer {
                     // 3.Check if data contains field.
                     if (!data.containsKey(field)) {
                         // Fast throw out
-                        HTry.execZero(getLogger(), new RequiredFieldException(getClass(), data, field));
+                        HTry.execZero(getLogger(),
+                                new RequiredFieldException(getClass(), data, field));
                     }
                 });
             }

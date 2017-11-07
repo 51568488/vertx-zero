@@ -4,7 +4,6 @@ zero:
     clustered:
       enabled: false
       manager:
-      options:
 
     instance:
     - name: vx-tlk

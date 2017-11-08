@@ -37,7 +37,7 @@ public class ZeroLauncher implements Launcher {
         // Before deploy, fill all the vertx map instances.
         VERTX.putIfAbsent(name, vertx);
         // TODO: Vertx Deployment
-        
+
     }
 
     private void startStandalone(final BiConsumer<String, Vertx> consumer) {

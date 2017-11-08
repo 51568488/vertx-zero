@@ -1,13 +1,13 @@
 package io.vertx.zero.ce;
 
-import com.vie.cv.Strings;
-import com.vie.hoc.HJson;
-import com.vie.hoc.HNull;
-import com.vie.hoc.HPool;
-import com.vie.exception.ZeroException;
 import com.vie.core.reliable.Insurer;
 import com.vie.core.reliable.RequiredInsurer;
 import com.vie.core.reliable.TypedInsurer;
+import com.vie.cv.Strings;
+import com.vie.exception.ZeroException;
+import com.vie.hoc.HJson;
+import com.vie.hoc.HNull;
+import com.vie.hoc.HPool;
 import com.vie.log.Annal;
 import com.vie.util.Instance;
 import com.vie.util.Types;

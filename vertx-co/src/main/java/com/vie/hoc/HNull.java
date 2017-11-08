@@ -1,8 +1,8 @@
 package com.vie.hoc;
 
+import com.vie.exception.ZeroException;
 import com.vie.fun.error.JdConsumer;
 import com.vie.fun.lang.JcConsumer;
-import com.vie.exception.ZeroException;
 
 import java.util.Arrays;
 import java.util.function.Consumer;

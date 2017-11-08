@@ -3,3 +3,4 @@ E10001: (V) - This rule require all elements of array is JsonObject, Now the ind
 E10002: (V) - The data object {0} missed required field "{1}"
 E10003: (V) - The field {0} value is "{1}", but expected type is "{2}"
 E10004: (V) - The cluster options is enabled, but the "{0}" vertx instance = "{1}"
+E40001: Vertx up boot class should not be null, please provide the entry of this application.

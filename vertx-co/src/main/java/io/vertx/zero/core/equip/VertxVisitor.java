@@ -1,10 +1,10 @@
 package io.vertx.zero.core.equip;
 
+import com.vie.exception.ZeroException;
+import com.vie.exception.ensure.ClusterConflictException;
 import com.vie.hoc.HJson;
 import com.vie.hoc.HNull;
 import com.vie.hoc.HTry;
-import com.vie.exception.ZeroException;
-import com.vie.exception.ensure.ClusterConflictException;
 import com.vie.log.Annal;
 import com.vie.util.Ensurer;
 import com.vie.util.Instance;

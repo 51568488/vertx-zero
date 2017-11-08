@@ -16,7 +16,7 @@ public class HttpServerStradaTc extends UnitBase {
     @Test
     public void test_transform_returns_default() {
         final JsonObject source = new JsonObject();
-        final HttpServerOptions target = transformer.transform(source);
+        final HttpServerOptions target = this.transformer.transform(source);
         Assert.assertEquals(HttpServerOptions.DEFAULT_PORT, target.getPort());
         Assert.assertEquals(HttpServerOptions.DEFAULT_HOST, target.getHost());
         Assert.assertEquals(HttpServerOptions.DEFAULT_MAX_WEBSOCKET_MESSAGE_SIZE, target.getMaxWebsocketMessageSize());
@@ -36,19 +36,19 @@ public class HttpServerStradaTc extends UnitBase {
         source.put("config", config);
 
         // Port
-        HttpServerOptions target = transformer.transform(source);
+        HttpServerOptions target = this.transformer.transform(source);
         Assert.assertEquals(8081, target.getPort());
 
         // Host
         final String EXPECTED_HOST = "127.0.0.1";
         config.put("host", EXPECTED_HOST);
-        target = transformer.transform(source);
+        target = this.transformer.transform(source);
         Assert.assertEquals(EXPECTED_HOST, target.getHost());
 
         // Compression Level
         final int EXPECTED_C_LEVEL = 7;
         config.put("compressionLevel", EXPECTED_C_LEVEL);
-        target = transformer.transform(source);
+        target = this.transformer.transform(source);
         Assert.assertEquals(EXPECTED_C_LEVEL, target.getCompressionLevel());
     }
 }

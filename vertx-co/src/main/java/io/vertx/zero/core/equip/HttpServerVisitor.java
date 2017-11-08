@@ -1,10 +1,11 @@
 package io.vertx.zero.core.equip;
 
+import com.vie.em.ServerType;
+import com.vie.exception.ZeroException;
+import com.vie.exception.ke.ServerConfigException;
 import com.vie.hoc.HBool;
 import com.vie.hoc.HJson;
 import com.vie.hoc.HNull;
-import com.vie.exception.ZeroException;
-import com.vie.exception.ke.ServerConfigException;
 import com.vie.log.Annal;
 import com.vie.util.Ensurer;
 import com.vie.util.Instance;
@@ -12,7 +13,6 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.ce.Ruler;
-import com.vie.em.ServerType;
 import io.vertx.zero.core.Transformer;
 import io.vertx.zero.core.config.JObjectBase;
 import io.vertx.zero.core.config.ZeroServer;

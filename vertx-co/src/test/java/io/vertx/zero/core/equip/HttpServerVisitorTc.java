@@ -20,7 +20,7 @@ public class HttpServerVisitorTc extends UnitBase {
 
     public HttpServerVisitorTc() {
         try {
-            options = visitor.visit();
+            this.options = this.visitor.visit();
         } catch (final ZeroException e) {
             Assert.fail("Cannot read vertx-server.yml");
         }
@@ -44,26 +44,26 @@ public class HttpServerVisitorTc extends UnitBase {
     @Test()
     public void test_visitor_port_from_yml_returns_default()
             throws ZeroException {
-        Assert.assertNotNull(options.get(HttpServerOptions.DEFAULT_PORT));
-        Assert.assertEquals(options.get(HttpServerOptions.DEFAULT_PORT).getPort(), HttpServerOptions.DEFAULT_PORT);
+        Assert.assertNotNull(this.options.get(HttpServerOptions.DEFAULT_PORT));
+        Assert.assertEquals(this.options.get(HttpServerOptions.DEFAULT_PORT).getPort(), HttpServerOptions.DEFAULT_PORT);
     }
 
     @Test()
     public void test_visitor_port_from_yml_returns_the_port()
             throws ZeroException {
-        Assert.assertNotNull(options.get(EXPECTED_PORT));
-        Assert.assertEquals(options.get(EXPECTED_PORT).getPort(), EXPECTED_PORT);
+        Assert.assertNotNull(this.options.get(EXPECTED_PORT));
+        Assert.assertEquals(this.options.get(EXPECTED_PORT).getPort(), EXPECTED_PORT);
     }
 
     @Test()
     public void test_visitor_host_from_yml_returns_default() {
-        Assert.assertNotNull(options.get(8084));
-        Assert.assertEquals(options.get(8084).getHost(), HttpServerOptions.DEFAULT_HOST);
+        Assert.assertNotNull(this.options.get(8084));
+        Assert.assertEquals(this.options.get(8084).getHost(), HttpServerOptions.DEFAULT_HOST);
     }
 
     @Test()
     public void test_visitor_host_from_yml_returns_127002() {
-        Assert.assertNotNull(options.get(8085));
-        Assert.assertEquals(options.get(8085).getHost(), "127.0.0.2");
+        Assert.assertNotNull(this.options.get(8085));
+        Assert.assertEquals(this.options.get(8085).getHost(), "127.0.0.2");
     }
 }

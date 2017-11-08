@@ -1,9 +1,10 @@
 package com.vie.hoc;
 
-import com.vie.fun.error.JdConsumer;
-import com.vie.fun.error.JdSupplier;
 import com.vie.exception.ZeroException;
 import com.vie.exception.ZeroRunException;
+import com.vie.fun.error.JdConsumer;
+import com.vie.fun.error.JdSupplier;
+import com.vie.fun.lang.JcConsumer;
 import com.vie.log.Annal;
 import io.vertx.core.VertxException;
 
@@ -28,6 +29,24 @@ public class HTry {
             throw fnExp.apply(ex);
         }
         return ret;
+    }
+
+    /**
+     * Exec runtime exception
+     *
+     * @param consumer
+     * @param logger
+     */
+    public static void execUp(final JcConsumer consumer,
+                              final Annal logger) {
+        try {
+            consumer.exec();
+        } catch (final ZeroRunException ex) {
+            logger.vertx(ex);
+            throw ex;
+        } catch (final Throwable ex) {
+            logger.jvm(ex);
+        }
     }
 
     /**

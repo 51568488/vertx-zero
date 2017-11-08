@@ -1,4 +1,15 @@
 package com.vie.exception.up;
 
-public class UpClassArgsException {
+import com.vie.exception.UpException;
+
+public class UpClassArgsException extends UpException {
+
+    public UpClassArgsException(final Class<?> clazz) {
+        super(clazz);
+    }
+
+    @Override
+    public int getCode() {
+        return -40001;
+    }
 }

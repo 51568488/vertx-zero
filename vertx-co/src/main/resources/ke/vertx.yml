@@ -1,5 +1,5 @@
 zero:
-  lime: error, inject, server,
+  lime: error, inject, server
   vertx:
     clustered:
       enabled: false
@@ -7,5 +7,4 @@ zero:
 
     instance:
     - name: vx-tlk
-      service: talk-service
       options:

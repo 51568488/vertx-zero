@@ -24,9 +24,13 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-config-yaml</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-hazelcast</artifactId>
+        </dependency>
         <!-- Third Part -->
         <dependency>
-            <groupId>com.esotericsoftware.reflectasm</groupId>
+            <groupId>com.esotericsoftware</groupId>
             <artifactId>reflectasm</artifactId>
         </dependency>
         <dependency>

@@ -1,6 +1,6 @@
 package com.vie.util;
 
-import com.vie.hors.ke.ArgumentException;
+import com.vie.exception.ke.ArgumentException;
 
 public final class Ensurer {
 

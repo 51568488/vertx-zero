@@ -1,6 +1,6 @@
 package com.vie.log.internal;
 
-import com.vie.hors.ZeroException;
+import com.vie.exception.ZeroException;
 import com.vie.log.Annal;
 import com.vie.util.Log;
 import io.vertx.core.VertxException;

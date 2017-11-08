@@ -1,6 +1,6 @@
 package com.vie.log;
 
-import com.vie.hors.ZeroException;
+import com.vie.exception.ZeroException;
 import com.vie.log.internal.Log4JAnnal;
 import com.vie.util.Instance;
 import com.vie.util.Log;

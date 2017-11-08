@@ -2,7 +2,7 @@ package com.vie.util.io;
 
 import com.vie.hoc.HBool;
 import com.vie.hoc.HFail;
-import com.vie.hors.ke.EmptyStreamException;
+import com.vie.exception.ke.EmptyStreamException;
 import com.vie.util.Log;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;

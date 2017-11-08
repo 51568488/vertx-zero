@@ -3,10 +3,10 @@ package com.vie.util;
 import com.vie.cv.Tpl;
 import com.vie.hoc.HBool;
 import com.vie.hoc.HFail;
-import com.vie.hors.ke.ErrorMissingException;
+import com.vie.exception.ke.ErrorMissingException;
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.ke.config.JObjectBase;
-import io.vertx.zero.ke.config.ZeroError;
+import io.vertx.zero.core.config.JObjectBase;
+import io.vertx.zero.core.config.ZeroError;
 
 import java.text.MessageFormat;
 

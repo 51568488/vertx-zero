@@ -8,7 +8,6 @@ import io.vertx.zero.ke.Launcher;
 
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class ZeroLauncher implements Launcher {
 
@@ -31,25 +30,25 @@ public class ZeroLauncher implements Launcher {
 
     }
 
-    private void startDeploy(final Vertx vertx) {
+    private void startDeploy(final String name, final Vertx vertx) {
         // TODO: Vertx Deployment
     }
 
-    private void startStandalone(final Consumer<Vertx> consumer) {
+    private void startStandalone(final BiConsumer<String, Vertx> consumer) {
         eachOption((name, option) -> {
             // 1. Initialize vertx.
             final Vertx vertx = Vertx.vertx(option);
-            consumer.accept(vertx);
+            consumer.accept(name, vertx);
         });
     }
 
-    private void startCluster(final ClusterManager manager, final Consumer<Vertx> consumer) {
+    private void startCluster(final ClusterManager manager, final BiConsumer<String, Vertx> consumer) {
         eachOption((name, option) -> {
             Vertx.clusteredVertx(option, clustered -> {
                 // 2. Async
                 final Vertx vertx = clustered.result();
                 manager.setVertx(vertx);
-                consumer.accept(vertx);
+                consumer.accept(name, vertx);
             });
         });
     }

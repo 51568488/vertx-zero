@@ -226,6 +226,17 @@
                 <version>${vertx.version}</version>
                 <scope>test</scope>
             </dependency>
+            <!-- Clustered -->
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-zookeeper</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-hazelcast</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
             <!-- jackson -->
             <!-- http://www.mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
             <dependency>

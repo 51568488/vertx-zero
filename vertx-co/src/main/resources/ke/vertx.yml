@@ -7,5 +7,4 @@ zero:
 
     instance:
     - name: vx-tlk
-      service: talk-service
       options:

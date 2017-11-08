@@ -1,5 +1,6 @@
 package io.vertx.zero.ke.equip;
 
+import io.vertx.core.ClusterOptions;
 import io.vertx.core.VertxOptions;
 import io.vertx.zero.ke.Visitor;
 
@@ -10,4 +11,19 @@ import java.util.concurrent.ConcurrentMap;
  */
 public interface UprightVisitor
         extends Visitor<ConcurrentMap<String, VertxOptions>> {
+
+    String YKEY_OPTIONS = "options";
+
+    String YKEY_CLUSTERED = "clustered";
+
+    String YKEY_INSTANCE = "instance";
+
+    String YKEY_NAME = "name";
+
+    /**
+     * Get cluster configuration from vertx initialization.
+     *
+     * @return
+     */
+    ClusterOptions getCluster();
 }

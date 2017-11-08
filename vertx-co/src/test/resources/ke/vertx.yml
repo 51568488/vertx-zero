@@ -7,4 +7,3 @@ zero:
 
     instance:
     - name: vx-test-tlk
-      service: talk-test-service

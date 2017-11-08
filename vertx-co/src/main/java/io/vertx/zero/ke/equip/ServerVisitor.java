@@ -10,4 +10,8 @@ import java.util.concurrent.ConcurrentMap;
  */
 public interface ServerVisitor<T>
         extends Visitor<ConcurrentMap<Integer, T>> {
+
+    String YKEY_TYPE = "type";
+
+    String YKEY_CONFIG = "config";
 }

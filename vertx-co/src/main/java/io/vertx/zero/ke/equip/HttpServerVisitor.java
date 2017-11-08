@@ -30,7 +30,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
     private transient final JObjectBase NODE
             = Instance.singleton(ZeroServer.class);
     private transient final Transformer<HttpServerOptions>
-            TRANS = Instance.singleton(HttpServerStrada.class);
+            transformer = Instance.singleton(HttpServerStrada.class);
 
     /**
      * @return
@@ -43,27 +43,27 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
         Ensurer.eqLength(getClass(), 0, key);
         // 2. Visit the node for server, http
         final JsonObject data = this.NODE.read();
-        return HBool.execZero(null == data || !data.containsKey("server"),
+        return HBool.execZero(null == data || !data.containsKey(Key.SERVER),
                 () -> {
                     throw new ServerConfigException(getClass(), null == data ? null : data.encode());
                 }, () -> {
                     // 3. Convert server data to Map
-                    return visit(data.getJsonArray("server"));
+                    return visit(data.getJsonArray(Key.SERVER));
                 });
     }
 
     private ConcurrentMap<Integer, HttpServerOptions> visit(final JsonArray serverData)
             throws ZeroException {
-        LOGGER.info(Message.INF_B_VERIFY, "server", serverData.encode());
+        LOGGER.info(Message.INF_B_VERIFY, Key.SERVER, serverData.encode());
         Ruler.verify(Files.SERVER, serverData);
         final ConcurrentMap<Integer, HttpServerOptions> map =
                 new ConcurrentHashMap<>();
         HJson.execIt(serverData, (item, index) -> {
-            if (ServerType.HTTP.match(item.getString("type"))) {
+            if (ServerType.HTTP.match(item.getString(YKEY_TYPE))) {
                 // 1. Extract port
-                final int port = extractPort(item.getJsonObject("config"));
+                final int port = extractPort(item.getJsonObject(YKEY_CONFIG));
                 // 2. Convert JsonObject to HttpServerOptions
-                final HttpServerOptions options = this.TRANS.transform(item);
+                final HttpServerOptions options = this.transformer.transform(item);
                 HNull.exec(() -> {
                     // 3. Add to map;
                     map.put(port, options);

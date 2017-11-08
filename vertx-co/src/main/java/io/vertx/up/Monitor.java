@@ -1,4 +1,4 @@
-package io.vertx.zero.core;
+package io.vertx.up;
 
 import com.vie.em.Etat;
 import io.vertx.core.json.JsonObject;

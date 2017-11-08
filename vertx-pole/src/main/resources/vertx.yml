@@ -1,4 +1,5 @@
 zero:
   lime: db
   vertx:
-    scan: com.vie,
+    instance:
+    - name: vx-test-dot

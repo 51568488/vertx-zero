@@ -1,4 +1,8 @@
-package io.vertx.zero.core;
+package io.vertx.up;
+
+import io.vertx.core.Vertx;
+
+import java.util.function.Consumer;
 
 /**
  * Launcher:
@@ -11,10 +15,10 @@ public interface Launcher {
     /**
      * Start
      */
-    void start();
+    void start(Consumer<Vertx> vertx);
 
     /**
      * Stop
      */
-    void stop();
+    void stop(Consumer<Vertx> vertx);
 }

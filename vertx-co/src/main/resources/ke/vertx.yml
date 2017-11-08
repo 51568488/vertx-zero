@@ -1,5 +1,5 @@
 zero:
-  lime: error, inject, server,
+  lime: error, inject, server
   vertx:
     clustered:
       enabled: false

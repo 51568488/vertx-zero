@@ -2,7 +2,9 @@ package io.vertx.zero.ke.equip;
 
 import com.vie.hoc.HJson;
 import com.vie.hoc.HNull;
+import com.vie.hoc.HTry;
 import com.vie.hors.ZeroException;
+import com.vie.hors.ensure.ClusterConflictException;
 import com.vie.log.Annal;
 import com.vie.util.Ensurer;
 import com.vie.util.Instance;
@@ -67,8 +69,11 @@ public class VertxVisitor implements UprightVisitor {
             final VertxOptions options = this.transformer.transform(item);
             // 3. Check the configuration for cluster sync
             if (clustered != options.isClustered()) {
-
+                HTry.execZero(LOGGER,
+                        new ClusterConflictException(getClass(), name, options.toString()));
             }
+            // 4. Put the options into map
+            map.put(name, options);
         });
         return map;
     }

@@ -16,4 +16,11 @@ public @interface Up {
      * @return
      */
     String zeroScan() default Strings.EMPTY;
+
+    /**
+     * Multi package scan
+     *
+     * @return
+     */
+    String[] zeroScans() default Strings.EMPTY;
 }

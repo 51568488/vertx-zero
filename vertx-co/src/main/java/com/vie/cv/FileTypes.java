@@ -5,4 +5,6 @@ public interface FileTypes {
     String YAML = "yaml";
 
     String YML = "yml";
+
+    String CLASS = "class";
 }

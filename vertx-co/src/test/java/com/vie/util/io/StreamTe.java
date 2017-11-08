@@ -1,6 +1,6 @@
 package com.vie.util.io;
 
-import com.vie.hors.ke.EmptyStreamException;
+import com.vie.exception.ke.EmptyStreamException;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import top.StoreBase;

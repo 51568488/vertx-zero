@@ -1,6 +1,6 @@
 package com.vie.fun.error;
 
-import com.vie.hors.ZeroException;
+import com.vie.exception.ZeroException;
 
 @FunctionalInterface
 public interface JdSupplier<T> {

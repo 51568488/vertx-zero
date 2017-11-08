@@ -1,7 +1,7 @@
 package io.vertx.zero.hors;
 
-import com.vie.hors.DemonException;
-import com.vie.hors.ensure.RequiredFieldException;
+import com.vie.exception.DemonException;
+import com.vie.exception.ensure.RequiredFieldException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;

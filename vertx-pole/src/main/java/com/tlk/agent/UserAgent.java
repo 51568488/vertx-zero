@@ -1,14 +1,14 @@
 package com.tlk.agent;
 
-import io.vertx.up.annotations.Agent;
-import io.vertx.up.annotations.Route;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 
-@Agent
+@Path("/test")
 public class UserAgent {
 
-    @Route
+    @GET
     public String test() {
 
-        return "";
+        return "Hello World";
     }
 }

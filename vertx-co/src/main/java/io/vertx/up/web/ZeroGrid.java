@@ -1,4 +1,4 @@
-package io.vertx.zero.core.entry;
+package io.vertx.up.web;
 
 import com.vie.hoc.HTry;
 import com.vie.log.Annal;

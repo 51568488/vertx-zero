@@ -1,4 +1,8 @@
 zero:
   lime: db
   vertx:
-    scan: com.vie,
+    instance:
+    - name: vx-test-dot
+      options:
+        # Fix block 2000 limit issue.
+        maxEventLoopExecuteTime: 6000000000

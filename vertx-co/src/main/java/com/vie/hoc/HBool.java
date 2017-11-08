@@ -5,6 +5,7 @@ import com.vie.exception.ZeroRunException;
 import com.vie.fun.error.JdSupplier;
 import com.vie.fun.error.JeSupplier;
 import com.vie.log.Annal;
+import com.vie.util.Instance;
 
 import java.util.function.Supplier;
 
@@ -84,5 +85,25 @@ public class HBool {
             }
         }
         return ret;
+    }
+
+    /**
+     * @param condition
+     * @param logger
+     * @param errorCls
+     * @param args
+     */
+    public static void execUp(final boolean condition,
+                              final Annal logger,
+                              final Class<? extends ZeroRunException> errorCls,
+                              final Object... args) {
+        if (condition) {
+            HNull.exec(() -> {
+                final ZeroRunException error =
+                        Instance.instance(errorCls, args);
+                logger.vertx(error);
+                throw error;
+            }, logger, errorCls);
+        }
     }
 }

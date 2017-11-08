@@ -6,10 +6,13 @@ import io.vertx.core.VertxOptions;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.zero.ke.Launcher;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiConsumer;
 
 public class ZeroLauncher implements Launcher {
+
+    private static final ConcurrentMap<String, Vertx> VERTX = new ConcurrentHashMap<>();
 
     @Override
     public void start() {
@@ -31,7 +34,10 @@ public class ZeroLauncher implements Launcher {
     }
 
     private void startDeploy(final String name, final Vertx vertx) {
+        // Before deploy, fill all the vertx map instances.
+        VERTX.putIfAbsent(name, vertx);
         // TODO: Vertx Deployment
+        
     }
 
     private void startStandalone(final BiConsumer<String, Vertx> consumer) {

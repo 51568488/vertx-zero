@@ -40,9 +40,7 @@ public class ZeroLime implements ZeroNode<ConcurrentMap<String, String>> {
     }
 
     public static String calculatePath(final String key) {
-        return Path.KE_FOLDER + Strings.SLASH +
-                Limes.PREFIX + Strings.DASH +
-                key +
+        return Limes.PREFIX + Strings.DASH + key +
                 Strings.DOT + FileTypes.YML;
     }
 }

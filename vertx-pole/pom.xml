@@ -11,5 +11,10 @@
 
     <artifactId>vertx-pole</artifactId>
     <name>vertx-pole: Zero Core</name>
-
+    <dependencies>
+        <dependency>
+            <groupId>io.vertx.up</groupId>
+            <artifactId>vertx-dot</artifactId>
+        </dependency>
+    </dependencies>
 </project>

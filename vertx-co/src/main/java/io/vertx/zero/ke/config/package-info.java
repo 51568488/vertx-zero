@@ -27,22 +27,18 @@ interface Storage {
 
 interface Path {
     /**
-     *
-     */
-    String KE_FOLDER = "ke";
-    /**
      * The root vertx file
      */
-    String KE_VERTX = KE_FOLDER + Strings.SLASH + "vertx"
+    String KE_VERTX = "vertx"
             + Strings.DOT + FileTypes.YML;
 
-    String ERROR = KE_FOLDER + Strings.SLASH + Limes.ERROR
+    String ERROR = Limes.ERROR
             + Strings.DOT + FileTypes.YML;
 
-    String INJECT = KE_FOLDER + Strings.SLASH + Limes.INJECT
+    String INJECT = Limes.INJECT
             + Strings.DOT + FileTypes.YML;
 
-    String SERVER = KE_FOLDER + Strings.SLASH + Limes.SERVER
+    String SERVER = Limes.SERVER
             + Strings.DOT + FileTypes.YML;
 }
 

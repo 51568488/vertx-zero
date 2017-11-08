@@ -29,8 +29,12 @@ public final class Scanner {
 
     public static Set<Class<?>> getClasses(final String... zeroScans) {
         final Set<Class<?>> all = new HashSet<>();
-        for (final String scan : zeroScans) {
-            all.addAll(getClasses(scan));
+        if (0 < zeroScans.length) {
+            for (final String scan : zeroScans) {
+                all.addAll(getClasses(scan));
+            }
+        } else {
+            all.addAll(getClasses(Strings.DOT));
         }
         return all;
     }
@@ -42,7 +46,9 @@ public final class Scanner {
             // Recurisive
             final boolean recursive = true;
             // Get package name;
-            final String packageDir = zeroScan.replace(Strings.DOT, Strings.SLASH);
+            final String packageDir = (Strings.DOT.equals(zeroScan)) ?
+                    zeroScan.replace(Strings.DOT, Strings.EMPTY)
+                    : zeroScan.replace(Strings.DOT, Strings.SLASH);
             HFail.exec(() -> {
                 // Define enumeration
                 final Enumeration<URL> dirs = Thread.currentThread()
@@ -57,8 +63,8 @@ public final class Scanner {
                         // Get path of this package
                         final String path = URLDecoder.decode(url.getFile(), Values.ENCODING);
                         // Call find and add
-                        findAndAdd(zeroScan, path, recursive, classes);
-                    } else {
+                        findAndAdd(packageDir, path, recursive, classes);
+                    } else if (Protocols.JAR.equals(protocol)) {
                         classes.addAll(getClasses(packageDir, zeroScan, url, recursive));
                     }
                 }
@@ -74,7 +80,9 @@ public final class Scanner {
                                             final boolean recursive) {
         final Set<Class<?>> classes = new LinkedHashSet<>();
         HFail.exec(() -> {
-            String packageName = packName;
+            String packageName = (packName.startsWith(Strings.DOT)) ?
+                    packName.substring(1, packName.length()) :
+                    packName;
             // Get jar file
             final JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
             // List all entries of this jar
@@ -99,11 +107,12 @@ public final class Scanner {
                         if (name.endsWith(Strings.DOT + FileTypes.CLASS) && !entry.isDirectory()) {
                             // Extract class Name
                             final String className = name.substring(packageName.length() + 1, name.length() - 6);
-                            final String injectPkg = packageName;
-                            HFail.exec(() -> {
-                                classes.add(Class.forName(injectPkg + '.' + className));
-                                return null;
-                            }, className);
+                            try {
+                                classes.add(Class.forName(packageName + Strings.DOT + className));
+                            } catch (final Throwable ex) {
+                                // Skip
+                                LOGGER.info(ex.getMessage());
+                            }
                         }
                     }
                 }
@@ -129,23 +138,27 @@ public final class Scanner {
         // If exist, list all files include directory
         final File[] dirfiles = file.listFiles(new ClassFileFilter());
         // Scan all files
+        final String packageName = (packName.startsWith(Strings.DOT)) ?
+                packName.substring(1, packName.length()) :
+                packName;
         HNull.exec(() -> {
             for (final File classFile : dirfiles) {
                 // If directory, continue
-                if (file.isDirectory()) {
-                    findAndAdd(packName + Strings.DOT + file.getName(),
-                            file.getAbsolutePath(),
+                if (classFile.isDirectory()) {
+                    findAndAdd(packageName + Strings.DOT + classFile.getName(),
+                            classFile.getAbsolutePath(),
                             recursive, classesRef);
                 } else {
                     // If java, remove .class from name
                     final String className = classFile.getName().substring(0, classFile.getName().length() - 6);
-                    HFail.exec(() -> {
+                    try {
                         // Add into collection
                         classesRef.add(Thread
                                 .currentThread().getContextClassLoader()
-                                .loadClass(packName + Strings.DOT + className));
-                        return null;
-                    }, className);
+                                .loadClass(packageName + Strings.DOT + className));
+                    } catch (final Throwable ex) {
+                        LOGGER.info(ex.getMessage());
+                    }
                 }
             }
         }, dirfiles);

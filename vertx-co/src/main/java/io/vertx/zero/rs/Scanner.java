@@ -1,4 +1,4 @@
-package io.vertx.rs;
+package io.vertx.zero.rs;
 
 import io.vertx.core.json.JsonObject;
 

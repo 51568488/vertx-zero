@@ -36,7 +36,7 @@ public class VertxVisitor implements UprightVisitor {
     public ConcurrentMap<String, VertxOptions> visit(final String... keys)
             throws ZeroException {
         // 1. Must be the first line, fixed position.
-        Ensurer.eqLength(getClass(), 0, keys);
+        Ensurer.eqLength(getClass(), 0, (Object[]) keys);
         // 2. Visit the node for vertx
         final JsonObject data = this.NODE.read();
         // 3. Vertx node validation.

@@ -2,9 +2,11 @@ package io.vertx.up.rs;
 
 import com.vie.cv.em.ServerType;
 import com.vie.fun.HPool;
+import com.vie.util.log.Annal;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.annotations.Routine;
+import io.vertx.up.cv.Message;
 import io.vertx.up.mirror.Anno;
 import io.vertx.up.mirror.Pack;
 
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
  * Transfer Class<?> set to difference mapping.
  */
 public class VertxAnno {
+
+    private static final Annal LOGGER = Annal.get(VertxAnno.class);
     /**
      * Class -> Routine
      */
@@ -69,7 +73,10 @@ public class VertxAnno {
                 clazzes.stream()
                         .filter((item) -> Anno.isMark(item, Routine.class))
                         .collect(Collectors.toSet());
-        ROUTINES.addAll(routines);
+        if (ROUTINES.isEmpty()) {
+            ROUTINES.addAll(routines);
+            LOGGER.info(Message.SCAN_ROUTINES, routines.size());
+        }
         /** 3.Set Agents **/
         final Set<Class<?>> agents =
                 clazzes.stream()

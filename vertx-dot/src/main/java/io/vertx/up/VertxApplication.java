@@ -12,6 +12,7 @@ import com.vie.util.log.Annal;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.up.annotations.Up;
+import io.vertx.up.cv.Message;
 import io.vertx.up.mirror.Anno;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.VertxAnno;
@@ -23,6 +24,8 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import static io.vertx.up.cv.Message.AGENT_END;
 
 /**
  * Vertx Application start information
@@ -94,7 +97,7 @@ public class VertxApplication {
             vertx.deployVerticle(name, option, (result) -> {
                 // 2.3 Success or Failed.
                 if (result.succeeded()) {
-                    LOGGER.info(Message.AGENT_END, name, option.getInstances(), result.result());
+                    LOGGER.info(AGENT_END, name, option.getInstances(), result.result());
                 } else {
                     LOGGER.info(Message.AGENT_FAIL, name, option.getInstances(), result.result(),
                             null == result.cause() ? null : result.cause().getMessage());
@@ -125,6 +128,7 @@ public class VertxApplication {
                         final Class<?> found = Statute.findUnique(list,
                                 (item) -> INTERNALS.get(type) != item);
                         if (null != found) {
+                            LOGGER.info(Message.AGENT_DEFINED, found.getName(), type);
                             ret.put(type, found);
                         }
                         return null;

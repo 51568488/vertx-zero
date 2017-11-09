@@ -40,7 +40,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
     public ConcurrentMap<Integer, HttpServerOptions> visit(final String... key)
             throws ZeroException {
         // 1. Must be the first line, fixed position.
-        Ensurer.eqLength(getClass(), 0, key);
+        Ensurer.eqLength(getClass(), 0, (Object[]) key);
         // 2. Visit the node for server, http
         final JsonObject data = this.NODE.read();
         return HBool.execZero(null == data || !data.containsKey(Key.SERVER),

@@ -6,7 +6,7 @@ import top.UnitBase;
 
 import java.util.Set;
 
-public class ScannerTc extends UnitBase {
+public class PackTc extends UnitBase {
 
     @Test
     public void testScan(final TestContext context) {

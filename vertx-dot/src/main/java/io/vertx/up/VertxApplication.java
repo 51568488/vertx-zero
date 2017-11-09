@@ -6,9 +6,10 @@ import com.vie.fun.HBool;
 import com.vie.fun.HTry;
 import com.vie.util.Instance;
 import com.vie.util.log.Annal;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.up.annotations.Up;
-import io.vertx.up.ce.AnnoFactory;
 import io.vertx.up.mirror.Anno;
+import io.vertx.up.rs.VertxAnno;
 import io.vertx.up.web.ZeroLauncher;
 
 import java.lang.annotation.Annotation;
@@ -25,7 +26,7 @@ public class VertxApplication {
 
     private transient final Class<?> clazz;
     private ConcurrentMap<String, Annotation> annotationMap = new ConcurrentHashMap<>();
-    private transient Annotation vertxAnno;
+    private final transient Annotation vertxAnno;
 
     private VertxApplication(final Class<?> clazz) {
         // Must not null
@@ -35,7 +36,7 @@ public class VertxApplication {
                 UpClassArgsException.class, getClass());
         this.clazz = clazz;
         this.annotationMap = Anno.get(clazz);
-
+        this.vertxAnno = Anno.get(clazz, Up.class);
         // Must be invalid
         HBool.execUp(
                 !this.annotationMap.containsKey(Up.class.getName()),
@@ -53,12 +54,16 @@ public class VertxApplication {
     public void run(final Object... args) {
         final Launcher launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
-            System.out.println("Hello");
             /** 1. Extract Routine classes **/
-            final Set<Class<?>> routines = AnnoFactory.getRoutines();
+            final Set<Class<?>> routines = VertxAnno.getRoutines();
             System.out.println(routines.size());
             for (final Class<?> routine : routines) {
             }
         });
+    }
+
+    private DeploymentOptions buildAgent() {
+
+        return null;
     }
 }

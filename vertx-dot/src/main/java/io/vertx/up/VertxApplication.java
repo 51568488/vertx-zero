@@ -1,19 +1,20 @@
 package io.vertx.up;
 
+import com.vie.cv.em.ServerType;
 import com.vie.exception.up.UpClassArgsException;
 import com.vie.exception.up.UpClassInvalidException;
 import com.vie.fun.HBool;
 import com.vie.fun.HTry;
 import com.vie.util.Instance;
 import com.vie.util.log.Annal;
-import io.vertx.core.DeploymentOptions;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.mirror.Anno;
 import io.vertx.up.rs.VertxAnno;
+import io.vertx.up.web.HttpAgent;
 import io.vertx.up.web.ZeroLauncher;
 
 import java.lang.annotation.Annotation;
-import java.util.Set;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -23,6 +24,10 @@ import java.util.concurrent.ConcurrentMap;
 public class VertxApplication {
 
     private static final Annal LOGGER = Annal.get(VertxApplication.class);
+
+    private static final Class<?>[] DEFAULT_AGENTS = new Class<?>[]{
+            HttpAgent.class
+    };
 
     private transient final Class<?> clazz;
     private ConcurrentMap<String, Annotation> annotationMap = new ConcurrentHashMap<>();
@@ -54,16 +59,28 @@ public class VertxApplication {
     public void run(final Object... args) {
         final Launcher launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
-            /** 1. Extract Routine classes **/
-            final Set<Class<?>> routines = VertxAnno.getRoutines();
-            System.out.println(routines.size());
-            for (final Class<?> routine : routines) {
-            }
+            /** 1.Find Agent for deploy **/
+
+            /** 2.Find Worker for deploy **/
+
+            /** 3.Find Routine for mount to router object **/
+
+            /** 4.Connect and started **/
         });
     }
 
-    private DeploymentOptions buildAgent() {
-
+    /**
+     * Find agent for each server type.
+     *
+     * @return
+     */
+    private ConcurrentMap<ServerType, Class<?>> getAgents() {
+        final ConcurrentMap<ServerType, List<Class<?>>> agents =
+                VertxAnno.getAgents();
+        final ConcurrentMap<ServerType, Boolean> defines =
+                VertxAnno.isDefined(agents, DEFAULT_AGENTS);
+        // 1. If defined, use default
+        
         return null;
     }
 }

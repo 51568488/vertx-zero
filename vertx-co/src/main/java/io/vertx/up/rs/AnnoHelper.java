@@ -47,7 +47,7 @@ class AnnoHelper {
                             .collect(Collectors.toList());
             // > 1 means duplicated defined
             final int size = filtered.size();
-            HBool.execUp(Values.ONE < size,
+            HBool.execUp(1 < size,
                     LOGGER, AgentDuplicatedException.class,
                     AnnoHelper.class, server, size);
             // == 0 means undefined

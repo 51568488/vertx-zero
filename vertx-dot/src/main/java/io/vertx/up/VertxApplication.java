@@ -4,12 +4,18 @@ import com.vie.cv.em.ServerType;
 import com.vie.exception.up.UpClassArgsException;
 import com.vie.exception.up.UpClassInvalidException;
 import com.vie.fun.HBool;
+import com.vie.fun.HMap;
 import com.vie.fun.HTry;
 import com.vie.util.Instance;
+import com.vie.util.Statute;
 import com.vie.util.log.Annal;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.mirror.Anno;
+import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.VertxAnno;
+import io.vertx.up.rs.config.AgentExtractor;
 import io.vertx.up.web.HttpAgent;
 import io.vertx.up.web.ZeroLauncher;
 
@@ -27,6 +33,13 @@ public class VertxApplication {
 
     private static final Class<?>[] DEFAULT_AGENTS = new Class<?>[]{
             HttpAgent.class
+    };
+
+    private static final ConcurrentMap<ServerType, Class<?>> INTERNALS
+            = new ConcurrentHashMap<ServerType, Class<?>>() {
+        {
+            put(ServerType.HTTP, HttpAgent.class);
+        }
     };
 
     private transient final Class<?> clazz;
@@ -60,12 +73,33 @@ public class VertxApplication {
         final Launcher launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
             /** 1.Find Agent for deploy **/
-
+            deployAgents(vertx);
             /** 2.Find Worker for deploy **/
 
-            /** 3.Find Routine for mount to router object **/
-
             /** 4.Connect and started **/
+        });
+    }
+
+    private void deployAgents(final Vertx vertx) {
+        /** 1.Find Agent for deploy **/
+        final ConcurrentMap<ServerType, Class<?>> agents
+                = getAgents();
+        final Extractor<DeploymentOptions> extractor =
+                Instance.singleton(AgentExtractor.class);
+        HMap.exec(agents, (type, clazz) -> {
+            // 2.1 Agent deployment options
+            final DeploymentOptions option = extractor.extract(clazz);
+            // 2.2 Agent deployment
+            final String name = clazz.getName();
+            vertx.deployVerticle(name, option, (result) -> {
+                // 2.3 Success or Failed.
+                if (result.succeeded()) {
+                    LOGGER.info(Message.AGENT_END, name, option.getInstances(), result.result());
+                } else {
+                    LOGGER.info(Message.AGENT_FAIL, name, option.getInstances(), result.result(),
+                            null == result.cause() ? null : result.cause().getMessage());
+                }
+            });
         });
     }
 
@@ -79,8 +113,32 @@ public class VertxApplication {
                 VertxAnno.getAgents();
         final ConcurrentMap<ServerType, Boolean> defines =
                 VertxAnno.isDefined(agents, DEFAULT_AGENTS);
+        final ConcurrentMap<ServerType, Class<?>> ret =
+                new ConcurrentHashMap<>();
         // 1. If defined, use default
-        
-        return null;
+        HMap.exec(agents, (type, list) -> {
+            // 2. Defined -> You have defined
+            HBool.exec(defines.containsKey(type) && defines.get(type),
+                    () -> {
+
+                        // Use user-defined Agent instead.
+                        final Class<?> found = Statute.findUnique(list,
+                                (item) -> INTERNALS.get(type) != item);
+                        if (null != found) {
+                            ret.put(type, found);
+                        }
+                        return null;
+                    }, () -> {
+
+                        // Use internal defined ( system defaults )
+                        final Class<?> found = Statute.findUnique(list,
+                                (item) -> INTERNALS.get(type) == item);
+                        if (null != found) {
+                            ret.put(type, found);
+                        }
+                        return null;
+                    });
+        });
+        return ret;
     }
 }

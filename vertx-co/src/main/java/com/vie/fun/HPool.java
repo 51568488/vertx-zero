@@ -10,22 +10,24 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class HPool {
+    
     /**
-     * Execute pool instance
+     * Enhancement
      *
      * @param pool
      * @param key
      * @param poolFn
-     * @param <T>
+     * @param <K>
+     * @param <V>
      * @return
      */
-    public static <T> T exec(final ConcurrentMap<String, T> pool,
-                             final String key,
-                             final Supplier<T> poolFn) {
+    public static <K, V> V exec(final ConcurrentMap<K, V> pool,
+                                final K key,
+                                final Supplier<V> poolFn) {
         return HBool.exec(null == pool || null == key,
                 () -> null,
                 () -> {
-                    T reference = pool.get(key);
+                    V reference = pool.get(key);
                     if (null == reference) {
                         reference = poolFn.get();
                         if (null != reference) {

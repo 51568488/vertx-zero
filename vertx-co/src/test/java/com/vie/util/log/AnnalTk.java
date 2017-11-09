@@ -1,4 +1,4 @@
-package com.vie.log;
+package com.vie.util.log;
 
 import org.junit.Test;
 import top.UnitBase;

@@ -1,8 +1,8 @@
 package com.vie.util;
 
 import com.esotericsoftware.reflectasm.ConstructorAccess;
-import com.vie.hoc.HFail;
-import com.vie.hoc.HPool;
+import com.vie.fun.HFail;
+import com.vie.fun.HPool;
 
 import java.lang.reflect.Constructor;
 
@@ -65,7 +65,7 @@ public final class Instance {
         return HFail.exec(() -> {
             T ret = null;
             final Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-            // Scan all constructors
+            // Pack all constructors
             for (final Constructor<?> constructor : constructors) {
                 // Fast to construct
                 if (0 == params.length) {

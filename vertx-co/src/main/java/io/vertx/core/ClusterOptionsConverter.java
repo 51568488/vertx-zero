@@ -1,6 +1,6 @@
 package io.vertx.core;
 
-import com.vie.hoc.HBool;
+import com.vie.fun.HBool;
 import com.vie.util.Instance;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.spi.cluster.ClusterManager;

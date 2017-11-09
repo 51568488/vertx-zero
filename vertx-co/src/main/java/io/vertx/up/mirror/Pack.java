@@ -1,15 +1,16 @@
 package io.vertx.up.mirror;
 
+import com.vie.core.io.ClassFileFilter;
 import com.vie.cv.FileTypes;
 import com.vie.cv.Protocols;
 import com.vie.cv.Strings;
 import com.vie.cv.Values;
-import com.vie.hoc.HFail;
-import com.vie.hoc.HNull;
-import com.vie.log.Annal;
+import com.vie.fun.HBool;
+import com.vie.fun.HFail;
+import com.vie.fun.HNull;
+import com.vie.util.log.Annal;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -17,29 +18,33 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 /**
- * Scan the package to extract classes.
+ * Pack the package to extract classes.
  */
-public final class Scanner {
+public final class Pack {
 
-    private static final Annal LOGGER = Annal.get(Scanner.class);
+    private static final Annal LOGGER = Annal.get(Pack.class);
 
-    public static Set<Class<?>> getClasses(final String... zeroScans) {
+    public static Set<Class<?>> getClasses(final Predicate<Class<?>> filter,
+                                           final String... zeroScans) {
         final Set<Class<?>> all = new HashSet<>();
         if (0 < zeroScans.length) {
             for (final String scan : zeroScans) {
-                all.addAll(getClasses(scan));
+                all.addAll(getClasses(filter, scan));
             }
         } else {
-            all.addAll(getClasses(Strings.DOT));
+            all.addAll(getClasses(filter, Strings.DOT));
         }
         return all;
     }
 
-    private static Set<Class<?>> getClasses(final String zeroScan) {
+    private static Set<Class<?>> getClasses(final Predicate<Class<?>> filter,
+                                            final String zeroScan) {
         // The first class collection
         final Set<Class<?>> classes = new LinkedHashSet<>();
         return HNull.get(() -> {
@@ -68,9 +73,12 @@ public final class Scanner {
                         classes.addAll(getClasses(packageDir, zeroScan, url, recursive));
                     }
                 }
+                // No Return
                 return null;
             }, LOGGER);
-            return classes;
+            return HBool.exec(null == filter,
+                    () -> classes,
+                    () -> classes.stream().filter(filter).collect(Collectors.toSet()));
         }, zeroScan);
     }
 
@@ -137,7 +145,7 @@ public final class Scanner {
         }
         // If exist, list all files include directory
         final File[] dirfiles = file.listFiles(new ClassFileFilter());
-        // Scan all files
+        // Pack all files
         final String packageName = (packName.startsWith(Strings.DOT)) ?
                 packName.substring(1, packName.length()) :
                 packName;
@@ -164,24 +172,6 @@ public final class Scanner {
         }, dirfiles);
     }
 
-    static class ClassFileFilter implements FileFilter {
-        private transient boolean recursive = true;
-
-        private ClassFileFilter() {
-            this(true);
-        }
-
-        private ClassFileFilter(final boolean recursive) {
-            this.recursive = recursive;
-        }
-
-        @Override
-        public boolean accept(final File file) {
-            return (this.recursive && file.isDirectory())
-                    || (file.getName().endsWith(Strings.DOT + FileTypes.CLASS));
-        }
-    }
-
-    private Scanner() {
+    private Pack() {
     }
 }

@@ -1,8 +1,8 @@
 package com.vie.util;
 
 import com.vie.cv.Values;
-import com.vie.hoc.HBool;
-import com.vie.hoc.HNull;
+import com.vie.fun.HBool;
+import com.vie.fun.HNull;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 

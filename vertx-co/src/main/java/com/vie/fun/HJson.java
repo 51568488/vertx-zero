@@ -1,4 +1,4 @@
-package com.vie.hoc;
+package com.vie.fun;
 
 import com.vie.cv.Values;
 import com.vie.exception.ZeroException;

@@ -1,8 +1,8 @@
 package com.vie.util;
 
 import com.vie.cv.Strings;
-import com.vie.hoc.HFail;
-import com.vie.hoc.HNull;
+import com.vie.fun.HFail;
+import com.vie.fun.HNull;
 import io.vertx.core.json.JsonObject;
 
 import java.util.HashSet;

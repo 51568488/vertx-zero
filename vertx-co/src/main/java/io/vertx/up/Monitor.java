@@ -1,6 +1,6 @@
 package io.vertx.up;
 
-import com.vie.em.Etat;
+import com.vie.cv.em.Etat;
 import io.vertx.core.json.JsonObject;
 
 public interface Monitor {

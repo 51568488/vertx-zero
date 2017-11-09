@@ -1,9 +1,9 @@
 package io.vertx.zero.core.config;
 
 import com.vie.cv.Strings;
-import com.vie.hoc.HBool;
-import com.vie.hoc.HFail;
-import com.vie.hoc.HNull;
+import com.vie.fun.HBool;
+import com.vie.fun.HFail;
+import com.vie.fun.HNull;
 import com.vie.util.StringUtil;
 import com.vie.util.io.IO;
 import io.vertx.core.json.JsonObject;

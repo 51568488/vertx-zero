@@ -1,6 +1,6 @@
 package io.vertx.zero.core.equip;
 
-import com.vie.hoc.HBool;
+import com.vie.fun.HBool;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.Transformer;

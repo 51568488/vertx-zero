@@ -22,7 +22,7 @@
         <vertx.version>3.5.0</vertx.version>
         <jackson.version>2.9.2</jackson.version>
         <reflect.asm.version>1.11.3</reflect.asm.version>
-        <jws.version>2.1</jws.version>
+        <jsr311.version>2.1</jsr311.version>
         <!-- Testing -->
         <junit.version>4.12</junit.version>
         <!-- Plugin -->
@@ -243,7 +243,7 @@
             <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>javax.ws.rs-api</artifactId>
-                <version>${jws.version}</version>
+                <version>${jsr311.version}</version>
             </dependency>
             <!-- jackson -->
             <!-- http://www.mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->

@@ -1,8 +1,8 @@
 package com.vie.util;
 
 import com.vie.exception.ZeroException;
+import com.vie.fun.HNull;
 import com.vie.fun.lang.JcPredicate;
-import com.vie.hoc.HNull;
 import io.vertx.core.VertxException;
 import io.vertx.core.logging.Logger;
 

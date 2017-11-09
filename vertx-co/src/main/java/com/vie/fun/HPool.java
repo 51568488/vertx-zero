@@ -1,4 +1,4 @@
-package com.vie.hoc;
+package com.vie.fun;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

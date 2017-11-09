@@ -2,16 +2,17 @@ package io.vertx.up;
 
 import com.vie.exception.up.UpClassArgsException;
 import com.vie.exception.up.UpClassInvalidException;
-import com.vie.hoc.HBool;
-import com.vie.hoc.HTry;
-import com.vie.log.Annal;
+import com.vie.fun.HBool;
+import com.vie.fun.HTry;
 import com.vie.util.Instance;
+import com.vie.util.log.Annal;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.mirror.Anno;
-import io.vertx.up.web.RouterAgent;
+import io.vertx.up.mirror.Pack;
 import io.vertx.up.web.ZeroLauncher;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -52,7 +53,10 @@ public class VertxApplication {
     public void run(final Object... args) {
         final Launcher launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
-            vertx.deployVerticle(new RouterAgent());
+            final Set<Class<?>> classes = Pack.getClasses(null);
+            for (final Class<?> clazz : classes) {
+                System.out.println(clazz);
+            }
         });
     }
 }

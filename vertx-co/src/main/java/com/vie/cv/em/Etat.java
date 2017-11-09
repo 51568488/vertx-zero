@@ -1,4 +1,4 @@
-package com.vie.em;
+package com.vie.cv.em;
 
 public enum Etat {
     RUNNING,

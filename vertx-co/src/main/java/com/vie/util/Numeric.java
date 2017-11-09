@@ -1,6 +1,6 @@
 package com.vie.util;
 
-import com.vie.hoc.HNull;
+import com.vie.fun.HNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +17,7 @@ public class Numeric {
             return matcher.matches();
         }, regex, original);
     }
-    
+
 
     public static boolean isPositive(final String original) {
         return isMatch("^\\+{0,1}[0-9]\\d*", original);

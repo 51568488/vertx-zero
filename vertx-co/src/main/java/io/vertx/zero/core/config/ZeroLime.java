@@ -2,7 +2,7 @@ package io.vertx.zero.core.config;
 
 import com.vie.cv.FileTypes;
 import com.vie.cv.Strings;
-import com.vie.hoc.HPool;
+import com.vie.fun.HPool;
 import com.vie.util.Instance;
 import com.vie.util.StringUtil;
 import io.vertx.core.json.JsonObject;

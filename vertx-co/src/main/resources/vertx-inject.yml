@@ -1,2 +1,2 @@
-logger: com.vie.util.log.internal.Log4JAnnal
+logger: org.vie.util.log.internal.Log4JAnnal
 

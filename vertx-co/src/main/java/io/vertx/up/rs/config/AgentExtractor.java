@@ -1,12 +1,12 @@
 package io.vertx.up.rs.config;
 
-import com.vie.fun.HPool;
-import com.vie.util.Instance;
-import com.vie.util.log.Annal;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.mirror.Anno;
 import io.vertx.up.rs.Extractor;
+import org.vie.fun.HPool;
+import org.vie.util.Instance;
+import org.vie.util.log.Annal;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentHashMap;

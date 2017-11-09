@@ -1,9 +1,9 @@
 package io.vertx.zero.core.config;
 
-import com.vie.cv.FileTypes;
-import com.vie.cv.Strings;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.ZeroNode;
+import org.vie.cv.FileTypes;
+import org.vie.cv.Strings;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

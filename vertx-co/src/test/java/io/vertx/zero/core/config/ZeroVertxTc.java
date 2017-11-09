@@ -1,9 +1,9 @@
 package io.vertx.zero.core.config;
 
-import com.vie.util.Instance;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.ZeroNode;
 import org.junit.Test;
+import org.vie.util.Instance;
 import top.UnitBase;
 
 import java.util.concurrent.ConcurrentMap;

@@ -1,9 +1,9 @@
 package io.vertx.up.mirror;
 
-import com.vie.fun.HBool;
-import com.vie.fun.HNull;
-import com.vie.fun.HPool;
-import com.vie.util.Instance;
+import org.vie.fun.HBool;
+import org.vie.fun.HNull;
+import org.vie.fun.HPool;
+import org.vie.util.Instance;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentMap;

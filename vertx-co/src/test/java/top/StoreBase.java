@@ -1,6 +1,5 @@
 package top;
 
-import com.vie.util.Store;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
 import io.vertx.config.ConfigStoreOptions;
@@ -8,6 +7,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import org.vie.util.Store;
 
 public abstract class StoreBase extends UnitBase {
 

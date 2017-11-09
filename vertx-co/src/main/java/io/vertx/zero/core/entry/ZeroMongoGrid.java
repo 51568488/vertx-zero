@@ -1,8 +1,8 @@
 package io.vertx.zero.core.entry;
 
-import com.vie.util.Instance;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.config.ZeroPlugin;
+import org.vie.util.Instance;
 
 /**
  * @author Dean Zhao

@@ -10,3 +10,5 @@ E40001: Vertx up boot class should not be null, please provide the entry of this
 E40002: Vertx up boot class must be marked with annotation "Up", but ( name= {0} ) it's missing
 E40003: ZeroLauncher require input callback to handle vertx reference, but not it's null
 E40004: You have defined {0} agent for server of type {1}, it's fobbiden.
+# (Web) Exception for web
+E60001: (400) - The input content could not be converted into valid resource model {0}

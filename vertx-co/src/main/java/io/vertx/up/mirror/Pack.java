@@ -1,15 +1,15 @@
 package io.vertx.up.mirror;
 
-import com.vie.core.io.ClassFileFilter;
-import com.vie.cv.FileTypes;
-import com.vie.cv.Protocols;
-import com.vie.cv.Strings;
-import com.vie.cv.Values;
-import com.vie.fun.HBool;
-import com.vie.fun.HFail;
-import com.vie.fun.HNull;
-import com.vie.util.log.Annal;
 import io.vertx.core.impl.ConcurrentHashSet;
+import org.vie.core.io.ClassFileFilter;
+import org.vie.cv.FileTypes;
+import org.vie.cv.Protocols;
+import org.vie.cv.Strings;
+import org.vie.cv.Values;
+import org.vie.fun.HBool;
+import org.vie.fun.HFail;
+import org.vie.fun.HNull;
+import org.vie.util.log.Annal;
 
 import java.io.File;
 import java.net.JarURLConnection;

@@ -1,9 +1,9 @@
 package io.vertx.core;
 
-import com.vie.fun.HBool;
-import com.vie.util.Instance;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.spi.cluster.ClusterManager;
+import org.vie.fun.HBool;
+import org.vie.util.Instance;
 
 class ClusterOptionsConverter {
     ClusterOptionsConverter() {

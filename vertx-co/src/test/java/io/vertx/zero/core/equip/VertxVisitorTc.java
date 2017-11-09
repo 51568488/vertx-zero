@@ -1,10 +1,10 @@
 package io.vertx.zero.core.equip;
 
-import com.vie.exception.ZeroException;
-import com.vie.util.Instance;
 import io.vertx.core.VertxOptions;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
+import org.vie.exception.ZeroException;
+import org.vie.util.Instance;
 import top.UnitBase;
 
 import java.util.concurrent.ConcurrentMap;

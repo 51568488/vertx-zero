@@ -1,19 +1,19 @@
 package io.vertx.zero.ce;
 
-import com.vie.core.reliable.Insurer;
-import com.vie.core.reliable.RequiredInsurer;
-import com.vie.core.reliable.TypedInsurer;
-import com.vie.cv.Strings;
-import com.vie.exception.ZeroException;
-import com.vie.fun.HJson;
-import com.vie.fun.HNull;
-import com.vie.fun.HPool;
-import com.vie.util.Instance;
-import com.vie.util.Types;
-import com.vie.util.io.IO;
-import com.vie.util.log.Annal;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import org.vie.core.reliable.Insurer;
+import org.vie.core.reliable.RequiredInsurer;
+import org.vie.core.reliable.TypedInsurer;
+import org.vie.cv.Strings;
+import org.vie.exception.ZeroException;
+import org.vie.fun.HJson;
+import org.vie.fun.HNull;
+import org.vie.fun.HPool;
+import org.vie.util.Instance;
+import org.vie.util.Types;
+import org.vie.util.io.IO;
+import org.vie.util.log.Annal;
 
 import java.text.MessageFormat;
 import java.util.concurrent.ConcurrentHashMap;

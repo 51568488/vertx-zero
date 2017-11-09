@@ -1,12 +1,12 @@
 package io.vertx.up.rs.config;
 
-import com.vie.util.Instance;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.VertxValues;
 import io.vertx.up.web.HttpAgent;
 import org.junit.Test;
+import org.vie.util.Instance;
 import top.UnitBase;
 
 public class ExtractorTc extends UnitBase {

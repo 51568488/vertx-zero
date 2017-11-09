@@ -2,8 +2,8 @@ package com.vie.util;
 
 import com.vie.cv.Tpl;
 import com.vie.exception.ke.ErrorMissingException;
-import com.vie.hoc.HBool;
-import com.vie.hoc.HFail;
+import com.vie.fun.HBool;
+import com.vie.fun.HFail;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.config.JObjectBase;
 import io.vertx.zero.core.config.ZeroError;

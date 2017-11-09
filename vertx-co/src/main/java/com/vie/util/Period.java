@@ -1,7 +1,7 @@
 package com.vie.util;
 
-import com.vie.hoc.HFail;
-import com.vie.hoc.HNull;
+import com.vie.fun.HFail;
+import com.vie.fun.HNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

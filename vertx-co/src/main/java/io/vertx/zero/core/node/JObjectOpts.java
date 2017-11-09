@@ -17,7 +17,7 @@ public class JObjectOpts implements Visitor<JsonObject> {
     @Override
     public JsonObject visit(final String... nodes)
             throws ZeroException {
-        Ensurer.gtLength(getClass(), 0, nodes);
+        Ensurer.gtLength(getClass(), 0, (Object[]) nodes);
         // Tree Data
         final JsonObject tree = NODE.read();
         return Jackson.visitJObject(tree, nodes);

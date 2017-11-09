@@ -1,8 +1,8 @@
 package com.vie.util;
 
 import com.vie.cv.Values;
-import com.vie.hoc.HBool;
-import com.vie.hoc.HNull;
+import com.vie.fun.HBool;
+import com.vie.fun.HNull;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
@@ -11,14 +11,15 @@ import java.util.Arrays;
 /**
  * Lookup the json tree data
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked"})
 public final class Jackson {
 
     public static JsonObject visitJObject(
             final JsonObject item,
             final String... keys
     ) {
-        Ensurer.gtLength(Jackson.class, 0, keys);
+
+        Ensurer.gtLength(Jackson.class, 0, (Object[]) keys);
         return searchData(item, JsonObject.class, keys);
     }
 
@@ -26,7 +27,7 @@ public final class Jackson {
             final JsonObject item,
             final String... keys
     ) {
-        Ensurer.gtLength(Jackson.class, 0, keys);
+        Ensurer.gtLength(Jackson.class, 0, (Object[]) keys);
         return searchData(item, JsonArray.class, keys);
     }
 
@@ -34,7 +35,7 @@ public final class Jackson {
             final JsonObject item,
             final String... keys
     ) {
-        Ensurer.gtLength(Jackson.class, 0, keys);
+        Ensurer.gtLength(Jackson.class, 0, (Object[]) keys);
         return searchData(item, Integer.class, keys);
     }
 
@@ -42,7 +43,7 @@ public final class Jackson {
             final JsonObject item,
             final String... keys
     ) {
-        Ensurer.gtLength(Jackson.class, 0, keys);
+        Ensurer.gtLength(Jackson.class, 0, (Object[]) keys);
         return searchData(item, String.class, keys);
     }
 

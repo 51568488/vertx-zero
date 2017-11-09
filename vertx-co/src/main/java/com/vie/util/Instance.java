@@ -1,8 +1,10 @@
 package com.vie.util;
 
 import com.esotericsoftware.reflectasm.ConstructorAccess;
-import com.vie.hoc.HFail;
-import com.vie.hoc.HPool;
+import com.esotericsoftware.reflectasm.MethodAccess;
+import com.vie.fun.HFail;
+import com.vie.fun.HNull;
+import com.vie.fun.HPool;
 
 import java.lang.reflect.Constructor;
 
@@ -60,12 +62,30 @@ public final class Instance {
                 () -> HFail.exec(() -> Class.forName(name), name));
     }
 
+    /**
+     * Method reflection call
+     *
+     * @param instance
+     * @param name
+     * @param <T>
+     * @return
+     */
+    public static <T> T invoke(final Object instance,
+                               final String name,
+                               final Object... args) {
+        return HNull.get(() -> {
+            final MethodAccess access = MethodAccess.get(instance.getClass());
+            final Object ret = access.invoke(instance, name, args);
+            return HNull.get(() -> (T) ret, ret);
+        }, instance, name);
+    }
+
     private static <T> T construct(final Class<?> clazz,
                                    final Object... params) {
         return HFail.exec(() -> {
             T ret = null;
             final Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-            // Scan all constructors
+            // Pack all constructors
             for (final Constructor<?> constructor : constructors) {
                 // Fast to construct
                 if (0 == params.length) {

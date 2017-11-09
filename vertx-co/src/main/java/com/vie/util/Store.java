@@ -1,7 +1,7 @@
 package com.vie.util;
 
-import com.vie.hoc.HFail;
-import com.vie.hoc.HPool;
+import com.vie.fun.HFail;
+import com.vie.fun.HPool;
 import com.vie.util.io.IO;
 import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.json.JsonObject;

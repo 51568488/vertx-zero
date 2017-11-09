@@ -1,6 +1,6 @@
 package io.vertx.zero.core.config;
 
-import com.vie.hoc.HPool;
+import com.vie.fun.HPool;
 import com.vie.util.Instance;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.ZeroNode;

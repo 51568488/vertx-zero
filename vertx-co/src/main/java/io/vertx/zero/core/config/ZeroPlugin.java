@@ -1,6 +1,6 @@
 package io.vertx.zero.core.config;
 
-import com.vie.hoc.HFail;
+import com.vie.fun.HFail;
 import com.vie.util.Instance;
 import com.vie.util.io.IO;
 import io.vertx.core.json.JsonObject;

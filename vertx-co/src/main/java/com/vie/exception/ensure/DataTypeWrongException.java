@@ -1,6 +1,6 @@
 package com.vie.exception.ensure;
 
-import com.vie.em.DataType;
+import com.vie.cv.em.DataType;
 import com.vie.exception.DemonException;
 
 public class DataTypeWrongException extends DemonException {

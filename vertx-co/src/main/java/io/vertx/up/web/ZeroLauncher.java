@@ -1,12 +1,13 @@
 package io.vertx.up.web;
 
 import com.vie.exception.up.VertxCallbackException;
-import com.vie.log.Annal;
+import com.vie.util.log.Annal;
 import io.vertx.core.ClusterOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.up.Launcher;
+import io.vertx.up.cv.Message;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -30,6 +31,8 @@ public class ZeroLauncher implements Launcher {
         if (cluster.isEnabled()) {
             // 2.1.Clustered
             final ClusterManager manager = cluster.getManager();
+            LOGGER.info(Message.APP_CLUSTERD, manager.getClass().getName(),
+                    manager.getNodeID(), manager.isActive());
             startCluster(manager, callback);
         } else {
             // 2.2.Standalone

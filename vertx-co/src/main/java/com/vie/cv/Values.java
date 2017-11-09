@@ -13,6 +13,8 @@ public interface Values {
     /** **/
     Charset CHARSET = Charset.forName(ENCODING);
     /** **/
+    int UNSET = -1;
+    /** **/
     int ZERO = 0;
     /** **/
     int IDX = 0;

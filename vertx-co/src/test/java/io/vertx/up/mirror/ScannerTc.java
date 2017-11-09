@@ -11,8 +11,6 @@ public class ScannerTc extends UnitBase {
     @Test
     public void testScan(final TestContext context) {
         final Set<Class<?>> clazzes = Pack.getClasses(null);
-        for (final Class<?> item : clazzes) {
-            System.out.println(item.getName());
-        }
+        context.assertNotNull(clazzes);
     }
 }

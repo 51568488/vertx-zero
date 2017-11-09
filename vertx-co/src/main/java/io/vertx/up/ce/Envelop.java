@@ -1,4 +1,4 @@
-package io.vertx.zero.ce;
+package io.vertx.up.ce;
 
 public class Envelop {
 }

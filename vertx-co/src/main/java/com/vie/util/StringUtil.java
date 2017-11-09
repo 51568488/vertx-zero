@@ -3,9 +3,9 @@ package com.vie.util;
 import com.vie.cv.Strings;
 import com.vie.fun.HFail;
 import com.vie.fun.HNull;
+import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.core.json.JsonObject;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,7 +24,7 @@ public class StringUtil {
     public static Set<String> split(final String input, final String separator) {
         return HFail.exec(() -> {
             final String[] array = input.split(separator);
-            final Set<String> result = new HashSet<>();
+            final Set<String> result = new ConcurrentHashSet<>();
             for (final String item : array) {
                 HNull.exec(() -> result.add(item.trim().intern()), item);
             }

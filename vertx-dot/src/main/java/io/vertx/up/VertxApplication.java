@@ -7,8 +7,8 @@ import com.vie.fun.HTry;
 import com.vie.util.Instance;
 import com.vie.util.log.Annal;
 import io.vertx.up.annotations.Up;
+import io.vertx.up.ce.AnnoFactory;
 import io.vertx.up.mirror.Anno;
-import io.vertx.up.mirror.Pack;
 import io.vertx.up.web.ZeroLauncher;
 
 import java.lang.annotation.Annotation;
@@ -53,9 +53,11 @@ public class VertxApplication {
     public void run(final Object... args) {
         final Launcher launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
-            final Set<Class<?>> classes = Pack.getClasses(null);
-            for (final Class<?> clazz : classes) {
-                System.out.println(clazz);
+            System.out.println("Hello");
+            /** 1. Extract Routine classes **/
+            final Set<Class<?>> routines = AnnoFactory.getRoutines();
+            System.out.println(routines.size());
+            for (final Class<?> routine : routines) {
             }
         });
     }

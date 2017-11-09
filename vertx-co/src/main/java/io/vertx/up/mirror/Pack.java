@@ -9,13 +9,13 @@ import com.vie.fun.HBool;
 import com.vie.fun.HFail;
 import com.vie.fun.HNull;
 import com.vie.util.log.Annal;
+import io.vertx.core.impl.ConcurrentHashSet;
 
 import java.io.File;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -32,7 +32,7 @@ public final class Pack {
 
     public static Set<Class<?>> getClasses(final Predicate<Class<?>> filter,
                                            final String... zeroScans) {
-        final Set<Class<?>> all = new HashSet<>();
+        final Set<Class<?>> all = new ConcurrentHashSet<>();
         if (0 < zeroScans.length) {
             for (final String scan : zeroScans) {
                 all.addAll(getClasses(filter, scan));

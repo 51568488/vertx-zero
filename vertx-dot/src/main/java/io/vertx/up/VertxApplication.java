@@ -1,8 +1,7 @@
-package io1.vertx.up;
+package io.vertx.up;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
-import io.vertx.up.Launcher;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.cv.Message;
 import io.vertx.up.mirror.Anno;

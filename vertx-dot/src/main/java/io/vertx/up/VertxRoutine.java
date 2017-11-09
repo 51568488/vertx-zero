@@ -1,4 +1,4 @@
-package io1.vertx.up;
+package io.vertx.up;
 
 public class VertxRoutine {
 }

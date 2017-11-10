@@ -3,6 +3,7 @@ package io.vertx.up.rs.executor;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Executor;
+import org.vie.util.Instance;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -36,5 +37,7 @@ public class DirectHandler implements Executor {
                     parameterTypes[idx], annotations[idx]));
         }
         // 3. Invoke method to return types
+        System.out.println("call");
+        Instance.invoke(event.getProxy(), method.getName(), "Lang");
     }
 }

@@ -80,6 +80,25 @@ public final class Instance {
         }, instance, name);
     }
 
+    /**
+     * Whether the class contains no-arg constructor
+     *
+     * @param clazz
+     * @return
+     */
+    public static boolean noarg(final Class<?> clazz) {
+        return HNull.get(clazz, () -> {
+            final Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+            boolean noarg = false;
+            for (final Constructor<?> constructor : constructors) {
+                if (0 == constructor.getParameterTypes().length) {
+                    noarg = true;
+                }
+            }
+            return noarg;
+        }, false);
+    }
+
     private static <T> T construct(final Class<?> clazz,
                                    final Object... params) {
         return HFail.exec(() -> {

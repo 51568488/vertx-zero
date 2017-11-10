@@ -6,10 +6,10 @@ import io.vertx.up.rs.Executor;
 import org.vie.util.Instance;
 import top.WebBase;
 
-public class ExecutorTc extends WebBase {
+public class ExecutorNoArgTe extends WebBase {
 
     public void testRequest() throws Exception {
-        final Event event = extract(TestParam.class, "test");
+        final Event event = extract(HelloParam.class, "sayHelly");
         this.router.route().handler(context -> {
             final Executor executor = Instance.singleton(DirectHandler.class);
             executor.execute(context, event);

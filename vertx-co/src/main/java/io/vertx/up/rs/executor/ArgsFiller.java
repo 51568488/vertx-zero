@@ -33,11 +33,13 @@ class ArgsFiller {
             final Annotation[] paramAnnos) {
         // 1. Check if default value
         final Annotation defaultValue = getDefault(paramAnnos);
+        final Object dft;
         if (null != defaultValue) {
             // 1.1. Return default value direactly
-            return Types.fromString(paramType,
+            dft = Types.fromString(paramType,
                     Instance.invoke(defaultValue, "value"));
         }
+        // 2. Get parameter value
         return "";
     }
 

@@ -1,11 +1,10 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.ext.unit.TestContext;
+import io.vertx.up.rs.config.example.Media;
 import org.junit.Test;
 import top.UnitBase;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -38,18 +37,5 @@ public class MediaResolverTc extends UnitBase {
         final Method method = Media.class.getDeclaredMethod("sayH");
         final Set<MediaType> types = MediaResolver.consumes(method);
         context.assertEquals(1, types.size());
-    }
-}
-
-class Media {
-
-    @Produces(MediaType.APPLICATION_JSON)
-    public void sayHello() {
-
-    }
-
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void sayH() {
-
     }
 }

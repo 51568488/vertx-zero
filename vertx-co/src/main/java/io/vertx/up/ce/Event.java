@@ -37,6 +37,10 @@ public class Event implements Serializable {
      * request action ( Will be calculated )
      */
     private Method action;
+    /**
+     * Proxy instance
+     */
+    private Object proxy;
 
     public String getPath() {
         return this.path;
@@ -80,6 +84,14 @@ public class Event implements Serializable {
 
     public void setAction(final Method action) {
         this.action = action;
+    }
+
+    public Object getProxy() {
+        return this.proxy;
+    }
+
+    public void setProxy(final Object proxy) {
+        this.proxy = proxy;
     }
 
     @Override

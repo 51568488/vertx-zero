@@ -2,6 +2,7 @@ package io.vertx.up.rs.config;
 
 import io.vertx.ext.unit.TestContext;
 import io.vertx.up.rs.VertxHelper;
+import io.vertx.up.rs.config.example.*;
 import org.junit.Test;
 import org.vie.exception.up.PathAnnoEmptyException;
 import top.UnitBase;
@@ -101,78 +102,5 @@ public class PathResolverTc extends UnitBase {
             }
         };
         context.assertEquals(expected, pathes);
-    }
-}
-
-@Path("api")
-class Method2 {
-
-    @Path("test////:name")
-    public void test() {
-    }
-}
-
-@Path("")
-class Method4 {
-
-    @Path("test////:name")
-    public void test() {
-    }
-
-    @Path("///test/:id")
-    public void test1() {
-    }
-}
-
-@Path("api")
-class Method3 {
-
-    @Path("test////:name")
-    public void test() {
-    }
-
-    @Path("///test/:id")
-    public void test1() {
-    }
-}
-
-@Path("api")
-class Method1 {
-
-    @Path("test")
-    public void test() {
-    }
-}
-
-/**
- * 1. Root: api
- */
-@Path("api")
-class Root1 {
-
-    @Path("/test")
-    public void test() {
-    }
-}
-
-/**
- * 2. Root: api/
- */
-@Path("api/")
-class Root2 {
-
-    @Path("/test")
-    public void test() {
-    }
-}
-
-/**
- * 3. Root: api//
- */
-@Path("///api///")
-class Root3 {
-
-    @Path("/test")
-    public void test() {
     }
 }

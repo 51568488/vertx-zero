@@ -6,6 +6,7 @@ import org.vie.fun.HPool;
 import org.vie.util.Instance;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentMap;
 
 public final class Anno {
@@ -23,6 +24,16 @@ public final class Anno {
     public static Annotation get(final Class<?> clazz,
                                  final Class<? extends Annotation> annoCls) {
         return HNull.get(() -> clazz.getDeclaredAnnotation(annoCls), clazz, annoCls);
+    }
+
+    /**
+     * Get all annotation
+     *
+     * @param method
+     * @return
+     */
+    public static Annotation[] get(final Method method) {
+        return HNull.get(() -> method.getDeclaredAnnotations(), method);
     }
 
     /**

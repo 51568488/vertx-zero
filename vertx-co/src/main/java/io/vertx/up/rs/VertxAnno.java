@@ -61,7 +61,7 @@ public class VertxAnno {
             final ConcurrentMap<ServerType, List<Class<?>>> input,
             final Class<?>... excludes
     ) {
-        return AnnoHelper.isAgentDefined(input, excludes);
+        return VertxHelper.isAgentDefined(input, excludes);
     }
 
     static {
@@ -95,7 +95,7 @@ public class VertxAnno {
         if (AGENTS.isEmpty()) {
             AGENTS.putAll(
                     HPool.group(agents,
-                            AnnoHelper::getAgentKey,
+                            VertxHelper::getAgentKey,
                             (item) -> item));
         }
     }

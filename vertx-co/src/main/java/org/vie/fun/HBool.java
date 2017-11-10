@@ -4,6 +4,7 @@ import org.vie.exception.ZeroException;
 import org.vie.exception.ZeroRunException;
 import org.vie.fun.error.JdSupplier;
 import org.vie.fun.error.JeSupplier;
+import org.vie.fun.lang.JcConsumer;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
 
@@ -60,6 +61,29 @@ public class HBool {
                              final Supplier<T> fSupplier) {
         return HTry.execZero(() -> execZero(condition,
                 tSupplier::get, fSupplier::get), LOGGER);
+    }
+
+    /**
+     * Common work flow
+     *
+     * @param condition
+     * @param logger
+     * @param tSupplier
+     * @param fSupplier
+     * @param <T>
+     */
+    public static void exec(final boolean condition,
+                            final Annal logger,
+                            final JcConsumer tSupplier,
+                            final JcConsumer fSupplier) {
+        HTry.execZero(() -> execZero(condition,
+                () -> {
+                    tSupplier.exec();
+                    return null;
+                }, () -> {
+                    fSupplier.exec();
+                    return null;
+                }), logger);
     }
 
     /**

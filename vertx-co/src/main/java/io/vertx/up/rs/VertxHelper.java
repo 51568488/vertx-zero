@@ -18,9 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-class AnnoHelper {
+class VertxHelper {
 
-    private static final Annal LOGGER = Annal.get(AnnoHelper.class);
+    private static final Annal LOGGER = Annal.get(VertxHelper.class);
 
     public static ServerType getAgentKey(final Class<?> clazz) {
         return HBool.exec(Anno.isMark(clazz, Agent.class),
@@ -49,7 +49,7 @@ class AnnoHelper {
             final int size = filtered.size();
             HBool.execUp(1 < size,
                     LOGGER, AgentDuplicatedException.class,
-                    AnnoHelper.class, server, size);
+                    VertxHelper.class, server, size);
             // == 0 means undefined
             // == 1 means correct defined
             defined.put(server, Values.ONE == size);

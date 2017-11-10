@@ -7,8 +7,9 @@ import io.vertx.up.annotations.Address;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Executor;
 import io.vertx.up.rs.Hub;
-import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.rs.executor.DirectHandler;
+import io.vertx.up.rs.executor.EventBusHandler;
+import io.vertx.up.web.ZeroAnno;
 import org.vie.cv.Strings;
 import org.vie.exception.up.EventActionNoneException;
 import org.vie.fun.HBool;
@@ -57,7 +58,9 @@ public class EventHub implements Hub {
         final boolean annotated = Anno.isMark(method, Address.class);
         if (annotated) {
             // 3.1. Event Bus Executing
-            // TODO:
+            LOGGER.info(Message.DISPATCH, "EventBus", EventBusHandler.class.getName());
+            final Executor executor = Instance.singleton(EventBusHandler.class);
+            executor.execute(context, event);
         } else {
             LOGGER.info(Message.DISPATCH, "Non-EventBus", DirectHandler.class.getName());
             // 3.2. Response directly

@@ -1,8 +1,8 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.ext.unit.TestContext;
-import io.vertx.up.web.ZeroHelper;
 import io.vertx.up.rs.config.example.*;
+import io.vertx.up.web.ZeroHelper;
 import org.junit.Test;
 import org.vie.exception.up.PathAnnoEmptyException;
 import top.UnitBase;

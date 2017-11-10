@@ -5,9 +5,10 @@ import io.vertx.core.Vertx;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.cv.Message;
 import io.vertx.up.rs.Extractor;
-import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.rs.config.AgentExtractor;
+import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHttpAgent;
+import io.vertx.up.web.ZeroHttpWorker;
 import io.vertx.up.web.ZeroLauncher;
 import org.vie.cv.em.ServerType;
 import org.vie.exception.up.UpClassArgsException;
@@ -76,7 +77,8 @@ public class VertxApplication {
             /** 1.Find Agent for deploy **/
             deployAgents(vertx);
             /** 2.Find Worker for deploy **/
-
+            vertx.deployVerticle(new ZeroHttpWorker(),
+                    new DeploymentOptions().setWorker(true));
             /** 4.Connect and started **/
         });
     }

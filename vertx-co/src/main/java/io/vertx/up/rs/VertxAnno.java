@@ -1,14 +1,17 @@
 package io.vertx.up.rs;
 
-import com.vie.cv.em.ServerType;
-import com.vie.fun.HPool;
-import com.vie.util.log.Annal;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.Agent;
-import io.vertx.up.annotations.Routine;
+import io.vertx.up.annotations.EndPoint;
+import io.vertx.up.ce.Event;
 import io.vertx.up.cv.Message;
-import io.vertx.up.mirror.Anno;
-import io.vertx.up.mirror.Pack;
+import io.vertx.up.rs.config.EndPointExtractor;
+import org.vie.cv.em.ServerType;
+import org.vie.fun.HPool;
+import org.vie.util.Instance;
+import org.vie.util.log.Annal;
+import org.vie.util.mirror.Anno;
+import org.vie.util.mirror.Pack;
 
 import java.util.List;
 import java.util.Set;
@@ -23,24 +26,20 @@ public class VertxAnno {
 
     private static final Annal LOGGER = Annal.get(VertxAnno.class);
     /**
-     * Class -> Routine
+     * Class -> EndPoint
      */
-    private final static Set<Class<?>> ROUTINES
+    private final static Set<Class<?>> ENDPOINTS
+            = new ConcurrentHashSet<>();
+    /**
+     * Event Set
+     */
+    private final static Set<Event> EVENTS
             = new ConcurrentHashSet<>();
     /**
      * Class -> PATH
      */
     private final static ConcurrentMap<ServerType, List<Class<?>>> AGENTS
             = new ConcurrentHashMap<>();
-
-    /**
-     * Get all routines
-     *
-     * @return
-     */
-    public static Set<Class<?>> getRoutines() {
-        return ROUTINES;
-    }
 
     /**
      * Get all agents.
@@ -62,31 +61,45 @@ public class VertxAnno {
             final ConcurrentMap<ServerType, List<Class<?>>> input,
             final Class<?>... excludes
     ) {
-        return AnnoHelper.isAgentDefined(input, excludes);
+        return VertxHelper.isAgentDefined(input, excludes);
+    }
+
+    public static Set<Event> getEvents() {
+        return EVENTS;
     }
 
     static {
         /** 1.Scan the packages **/
         final Set<Class<?>> clazzes = Pack.getClasses(null);
-        /** 2.Set to ROUTINES **/
+        /** 2.Set to ENDPOINTS **/
         final Set<Class<?>> routines =
                 clazzes.stream()
-                        .filter((item) -> Anno.isMark(item, Routine.class))
+                        .filter((item) -> Anno.isMark(item, EndPoint.class))
                         .collect(Collectors.toSet());
-        if (ROUTINES.isEmpty()) {
-            ROUTINES.addAll(routines);
-            LOGGER.info(Message.SCAN_ROUTINES, routines.size());
+        if (ENDPOINTS.isEmpty()) {
+            ENDPOINTS.addAll(routines);
+            LOGGER.info(Message.SCANED_ENDPOINT, routines.size());
+            /** 3.Build Api metadata **/
+            final Extractor<Set<Event>> extractor = Instance.singleton(EndPointExtractor.class);
+            for (final Class<?> endpoint : ENDPOINTS) {
+                final Set<Event> events = extractor.extract(endpoint);
+                if (!events.isEmpty()) {
+                    // 4. Report events for endpoint, wait for deployment.
+                    LOGGER.info(Message.SCANED_EVENTS, endpoint.getName(), events.size());
+                    EVENTS.addAll(events);
+                }
+            }
         }
-        /** 3.Set Agents **/
+        /** 4.Set Agents **/
         final Set<Class<?>> agents =
                 clazzes.stream()
                         .filter((item) -> Anno.isMark(item, Agent.class))
                         .collect(Collectors.toSet());
-        /** 4.Scan duplicated **/
+        /** 5.Scan duplicated **/
         if (AGENTS.isEmpty()) {
             AGENTS.putAll(
                     HPool.group(agents,
-                            AnnoHelper::getAgentKey,
+                            VertxHelper::getAgentKey,
                             (item) -> item));
         }
     }

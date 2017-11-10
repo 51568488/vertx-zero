@@ -1,10 +1,10 @@
 package io.vertx.up.rs;
 
-import com.vie.cv.em.ServerType;
-import com.vie.exception.up.AgentDuplicatedException;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.up.web.HttpAgent;
 import org.junit.Test;
+import org.vie.cv.em.ServerType;
+import org.vie.exception.up.AgentDuplicatedException;
 import top.UnitBase;
 import top.example.AnnoAgent;
 import top.example.AnnoExceAgent;

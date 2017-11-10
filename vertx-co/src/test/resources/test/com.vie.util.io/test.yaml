@@ -1,5 +1,0 @@
-vertx:
-  zero:
-    internal:
-      logger: com.vie.util.log.internal.Log4JAnnal
-      config: yaml

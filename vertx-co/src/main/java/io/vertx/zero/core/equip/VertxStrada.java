@@ -1,9 +1,9 @@
 package io.vertx.zero.core.equip;
 
-import com.vie.fun.HBool;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.Transformer;
+import org.vie.fun.HBool;
 
 public class VertxStrada implements Transformer<VertxOptions> {
 

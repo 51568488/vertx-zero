@@ -23,6 +23,7 @@
         <jackson.version>2.9.2</jackson.version>
         <reflect.asm.version>1.11.3</reflect.asm.version>
         <jsr311.version>2.1</jsr311.version>
+        <jersey.version>2.26</jersey.version>
         <!-- Testing -->
         <junit.version>4.12</junit.version>
         <!-- Logging -->
@@ -315,6 +316,12 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
                 <version>${logback.version}</version>
+            </dependency>
+            <!-- http://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common -->
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-common</artifactId>
+                <version>${jersey.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,9 +1,9 @@
 package io.vertx.zero.core.config;
 
-import com.vie.fun.HPool;
-import com.vie.util.Instance;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.ZeroNode;
+import org.vie.fun.HPool;
+import org.vie.util.Instance;
 
 public abstract class JObjectBase implements ZeroNode<JsonObject> {
     @Override

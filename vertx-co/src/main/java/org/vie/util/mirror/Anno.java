@@ -26,6 +26,11 @@ public final class Anno {
         return HNull.get(() -> clazz.getDeclaredAnnotation(annoCls), clazz, annoCls);
     }
 
+    public static Annotation get(final Method method,
+                                 final Class<? extends Annotation> annoCls) {
+        return HNull.get(() -> method.getDeclaredAnnotation(annoCls), method, annoCls);
+    }
+
     /**
      * Get all annotation
      *

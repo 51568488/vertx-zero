@@ -11,5 +11,6 @@ E40002: Vertx up boot class must be marked with annotation "Up", but ( name= {0}
 E40003: ZeroLauncher require input callback to handle vertx reference, but not it''s null
 E40004: You have defined {0} agent for server of type {1}, it''s fobbiden.
 E40005: Event extractor only accept to scan class of @EndPoint, but now it''s {0}
+E40006: PathResolver could not accept null pointer reference of @Path
 # (Web) Exception for web
 E60001: (400) - The input content could not be converted into valid resource model {0}

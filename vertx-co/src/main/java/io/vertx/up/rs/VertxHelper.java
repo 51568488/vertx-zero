@@ -9,7 +9,9 @@ import org.vie.util.Instance;
 import org.vie.util.log.Annal;
 import org.vie.util.mirror.Anno;
 
+import javax.ws.rs.Path;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -18,20 +20,26 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-class VertxHelper {
+/**
+ * @author Lang
+ */
+public class VertxHelper {
 
     private static final Annal LOGGER = Annal.get(VertxHelper.class);
 
+    /** **/
     public static ServerType getAgentKey(final Class<?> clazz) {
         return HBool.exec(Anno.isMark(clazz, Agent.class),
                 () -> Instance.invoke(getAgentValue(clazz), Agent.Key.TYPE),
                 () -> null);
     }
 
+    /** **/
     public static Annotation getAgentValue(final Class<?> clazz) {
         return Anno.get(clazz, Agent.class);
     }
 
+    /** **/
     public static ConcurrentMap<ServerType, Boolean> isAgentDefined(
             final ConcurrentMap<ServerType, List<Class<?>>> agents,
             final Class<?>... exclude) {
@@ -55,5 +63,21 @@ class VertxHelper {
             defined.put(server, Values.ONE == size);
         }
         return defined;
+    }
+
+    /** **/
+    public static Path getPath(final Class<?> clazz) {
+        return getPath(Anno.get(clazz, Path.class));
+    }
+
+    /** **/
+    public static Path getPath(final Method method) {
+        return getPath(Anno.get(method, Path.class));
+    }
+
+    private static Path getPath(final Annotation anno) {
+        return HBool.exec(anno instanceof Path,
+                () -> (Path) anno,
+                () -> null);
     }
 }

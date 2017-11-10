@@ -55,6 +55,20 @@ public final class Anno {
                 () -> clazz.isAnnotationPresent(annotationCls));
     }
 
+    /**
+     * Check whether clazz contains annotationCls marked.
+     *
+     * @param method
+     * @param annotationCls
+     * @return
+     */
+    public static boolean isMark(final Method method,
+                                 final Class<? extends Annotation> annotationCls) {
+        return HBool.exec(null == method || null == annotationCls,
+                () -> false,
+                () -> method.isAnnotationPresent(annotationCls));
+    }
+
     public static <T, E extends Annotation> T getAttribute(final Class<?> clazz,
                                                            final Class<E> annoCls,
                                                            final String attr) {

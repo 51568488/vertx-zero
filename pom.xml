@@ -18,11 +18,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <encoding>UTF-8</encoding>
-        <!-- Vertx -->
+        <!-- Vertx 3.5.1 SNAPSHOT, For testing -->
         <vertx.version>3.5.0</vertx.version>
+        <!-- Vertx Snap -->
         <jackson.version>2.9.2</jackson.version>
         <reflect.asm.version>1.11.3</reflect.asm.version>
-        <jsr311.version>2.1</jsr311.version>
+        <jws.version>2.1</jws.version>
+        <jsr311.version>1.1.1</jsr311.version>
         <jersey.version>2.26</jersey.version>
         <!-- Testing -->
         <junit.version>4.12</junit.version>
@@ -250,6 +252,12 @@
             <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>javax.ws.rs-api</artifactId>
+                <version>${jws.version}</version>
+            </dependency>
+            <!-- http://mvnrepository.com/artifact/javax.ws.rs/jsr311-api -->
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>jsr311-api</artifactId>
                 <version>${jsr311.version}</version>
             </dependency>
             <!-- jackson -->

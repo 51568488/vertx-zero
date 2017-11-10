@@ -2,15 +2,23 @@ package io.vertx.up.rs.router;
 
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.up.annotations.Address;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Hub;
 import io.vertx.up.rs.VertxAnno;
 import org.vie.cv.Strings;
+import org.vie.exception.up.EventActionNoneException;
+import org.vie.fun.HBool;
+import org.vie.util.log.Annal;
+import org.vie.util.mirror.Anno;
 
 import javax.ws.rs.core.MediaType;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 public class EventHub implements Hub {
+    private static final Annal LOGGER = Annal.get(EventHub.class);
     /**
      * Extract all events that will be generated route.
      */
@@ -30,13 +38,26 @@ public class EventHub implements Hub {
                         .order(event.getOrder());
                 // 3. Consumes/Produces
                 buildMedia(route, event);
-                // 4. Inject Handler
-                route.handler(res -> {
-                    // TODO: Trigger
-                    System.out.println("Test");
-                    res.response().end("Lang");
-                });
+                // 4. Inject handler, event dispatch
+                route.handler(res -> dispatch(res, event));
             }
+        }
+    }
+
+    private void dispatch(final RoutingContext context,
+                          final Event event) {
+        // 1. Get method from Event
+        final Method method = event.getAction();
+        HBool.execUp(null == method, LOGGER, EventActionNoneException.class,
+                getClass(), event);
+        // 2. Scan method to check @Address
+        final boolean annotated = Anno.isMark(method, Address.class);
+        if (annotated) {
+            // 3.1. Event Bus Executing
+            // TODO:
+        } else {
+            // 3.2. Response directly
+            
         }
     }
 

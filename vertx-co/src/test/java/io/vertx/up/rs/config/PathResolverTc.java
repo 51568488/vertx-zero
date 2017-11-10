@@ -1,7 +1,7 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.ext.unit.TestContext;
-import io.vertx.up.rs.VertxHelper;
+import io.vertx.up.web.ZeroHelper;
 import io.vertx.up.rs.config.example.*;
 import org.junit.Test;
 import org.vie.exception.up.PathAnnoEmptyException;
@@ -15,7 +15,7 @@ import java.util.TreeSet;
 public class PathResolverTc extends UnitBase {
 
     private String parseRoot(final Class<?> root) {
-        final Path path = VertxHelper.getPath(root);
+        final Path path = ZeroHelper.getPath(root);
         return PathResolver.resolve(path);
     }
 
@@ -23,7 +23,7 @@ public class PathResolverTc extends UnitBase {
         final Set<String> pathes = new TreeSet<>();
         final Method[] methods = root.getDeclaredMethods();
         for (final Method method : methods) {
-            final Path path = VertxHelper.getPath(method);
+            final Path path = ZeroHelper.getPath(method);
             getLogger().info("[TEST] Parse info: {0}, method = {1}, Path = {2}.",
                     root.getName(),
                     method.getName(),

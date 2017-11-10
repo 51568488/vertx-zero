@@ -25,9 +25,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Recommend: Do not modify any agent that vertx zero provided.
  */
 @Agent
-public class HttpAgent extends AbstractVerticle {
+public class ZeroHttpAgent extends AbstractVerticle {
 
-    private static final Annal LOGGER = Annal.get(HttpAgent.class);
+    private static final Annal LOGGER = Annal.get(ZeroHttpAgent.class);
     /**
      * Extract all http server options.
      */

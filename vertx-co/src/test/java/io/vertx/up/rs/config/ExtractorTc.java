@@ -5,7 +5,7 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.up.cv.VertxValues;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.example.User;
-import io.vertx.up.web.HttpAgent;
+import io.vertx.up.web.ZeroHttpAgent;
 import org.junit.Test;
 import org.vie.exception.up.EventSourceException;
 import org.vie.util.Instance;
@@ -18,7 +18,7 @@ public class ExtractorTc extends UnitBase {
         final Extractor<DeploymentOptions> extractor =
                 Instance.singleton(AgentExtractor.class);
         final DeploymentOptions options =
-                extractor.extract(HttpAgent.class);
+                extractor.extract(ZeroHttpAgent.class);
         context.assertEquals(VertxValues.DEFAULT_GROUP, options.getIsolationGroup());
         context.assertEquals(VertxValues.DEFAULT_HA, options.isHa());
         context.assertEquals(VertxValues.DEFAULT_INSTANCES, options.getInstances());

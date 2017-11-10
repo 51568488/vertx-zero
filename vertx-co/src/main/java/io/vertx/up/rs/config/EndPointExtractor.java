@@ -5,7 +5,7 @@ import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Extractor;
-import io.vertx.up.rs.VertxHelper;
+import io.vertx.up.web.ZeroHelper;
 import org.vie.exception.up.AccessProxyException;
 import org.vie.exception.up.EventSourceException;
 import org.vie.exception.up.NoArgConstructorException;
@@ -49,7 +49,7 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
             HBool.exec(Anno.isMark(clazz, Path.class), LOGGER,
                     () -> {
                         // 3.1. Append Root Path
-                        final Path path = VertxHelper.getPath(clazz);
+                        final Path path = ZeroHelper.getPath(clazz);
                         assert null != path : "Path should not be null.";
                         result.addAll(extract(clazz, PathResolver.resolve(path)));
                     },
@@ -98,7 +98,7 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
         }
         {
             // 3.1. Get path from method
-            final Path path = VertxHelper.getPath(method);
+            final Path path = ZeroHelper.getPath(method);
             if (null == path) {
                 // 3.2. Check root double check
                 if (!StringUtil.isNil(root)) {

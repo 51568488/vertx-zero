@@ -7,7 +7,7 @@ import io.vertx.up.annotations.Address;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Executor;
 import io.vertx.up.rs.Hub;
-import io.vertx.up.rs.VertxAnno;
+import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.rs.executor.DirectHandler;
 import org.vie.cv.Strings;
 import org.vie.exception.up.EventActionNoneException;
@@ -26,7 +26,7 @@ public class EventHub implements Hub {
      * Extract all events that will be generated route.
      */
     private static final Set<Event> EVENTS =
-            VertxAnno.getEvents();
+            ZeroAnno.getEvents();
 
     @Override
     public void mount(final Router router) {

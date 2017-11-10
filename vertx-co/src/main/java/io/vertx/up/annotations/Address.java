@@ -18,4 +18,11 @@ public @interface Address {
      * @return
      */
     String to();
+
+    /**
+     * From address
+     *
+     * @return
+     */
+    String from();
 }

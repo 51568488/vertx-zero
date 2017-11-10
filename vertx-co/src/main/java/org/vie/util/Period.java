@@ -113,7 +113,7 @@ public class Period {
             final String pattern = Storage.PATTERNS_MAP.get(length);
             if (null != pattern) {
                 // 时间 + 日期
-                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
                 Date converted = null;
                 if (10 == pattern.length()) {
                     final LocalDate date = LocalDate.parse(literal, formatter);

@@ -5,11 +5,14 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.ce.Event;
+import io.vertx.up.rs.Executor;
 import io.vertx.up.rs.Hub;
 import io.vertx.up.rs.VertxAnno;
+import io.vertx.up.rs.executor.DirectHandler;
 import org.vie.cv.Strings;
 import org.vie.exception.up.EventActionNoneException;
 import org.vie.fun.HBool;
+import org.vie.util.Instance;
 import org.vie.util.log.Annal;
 import org.vie.util.mirror.Anno;
 
@@ -57,7 +60,9 @@ public class EventHub implements Hub {
             // TODO:
         } else {
             // 3.2. Response directly
-            
+            final Executor executor = Instance.singleton(DirectHandler.class);
+            executor.execute(context, event);
+            LOGGER.info(Message.DISPATCH, "Non-EventBus", DirectHandler.class.getName());
         }
     }
 

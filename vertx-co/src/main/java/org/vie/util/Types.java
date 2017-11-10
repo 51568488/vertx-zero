@@ -6,6 +6,8 @@ import org.vie.cv.Values;
 import org.vie.fun.HBool;
 import org.vie.fun.HNull;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 public class Types {
@@ -62,5 +64,62 @@ public class Types {
         return HBool.exec(null == value,
                 () -> false,
                 () -> Period.isValid(value.toString()));
+    }
+
+    /**
+     * Convert from string literal.
+     *
+     * @param paramType
+     * @param literal
+     * @return
+     */
+    public static Object fromString(final Class<?> paramType,
+                                    final String literal) {
+        final Object reference;
+        if (int.class == paramType || Integer.class == paramType) {
+            // int, Integer
+            reference = Integer.parseInt(literal);
+
+        } else if (short.class == paramType || Short.class == paramType) {
+            // short, Short
+            reference = Short.parseShort(literal);
+
+        } else if (double.class == paramType || Double.class == paramType) {
+            // double, Double
+            reference = Double.parseDouble(literal);
+
+        } else if (BigDecimal.class == paramType) {
+            // BigDecimal
+            reference = new BigDecimal(literal);
+
+        } else if (long.class == paramType || Long.class == paramType) {
+            // long, Long
+            reference = Long.parseLong(literal);
+
+        } else if (boolean.class == paramType || Boolean.class == paramType) {
+            // boolean, Boolean
+            reference = Boolean.valueOf(literal);
+
+        } else if (float.class == paramType || Float.class == paramType) {
+            // float, Short
+            reference = Float.parseFloat(literal);
+
+        } else if (Date.class == paramType) {
+            // Date
+            reference = Period.parse(literal);
+
+        } else if (JsonObject.class == paramType) {
+            // JsonObject
+            reference = new JsonObject(literal);
+
+        } else if (JsonArray.class == paramType) {
+            // JsonArray
+            reference = new JsonArray(literal);
+
+        } else {
+            // String
+            reference = literal;
+        }
+        return reference;
     }
 }

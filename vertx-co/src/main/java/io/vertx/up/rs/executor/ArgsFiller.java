@@ -1,44 +1,55 @@
 package io.vertx.up.rs.executor;
 
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.ce.Event;
-import org.vie.util.mirror.Anno;
+import org.vie.fun.HBool;
+import org.vie.util.Instance;
+import org.vie.util.Types;
+import org.vie.util.log.Annal;
 
-import javax.ws.rs.*;
-import java.lang.reflect.Method;
+import javax.ws.rs.DefaultValue;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Arguments process bus
  */
 class ArgsFiller {
+
+    private static final Annal LOGGER = Annal.get(ArgsFiller.class);
+
     /**
-     * Process reference for
+     * Process to build parameters.
      *
-     * @param params
      * @param context
-     * @param event
+     * @param paramType
+     * @param paramAnnos
+     * @return
      */
-    public static void process(final List<Object> params,
-                               final RoutingContext context,
-                               final Event event) {
-        // 1. Extract definition from event
-        final Method method = event.getAction();
-        System.out.println(context.request().headers());
-        if (Anno.isMark(method, FormParam.class)) {
-            // 2.1. Form Parameters
-        } else if (Anno.isMark(method, QueryParam.class)) {
-            // 2.2. Query Parameters
-        } else if (Anno.isMark(method, HeaderParam.class)) {
-            // 2.3. Header Parameters
-        } else if (Anno.isMark(method, PathParam.class)) {
-            // 2.4. Path Parameters
-        } else if (Anno.isMark(method, CookieParam.class)) {
-            // 2.5. Cookie Parameters
-        } else if (Anno.isMark(method, MatrixParam.class)) {
-            // 2.6. Matrix Parameters
-        } else if (Anno.isMark(method, BodyParam.class)) {
-            // 2.7. Body Parameters
+    public static Object process(
+            final RoutingContext context,
+            final Class<?> paramType,
+            final Annotation[] paramAnnos) {
+        // 1. Check if default value
+        final Annotation defaultValue = getDefault(paramAnnos);
+        if (null != defaultValue) {
+            // 1.1. Return default value direactly
+            return Types.fromString(paramType,
+                    Instance.invoke(defaultValue, "value"));
         }
+        return "";
+    }
+
+    private static Annotation getDefault(final Annotation[] annotations) {
+        final List<Annotation> list = Arrays.asList(annotations);
+        final Optional<Annotation> anno = list.stream()
+                .filter(item -> null != item &&
+                        item.annotationType() == DefaultValue.class)
+                .findFirst();
+        return HBool.exec(
+                null != anno && anno.isPresent(),
+                anno::get,
+                () -> null);
     }
 }

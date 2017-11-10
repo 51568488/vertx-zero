@@ -1,4 +1,4 @@
-package io.vertx.up.rs;
+package io.vertx.up.web;
 
 import io.vertx.up.annotations.Agent;
 import org.vie.cv.Values;
@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 /**
  * @author Lang
  */
-public class VertxHelper {
+public class ZeroHelper {
 
-    private static final Annal LOGGER = Annal.get(VertxHelper.class);
+    private static final Annal LOGGER = Annal.get(ZeroHelper.class);
 
     /** **/
     public static ServerType getAgentKey(final Class<?> clazz) {
@@ -57,7 +57,7 @@ public class VertxHelper {
             final int size = filtered.size();
             HBool.execUp(1 < size,
                     LOGGER, AgentDuplicatedException.class,
-                    VertxHelper.class, server, size);
+                    ZeroHelper.class, server, size);
             // == 0 means undefined
             // == 1 means correct defined
             defined.put(server, Values.ONE == size);

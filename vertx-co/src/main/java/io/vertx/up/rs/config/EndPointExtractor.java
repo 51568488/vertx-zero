@@ -5,16 +5,20 @@ import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Extractor;
-import io.vertx.up.rs.VertxHelper;
+import io.vertx.up.web.ZeroHelper;
+import org.vie.exception.up.AccessProxyException;
 import org.vie.exception.up.EventSourceException;
+import org.vie.exception.up.NoArgConstructorException;
 import org.vie.fun.HBool;
 import org.vie.fun.HNull;
+import org.vie.util.Instance;
 import org.vie.util.StringUtil;
 import org.vie.util.log.Annal;
 import org.vie.util.mirror.Anno;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Set;
 
 /**
@@ -27,16 +31,25 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
     @Override
     public Set<Event> extract(final Class<?> clazz) {
         return HNull.get(clazz, () -> {
+            // 0. Check basic specification: No Arg Constructor
+            HBool.execUp(!Instance.noarg(clazz), LOGGER,
+                    NoArgConstructorException.class,
+                    getClass(), clazz);
+            HBool.execUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
+                    AccessProxyException.class,
+                    getClass(), clazz);
+
             // 1. Event Source Checking
             HBool.execUp(!Anno.isMark(clazz, EndPoint.class),
                     LOGGER, EventSourceException.class,
                     getClass(), clazz.getName());
+
             // 2. Check whether clazz annotated with @PATH
             final Set<Event> result = new ConcurrentHashSet<>();
             HBool.exec(Anno.isMark(clazz, Path.class), LOGGER,
                     () -> {
                         // 3.1. Append Root Path
-                        final Path path = VertxHelper.getPath(clazz);
+                        final Path path = ZeroHelper.getPath(clazz);
                         assert null != path : "Path should not be null.";
                         result.addAll(extract(clazz, PathResolver.resolve(path)));
                     },
@@ -56,6 +69,9 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
             // 1.Build Event
             final Event event = extract(method, root);
             if (null != event) {
+                // 2. Instance clazz for proxy
+                final Object proxy = Instance.singleton(clazz);
+                event.setProxy(proxy);
                 events.add(event);
             }
         }
@@ -82,7 +98,7 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
         }
         {
             // 3.1. Get path from method
-            final Path path = VertxHelper.getPath(method);
+            final Path path = ZeroHelper.getPath(method);
             if (null == path) {
                 // 3.2. Check root double check
                 if (!StringUtil.isNil(root)) {

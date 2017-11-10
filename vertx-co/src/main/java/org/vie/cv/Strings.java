@@ -14,4 +14,8 @@ public interface Strings {
     String SLASH = "/";
 
     String EMPTY = "";
+
+    String LEFT_BRACES = "{";
+
+    String RIGHT_BRACES = "}";
 }

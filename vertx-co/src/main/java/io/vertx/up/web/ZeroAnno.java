@@ -1,10 +1,11 @@
-package io.vertx.up.rs;
+package io.vertx.up.web;
 
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.ce.Event;
 import io.vertx.up.cv.Message;
+import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.EndPointExtractor;
 import org.vie.cv.em.ServerType;
 import org.vie.fun.HPool;
@@ -22,9 +23,9 @@ import java.util.stream.Collectors;
 /**
  * Transfer Class<?> set to difference mapping.
  */
-public class VertxAnno {
+public class ZeroAnno {
 
-    private static final Annal LOGGER = Annal.get(VertxAnno.class);
+    private static final Annal LOGGER = Annal.get(ZeroAnno.class);
     /**
      * Class -> EndPoint
      */
@@ -61,7 +62,7 @@ public class VertxAnno {
             final ConcurrentMap<ServerType, List<Class<?>>> input,
             final Class<?>... excludes
     ) {
-        return VertxHelper.isAgentDefined(input, excludes);
+        return ZeroHelper.isAgentDefined(input, excludes);
     }
 
     public static Set<Event> getEvents() {
@@ -99,7 +100,7 @@ public class VertxAnno {
         if (AGENTS.isEmpty()) {
             AGENTS.putAll(
                     HPool.group(agents,
-                            VertxHelper::getAgentKey,
+                            ZeroHelper::getAgentKey,
                             (item) -> item));
         }
     }

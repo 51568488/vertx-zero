@@ -5,9 +5,10 @@ import io.vertx.core.Vertx;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.cv.Message;
 import io.vertx.up.rs.Extractor;
-import io.vertx.up.rs.VertxAnno;
 import io.vertx.up.rs.config.AgentExtractor;
-import io.vertx.up.web.HttpAgent;
+import io.vertx.up.web.ZeroAnno;
+import io.vertx.up.web.ZeroHttpAgent;
+import io.vertx.up.web.ZeroHttpWorker;
 import io.vertx.up.web.ZeroLauncher;
 import org.vie.cv.em.ServerType;
 import org.vie.exception.up.UpClassArgsException;
@@ -35,13 +36,13 @@ public class VertxApplication {
     private static final Annal LOGGER = Annal.get(VertxApplication.class);
 
     private static final Class<?>[] DEFAULT_AGENTS = new Class<?>[]{
-            HttpAgent.class
+            ZeroHttpAgent.class
     };
 
     private static final ConcurrentMap<ServerType, Class<?>> INTERNALS
             = new ConcurrentHashMap<ServerType, Class<?>>() {
         {
-            put(ServerType.HTTP, HttpAgent.class);
+            put(ServerType.HTTP, ZeroHttpAgent.class);
         }
     };
 
@@ -76,7 +77,8 @@ public class VertxApplication {
             /** 1.Find Agent for deploy **/
             deployAgents(vertx);
             /** 2.Find Worker for deploy **/
-
+            vertx.deployVerticle(new ZeroHttpWorker(),
+                    new DeploymentOptions().setWorker(true));
             /** 4.Connect and started **/
         });
     }
@@ -111,9 +113,9 @@ public class VertxApplication {
      */
     private ConcurrentMap<ServerType, Class<?>> getAgents() {
         final ConcurrentMap<ServerType, List<Class<?>>> agents =
-                VertxAnno.getAgents();
+                ZeroAnno.getAgents();
         final ConcurrentMap<ServerType, Boolean> defines =
-                VertxAnno.isDefined(agents, DEFAULT_AGENTS);
+                ZeroAnno.isDefined(agents, DEFAULT_AGENTS);
         final ConcurrentMap<ServerType, Class<?>> ret =
                 new ConcurrentHashMap<>();
         // 1. If defined, use default

@@ -1,7 +1,8 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.ext.unit.TestContext;
-import io.vertx.up.rs.VertxHelper;
+import io.vertx.up.rs.config.example.*;
+import io.vertx.up.web.ZeroHelper;
 import org.junit.Test;
 import org.vie.exception.up.PathAnnoEmptyException;
 import top.UnitBase;
@@ -14,7 +15,7 @@ import java.util.TreeSet;
 public class PathResolverTc extends UnitBase {
 
     private String parseRoot(final Class<?> root) {
-        final Path path = VertxHelper.getPath(root);
+        final Path path = ZeroHelper.getPath(root);
         return PathResolver.resolve(path);
     }
 
@@ -22,7 +23,7 @@ public class PathResolverTc extends UnitBase {
         final Set<String> pathes = new TreeSet<>();
         final Method[] methods = root.getDeclaredMethods();
         for (final Method method : methods) {
-            final Path path = VertxHelper.getPath(method);
+            final Path path = ZeroHelper.getPath(method);
             getLogger().info("[TEST] Parse info: {0}, method = {1}, Path = {2}.",
                     root.getName(),
                     method.getName(),
@@ -101,78 +102,5 @@ public class PathResolverTc extends UnitBase {
             }
         };
         context.assertEquals(expected, pathes);
-    }
-}
-
-@Path("api")
-class Method2 {
-
-    @Path("test////:name")
-    public void test() {
-    }
-}
-
-@Path("")
-class Method4 {
-
-    @Path("test////:name")
-    public void test() {
-    }
-
-    @Path("///test/:id")
-    public void test1() {
-    }
-}
-
-@Path("api")
-class Method3 {
-
-    @Path("test////:name")
-    public void test() {
-    }
-
-    @Path("///test/:id")
-    public void test1() {
-    }
-}
-
-@Path("api")
-class Method1 {
-
-    @Path("test")
-    public void test() {
-    }
-}
-
-/**
- * 1. Root: api
- */
-@Path("api")
-class Root1 {
-
-    @Path("/test")
-    public void test() {
-    }
-}
-
-/**
- * 2. Root: api/
- */
-@Path("api/")
-class Root2 {
-
-    @Path("/test")
-    public void test() {
-    }
-}
-
-/**
- * 3. Root: api//
- */
-@Path("///api///")
-class Root3 {
-
-    @Path("/test")
-    public void test() {
     }
 }

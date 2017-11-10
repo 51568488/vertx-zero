@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Resource Pack for yml configuration, Loaded once
  */
-class ZeroGrid {
+public class ZeroGrid {
 
     private static final Annal LOGGER = Annal.get(ZeroGrid.class);
     private static final ConcurrentMap<String, VertxOptions> VX_OPTS =

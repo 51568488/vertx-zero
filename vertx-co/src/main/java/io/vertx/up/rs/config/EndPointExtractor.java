@@ -9,6 +9,7 @@ import io.vertx.up.rs.VertxHelper;
 import org.vie.exception.up.EventSourceException;
 import org.vie.fun.HBool;
 import org.vie.fun.HNull;
+import org.vie.util.StringUtil;
 import org.vie.util.log.Annal;
 import org.vie.util.mirror.Anno;
 
@@ -52,17 +53,12 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
         // 0.Preparing
         final Method[] methods = clazz.getDeclaredMethods();
         for (final Method method : methods) {
-            // 1.Get Path from method
-            final Path path = VertxHelper.getPath(method);
-            if (null != path) {
-                // 2.Build Event
-                final Event event = extract(method, root);
-                if (null != event) {
-                    events.add(event);
-                }
+            // 1.Build Event
+            final Event event = extract(method, root);
+            if (null != event) {
+                events.add(event);
             }
         }
-        // 1.Path resolving
         return events;
     }
 
@@ -84,16 +80,28 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
         } else {
             event.setMethod(httpMethod);
         }
-        // 3.Path resolve
-        final String path = PathResolver.resolve(
-                VertxHelper.getPath(method), root);
-        event.setPath(path);
+        {
+            // 3.1. Get path from method
+            final Path path = VertxHelper.getPath(method);
+            if (null == path) {
+                // 3.2. Check root double check
+                if (!StringUtil.isNil(root)) {
+                    // Use root directly.
+                    event.setPath(root);
+                } else {
+                    // TODO: Impossible to get here.
+                }
+            } else {
+                final String result = PathResolver.resolve(
+                        path, root);
+                event.setPath(result);
+            }
+        }
         // 4.Action
         event.setAction(method);
         // 6.Mime resolve
         event.setConsumes(MediaResolver.consumes(method));
         event.setProduces(MediaResolver.produces(method));
-        System.out.println(event);
         return event;
     }
 }

@@ -64,6 +64,10 @@ public class VertxAnno {
         return VertxHelper.isAgentDefined(input, excludes);
     }
 
+    public static Set<Event> getEvents() {
+        return EVENTS;
+    }
+
     static {
         /** 1.Scan the packages **/
         final Set<Class<?>> clazzes = Pack.getClasses(null);

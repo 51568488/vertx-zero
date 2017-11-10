@@ -4,7 +4,6 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.cv.Message;
-import io.vertx.up.mirror.Anno;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.VertxAnno;
 import io.vertx.up.rs.config.AgentExtractor;
@@ -19,6 +18,7 @@ import org.vie.fun.HTry;
 import org.vie.util.Instance;
 import org.vie.util.Statute;
 import org.vie.util.log.Annal;
+import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -47,7 +47,6 @@ public class VertxApplication {
 
     private transient final Class<?> clazz;
     private ConcurrentMap<String, Annotation> annotationMap = new ConcurrentHashMap<>();
-    private final transient Annotation vertxAnno;
 
     private VertxApplication(final Class<?> clazz) {
         // Must not null
@@ -57,7 +56,6 @@ public class VertxApplication {
                 UpClassArgsException.class, getClass());
         this.clazz = clazz;
         this.annotationMap = Anno.get(clazz);
-        this.vertxAnno = Anno.get(clazz, Up.class);
         // Must be invalid
         HBool.execUp(
                 !this.annotationMap.containsKey(Up.class.getName()),

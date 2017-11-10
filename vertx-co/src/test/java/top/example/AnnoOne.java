@@ -1,9 +1,9 @@
 package top.example;
 
-import io.vertx.up.annotations.Routine;
+import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.annotations.Up;
 
 @Up
-@Routine
+@EndPoint
 public class AnnoOne {
 }

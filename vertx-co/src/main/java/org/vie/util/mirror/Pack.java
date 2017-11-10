@@ -1,4 +1,4 @@
-package io.vertx.up.mirror;
+package org.vie.util.mirror;
 
 import io.vertx.core.impl.ConcurrentHashSet;
 import org.vie.core.io.ClassFileFilter;

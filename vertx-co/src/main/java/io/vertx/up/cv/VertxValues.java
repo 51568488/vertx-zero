@@ -1,4 +1,4 @@
-package io.vertx.up.rs;
+package io.vertx.up.cv;
 
 public interface VertxValues {
 

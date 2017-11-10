@@ -1,6 +1,6 @@
 package io.vertx.up.annotations;
 
-import io.vertx.up.rs.VertxValues;
+import io.vertx.up.cv.VertxValues;
 import org.vie.cv.em.ServerType;
 
 import java.lang.annotation.*;

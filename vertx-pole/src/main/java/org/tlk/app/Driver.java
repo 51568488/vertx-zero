@@ -1,7 +1,7 @@
 package org.tlk.app;
 
-import io.vertx.up.annotations.Up;
 import io.vertx.up.VertxApplication;
+import io.vertx.up.annotations.Up;
 
 @Up
 public class Driver {

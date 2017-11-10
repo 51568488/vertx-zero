@@ -1,13 +1,13 @@
 package io.vertx.up.rs;
 
 import io.vertx.up.annotations.Agent;
-import io.vertx.up.mirror.Anno;
 import org.vie.cv.Values;
 import org.vie.cv.em.ServerType;
 import org.vie.exception.up.AgentDuplicatedException;
 import org.vie.fun.HBool;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
+import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;

@@ -2,11 +2,12 @@ package io.vertx.up.rs.config;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.up.annotations.Agent;
-import io.vertx.up.mirror.Anno;
 import io.vertx.up.rs.Extractor;
+import org.vie.fun.HNull;
 import org.vie.fun.HPool;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
+import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,6 +25,9 @@ public class AgentExtractor implements Extractor<DeploymentOptions> {
 
     @Override
     public DeploymentOptions extract(final Class<?> clazz) {
+        HNull.exec(() -> {
+            LOGGER.info(Message.AGENT_HIT, clazz.getName());
+        }, clazz);
         return HPool.exec(OPTIONS, clazz, () -> transform(clazz));
     }
 

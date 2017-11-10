@@ -1,13 +1,13 @@
 package org.tlk.agent;
 
 import io.vertx.core.http.HttpServerRequest;
-import io.vertx.up.annotations.Routine;
+import io.vertx.up.annotations.EndPoint;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 @Path("/test")
-@Routine
+@EndPoint
 public class User {
 
     @GET

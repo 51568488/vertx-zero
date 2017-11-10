@@ -6,5 +6,7 @@ zero:
       manager:
 
     instance:
-    - name: vx-tlk
+    - name: vx-zero
       options:
+        # Fix block 2000 limit issue.
+        maxEventLoopExecuteTime: 6000000000

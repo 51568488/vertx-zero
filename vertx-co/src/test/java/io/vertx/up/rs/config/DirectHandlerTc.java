@@ -17,7 +17,6 @@ public class DirectHandlerTc extends WebBase {
         this.router.route().handler(context -> {
             final Executor executor = Instance.singleton(DirectHandler.class);
             executor.execute(context, event);
-            context.response().end();
         });
         testRequest(HttpMethod.GET, "/query?name=Lang", 200, "OK");
     }
@@ -28,7 +27,6 @@ public class DirectHandlerTc extends WebBase {
         this.router.route("/query/:name").handler(context -> {
             final Executor executor = Instance.singleton(DirectHandler.class);
             executor.execute(context, event);
-            context.response().end();
         });
         testRequest(HttpMethod.GET, "/query/email", 200, "OK");
     }
@@ -39,7 +37,6 @@ public class DirectHandlerTc extends WebBase {
         this.router.route("/query/:name").handler(context -> {
             final Executor executor = Instance.singleton(DirectHandler.class);
             executor.execute(context, event);
-            context.response().end();
         });
         testRequestWithContentType(HttpMethod.GET, "/query/email", "application/json",
                 200, "OK");

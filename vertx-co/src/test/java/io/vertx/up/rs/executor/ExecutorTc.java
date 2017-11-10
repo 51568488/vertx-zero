@@ -13,7 +13,6 @@ public class ExecutorTc extends WebBase {
         this.router.route().handler(context -> {
             final Executor executor = Instance.singleton(DirectHandler.class);
             executor.execute(context, event);
-            context.response().end();
         });
         testRequest(HttpMethod.GET, "", 200, "OK");
     }

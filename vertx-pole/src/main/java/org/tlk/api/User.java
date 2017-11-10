@@ -1,4 +1,4 @@
-package org.tlk.agent;
+package org.tlk.api;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.annotations.Address;
@@ -18,16 +18,10 @@ public class User {
     }
 
     @POST
-    @Path("/post")
-    public void testBody(@BodyParam final JsonObject content) {
-        System.out.println(content);
-    }
-
-    @POST
     @Path("/lang")
     public Model testBodyReturn(@BodyParam final JsonObject context) {
         final Model user = new Model();
-        user.setEmail("lang.yu@hpe.com");
+        user.setEmail("silentbalanceyh@126.com");
         user.setName("Lang.yu");
         return user;
     }
@@ -37,7 +31,7 @@ public class User {
     @Address("ZERO://USER")
     public Model testEvent(@BodyParam final JsonObject context) {
         final Model user = new Model();
-        user.setEmail("lang.yu@hpe.com");
+        user.setEmail("silentbalanceyh@126.com");
         user.setName("Lang.yu");
         return user;
     }

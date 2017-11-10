@@ -1,4 +1,4 @@
-package org.tlk.agent;
+package org.tlk.api;
 
 public class Model {
 

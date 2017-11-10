@@ -70,7 +70,6 @@ public class HBool {
      * @param logger
      * @param tSupplier
      * @param fSupplier
-     * @param <T>
      */
     public static void exec(final boolean condition,
                             final Annal logger,

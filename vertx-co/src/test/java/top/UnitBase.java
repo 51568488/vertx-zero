@@ -6,12 +6,17 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
+import io.vertx.up.ce.Event;
+import io.vertx.up.rs.Extractor;
+import io.vertx.up.rs.config.EndPointExtractor;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.vie.core.reliable.Insurer;
 import org.vie.exception.ZeroException;
 import org.vie.util.Instance;
 import org.vie.util.Log;
+
+import java.util.Set;
 
 @RunWith(VertxUnitRunner.class)
 public abstract class UnitBase {
@@ -47,5 +52,9 @@ public abstract class UnitBase {
         final String file = "test/" + clazz.getPackage().getName() + "/" + filename;
         Log.info(getLogger(), "[TEST] Test input file: {0}", file);
         return file;
+    }
+
+    protected Extractor<Set<Event>> extractor() {
+        return Instance.singleton(EndPointExtractor.class);
     }
 }

@@ -5,7 +5,7 @@ import io.vertx.up.annotations.Agent;
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.ce.Event;
 import io.vertx.up.cv.Message;
-import io.vertx.up.rs.config.EventExtractor;
+import io.vertx.up.rs.config.EndPointExtractor;
 import org.vie.cv.em.ServerType;
 import org.vie.fun.HPool;
 import org.vie.util.Instance;
@@ -76,7 +76,7 @@ public class VertxAnno {
             ENDPOINTS.addAll(routines);
             LOGGER.info(Message.SCANED_ENDPOINT, routines.size());
             /** 3.Build Api metadata **/
-            final Extractor<Set<Event>> extractor = Instance.singleton(EventExtractor.class);
+            final Extractor<Set<Event>> extractor = Instance.singleton(EndPointExtractor.class);
             for (final Class<?> endpoint : ENDPOINTS) {
                 final Set<Event> events = extractor.extract(endpoint);
                 if (!events.isEmpty()) {

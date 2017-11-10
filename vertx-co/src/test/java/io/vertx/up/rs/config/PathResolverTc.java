@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class ResolverTc extends UnitBase {
+public class PathResolverTc extends UnitBase {
 
     private String parseRoot(final Class<?> root) {
         final Path path = VertxHelper.getPath(root);
@@ -29,7 +29,7 @@ public class ResolverTc extends UnitBase {
                     (null == path) ? null : path.value());
             if (null != path) {
                 final String uri = PathResolver.resolve(
-                        VertxHelper.getPath(method), parseRoot(root));
+                        path, parseRoot(root));
                 pathes.add(uri);
             }
         }

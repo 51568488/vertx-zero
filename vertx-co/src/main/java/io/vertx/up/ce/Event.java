@@ -37,10 +37,6 @@ public class Event implements Serializable {
      * request action ( Will be calculated )
      */
     private Method action;
-    /**
-     * request action arguments ( Will be calculated )
-     */
-    private Object[] arguments;
 
     public String getPath() {
         return this.path;
@@ -86,14 +82,6 @@ public class Event implements Serializable {
         this.action = action;
     }
 
-    public Object[] getArguments() {
-        return this.arguments;
-    }
-
-    public void setArguments(final Object[] arguments) {
-        this.arguments = arguments;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -105,20 +93,32 @@ public class Event implements Serializable {
 
         final Event event = (Event) o;
 
+        if (this.order != event.order) {
+            return false;
+        }
         if (!this.path.equals(event.path)) {
             return false;
         }
-        if (this.method != event.method) {
-            return false;
-        }
-        return this.action.equals(event.action);
+        return this.method == event.method;
     }
 
     @Override
     public int hashCode() {
         int result = this.path.hashCode();
+        result = 31 * result + this.order;
         result = 31 * result + this.method.hashCode();
-        result = 31 * result + this.action.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "path='" + this.path + '\'' +
+                ", order=" + this.order +
+                ", consumes=" + this.consumes +
+                ", produces=" + this.produces +
+                ", method=" + this.method +
+                ", action=" + this.action +
+                '}';
     }
 }

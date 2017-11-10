@@ -12,6 +12,8 @@ import javax.ws.rs.Path;
 
 /**
  * Path resolver
+ * 1. Root ( Class ) + Context ( Method )
+ * 2. Context ( Method )
  */
 class PathResolver {
 

@@ -59,10 +59,10 @@ public class EventHub implements Hub {
             // 3.1. Event Bus Executing
             // TODO:
         } else {
+            LOGGER.info(Message.DISPATCH, "Non-EventBus", DirectHandler.class.getName());
             // 3.2. Response directly
             final Executor executor = Instance.singleton(DirectHandler.class);
             executor.execute(context, event);
-            LOGGER.info(Message.DISPATCH, "Non-EventBus", DirectHandler.class.getName());
         }
     }
 

@@ -9,6 +9,8 @@ import org.vie.util.StringUtil;
 import org.vie.util.log.Annal;
 
 import javax.ws.rs.Path;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Path resolver
@@ -48,11 +50,33 @@ class PathResolver {
                     final String contextPath = calculate(path.value());
                     // If api has been calculated to
                     if (Values.ONE == api.length()) {
-                        return contextPath;
+                        return path(contextPath);
                     } else {
-                        return api + contextPath;
+                        return path(api + contextPath);
                     }
                 });
+    }
+
+    /**
+     * JSR311: /query/{name}
+     * Named: /query/:name ( Vertx Format )
+     *
+     * @param path
+     * @return
+     */
+    private static String path(final String path) {
+        final String regex = "\\{\\w+\\}";
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(path);
+        String tempStr = path;
+        String result = "";
+        while (matcher.find()) {
+            result = matcher.group();
+            // Shift left brace and right brace
+            final String replaced = result.trim().substring(1, result.length() - 1);
+            tempStr = tempStr.replace(result, ":" + replaced);
+        }
+        return tempStr;
     }
 
     /**

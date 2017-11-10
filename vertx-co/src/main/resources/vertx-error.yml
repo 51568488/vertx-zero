@@ -16,5 +16,6 @@ E40007: MethodResolver could not accept null pointer reference of Method
 E40008: The event handler of path {0} has not been set, please verify configuration
 E40009: The container require class {0} contains at least one no-arg constructor, but now it''s missing
 E40010: The container require class {0} access modifier contains PUBLIC scope, but now it couldn't be accessed
+E40011: The system found method parameters without any annotated, it's conflict. Type = {0}
 # (Web) Exception for web
 E60001: (400) - The input content could not be converted into valid resource model {0}

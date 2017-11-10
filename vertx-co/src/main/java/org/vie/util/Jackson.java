@@ -1,9 +1,11 @@
 package org.vie.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.vie.cv.Values;
 import org.vie.fun.HBool;
+import org.vie.fun.HFail;
 import org.vie.fun.HNull;
 
 import java.util.Arrays;
@@ -13,6 +15,8 @@ import java.util.Arrays;
  */
 @SuppressWarnings({"unchecked"})
 public final class Jackson {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     public static JsonObject visitJObject(
             final JsonObject item,
@@ -98,6 +102,10 @@ public final class Jackson {
             }
         }, value);
         return result;
+    }
+
+    public static <T> String serialize(final T t) {
+        return HNull.get(t, () -> HFail.exec(() -> MAPPER.writeValueAsString(t), t), null);
     }
 
     private Jackson() {

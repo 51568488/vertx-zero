@@ -54,7 +54,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
 
     private ConcurrentMap<Integer, HttpServerOptions> visit(final JsonArray serverData)
             throws ZeroException {
-        LOGGER.info(Message.INF_B_VERIFY, Key.SERVER, serverData.encode());
+        LOGGER.info(Info.INF_B_VERIFY, Key.SERVER, serverData.encode());
         Ruler.verify(Files.SERVER, serverData);
         final ConcurrentMap<Integer, HttpServerOptions> map =
                 new ConcurrentHashMap<>();

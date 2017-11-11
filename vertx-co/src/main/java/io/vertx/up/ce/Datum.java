@@ -1,6 +1,6 @@
 package io.vertx.up.ce;
 
-interface Response {
+interface Key {
     String BRIEF = "brief";
 
     String STATUS = "status";

@@ -11,14 +11,14 @@ import javax.ws.rs.*;
 public class User {
 
     @GET
-    @Path("/{name}")
+    @Path("/path/{name}")
     public String testPath(@PathParam("name") final String name) {
         System.out.println(name);
         return "Hello World";
     }
 
     @POST
-    @Path("/lang")
+    @Path("/return/model")
     public Model testBodyReturn(@BodyParam final JsonObject context) {
         final Model user = new Model();
         user.setEmail("silentbalanceyh@126.com");
@@ -27,7 +27,7 @@ public class User {
     }
 
     @POST
-    @Path("/message")
+    @Path("/send/message")
     @Address("ZERO://USER")
     public Model testEvent(@BodyParam final JsonObject context) {
         final Model user = new Model();

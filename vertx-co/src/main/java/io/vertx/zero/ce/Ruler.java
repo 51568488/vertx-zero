@@ -132,9 +132,9 @@ public class Ruler {
         // Cached rule into memory pool
         final String filename = MessageFormat.format(RULE_PATH, file);
         if (RULE_MAP.containsKey(filename)) {
-            LOGGER.debug(Message.RULE_CACHED_FILE, filename);
+            LOGGER.debug(Info.RULE_CACHED_FILE, filename);
         } else {
-            LOGGER.debug(Message.RULE_FILE, filename);
+            LOGGER.debug(Info.RULE_FILE, filename);
         }
         return HPool.exec(RULE_MAP, filename, () -> IO.getYaml(filename));
     }

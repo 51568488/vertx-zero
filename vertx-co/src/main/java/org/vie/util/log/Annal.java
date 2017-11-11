@@ -41,10 +41,10 @@ class CommonAnnal implements Annal {
     public CommonAnnal(final Class<?> clazz) {
         Class<?> inject = Ambient.get("logger");
         if (null == inject) {
-            Log.debug(RECORD, Message.INF_INJECT, clazz);
+            Log.debug(RECORD, Info.INF_INJECT, clazz);
             inject = Log4JAnnal.class;
         }
-        Log.debug(RECORD, Message.INF_ANNAL, inject, clazz);
+        Log.debug(RECORD, Info.INF_ANNAL, inject, clazz);
         this.logger = Instance.instance(inject, clazz);
     }
 

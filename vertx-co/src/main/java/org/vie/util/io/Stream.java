@@ -75,14 +75,14 @@ public final class Stream {
     public static InputStream read(final String filename,
                                    final Class<?> clazz) {
         final File file = new File(filename);
-        Log.debug(LOGGER, Message.INF_CUR, file.exists());
+        Log.debug(LOGGER, Info.INF_CUR, file.exists());
         final InputStream in = HBool.exec(file.exists(),
                 () -> in(file),
                 () -> HBool.exec(null == clazz,
                         () -> in(filename),
                         () -> in(filename, clazz)));
 
-        Log.debug(LOGGER, Message.INF_PATH, filename, in);
+        Log.debug(LOGGER, Info.INF_PATH, filename, in);
         return HBool.exec(null != in,
                 () -> in,
                 new EmptyStreamException(filename));

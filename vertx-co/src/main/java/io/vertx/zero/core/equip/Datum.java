@@ -1,6 +1,6 @@
 package io.vertx.zero.core.equip;
 
-interface Message {
+interface Info {
 
     String INF_B_VERIFY = "[ZERO-CFG] The raw data ( node = {0} ) before validation is {1}.";
 }

@@ -5,7 +5,7 @@
  */
 package org.vie.exception.run;
 
-interface Message {
+interface Info {
     /** **/
     String NIL_MSG =
             "[ZERO-RUN] Empty stream exception found when {0}, caused = {1}.";

@@ -11,6 +11,6 @@ import java.text.MessageFormat;
 public class LimeFileException extends ZeroRunException {
 
     public LimeFileException(final String filename) {
-        super(MessageFormat.format(Message.LIME_FILE, filename));
+        super(MessageFormat.format(Info.LIME_FILE, filename));
     }
 }

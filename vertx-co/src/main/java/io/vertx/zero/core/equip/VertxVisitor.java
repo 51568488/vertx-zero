@@ -42,7 +42,7 @@ public class VertxVisitor implements UprightVisitor {
         // 3. Vertx node validation.
         final JsonObject vertxData = data.getJsonObject(Key.VERTX);
         HNull.execZero(() -> {
-            LOGGER.info(Message.INF_B_VERIFY, Key.VERTX, vertxData);
+            LOGGER.info(Info.INF_B_VERIFY, Key.VERTX, vertxData);
             Ruler.verify(Files.VERTX, vertxData);
         }, vertxData);
         // 4. Set cluster options

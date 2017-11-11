@@ -1,6 +1,6 @@
 package io.vertx.zero.ce;
 
-interface Message {
+interface Info {
     /** **/
     String RULE_FILE = "[V] Rule file = {0} has been hitted. ";
     /** **/

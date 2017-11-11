@@ -1,6 +1,6 @@
 package org.vie.util.io;
 
-interface Message {
+interface Info {
     /** **/
     String INF_PATH = "[ZERO] The system class Stream try to data from {0}, got stream: {1}.";
     /** **/

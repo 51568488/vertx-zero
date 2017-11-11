@@ -1,4 +1,17 @@
 package org.vie.exception.web;
 
-public class _500EntityCastException {
+import org.vie.exception.WebException;
+
+public class _500EntityCastException extends WebException {
+
+    public _500EntityCastException(final Class<?> clazz,
+                                   final String address,
+                                   final String message) {
+        super(clazz, address, message);
+    }
+
+    @Override
+    public int getCode() {
+        return -60003;
+    }
 }

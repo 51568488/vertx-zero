@@ -1,6 +1,6 @@
 package io.vertx.up.web;
 
-interface Message {
+interface Info {
 
     String HTTP_SERVERS = "[ZERO-VTC] {0} (id = {1}) Agent has deployed HTTP Server on {2}.";
 

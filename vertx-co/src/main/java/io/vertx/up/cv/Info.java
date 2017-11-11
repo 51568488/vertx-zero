@@ -1,6 +1,6 @@
 package io.vertx.up.cv;
 
-public interface Message {
+public interface Info {
     String AGENT_END = "[ZERO-AG] The standard verticle {0} has been deployed " +
             "{1} instances successfully. id = {2}.";
     String AGENT_FAIL = "[ZERO-AG] The standard verticle {0} has been deployed " +

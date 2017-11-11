@@ -21,15 +21,15 @@ public class ZeroVertx implements ZeroNode<JsonObject> {
         // Not null because execNil
         return HFail.execDft(() -> {
             final JsonObject raw = IO.getYaml(Path.KE_VERTX);
-            return HBool.execTrue(raw.containsKey(Keys.ZERO),
-                    () -> process(raw.getJsonObject(Keys.ZERO)));
+            return HBool.execTrue(raw.containsKey(Key.ZERO),
+                    () -> process(raw.getJsonObject(Key.ZERO)));
         }, new JsonObject());
     }
 
     private JsonObject process(final JsonObject data) {
         return HNull.get(() -> {
             /** 1. Append lime **/
-            if (data.containsKey(Keys.LIME)) {
+            if (data.containsKey(Key.LIME)) {
                 injectLime(data);
             }
             return data;
@@ -38,7 +38,7 @@ public class ZeroVertx implements ZeroNode<JsonObject> {
 
     private void injectLime(final JsonObject data) {
         if (null != data) {
-            final String limeStr = data.getString(Keys.LIME);
+            final String limeStr = data.getString(Key.LIME);
             final Set<String> sets = StringUtil.split(limeStr, Strings.COMMA);
             // Error table list
             appendKey(sets, "error");
@@ -46,7 +46,7 @@ public class ZeroVertx implements ZeroNode<JsonObject> {
             appendKey(sets, "server");
             // Injection points
             appendKey(sets, "inject");
-            data.put(Keys.LIME, StringUtil.join(sets));
+            data.put(Key.LIME, StringUtil.join(sets));
         }
     }
 

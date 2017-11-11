@@ -26,7 +26,7 @@ public class AgentExtractor implements Extractor<DeploymentOptions> {
     @Override
     public DeploymentOptions extract(final Class<?> clazz) {
         HNull.exec(() -> {
-            LOGGER.info(Message.AGENT_HIT, clazz.getName());
+            LOGGER.info(Info.AGENT_HIT, clazz.getName());
         }, clazz);
         return HPool.exec(OPTIONS, clazz, () -> transform(clazz));
     }
@@ -45,7 +45,7 @@ public class AgentExtractor implements Extractor<DeploymentOptions> {
         // 3. Disabled worker fetures.
         options.setWorker(false);
         options.setMultiThreaded(false);
-        LOGGER.info(Message.AGENT_OPT, instances, group, ha, options.toJson());
+        LOGGER.info(Info.AGENT_OPT, instances, group, ha, options.toJson());
         return options;
     }
 }

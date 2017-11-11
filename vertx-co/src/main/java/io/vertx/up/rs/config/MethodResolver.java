@@ -48,7 +48,7 @@ class MethodResolver {
         }
         // 2. Ignore this method.
         if (null == result) {
-            LOGGER.info(Message.METHOD_IGNORE, method.getName());
+            LOGGER.info(Info.METHOD_IGNORE, method.getName());
         }
         return result;
     }

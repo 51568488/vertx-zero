@@ -116,7 +116,7 @@ public class VertxApplication {
                                 final DeploymentOptions option) {
         // Verticle deployment
         final String name = clazz.getName();
-        final String flag = option.isWorker() ? "worker" : "agent";
+        final String flag = option.isWorker() ? "Worker" : "Agent";
         vertx.deployVerticle(name, option, (result) -> {
             // Success or Failed.
             if (result.succeeded()) {

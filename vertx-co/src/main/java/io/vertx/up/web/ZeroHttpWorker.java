@@ -5,8 +5,10 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.up.annotations.Worker;
 import io.vertx.up.ce.Envelop;
 import io.vertx.up.ce.Receipt;
+import org.vie.fun.HNull;
 import org.vie.util.log.Annal;
 
+import java.lang.reflect.Method;
 import java.util.Set;
 
 /**
@@ -25,11 +27,18 @@ public class ZeroHttpWorker extends AbstractVerticle {
         // 1. Get event bus
         final EventBus bus = this.vertx.eventBus();
         // 2. Consume address
-        bus.<Envelop>consumer("ZERO://USER", res -> {
-            System.out.println("Hello");
-            final Envelop envelop = res.body();
-            System.out.println(envelop.getData());
-            res.reply("Hello World");
-        });
+        for (final Receipt receipt : RECEIPTS) {
+            // 3. Deploy for each type
+            final String address = receipt.getAddress();
+            // 4. Get target reference and method
+            final Object reference = receipt.getProxy();
+            final Method method = receipt.getMethod();
+            
+            HNull.exec(() -> {
+                bus.<Envelop>consumer(address, res -> {
+                    // 4. Call the handler
+                });
+            }, address, reference, method);
+        }
     }
 }

@@ -6,9 +6,9 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.up.annotations.Agent;
-import io.vertx.up.rs.Hub;
-import io.vertx.up.rs.router.EventHub;
-import io.vertx.up.rs.router.RouterHub;
+import io.vertx.up.rs.Axis;
+import io.vertx.up.rs.router.EventAxis;
+import io.vertx.up.rs.router.RouterAxis;
 import org.vie.cv.Values;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
@@ -54,11 +54,11 @@ public class ZeroHttpAgent extends AbstractVerticle {
             final Router router = Router.router(this.vertx);
 
             /** 4.Call router hub to mount commont **/
-            Hub huber = Instance.singleton(RouterHub.class);
-            huber.mount(router);
+            Axis axiser = Instance.singleton(RouterAxis.class);
+            axiser.mount(router);
             /** 5.Call route hub to mount defined **/
-            huber = Instance.singleton(EventHub.class);
-            huber.mount(router);
+            axiser = Instance.singleton(EventAxis.class);
+            axiser.mount(router);
 
             /** 6.Listen for router on the server **/
             server.requestHandler(router::accept).listen();

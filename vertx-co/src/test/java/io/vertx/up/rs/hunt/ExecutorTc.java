@@ -1,4 +1,4 @@
-package io.vertx.up.rs.executor;
+package io.vertx.up.rs.hunt;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.up.ce.Event;

@@ -1,9 +1,10 @@
-package io.vertx.up.rs.executor;
+package io.vertx.up.rs.hunt;
 
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Executor;
+import io.vertx.up.rs.reflect.Invoker;
 import org.vie.util.Jackson;
 
 import java.lang.reflect.Method;
@@ -30,10 +31,10 @@ public class SyncExecutor implements Executor {
         if (Void.class == returnType || void.class == returnType) {
 
             // 3. Write to Client
-            Caller.invokeVoid(context, event);
+            Invoker.invokeVoid(context, event);
             response.end("OK");
         } else {
-            final Object returnValue = Caller.invokeMethod(context, event);
+            final Object returnValue = Invoker.invokeMethod(context, event);
             if (null != returnValue) {
                 // TODO: Temp
                 final String json = Jackson.serialize(returnValue);

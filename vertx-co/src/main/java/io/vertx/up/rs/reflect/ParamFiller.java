@@ -1,4 +1,4 @@
-package io.vertx.up.rs.executor;
+package io.vertx.up.rs.reflect;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
@@ -28,9 +28,9 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Arguments process bus
  */
-class ArgsFiller {
+public class ParamFiller {
 
-    private static final Annal LOGGER = Annal.get(ArgsFiller.class);
+    private static final Annal LOGGER = Annal.get(ParamFiller.class);
 
     private static final ConcurrentMap<Class<? extends Annotation>, Filler> PARAMS =
             new ConcurrentHashMap<Class<? extends Annotation>, Filler>() {
@@ -77,7 +77,7 @@ class ArgsFiller {
             // 2. Exception checking.
             HBool.execUp(!byAnnotated(paramAnnos), LOGGER,
                     ParameterConflictException.class,
-                    ArgsFiller.class, paramType);
+                    ParamFiller.class, paramType);
 
             // 3. Current param is annotated
             for (final Annotation anno : paramAnnos) {

@@ -1,4 +1,4 @@
-package io.vertx.up.rs.executor;
+package io.vertx.up.rs.hunt;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Vertx;
@@ -11,6 +11,7 @@ import io.vertx.up.ce.Envelop;
 import io.vertx.up.ce.Event;
 import io.vertx.up.ce.codec.EnvelopCodec;
 import io.vertx.up.rs.Executor;
+import io.vertx.up.rs.reflect.Invoker;
 import org.vie.exception.WebException;
 import org.vie.exception.web._500DeliveryErrorException;
 import org.vie.exception.web._500EntityCastException;
@@ -42,7 +43,7 @@ public class EventBusExecutor implements Executor {
             // 3. If returnType is void, only call it and then build empty body Envelop
             envelop = Envelop.success(null);
         } else {
-            final Object returnValue = Caller.invokeMethod(context, event);
+            final Object returnValue = Invoker.invokeMethod(context, event);
             envelop = Envelop.success(returnValue);
         }
 

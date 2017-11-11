@@ -66,7 +66,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
             for (final Method method : methods) {
                 // 3. Only focus on annotated with @Address
                 if (Anno.isMark(method, Address.class)) {
-                    final Receipt receipt = extract(clazz, method);
+                    final Receipt receipt = extract(method);
                     if (null != receipt) {
                         receipts.add(receipt);
                     }
@@ -76,8 +76,9 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
         }, new ConcurrentHashSet<>());
     }
 
-    private Receipt extract(final Class<?> clazz, final Method method) {
+    private Receipt extract(final Method method) {
         // 1. Scan whole Endpoints
+        final Class<?> clazz = method.getDeclaringClass();
         final Annotation annotation = Anno.get(method, Address.class);
         final String address = Instance.invoke(annotation, "value");
 
@@ -92,7 +93,6 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
         // Fix: Instance class for proxy
         final Object proxy = Instance.singleton(clazz);
         receipt.setProxy(proxy);
-        receipt.setReference(clazz);
         return receipt;
     }
 

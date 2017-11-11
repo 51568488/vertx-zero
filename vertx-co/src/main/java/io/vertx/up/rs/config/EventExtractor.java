@@ -70,7 +70,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
         final Method[] methods = clazz.getDeclaredMethods();
         for (final Method method : methods) {
             // 1.Build Event
-            final Event event = extract(clazz, method, root);
+            final Event event = extract(method, root);
             if (null != event) {
                 events.add(event);
             }
@@ -85,7 +85,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
      * @param root
      * @return
      */
-    private Event extract(final Class<?> clazz, final Method method, final String root) {
+    private Event extract(final Method method, final String root) {
         // 1.Method path
         final Event event = new Event();
         // 2.Method resolve
@@ -119,7 +119,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
         event.setConsumes(MediaResolver.consumes(method));
         event.setProduces(MediaResolver.produces(method));
         // 7. Instance clazz for proxy
-        final Object proxy = Instance.singleton(clazz);
+        final Object proxy = Instance.singleton(method.getDeclaringClass());
         event.setProxy(proxy);
         return event;
     }

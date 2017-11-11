@@ -4,9 +4,9 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.up.cv.Orders;
-import io.vertx.up.rs.Hub;
+import io.vertx.up.rs.Axis;
 
-public class RouterHub implements Hub {
+public class RouterAxis implements Axis {
 
     @Override
     public void mount(final Router router) {

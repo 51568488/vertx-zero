@@ -1,4 +1,4 @@
-package io.vertx.up.rs.executor;
+package io.vertx.up.rs.hunt;
 
 import io.vertx.up.annotations.EndPoint;
 

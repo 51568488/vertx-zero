@@ -15,6 +15,8 @@ public interface Values {
     /** **/
     int UNSET = -1;
     /** **/
+    int CODECS = UNSET;
+    /** **/
     int ZERO = 0;
     /** **/
     int IDX = 0;

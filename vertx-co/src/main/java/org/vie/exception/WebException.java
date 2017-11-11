@@ -11,6 +11,11 @@ public abstract class WebException extends ZeroRunException {
 
     private final String message;
 
+    public WebException(final String message) {
+        super(message);
+        this.message = message;
+    }
+
     public WebException(final Class<?> clazz, final Object... args) {
         super(Strings.EMPTY);
         this.message = Errors.normalize(clazz, getCode(), args);

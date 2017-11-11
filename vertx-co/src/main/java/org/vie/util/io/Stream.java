@@ -1,5 +1,6 @@
 package org.vie.util.io;
 
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.vie.exception.run.EmptyStreamException;
@@ -7,14 +8,46 @@ import org.vie.fun.HBool;
 import org.vie.fun.HFail;
 import org.vie.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * Stream read class.
  */
 public final class Stream {
+    /**
+     * Codec usage
+     *
+     * @param message
+     * @param <T>
+     * @return
+     */
+    public static <T> byte[] to(final T message) {
+        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        return HFail.exec(() -> {
+            final ObjectOutputStream out = new ObjectOutputStream(bytes);
+            out.writeObject(message);
+            out.close();
+            return bytes.toByteArray();
+        }, new byte[0]);
+    }
+
+    /**
+     * Codec usage
+     *
+     * @param pos
+     * @param buffer
+     * @param <T>
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T from(final int pos, final Buffer buffer) {
+        final ByteArrayInputStream stream = new ByteArrayInputStream(buffer.getBytes());
+        return HFail.exec(() -> {
+            final ObjectInputStream in = new ObjectInputStream(stream);
+            return (T) in.readObject();
+        }, null);
+    }
+
     /**
      * Direct read by vert.x logger to avoid dead lock.
      */

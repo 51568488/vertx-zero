@@ -74,7 +74,7 @@ public final class Jackson {
                                         result = (T) curVal;
                                     }
                                 } else {
-                                    /** 3.2. In the middle search **/
+                                    /** 3.2. Address the middle search **/
                                     if (Types.isJObject(curVal)) {
                                         final JsonObject continueNode = current.getJsonObject(path);
                                         /** 4.Extract new key **/

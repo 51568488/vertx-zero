@@ -30,7 +30,7 @@ public class ZeroHelper {
     /** **/
     public static ServerType getAgentKey(final Class<?> clazz) {
         return HBool.exec(Anno.isMark(clazz, Agent.class),
-                () -> Instance.invoke(getAgentValue(clazz), Agent.Key.TYPE),
+                () -> Instance.invoke(getAgentValue(clazz), "type"),
                 () -> null);
     }
 

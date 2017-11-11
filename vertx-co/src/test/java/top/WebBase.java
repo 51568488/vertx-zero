@@ -5,7 +5,7 @@ import io.vertx.ext.web.WebTestBase;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.Hub;
-import io.vertx.up.rs.config.EndPointExtractor;
+import io.vertx.up.rs.config.EventExtractor;
 import io.vertx.up.rs.router.EventHub;
 import io.vertx.up.rs.router.RouterHub;
 import io.vertx.up.web.ZeroGrid;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class WebBase extends WebTestBase {
 
     protected Event extract(final Class<?> clazz, final String name) {
-        final Extractor<Set<Event>> extractor = Instance.singleton(EndPointExtractor.class);
+        final Extractor<Set<Event>> extractor = Instance.singleton(EventExtractor.class);
         final Set<Event> events = extractor.extract(clazz);
         final List<Event> list = events.stream()
                 .filter(item -> item.getAction().getName().equals(name))

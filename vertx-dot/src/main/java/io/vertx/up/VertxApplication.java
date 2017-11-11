@@ -6,9 +6,9 @@ import io.vertx.up.annotations.Up;
 import io.vertx.up.cv.Info;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.AgentExtractor;
+import io.vertx.up.rs.config.WorkerExtractor;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHttpAgent;
-import io.vertx.up.web.ZeroHttpWorker;
 import io.vertx.up.web.ZeroLauncher;
 import org.vie.cv.em.ServerType;
 import org.vie.exception.up.UpClassArgsException;
@@ -23,10 +23,11 @@ import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import static io.vertx.up.cv.Info.AGENT_END;
+import static io.vertx.up.cv.Info.VTC_END;
 
 /**
  * Vertx Application start information
@@ -77,8 +78,7 @@ public class VertxApplication {
             /** 1.Find Agent for deploy **/
             deployAgents(vertx);
             /** 2.Find Worker for deploy **/
-            vertx.deployVerticle(new ZeroHttpWorker(),
-                    new DeploymentOptions().setWorker(true));
+            deployWorkers(vertx);
             /** 4.Connect and started **/
         });
     }
@@ -89,20 +89,45 @@ public class VertxApplication {
                 = getAgents();
         final Extractor<DeploymentOptions> extractor =
                 Instance.singleton(AgentExtractor.class);
+
         HMap.exec(agents, (type, clazz) -> {
             // 2.1 Agent deployment options
             final DeploymentOptions option = extractor.extract(clazz);
             // 2.2 Agent deployment
-            final String name = clazz.getName();
-            vertx.deployVerticle(name, option, (result) -> {
-                // 2.3 Success or Failed.
-                if (result.succeeded()) {
-                    LOGGER.info(AGENT_END, name, option.getInstances(), result.result());
-                } else {
-                    LOGGER.info(Info.AGENT_FAIL, name, option.getInstances(), result.result(),
-                            null == result.cause() ? null : result.cause().getMessage());
-                }
-            });
+            deployVerticle(vertx, clazz, option);
+        });
+    }
+
+    private void deployWorkers(final Vertx vertx) {
+        /** 1.Find Workers for deploy **/
+        final Set<Class<?>> workers = ZeroAnno.getWorkers();
+        final Extractor<DeploymentOptions> extractor =
+                Instance.singleton(WorkerExtractor.class);
+
+        for (final Class<?> worker : workers) {
+            // 2.1 Worker deployment options
+            final DeploymentOptions option = extractor.extract(worker);
+            // 2.2 Worker deployment
+            deployVerticle(vertx, worker, option);
+        }
+    }
+
+    private void deployVerticle(final Vertx vertx, final Class<?> clazz,
+                                final DeploymentOptions option) {
+        // Verticle deployment
+        final String name = clazz.getName();
+        final String flag = option.isWorker() ? "worker" : "agent";
+        vertx.deployVerticle(name, option, (result) -> {
+            // Success or Failed.
+            if (result.succeeded()) {
+                LOGGER.info(VTC_END,
+                        name, option.getInstances(), result.result(),
+                        flag);
+            } else {
+                LOGGER.info(Info.VTC_FAIL,
+                        name, option.getInstances(), result.result(),
+                        null == result.cause() ? null : result.cause().getMessage(), flag);
+            }
         });
     }
 

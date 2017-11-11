@@ -1,7 +1,7 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.core.DeploymentOptions;
-import io.vertx.up.annotations.Agent;
+import io.vertx.up.annotations.Worker;
 import io.vertx.up.rs.Extractor;
 import org.vie.fun.HNull;
 import org.vie.fun.HPool;
@@ -14,11 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Standard verticle deployment.
+ * Worker verticle deployment
  */
-public class AgentExtractor implements Extractor<DeploymentOptions> {
+public class WorkerExtractor implements Extractor<DeploymentOptions> {
 
-    private static final Annal LOGGER = Annal.get(AgentExtractor.class);
+    private static final Annal LOGGER = Annal.get(WorkerExtractor.class);
 
     private static final ConcurrentMap<Class<?>, DeploymentOptions>
             OPTIONS = new ConcurrentHashMap<>();
@@ -26,13 +26,13 @@ public class AgentExtractor implements Extractor<DeploymentOptions> {
     @Override
     public DeploymentOptions extract(final Class<?> clazz) {
         HNull.exec(() -> {
-            LOGGER.info(Info.AGENT_HIT, clazz.getName());
+            LOGGER.info(Info.WORKER_HIT, clazz.getName());
         }, clazz);
         return HPool.exec(OPTIONS, clazz, () -> transform(clazz));
     }
 
     private DeploymentOptions transform(final Class<?> clazz) {
-        final Annotation annotation = Anno.get(clazz, Agent.class);
+        final Annotation annotation = Anno.get(clazz, Worker.class);
         // 1. Instance
         final int instances = Instance.invoke(annotation, Key.INSTANCES);
         final boolean ha = Instance.invoke(annotation, Key.HA);
@@ -43,7 +43,7 @@ public class AgentExtractor implements Extractor<DeploymentOptions> {
         options.setInstances(instances);
         options.setIsolationGroup(group);
         // 3. Disabled worker fetures.
-        options.setWorker(false);
+        options.setWorker(true);
         LOGGER.info(Info.VTC_OPT, instances, group, ha, options.toJson());
         return options;
     }

@@ -1,5 +1,8 @@
 package io.vertx.up.annotations;
 
+import io.vertx.up.cv.VertxValues;
+import org.vie.cv.em.InteractionType;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,4 +15,31 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 public @interface Worker {
+    /**
+     * Event but interaction mode definition
+     *
+     * @return
+     */
+    InteractionType value() default InteractionType.REQUEST_RESPONSE;
+
+    /**
+     * Worker Instance Number
+     * Default: 32
+     *
+     * @return
+     */
+    int instances() default VertxValues.DEFAULT_INSTANCES;
+
+    /**
+     * Isolation Group
+     * Default: __VERTX_ZERO__
+     *
+     * @return
+     */
+    String group() default VertxValues.DEFAULT_GROUP;
+
+    /**
+     * @return
+     */
+    boolean ha() default VertxValues.DEFAULT_HA;
 }

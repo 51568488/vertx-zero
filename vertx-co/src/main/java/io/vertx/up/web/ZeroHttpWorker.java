@@ -4,6 +4,10 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.up.annotations.Worker;
 import io.vertx.up.ce.Envelop;
+import io.vertx.up.ce.Receipt;
+import org.vie.util.log.Annal;
+
+import java.util.Set;
 
 /**
  * Default Http Server worker for different handler.
@@ -11,6 +15,10 @@ import io.vertx.up.ce.Envelop;
  */
 @Worker
 public class ZeroHttpWorker extends AbstractVerticle {
+
+    private static final Annal LOGGER = Annal.get(ZeroHttpWorker.class);
+
+    private static final Set<Receipt> RECEIPTS = ZeroAnno.getReceipts();
 
     @Override
     public void start() {

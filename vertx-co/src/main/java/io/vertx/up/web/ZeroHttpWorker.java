@@ -33,8 +33,10 @@ public class ZeroHttpWorker extends AbstractVerticle {
         // 1. Get event bus
         final EventBus bus = this.vertx.eventBus();
         // Codec
-        bus.registerDefaultCodec(Envelop.class,
-                Instance.singleton(EnvelopCodec.class));
+        if (this.isRegistered.getAndSet(false)) {
+            bus.registerDefaultCodec(Envelop.class,
+                    Instance.singleton(EnvelopCodec.class));
+        }
         // 2. Consume address
         for (final Receipt receipt : RECEIPTS) {
             // 3. Deploy for each type

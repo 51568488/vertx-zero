@@ -2,7 +2,11 @@
 
 This project is based on vertx, it's refer to Spring-Boot to implement light application framework for developers.
 
-## 1. Pull code and build
+## 1. Documentation
+
+* [Getting Start](doc/vertx-zero.md)
+
+## 2. Pull code and build
 
 1. Pull code from github
 
@@ -17,7 +21,7 @@ This project is based on vertx, it's refer to Spring-Boot to implement light app
 	```
 
 
-## 2. Dependency Library
+## 3. Dependency Library
 
 * [Vert.x](http://www.mvnrepository.com/artifact/io.vertx) ( core, web, config, config-yml, unit, zookeeper, hazelcast )
 * [Jws Rs](http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api) 
@@ -31,7 +35,3 @@ This project is based on vertx, it's refer to Spring-Boot to implement light app
 * [ReflectAsm](http://www.mvnrepository.com/artifact/com.esotericsoftware/reflectasm/)
 * [Jackson-Yaml](http://www.mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml)
 * [Lombok](http://mvnrepository.com/artifact/org.projectlombok/lombok)
-
-## 3. Usage
-
-* [Getting Start](doc/vertx-zero.md)

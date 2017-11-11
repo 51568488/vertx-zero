@@ -20,7 +20,7 @@ public class UserAgent {
             "type = {1}, response = {2}";
 
     /**
-     * Block One Way Request
+     * Block one way
      *
      * @param name
      */
@@ -31,6 +31,12 @@ public class UserAgent {
         LOGGER.info(INPUT, "name = " + name, "Path", "VOID");
     }
 
+    /**
+     * Sync request ( return String )
+     *
+     * @param email
+     * @return
+     */
     @GET
     @Path("/sync/string")
     public String syncRequest(
@@ -41,6 +47,12 @@ public class UserAgent {
         return response;
     }
 
+    /**
+     * Sync request ( return int )
+     *
+     * @param age
+     * @return
+     */
     @GET
     @Path("/sync/integer")
     public int syncRequest(
@@ -51,6 +63,11 @@ public class UserAgent {
         return response;
     }
 
+    /**
+     * Sync request ( return User )
+     *
+     * @return
+     */
     @GET
     @Path("/sync/object")
     public User syncRequest() {
@@ -64,6 +81,11 @@ public class UserAgent {
         return user;
     }
 
+    /**
+     * Async Request ( User will be passed in event bus )
+     *
+     * @return
+     */
     @POST
     @Path("/one-way/user")
     @Address("ZERO://USER")

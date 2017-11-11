@@ -8,8 +8,9 @@ import io.vertx.up.ce.Envelop;
 public class UserWorker {
 
     @Address("ZERO://USER")
-    public Envelop reply(final Model model) {
-
-        return null;
+    public Envelop reply(final Envelop message) {
+        final User user = message.data(User.class);
+        System.out.println(user);
+        return Envelop.success(user);
     }
 }

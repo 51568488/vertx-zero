@@ -1,6 +1,7 @@
 package org.vie.util;
 
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.vie.cv.Values;
@@ -8,8 +9,10 @@ import org.vie.fun.HBool;
 import org.vie.fun.HNull;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 public class Types {
 
@@ -65,6 +68,44 @@ public class Types {
         return HBool.exec(null == value,
                 () -> false,
                 () -> Period.isValid(value.toString()));
+    }
+
+    private static final Set<Class<?>> SERIALIZED_CLS =
+            new ConcurrentHashSet<Class<?>>() {
+                {
+                    add(int.class);
+                    add(Integer.class);
+                    add(short.class);
+                    add(Short.class);
+                    add(double.class);
+                    add(Double.class);
+                    add(BigDecimal.class);
+                    add(long.class);
+                    add(Long.class);
+                    add(boolean.class);
+                    add(Boolean.class);
+                    add(float.class);
+                    add(Float.class);
+                    add(Date.class);
+                    add(JsonObject.class);
+                    add(JsonArray.class);
+                    add(String.class);
+                }
+            };
+
+    public static boolean isSerialized(final Object value) {
+        if (null == value) {
+            return false;
+        }
+        return SERIALIZED_CLS.contains(value.getClass());
+    }
+
+    public static boolean isArray(final Object value) {
+        if (null == value) {
+            return false;
+        }
+        return (value instanceof Collection ||
+                value.getClass().isArray());
     }
 
     /**

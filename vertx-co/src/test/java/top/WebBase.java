@@ -4,10 +4,10 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.web.WebTestBase;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Extractor;
-import io.vertx.up.rs.Hub;
+import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.config.EventExtractor;
-import io.vertx.up.rs.router.EventHub;
-import io.vertx.up.rs.router.RouterHub;
+import io.vertx.up.rs.router.EventAxis;
+import io.vertx.up.rs.router.RouterAxis;
 import io.vertx.up.web.ZeroGrid;
 import org.vie.util.Instance;
 
@@ -45,10 +45,10 @@ public class WebBase extends WebTestBase {
         /** 1.Get the default HttpServer Options **/
         SERVERS.forEach((port, option) -> {
             /** 4.Call router hub to mount commont **/
-            Hub huber = Instance.singleton(RouterHub.class);
+            Axis huber = Instance.singleton(RouterAxis.class);
             huber.mount(this.router);
             /** 5.Call route hub to mount defined **/
-            huber = Instance.singleton(EventHub.class);
+            huber = Instance.singleton(EventAxis.class);
             huber.mount(this.router);
         });
     }

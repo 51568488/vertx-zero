@@ -19,10 +19,6 @@ public class Receipt implements Serializable {
      * Consume method ( Will be calculated )
      */
     private Method method;
-    /**
-     * Worker reference
-     */
-    private Class<?> reference;
 
 
     public String getAddress() {
@@ -49,14 +45,6 @@ public class Receipt implements Serializable {
         this.method = method;
     }
 
-    public Class<?> getReference() {
-        return this.reference;
-    }
-
-    public void setReference(final Class<?> reference) {
-        this.reference = reference;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -71,13 +59,13 @@ public class Receipt implements Serializable {
         if (!this.address.equals(receipt.address)) {
             return false;
         }
-        return this.reference.equals(receipt.reference);
+        return this.method.equals(receipt.method);
     }
 
     @Override
     public int hashCode() {
         int result = this.address.hashCode();
-        result = 31 * result + this.reference.hashCode();
+        result = 31 * result + this.method.hashCode();
         return result;
     }
 
@@ -87,7 +75,6 @@ public class Receipt implements Serializable {
                 "address='" + this.address + '\'' +
                 ", proxy=" + this.proxy +
                 ", method=" + this.method +
-                ", reference=" + this.reference +
                 '}';
     }
 }

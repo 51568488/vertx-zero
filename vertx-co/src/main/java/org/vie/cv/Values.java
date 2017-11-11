@@ -26,4 +26,6 @@ public interface Values {
     String TRUE = "true";
     /** **/
     String FALSE = "false";
+    /** **/
+    String NEW_LINE = "\n";
 }

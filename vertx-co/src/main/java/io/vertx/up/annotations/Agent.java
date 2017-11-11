@@ -20,17 +20,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface Agent {
 
-    interface Key {
-
-        String TYPE = "type";
-
-        String INSTANCES = "instances";
-
-        String GROUP = "group";
-
-        String HA = "ha";
-    }
-
     /**
      * Standard Instance Number
      * Default: 32

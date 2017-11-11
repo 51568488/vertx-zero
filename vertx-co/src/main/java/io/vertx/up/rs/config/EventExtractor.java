@@ -24,26 +24,15 @@ import java.util.Set;
 /**
  * Scanned @EndPoint clazz to build Event metadata
  */
-public class EndPointExtractor implements Extractor<Set<Event>> {
+public class EventExtractor implements Extractor<Set<Event>> {
 
-    private static final Annal LOGGER = Annal.get(EndPointExtractor.class);
+    private static final Annal LOGGER = Annal.get(EventExtractor.class);
 
     @Override
     public Set<Event> extract(final Class<?> clazz) {
         return HNull.get(clazz, () -> {
-            // 0. Check basic specification: No Arg Constructor
-            HBool.execUp(!Instance.noarg(clazz), LOGGER,
-                    NoArgConstructorException.class,
-                    getClass(), clazz);
-            HBool.execUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
-                    AccessProxyException.class,
-                    getClass(), clazz);
-
-            // 1. Event Source Checking
-            HBool.execUp(!Anno.isMark(clazz, EndPoint.class),
-                    LOGGER, EventSourceException.class,
-                    getClass(), clazz.getName());
-
+            // 1. Class verify
+            verify(clazz);
             // 2. Check whether clazz annotated with @PATH
             final Set<Event> result = new ConcurrentHashSet<>();
             HBool.exec(Anno.isMark(clazz, Path.class), LOGGER,
@@ -61,17 +50,28 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
         }, new ConcurrentHashSet<>());
     }
 
+    private void verify(final Class<?> clazz) {
+        // Check basic specification: No Arg Constructor
+        HBool.execUp(!Instance.noarg(clazz), LOGGER,
+                NoArgConstructorException.class,
+                getClass(), clazz);
+        HBool.execUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
+                AccessProxyException.class,
+                getClass(), clazz);
+        // Event Source Checking
+        HBool.execUp(!Anno.isMark(clazz, EndPoint.class),
+                LOGGER, EventSourceException.class,
+                getClass(), clazz.getName());
+    }
+
     private Set<Event> extract(final Class<?> clazz, final String root) {
         final Set<Event> events = new ConcurrentHashSet<>();
         // 0.Preparing
         final Method[] methods = clazz.getDeclaredMethods();
         for (final Method method : methods) {
             // 1.Build Event
-            final Event event = extract(method, root);
+            final Event event = extract(clazz, method, root);
             if (null != event) {
-                // 2. Instance clazz for proxy
-                final Object proxy = Instance.singleton(clazz);
-                event.setProxy(proxy);
                 events.add(event);
             }
         }
@@ -85,7 +85,7 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
      * @param root
      * @return
      */
-    private Event extract(final Method method, final String root) {
+    private Event extract(final Class<?> clazz, final Method method, final String root) {
         // 1.Method path
         final Event event = new Event();
         // 2.Method resolve
@@ -118,6 +118,9 @@ public class EndPointExtractor implements Extractor<Set<Event>> {
         // 6.Mime resolve
         event.setConsumes(MediaResolver.consumes(method));
         event.setProduces(MediaResolver.produces(method));
+        // 7. Instance clazz for proxy
+        final Object proxy = Instance.singleton(clazz);
+        event.setProxy(proxy);
         return event;
     }
 }

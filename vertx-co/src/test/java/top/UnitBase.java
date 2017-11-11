@@ -8,7 +8,7 @@ import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Extractor;
-import io.vertx.up.rs.config.EndPointExtractor;
+import io.vertx.up.rs.config.EventExtractor;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.vie.core.reliable.Insurer;
@@ -55,6 +55,6 @@ public abstract class UnitBase {
     }
 
     protected Extractor<Set<Event>> extractor() {
-        return Instance.singleton(EndPointExtractor.class);
+        return Instance.singleton(EventExtractor.class);
     }
 }

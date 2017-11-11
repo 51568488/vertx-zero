@@ -1,5 +1,6 @@
 package org.vie.util;
 
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.vie.cv.Values;
@@ -116,8 +117,21 @@ public class Types {
             // JsonArray
             reference = new JsonArray(literal);
 
-        } else {
+        } else if (String.class == paramType) {
             // String
+            reference = literal;
+
+        } else if (StringBuilder.class == paramType) {
+            // StringBuilder
+            reference = new StringBuilder(literal);
+
+        } else if (Buffer.class == paramType) {
+            // Buffer
+            final Buffer buffer = Buffer.buffer();
+            buffer.appendBytes(literal.getBytes());
+            reference = buffer;
+
+        } else {
             reference = literal;
         }
         return reference;

@@ -60,20 +60,23 @@ public class EventHub implements Hub {
         final Method method = event.getAction();
         HBool.execUp(null == method, LOGGER, EventActionNoneException.class,
                 getClass(), event);
+
         // 2. Scan method to check @Address
         final boolean annotated = Anno.isMark(method, Address.class);
         if (annotated) {
+
             // 3.1. Event Bus Executing
             LOGGER.info(Message.DISPATCH, "EventBus", EventBusHandler.class.getName());
             final Executor executor = Instance.singleton(EventBusHandler.class);
             executor.execute(context, event);
 
         } else {
+
             LOGGER.info(Message.DISPATCH, "Non-EventBus", DirectHandler.class.getName());
             // 3.2. Response directly
             final Executor executor = Instance.singleton(DirectHandler.class);
             executor.execute(context, event);
-            
+
         }
     }
 

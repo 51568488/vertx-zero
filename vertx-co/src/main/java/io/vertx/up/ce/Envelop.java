@@ -52,7 +52,9 @@ public class Envelop implements Serializable {
                 ? HttpStatusCode.OK : this.error.getStatus();
         data.put(Response.BRIEF, status.message());
         data.put(Response.STATUS, status.code());
-        data.put(Response.DATA, input);
+        if (null != input) {
+            data.put(Response.DATA, input);
+        }
         return data;
     }
 

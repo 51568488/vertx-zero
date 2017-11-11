@@ -127,7 +127,12 @@ public final class Jackson {
     }
 
     public static <T> String serialize(final T t) {
-        return HNull.get(t, () -> HFail.exec(() -> MAPPER.writeValueAsString(t), t), null);
+        return HNull.get(t, () ->
+                HFail.exec(() -> MAPPER.writeValueAsString(t), t), null);
+    }
+
+    public static <T> T deserialize(final String value, final Class<T> type) {
+        return HNull.get(value, () -> HFail.exec(() -> MAPPER.readValue(value, type)), null);
     }
 
     private Jackson() {

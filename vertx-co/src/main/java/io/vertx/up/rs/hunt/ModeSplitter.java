@@ -6,6 +6,8 @@ import io.vertx.up.ce.Receipt;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Splitter;
 import io.vertx.up.web.ZeroAnno;
+import org.vie.exception.up.ReturnTypeException;
+import org.vie.fun.HBool;
 import org.vie.fun.HNull;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
@@ -15,6 +17,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 1. AsyncAim: Event Bus: Request-Response
@@ -43,7 +46,8 @@ public class ModeSplitter implements Splitter {
                     // Exception because this method must has return type to
                     // send message to event bus. It means that it require
                     // return types.
-                    // TODO: 规范不合法，异常
+                    HBool.execUp(true, LOGGER, ReturnTypeException.class,
+                            getClass(), method);
                 } else {
                     // Scan the system to find replier method return type.
                     final Class<?> replierType = findReplier(event);
@@ -97,4 +101,6 @@ public class ModeSplitter implements Splitter {
             return null;
         }
     }
+
+    private transient final AtomicBoolean isReturnType = new AtomicBoolean(false);
 }

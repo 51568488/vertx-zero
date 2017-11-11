@@ -18,7 +18,8 @@ E40009: Vert.x zero require class {0} contains at least one no-arg constructor, 
 E40010: Vert.x zero require class {0} access modifier contains PUBLIC scope, but now it couldn't be accessed
 E40011: Vert.x zero found method parameters without any annotated, it's conflict. Type = {0}
 E40012: The address {0} does not existing in incoming address list. Position - type = {1}, method = {2}
+E40013: You want to send message to event bus, but agent method ({0}) of {1}''s return type is (void)
 # (Web) Exception for web
-E60001: (400) - The input content could not be converted into valid resource model {0}
+E60001: (400) - The input content could not be converted into valid resource user {0}
 E60002: (500) - The system detect some error in delivery on address {0}, error message = {1}
 E60003: (500) - The event bus detect some error in receiving message on address {0}, error message = {1}

@@ -25,9 +25,13 @@ public class BodyFiller implements Filler {
         } else if (Buffer.class == paramType) {
             // Buffer
             returnValue = context.getBody();
-        } else {
+        } else if (String.class == paramType) {
             // String
             returnValue = context.getBodyAsString();
+        } else {
+            // Object and other
+            final String content = context.getBodyAsString();
+            returnValue = Jackson.deserialize(content, paramType);
         }
         return returnValue;
     }

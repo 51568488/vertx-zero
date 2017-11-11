@@ -4,6 +4,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.Session;
@@ -20,6 +21,7 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -47,6 +49,14 @@ class ArgsFiller {
                 }
             };
 
+    private static final Set<Class<? extends Annotation>> NO_VALUE =
+            new ConcurrentHashSet<Class<? extends Annotation>>() {
+                {
+                    add(BodyParam.class);
+                    add(StreamParam.class);
+                }
+            };
+
     /**
      * Process to build parameters.
      *
@@ -61,15 +71,10 @@ class ArgsFiller {
             final Annotation[] paramAnnos) {
         Object returnValue = null;
         if (0 < paramAnnos.length) {
-            // 1. Check if default value
-            final Annotation defaultValue = getDefault(paramAnnos);
-            Object dft = null;
-            if (null != defaultValue) {
-                // 1.1. Return default value direactly
-                dft = Types.fromString(paramType,
-                        Instance.invoke(defaultValue, "value"));
-            }
-            // 2. Exception
+            // 1. Get default value from annotation directly
+            final Object dft = getDefault(paramAnnos, paramType);
+
+            // 2. Exception checking.
             HBool.execUp(!byAnnotated(paramAnnos), LOGGER,
                     ParameterConflictException.class,
                     ArgsFiller.class, paramType);
@@ -78,19 +83,14 @@ class ArgsFiller {
             for (final Annotation anno : paramAnnos) {
                 final Class<?> key = anno.annotationType();
                 if (PARAMS.containsKey(key)) {
-                    if (BodyParam.class == key) {
-                        // 4.1. Skip invoke for extension Annotation
-                        final Filler filler = PARAMS.get(key);
-                        if (null != filler) {
-                            returnValue = filler.apply(null, paramType, context);
-                        }
-                    } else {
-                        final String name = Instance.invoke(anno, "value");
-                        // 4.2. Filler to extract data
-                        final Filler filler = PARAMS.get(key);
-                        if (null != filler) {
-                            returnValue = filler.apply(name, paramType, context);
-                        }
+                    String name = null;
+                    // Filter the annotation which is not defined "value"
+                    if (!NO_VALUE.contains(key)) {
+                        name = Instance.invoke(anno, "value");
+                    }
+                    final Filler filler = PARAMS.get(key);
+                    if (null != filler) {
+                        returnValue = filler.apply(name, paramType, context);
                     }
                 }
             }
@@ -113,6 +113,17 @@ class ArgsFiller {
             }
         }
         return by;
+    }
+
+    private static Object getDefault(final Annotation[] annotations, final Class<?> paramType) {
+        final Annotation defaultValue = getDefault(annotations);
+        Object dft = null;
+        if (null != defaultValue) {
+            // 1.1. Return default value direactly
+            dft = Types.fromString(paramType,
+                    Instance.invoke(defaultValue, "value"));
+        }
+        return dft;
     }
 
     private static Annotation getDefault(final Annotation[] annotations) {

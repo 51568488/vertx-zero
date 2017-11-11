@@ -287,7 +287,7 @@ public enum HttpStatusCode {
      **/
     private final int statusCode;
     /**
-     * Http Message
+     * Http Info
      **/
     private final String message;
 

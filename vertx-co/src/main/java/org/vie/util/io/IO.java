@@ -161,7 +161,7 @@ public final class IO {
         return HFail.exec(() -> {
             final File file = getFile(filename);
             return HFail.exec(() -> {
-                Log.info(LOGGER, Message.INF_APATH, file.getAbsolutePath());
+                Log.info(LOGGER, Info.INF_APATH, file.getAbsolutePath());
                 return file.getAbsolutePath();
             }, file);
         }, filename);

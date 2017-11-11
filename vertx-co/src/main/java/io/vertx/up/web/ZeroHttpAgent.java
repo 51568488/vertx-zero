@@ -76,19 +76,19 @@ public class ZeroHttpAgent extends AbstractVerticle {
         if (Values.ZERO == out.getAndIncrement()) {
             // 1. Build logs for current server;
             final String portLiteral = String.valueOf(port);
-            LOGGER.info(Message.HTTP_SERVERS, this.NAME, deploymentID(),
+            LOGGER.info(Info.HTTP_SERVERS, this.NAME, deploymentID(),
                     portLiteral);
             final List<Route> routes = router.getRoutes();
             for (final Route route : routes) {
                 // 2.Route
-                LOGGER.info(Message.MAPPED_ROUTE, this.NAME, route.getPath(),
+                LOGGER.info(Info.MAPPED_ROUTE, this.NAME, route.getPath(),
                         route.toString());
             }
             // 3. Endpoint Publish
             final String address =
                     MessageFormat.format("http://{0}:{1}/",
                             options.getHost(), portLiteral);
-            LOGGER.info(Message.HTTP_LISTEN, this.NAME, address);
+            LOGGER.info(Info.HTTP_LISTEN, this.NAME, address);
         }
     }
 }

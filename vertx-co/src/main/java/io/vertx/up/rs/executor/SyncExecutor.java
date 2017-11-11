@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
  * 3. Execute event action
  * 4. Get response data and send response directly.
  */
-public class DirectHandler implements Executor {
+public class SyncExecutor implements Executor {
 
     @Override
     public void execute(final RoutingContext context,

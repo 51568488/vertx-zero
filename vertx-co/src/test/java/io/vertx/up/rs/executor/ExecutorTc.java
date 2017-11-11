@@ -11,7 +11,7 @@ public class ExecutorTc extends WebBase {
     public void testRequest() throws Exception {
         final Event event = extract(TestParam.class, "test");
         this.router.route().handler(context -> {
-            final Executor executor = Instance.singleton(DirectHandler.class);
+            final Executor executor = Instance.singleton(SyncExecutor.class);
             executor.execute(context, event);
         });
         testRequest(HttpMethod.GET, "", 200, "OK");

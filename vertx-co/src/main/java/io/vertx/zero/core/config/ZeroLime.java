@@ -24,7 +24,7 @@ public class ZeroLime implements ZeroNode<ConcurrentMap<String, String>> {
         // 1. Read all zero configuration: zero
         final JsonObject data = this.node.read();
         // 2. Read the string node "lime" for extensions
-        final String literal = data.getString(Keys.LIME);
+        final String literal = data.getString(Key.LIME);
         return build(literal);
     }
 

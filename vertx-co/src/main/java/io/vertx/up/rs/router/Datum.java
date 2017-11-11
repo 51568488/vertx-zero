@@ -1,6 +1,6 @@
 package io.vertx.up.rs.router;
 
-interface Message {
+interface Info {
 
     String DISPATCH = "[ZERO-RQ] ( Mode = {0} ) Now dispatch the event to component {1}.";
 

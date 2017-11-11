@@ -4,7 +4,7 @@ import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.ce.Event;
-import io.vertx.up.cv.Message;
+import io.vertx.up.cv.Info;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.EndPointExtractor;
 import org.vie.cv.em.ServerType;
@@ -79,14 +79,14 @@ public class ZeroAnno {
                         .collect(Collectors.toSet());
         if (ENDPOINTS.isEmpty()) {
             ENDPOINTS.addAll(routines);
-            LOGGER.info(Message.SCANED_ENDPOINT, routines.size());
+            LOGGER.info(Info.SCANED_ENDPOINT, routines.size());
             /** 3.Build Api metadata **/
             final Extractor<Set<Event>> extractor = Instance.singleton(EndPointExtractor.class);
             for (final Class<?> endpoint : ENDPOINTS) {
                 final Set<Event> events = extractor.extract(endpoint);
                 if (!events.isEmpty()) {
                     // 4. Report events for endpoint, wait for deployment.
-                    LOGGER.info(Message.SCANED_EVENTS, endpoint.getName(), events.size());
+                    LOGGER.info(Info.SCANED_EVENTS, endpoint.getName(), events.size());
                     EVENTS.addAll(events);
                 }
             }

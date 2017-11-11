@@ -42,7 +42,7 @@ interface Path {
             + Strings.DOT + FileTypes.YML;
 }
 
-interface Keys {
+interface Key {
     /**
      * Vertx Zero configuration
      */

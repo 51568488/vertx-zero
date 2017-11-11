@@ -1,6 +1,6 @@
 package org.vie.util.log;
 
-interface Message {
+interface Info {
     /** **/
     String INF_ANNAL = "[ZERO] The logger ( Annal = {0} ) has been selected for {1} to record logs.";
     /** **/

@@ -7,8 +7,8 @@ import io.vertx.up.annotations.Address;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.Executor;
 import io.vertx.up.rs.Hub;
-import io.vertx.up.rs.executor.DirectHandler;
-import io.vertx.up.rs.executor.EventBusHandler;
+import io.vertx.up.rs.executor.EventBusExecutor;
+import io.vertx.up.rs.executor.SyncExecutor;
 import io.vertx.up.web.ZeroAnno;
 import org.vie.cv.Strings;
 import org.vie.exception.up.EventActionNoneException;
@@ -36,7 +36,7 @@ public class EventHub implements Hub {
             // 1. Build Route
             HBool.exec(null == event, LOGGER,
                     () -> {
-                        LOGGER.warn(Message.NULL_EVENT, getClass().getName());
+                        LOGGER.warn(Info.NULL_EVENT, getClass().getName());
                     },
                     () -> {
                         final Route route = router.route();
@@ -66,15 +66,14 @@ public class EventHub implements Hub {
         if (annotated) {
 
             // 3.1. Event Bus Executing
-            LOGGER.info(Message.DISPATCH, "EventBus", EventBusHandler.class.getName());
-            final Executor executor = Instance.singleton(EventBusHandler.class);
+            LOGGER.info(Info.DISPATCH, "EventBus", EventBusExecutor.class.getName());
+            final Executor executor = Instance.singleton(EventBusExecutor.class);
             executor.execute(context, event);
-
         } else {
 
-            LOGGER.info(Message.DISPATCH, "Non-EventBus", DirectHandler.class.getName());
+            LOGGER.info(Info.DISPATCH, "Non-EventBus", SyncExecutor.class.getName());
             // 3.2. Response directly
-            final Executor executor = Instance.singleton(DirectHandler.class);
+            final Executor executor = Instance.singleton(SyncExecutor.class);
             executor.execute(context, event);
 
         }

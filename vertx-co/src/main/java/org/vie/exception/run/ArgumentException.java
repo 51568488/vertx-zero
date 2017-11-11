@@ -11,6 +11,6 @@ public class ArgumentException extends ZeroRunException {
             final String method,
             final Integer length,
             final String op) {
-        super(MessageFormat.format(Message.ARG_MSG, method, clazz.getName(), length, op));
+        super(MessageFormat.format(Info.ARG_MSG, method, clazz.getName(), length, op));
     }
 }

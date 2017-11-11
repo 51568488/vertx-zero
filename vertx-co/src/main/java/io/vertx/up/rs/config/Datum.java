@@ -1,6 +1,6 @@
 package io.vertx.up.rs.config;
 
-interface Message {
+interface Info {
 
     String AGENT_HIT = "[ZERO-AG] The standard verticle " +
             "{0} will be deployed.";

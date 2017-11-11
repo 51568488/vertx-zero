@@ -50,20 +50,20 @@ public class Envelop implements Serializable {
         final JsonObject data = new JsonObject();
         final HttpStatusCode status = (null == this.error)
                 ? HttpStatusCode.OK : this.error.getStatus();
-        data.put(Response.BRIEF, status.message());
-        data.put(Response.STATUS, status.code());
+        data.put(Key.BRIEF, status.message());
+        data.put(Key.STATUS, status.code());
         if (null != input) {
-            data.put(Response.DATA, input);
+            data.put(Key.DATA, input);
         }
         return data;
     }
 
     private JsonObject build(final WebException error) {
         final JsonObject data = new JsonObject();
-        data.put(Response.BRIEF, error.getStatus().message());
-        data.put(Response.STATUS, error.getStatus().code());
-        data.put(Response.CODE, error.getCode());
-        data.put(Response.MESSAGE, error.getMessage());
+        data.put(Key.BRIEF, error.getStatus().message());
+        data.put(Key.STATUS, error.getStatus().code());
+        data.put(Key.CODE, error.getCode());
+        data.put(Key.MESSAGE, error.getMessage());
         return data;
     }
 
@@ -73,6 +73,10 @@ public class Envelop implements Serializable {
 
     public JsonObject getData() {
         return this.data;
+    }
+
+    public String getResponse() {
+        return this.getData().encode();
     }
 
     public HttpStatusCode getStatus() {

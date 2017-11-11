@@ -5,7 +5,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.up.Launcher;
-import io.vertx.up.cv.Message;
+import io.vertx.up.cv.Info;
 import org.vie.exception.up.VertxCallbackException;
 import org.vie.util.log.Annal;
 
@@ -31,7 +31,7 @@ public class ZeroLauncher implements Launcher {
         if (cluster.isEnabled()) {
             // 2.1.Clustered
             final ClusterManager manager = cluster.getManager();
-            LOGGER.info(Message.APP_CLUSTERD, manager.getClass().getName(),
+            LOGGER.info(Info.APP_CLUSTERD, manager.getClass().getName(),
                     manager.getNodeID(), manager.isActive());
             startCluster(manager, callback);
         } else {

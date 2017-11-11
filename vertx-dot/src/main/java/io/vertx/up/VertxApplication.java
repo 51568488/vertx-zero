@@ -3,7 +3,7 @@ package io.vertx.up;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.up.annotations.Up;
-import io.vertx.up.cv.Message;
+import io.vertx.up.cv.Info;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.AgentExtractor;
 import io.vertx.up.web.ZeroAnno;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import static io.vertx.up.cv.Message.AGENT_END;
+import static io.vertx.up.cv.Info.AGENT_END;
 
 /**
  * Vertx Application start information
@@ -99,7 +99,7 @@ public class VertxApplication {
                 if (result.succeeded()) {
                     LOGGER.info(AGENT_END, name, option.getInstances(), result.result());
                 } else {
-                    LOGGER.info(Message.AGENT_FAIL, name, option.getInstances(), result.result(),
+                    LOGGER.info(Info.AGENT_FAIL, name, option.getInstances(), result.result(),
                             null == result.cause() ? null : result.cause().getMessage());
                 }
             });
@@ -128,7 +128,7 @@ public class VertxApplication {
                         final Class<?> found = Statute.findUnique(list,
                                 (item) -> INTERNALS.get(type) != item);
                         if (null != found) {
-                            LOGGER.info(Message.AGENT_DEFINED, found.getName(), type);
+                            LOGGER.info(Info.AGENT_DEFINED, found.getName(), type);
                             ret.put(type, found);
                         }
                         return null;

@@ -1,6 +1,7 @@
 package org.vie.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.vie.cv.Values;
@@ -9,6 +10,7 @@ import org.vie.fun.HFail;
 import org.vie.fun.HNull;
 
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 /**
  * Lookup the json tree data
@@ -90,6 +92,26 @@ public final class Jackson {
                             () -> null);
                 });
 
+    }
+
+    public static JsonObject validJObject(final Supplier<JsonObject> supplier) {
+        JsonObject result;
+        try {
+            result = supplier.get();
+        } catch (final DecodeException ex) {
+            result = new JsonObject();
+        }
+        return result;
+    }
+
+    public static JsonArray validJArray(final Supplier<JsonArray> supplier) {
+        JsonArray result;
+        try {
+            result = supplier.get();
+        } catch (final DecodeException ex) {
+            result = new JsonArray();
+        }
+        return result;
     }
 
     public static JsonArray toJArray(final Object value) {

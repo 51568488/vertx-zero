@@ -42,29 +42,15 @@ public class User {
 }
 ```
 
-Model is only a sample POJO.
+Model is only a sample POJO and annotated with lombok instead.
 
 ```java
-public class Model {
+import lombok.Data;
 
+@Data
+public class Model {
     private String name;
     private String email;
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(final String email) {
-        this.email = email;
-    }
 }
 ```
 

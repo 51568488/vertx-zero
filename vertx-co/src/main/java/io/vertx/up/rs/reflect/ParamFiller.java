@@ -1,13 +1,7 @@
 package io.vertx.up.rs.reflect;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.impl.ConcurrentHashSet;
-import io.vertx.ext.auth.User;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.Session;
 import io.vertx.up.rs.Filler;
 import io.vertx.up.rs.argument.*;
 import org.vie.exception.up.ParameterConflictException;
@@ -26,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Arguments process bus
+ * Arguments process, ParamFilter.
  */
 public class ParamFiller {
 
@@ -99,7 +93,7 @@ public class ParamFiller {
             }
         } else {
             // Type reference scanned
-            returnValue = reference(paramType, context);
+            returnValue = TypedFilter.get(paramType, context);
         }
         return returnValue;
     }
@@ -115,7 +109,8 @@ public class ParamFiller {
         return by;
     }
 
-    private static Object getDefault(final Annotation[] annotations, final Class<?> paramType) {
+    private static Object getDefault(final Annotation[] annotations,
+                                     final Class<?> paramType) {
         final Annotation defaultValue = getDefault(annotations);
         Object dft = null;
         if (null != defaultValue) {
@@ -141,30 +136,5 @@ public class ParamFiller {
                 null != anno && anno.isPresent(),
                 anno::get,
                 () -> null);
-    }
-
-    private static Object reference(final Class<?> paramType,
-                                    final RoutingContext context) {
-        Object returnValue = null;
-        if (Session.class == paramType) {
-            // Session Object
-            returnValue = context.session();
-        } else if (HttpServerRequest.class == paramType) {
-            // Request Object
-            returnValue = context.request();
-        } else if (HttpServerResponse.class == paramType) {
-            // Response Object
-            returnValue = context.response();
-        } else if (Vertx.class == paramType) {
-            // Vertx Object
-            returnValue = context.vertx();
-        } else if (EventBus.class == paramType) {
-            // Eventbus Object
-            returnValue = context.vertx().eventBus();
-        } else if (User.class == paramType) {
-            // User Objbect
-            returnValue = context.user();
-        }
-        return returnValue;
     }
 }

@@ -26,10 +26,31 @@ public class Envelop implements Serializable {
         return success(new JsonObject(literal));
     }
 
+    /**
+     * Empty content success
+     *
+     * @return
+     */
+    public static Envelop ok() {
+        return success(null);
+    }
+
+    /**
+     * Success response with data
+     *
+     * @param data
+     * @return
+     */
     public static Envelop success(final JsonObject data) {
         return new Envelop(data);
     }
 
+    /**
+     * Failure response with exception
+     *
+     * @param error
+     * @return
+     */
     public static Envelop failure(final WebException error) {
         return new Envelop(error);
     }
@@ -67,19 +88,39 @@ public class Envelop implements Serializable {
         return data;
     }
 
+    /**
+     * Whether this envelop is valid.
+     *
+     * @return
+     */
     public boolean valid() {
         return null == this.error;
     }
 
-    public JsonObject getData() {
+    /**
+     * Extract data part
+     *
+     * @return
+     */
+    public JsonObject data() {
         return this.data;
     }
 
-    public String getResponse() {
-        return this.getData().encode();
+    /**
+     * Convert to response
+     *
+     * @return
+     */
+    public String response() {
+        return this.data().encode();
     }
 
-    public HttpStatusCode getStatus() {
+    /**
+     * Extract status
+     *
+     * @return
+     */
+    public HttpStatusCode status() {
         return this.status;
     }
 
@@ -88,16 +129,16 @@ public class Envelop implements Serializable {
      *
      * @return
      */
-    public User getUser() {
+    public User user() {
         return this.user;
+    }
+
+    public MultiMap headers() {
+        return this.headers;
     }
 
     public void setUser(final User user) {
         this.user = user;
-    }
-
-    public MultiMap getHeaders() {
-        return this.headers;
     }
 
     public void setHeaders(final MultiMap headers) {

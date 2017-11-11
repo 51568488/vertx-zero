@@ -26,6 +26,7 @@
         <jws.version>2.1</jws.version>
         <jsr311.version>1.1.1</jsr311.version>
         <jersey.version>2.26</jersey.version>
+        <lombok.version>1.16.18</lombok.version>
         <!-- Testing -->
         <junit.version>4.12</junit.version>
         <!-- Logging -->
@@ -43,6 +44,7 @@
         <maven.plugin.resource>3.0.2</maven.plugin.resource>
         <maven.plugin.site>3.6</maven.plugin.site>
         <maven.plugin.enforcer>3.0.0-M1</maven.plugin.enforcer>
+        <maven.plugin.lombok>1.16.18.1</maven.plugin.lombok>
     </properties>
     <dependencies>
         <dependency>
@@ -59,6 +61,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <prerequisites>
@@ -126,6 +134,12 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.plugin.surefire}</version>
+                </plugin>
+                <!-- http://mvnrepository.com/artifact/org.projectlombok/lombok-maven-plugin -->
+                <plugin>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-maven-plugin</artifactId>
+                    <version>${maven.plugin.lombok}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -312,6 +326,18 @@
                 <groupId>org.glassfish.jersey.core</groupId>
                 <artifactId>jersey-common</artifactId>
                 <version>${jersey.version}</version>
+            </dependency>
+            <!-- http://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!-- http://mvnrepository.com/artifact/org.projectlombok/lombok-maven-plugin -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <version>${maven.plugin.lombok}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

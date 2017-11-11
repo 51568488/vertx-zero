@@ -30,6 +30,7 @@ This project is based on vertx, it's refer to Spring-Boot to implement light app
 * [Junit](http://mvnrepository.com/artifact/junit/junit)
 * [ReflectAsm](http://www.mvnrepository.com/artifact/com.esotericsoftware/reflectasm/)
 * [Jackson-Yaml](http://www.mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml)
+* [Lombok](http://mvnrepository.com/artifact/org.projectlombok/lombok)
 
 ## 3. Usage
 

@@ -23,10 +23,12 @@ public class DirectHandler implements Executor {
                         final Event event) {
         // 1. Call action
         final Method method = event.getAction();
+
         // 2. Invoke method to return types
         final Class<?> returnType = method.getReturnType();
         final HttpServerResponse response = context.response();
         if (Void.class == returnType || void.class == returnType) {
+
             // 3. Write to Client
             Caller.invokeVoid(context, event);
             response.end("OK");

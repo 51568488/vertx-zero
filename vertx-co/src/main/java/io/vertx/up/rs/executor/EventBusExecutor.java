@@ -5,10 +5,11 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.annotations.Address;
+import io.vertx.up.ce.Envelop;
 import io.vertx.up.ce.Event;
+import io.vertx.up.ce.codec.EnvelopCodec;
 import io.vertx.up.rs.Executor;
 import org.vie.util.Instance;
-import org.vie.util.Jackson;
 import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
@@ -32,11 +33,16 @@ public class EventBusHandler implements Executor {
             } else {
                 final Annotation annotation = Anno.get(method, Address.class);
                 final String address = Instance.invoke(annotation, "value");
-                final String value = Jackson.serialize(returnValue);
+                final Envelop envelop = Envelop.success(returnValue);
                 // Send message to address
                 final Vertx vertx = context.vertx();
                 final EventBus bus = vertx.eventBus();
-                bus.<String>send(address, value, handler -> {
+
+                // Set default codecs
+                {
+                    bus.registerDefaultCodec(Envelop.class, new EnvelopCodec());
+                }
+                bus.<String>send(address, envelop, handler -> {
                     // Build response
                     if (handler.succeeded()) {
                         final String data = handler.result().body();

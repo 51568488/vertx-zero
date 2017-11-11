@@ -5,6 +5,7 @@ import io.vertx.core.http.HttpStatusCode;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
 import org.vie.exception.WebException;
+import org.vie.util.Jackson;
 
 import java.io.Serializable;
 
@@ -19,6 +20,11 @@ public class Envelop implements Serializable {
     private final JsonObject data;
 
     private User user;
+
+    public static <T> Envelop success(final T entity) {
+        final String literal = Jackson.serialize(entity);
+        return success(new JsonObject(literal));
+    }
 
     public static Envelop success(final JsonObject data) {
         return new Envelop(data);
@@ -42,9 +48,13 @@ public class Envelop implements Serializable {
 
     private JsonObject build(final JsonObject input) {
         final JsonObject data = new JsonObject();
-        data.put(Response.BRIEF, this.error.getStatus().message());
-        data.put(Response.STATUS, this.error.getStatus().code());
-        data.put(Response.DATA, input);
+        final HttpStatusCode status = (null == this.error)
+                ? HttpStatusCode.OK : this.error.getStatus();
+        data.put(Response.BRIEF, status.message());
+        data.put(Response.STATUS, status.code());
+        if (null != input) {
+            data.put(Response.DATA, input);
+        }
         return data;
     }
 

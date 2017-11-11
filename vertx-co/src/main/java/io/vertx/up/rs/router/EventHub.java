@@ -32,20 +32,26 @@ public class EventHub implements Hub {
     @Override
     public void mount(final Router router) {
         // Extract Event foreach
-        for (final Event event : EVENTS) {
+        EVENTS.forEach(event -> {
             // 1. Build Route
-            if (null != event) {
-                final Route route = router.route();
-                // 2. Path, Method, Order
-                route.path(event.getPath())
-                        .method(event.getMethod())
-                        .order(event.getOrder());
-                // 3. Consumes/Produces
-                buildMedia(route, event);
-                // 4. Inject handler, event dispatch
-                route.handler(res -> dispatch(res, event));
-            }
-        }
+            HBool.exec(null == event, LOGGER,
+                    () -> {
+                        LOGGER.warn(Message.NULL_EVENT, getClass().getName());
+                    },
+                    () -> {
+                        final Route route = router.route();
+                        // 2. Path, Method, Order
+                        route.path(event.getPath())
+                                .method(event.getMethod())
+                                .order(event.getOrder());
+
+                        // 3. Consumes/Produces
+                        buildMedia(route, event);
+
+                        // 4. Inject handler, event dispatch
+                        route.handler(res -> dispatch(res, event));
+                    });
+        });
     }
 
     private void dispatch(final RoutingContext context,
@@ -54,18 +60,23 @@ public class EventHub implements Hub {
         final Method method = event.getAction();
         HBool.execUp(null == method, LOGGER, EventActionNoneException.class,
                 getClass(), event);
+
         // 2. Scan method to check @Address
         final boolean annotated = Anno.isMark(method, Address.class);
         if (annotated) {
+
             // 3.1. Event Bus Executing
             LOGGER.info(Message.DISPATCH, "EventBus", EventBusHandler.class.getName());
             final Executor executor = Instance.singleton(EventBusHandler.class);
             executor.execute(context, event);
+
         } else {
+
             LOGGER.info(Message.DISPATCH, "Non-EventBus", DirectHandler.class.getName());
             // 3.2. Response directly
             final Executor executor = Instance.singleton(DirectHandler.class);
             executor.execute(context, event);
+
         }
     }
 

@@ -20,6 +20,8 @@ public interface Annal {
 
     void jvm(Throwable ex);
 
+    void warn(String key, Object... args);
+
     void info(String key, Object... args);
 
     void debug(String key, Object... args);
@@ -46,6 +48,10 @@ class CommonAnnal implements Annal {
         this.logger = Instance.instance(inject, clazz);
     }
 
+    @Override
+    public void warn(final String key, final Object... args) {
+        this.logger.warn(key, args);
+    }
 
     @Override
     public void vertx(final VertxException ex) {

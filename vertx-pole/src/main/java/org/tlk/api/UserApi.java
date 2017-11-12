@@ -13,9 +13,9 @@ import java.util.Date;
  */
 @Path("/zero/exmaple")
 @EndPoint
-public class UserAgent {
+public class UserApi {
 
-    private static final Annal LOGGER = Annal.get(UserAgent.class);
+    private static final Annal LOGGER = Annal.get(UserApi.class);
     private static final String INPUT = "[ ZERO ] ( Exmaple ) arguments {0}, " +
             "type = {1}, response = {2}";
 

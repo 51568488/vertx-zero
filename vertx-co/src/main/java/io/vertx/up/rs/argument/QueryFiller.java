@@ -3,6 +3,7 @@ package io.vertx.up.rs.argument;
 import io.vertx.core.MultiMap;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.rs.Filler;
+import io.vertx.zero.web.ZeroSerializer;
 
 /**
  * Parse Query Params
@@ -18,6 +19,6 @@ public class QueryFiller implements Filler {
         // 1. Get query information.
         final MultiMap map = context.queryParams();
         // 2. Get name
-        return Value.get(map.get(name), paramType);
+        return ZeroSerializer.getValue(paramType, map.get(name));
     }
 }

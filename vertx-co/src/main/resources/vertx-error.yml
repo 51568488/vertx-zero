@@ -19,7 +19,9 @@ E40010: Vert.x zero require class {0} access modifier contains PUBLIC scope, but
 E40011: Vert.x zero found method parameters without any annotated, it's conflict. Type = {0}
 E40012: The address {0} does not existing in incoming address list. Position - type = {1}, method = {2}
 E40013: You want to send message to event bus, but agent method ({0}) of {1}''s return type is (void)
+E40014: Zero detected that there is no method of @Queue annotated @Address = {0}, the worker missing
 # (Web) Exception for web
 E60001: (400) - The input content could not be converted into valid resource user {0}
 E60002: (500) - The system detect some error in delivery on address {0}, error message = {1}
 E60003: (500) - The event bus detect some error in receiving message on address {0}, error message = {1}
+E60004: (400) - Zero system detect conversation from "{0}" to type "{1}", but it's conflict

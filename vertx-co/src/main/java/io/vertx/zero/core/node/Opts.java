@@ -5,8 +5,8 @@ import io.vertx.zero.core.ZeroNode;
 import io.vertx.zero.core.config.ZeroLime;
 import io.vertx.zero.core.config.ZeroPlugin;
 import org.vie.exception.DemonException;
-import org.vie.exception.ZeroException;
-import org.vie.exception.run.LimeFileException;
+import io.vertx.exception.ZeroException;
+import io.vertx.exception.zero.LimeFileException;
 import org.vie.fun.HPool;
 import org.vie.util.Instance;
 

@@ -4,6 +4,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.exception.ZeroException;
 import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.up.ce.Event;
@@ -12,7 +13,6 @@ import io.vertx.up.rs.config.EventExtractor;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.vie.core.reliable.Insurer;
-import org.vie.exception.ZeroException;
 import org.vie.util.Instance;
 import org.vie.util.Log;
 

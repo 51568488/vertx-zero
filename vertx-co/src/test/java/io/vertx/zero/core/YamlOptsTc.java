@@ -3,8 +3,8 @@ package io.vertx.zero.core;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.node.Opts;
 import org.junit.Test;
-import org.vie.exception.ZeroException;
-import org.vie.exception.run.LimeFileException;
+import io.vertx.exception.ZeroException;
+import io.vertx.exception.zero.LimeFileException;
 import top.UnitBase;
 
 public class YamlOptsTc extends UnitBase {

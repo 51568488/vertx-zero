@@ -204,7 +204,7 @@ Then you can test with rest client tool to fetch data from 8083 port.
 ```
 Test URI: http://localhost:8083/zero/example/one-way/user
 Test Method: POST
-Request:
+Input:
 {
 	"name":"lang",
 	"email":"lang.yu@hpe.com"

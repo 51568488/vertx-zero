@@ -3,7 +3,7 @@ package org.vie.fun;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.vie.cv.Values;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.fun.error.JdBiConsumer;
 
 import java.util.LinkedHashMap;

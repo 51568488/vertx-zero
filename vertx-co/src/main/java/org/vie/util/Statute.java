@@ -27,7 +27,7 @@ public final class Statute {
                     () -> filtered.get(Values.IDX));
         }, list, fnFilter);
     }
-
+    
     private Statute() {
     }
 }

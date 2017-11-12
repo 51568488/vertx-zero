@@ -3,7 +3,7 @@ package io.vertx.zero.core.equip;
 import io.vertx.core.VertxOptions;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.util.Instance;
 import top.UnitBase;
 

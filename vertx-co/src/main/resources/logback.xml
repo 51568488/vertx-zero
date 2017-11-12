@@ -26,9 +26,9 @@
         </encoder>
     </appender>
 
-    <logger name="cn.justfly.training.logging" level="info"/>
+    <logger name="cn.justfly.training.logging" level="INFO"/>
 
-    <root level="info">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>

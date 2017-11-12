@@ -2,6 +2,7 @@ package io.vertx.up.rs.argument;
 
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.rs.Filler;
+import io.vertx.zero.web.ZeroSerializer;
 
 public class PathFiller implements Filler {
     @Override
@@ -9,6 +10,6 @@ public class PathFiller implements Filler {
                         final Class<?> paramType,
                         final RoutingContext context) {
         // 1. Get path information
-        return Value.get(context.pathParam(name), paramType);
+        return ZeroSerializer.getValue(paramType, context.pathParam(name));
     }
 }

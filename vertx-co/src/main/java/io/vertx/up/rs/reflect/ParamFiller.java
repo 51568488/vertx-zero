@@ -1,13 +1,13 @@
 package io.vertx.up.rs.reflect;
 
 import io.vertx.core.impl.ConcurrentHashSet;
+import io.vertx.exception.up.ParameterConflictException;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.rs.Filler;
 import io.vertx.up.rs.argument.*;
-import org.vie.exception.up.ParameterConflictException;
+import io.vertx.zero.web.ZeroSerializer;
 import org.vie.fun.HBool;
 import org.vie.util.Instance;
-import org.vie.util.Types;
 import org.vie.util.log.Annal;
 
 import javax.ws.rs.*;
@@ -115,7 +115,7 @@ public class ParamFiller {
         Object dft = null;
         if (null != defaultValue) {
             // 1.1. Return default value direactly
-            dft = Types.fromString(paramType,
+            dft = ZeroSerializer.getValue(paramType,
                     Instance.invoke(defaultValue, "value"));
         }
         return dft;

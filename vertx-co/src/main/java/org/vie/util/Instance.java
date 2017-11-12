@@ -7,6 +7,8 @@ import org.vie.fun.HNull;
 import org.vie.fun.HPool;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unchecked")
 public final class Instance {
@@ -75,7 +77,23 @@ public final class Instance {
                                final Object... args) {
         return HNull.get(() -> {
             final MethodAccess access = MethodAccess.get(instance.getClass());
-            final Object ret = access.invoke(instance, name, args);
+            // Direct invoke, multi overwrite for unbox/box issue still existing.
+            // TODO: Unbox/Box type issue
+            Object result;
+            try {
+                result = access.invoke(instance, name, args);
+            } catch (final Throwable ex) {
+                // Could not call, re-find the method by index
+                // Search method by argument index because could not call directly
+                final int index;
+                final List<Class<?>> types = new ArrayList<>();
+                for (final Object arg : args) {
+                    types.add(Types.toPrimary(arg.getClass()));
+                }
+                index = access.getIndex(name, types.toArray(new Class<?>[]{}));
+                result = access.invoke(instance, index, args);
+            }
+            final Object ret = result;
             return HNull.get(() -> (T) ret, ret);
         }, instance, name);
     }

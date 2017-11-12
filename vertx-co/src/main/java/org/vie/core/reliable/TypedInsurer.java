@@ -2,7 +2,7 @@ package org.vie.core.reliable;
 
 import io.vertx.core.json.JsonObject;
 import org.vie.cv.em.DataType;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.exception.ensure.DataTypeWrongException;
 import org.vie.fun.HJson;
 import org.vie.fun.HNull;

@@ -1,6 +1,6 @@
 package org.vie.fun.error;
 
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 
 @FunctionalInterface
 public interface JdBiConsumer<T, R> {

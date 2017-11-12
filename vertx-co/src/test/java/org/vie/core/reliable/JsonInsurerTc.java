@@ -3,7 +3,7 @@ package org.vie.core.reliable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.junit.Test;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.exception.ensure.DataTypeWrongException;
 import org.vie.exception.ensure.RequiredFieldException;
 import org.vie.util.io.IO;

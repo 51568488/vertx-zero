@@ -3,7 +3,7 @@ package org.vie.util.log.internal;
 import io.vertx.core.VertxException;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.util.Log;
 import org.vie.util.log.Annal;
 

@@ -1,7 +1,7 @@
 package org.vie.fun;
 
-import org.vie.exception.ZeroException;
-import org.vie.exception.ZeroRunException;
+import io.vertx.exception.ZeroException;
+import io.vertx.exception.ZeroRunException;
 import org.vie.fun.error.JeSupplier;
 import org.vie.util.log.Annal;
 

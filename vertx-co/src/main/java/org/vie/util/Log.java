@@ -2,7 +2,7 @@ package org.vie.util;
 
 import io.vertx.core.VertxException;
 import io.vertx.core.logging.Logger;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.fun.HNull;
 import org.vie.fun.lang.JcPredicate;
 
@@ -29,7 +29,7 @@ public final class Log {
     }
 
     public static void debug(final Logger logger, final String pattern, final Object... rest) {
-        log(logger::isDebugEnabled, logger::debug, pattern, rest);
+        log(() -> true, logger::debug, pattern, rest);
     }
 
     public static void warn(final Logger logger, final String pattern, final Object... rest) {

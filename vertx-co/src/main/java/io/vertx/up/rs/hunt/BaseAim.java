@@ -2,16 +2,18 @@ package io.vertx.up.rs.hunt;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.eventbus.Message;
+import io.vertx.exception.WebException;
+import io.vertx.exception.web._500DeliveryErrorException;
+import io.vertx.exception.web._500EntityCastException;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.ce.Envelop;
 import io.vertx.up.ce.Event;
 import io.vertx.up.rs.reflect.ParamFiller;
-import org.vie.exception.WebException;
-import org.vie.exception.web._500DeliveryErrorException;
-import org.vie.exception.web._500EntityCastException;
 import org.vie.fun.HNull;
 import org.vie.util.Instance;
+import org.vie.util.StringUtil;
+import org.vie.util.log.Annal;
 import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
@@ -66,6 +68,8 @@ public abstract class BaseAim {
      */
     protected Object invoke(final Event event, final Object[] args) {
         final Method method = event.getAction();
+        getLogger().info("[ ZERO-DEBUG ] Method = {0}, Args = {1}",
+                method.getName(), StringUtil.join(args));
         return Instance.invoke(event.getProxy(), method.getName(), args);
     }
 
@@ -94,5 +98,7 @@ public abstract class BaseAim {
         return envelop;
     }
 
-    
+    protected Annal getLogger() {
+        return Annal.get(getClass());
+    }
 }

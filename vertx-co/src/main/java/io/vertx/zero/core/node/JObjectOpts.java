@@ -4,7 +4,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.Visitor;
 import io.vertx.zero.core.ZeroNode;
 import io.vertx.zero.core.config.ZeroVertx;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.util.Ensurer;
 import org.vie.util.Instance;
 import org.vie.util.Jackson;

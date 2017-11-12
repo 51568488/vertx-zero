@@ -2,12 +2,11 @@ package io.vertx.up.ce;
 
 import io.vertx.core.MultiMap;
 import io.vertx.core.http.HttpStatusCode;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.exception.WebException;
 import io.vertx.ext.auth.User;
-import org.vie.exception.WebException;
+import io.vertx.zero.web.ZeroSerializer;
 import org.vie.util.Jackson;
-import org.vie.util.Types;
 
 import java.io.Serializable;
 
@@ -112,16 +111,7 @@ public class Envelop implements Serializable {
     }
 
     private <T> Envelop(final T data) {
-        if (Types.isSerialized(data)) {
-            this.data = build(data);
-        } else {
-            final String literal = Jackson.serialize(data);
-            if (Types.isArray(data)) {
-                this.data = build(new JsonArray(literal));
-            } else {
-                this.data = build(new JsonObject(literal));
-            }
-        }
+        this.data = build(ZeroSerializer.toSupport(data));
         this.error = null;
         this.status = HttpStatusCode.OK;
     }
@@ -133,9 +123,7 @@ public class Envelop implements Serializable {
                 ? HttpStatusCode.OK : this.error.getStatus();
         data.put(Key.BRIEF, status.message());
         data.put(Key.STATUS, status.code());
-        if (null != input) {
-            data.put(Key.DATA, input);
-        }
+        data.put(Key.DATA, input);
         return data;
     }
 

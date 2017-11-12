@@ -8,7 +8,7 @@ import io.vertx.zero.ce.Ruler;
 import io.vertx.zero.core.Transformer;
 import io.vertx.zero.core.ZeroNode;
 import io.vertx.zero.core.config.ZeroVertx;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.exception.ensure.ClusterConflictException;
 import org.vie.fun.HJson;
 import org.vie.fun.HNull;

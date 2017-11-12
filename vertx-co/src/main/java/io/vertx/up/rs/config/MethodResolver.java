@@ -1,7 +1,7 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.core.http.HttpMethod;
-import org.vie.exception.up.MethodNullException;
+import io.vertx.exception.up.MethodNullException;
 import org.vie.fun.HBool;
 import org.vie.util.log.Annal;
 import org.vie.util.mirror.Anno;

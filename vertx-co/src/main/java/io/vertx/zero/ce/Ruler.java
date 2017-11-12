@@ -6,7 +6,7 @@ import org.vie.core.reliable.Insurer;
 import org.vie.core.reliable.RequiredInsurer;
 import org.vie.core.reliable.TypedInsurer;
 import org.vie.cv.Strings;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.fun.HJson;
 import org.vie.fun.HNull;
 import org.vie.fun.HPool;

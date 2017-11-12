@@ -1,6 +1,6 @@
 package org.vie.util;
 
-import org.vie.exception.run.ArgumentException;
+import io.vertx.exception.zero.ArgumentException;
 
 public final class Ensurer {
 

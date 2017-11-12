@@ -1,8 +1,8 @@
 package org.vie.fun;
 
 import io.vertx.core.VertxException;
-import org.vie.exception.ZeroException;
-import org.vie.exception.ZeroRunException;
+import io.vertx.exception.ZeroException;
+import io.vertx.exception.ZeroRunException;
 import org.vie.fun.error.JdConsumer;
 import org.vie.fun.error.JdSupplier;
 import org.vie.fun.lang.JcConsumer;

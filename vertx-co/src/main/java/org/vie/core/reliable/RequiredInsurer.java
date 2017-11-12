@@ -2,7 +2,7 @@ package org.vie.core.reliable;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.exception.ensure.RequiredFieldException;
 import org.vie.fun.HJson;
 import org.vie.fun.HNull;

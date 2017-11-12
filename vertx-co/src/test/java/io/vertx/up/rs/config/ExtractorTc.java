@@ -1,13 +1,13 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.core.DeploymentOptions;
+import io.vertx.exception.up.EventSourceException;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.up.cv.VertxValues;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.example.User;
-import io.vertx.up.web.ZeroHttpAgent;
+import io.vertx.zero.web.ZeroHttpAgent;
 import org.junit.Test;
-import org.vie.exception.up.EventSourceException;
 import org.vie.util.Instance;
 import top.UnitBase;
 

@@ -3,7 +3,7 @@ package org.vie.core.reliable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.vie.cv.Values;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.exception.ensure.JObjectElementException;
 import org.vie.fun.HNull;
 import org.vie.fun.HTry;

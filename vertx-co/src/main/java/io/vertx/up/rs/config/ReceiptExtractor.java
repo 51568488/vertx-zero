@@ -1,13 +1,13 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.core.impl.ConcurrentHashSet;
+import io.vertx.exception.up.AccessProxyException;
+import io.vertx.exception.up.AddressWrongException;
+import io.vertx.exception.up.NoArgConstructorException;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.ce.Receipt;
 import io.vertx.up.rs.Extractor;
-import io.vertx.up.web.ZeroAnno;
-import org.vie.exception.up.AccessProxyException;
-import org.vie.exception.up.AddressWrongException;
-import org.vie.exception.up.NoArgConstructorException;
+import io.vertx.zero.web.ZeroAnno;
 import org.vie.fun.HBool;
 import org.vie.fun.HNull;
 import org.vie.util.Instance;

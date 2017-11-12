@@ -2,7 +2,7 @@ package org.vie.util;
 
 import io.vertx.core.VertxException;
 import io.vertx.core.logging.Logger;
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.fun.HNull;
 import org.vie.fun.lang.JcPredicate;
 

@@ -1,12 +1,12 @@
 package io.vertx.up.rs.hunt;
 
+import io.vertx.exception.up.ReturnTypeException;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.ce.Event;
 import io.vertx.up.ce.Receipt;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Splitter;
-import io.vertx.up.web.ZeroAnno;
-import org.vie.exception.up.ReturnTypeException;
+import io.vertx.zero.web.ZeroAnno;
 import org.vie.fun.HBool;
 import org.vie.fun.HNull;
 import org.vie.util.Instance;
@@ -88,18 +88,20 @@ public class ModeSplitter implements Splitter {
         final Optional<Receipt> found = RECEIPTS.stream()
                 .filter(item -> address.equals(item.getAddress()))
                 .findFirst();
+        Class<?> returnType = null;
         if (found.isPresent()) {
             final Method method = found.get().getMethod();
             if (null == method) {
-                // TODO: Method不合法，同样找不到
-                return null;
+                HBool.execUp(true, LOGGER, ReturnTypeException.class,
+                        getClass(), address);
             } else {
-                return method.getReturnType();
+                returnType = method.getReturnType();
             }
         } else {
-            // TODO: 找不到对应地址的Worker
-            return null;
+            HBool.execUp(true, LOGGER, ReturnTypeException.class,
+                    getClass(), address);
         }
+        return returnType;
     }
 
     private transient final AtomicBoolean isReturnType = new AtomicBoolean(false);

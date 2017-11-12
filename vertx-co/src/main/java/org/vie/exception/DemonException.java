@@ -1,5 +1,6 @@
 package org.vie.exception;
 
+import io.vertx.exception.ZeroException;
 import org.vie.util.Errors;
 
 /**

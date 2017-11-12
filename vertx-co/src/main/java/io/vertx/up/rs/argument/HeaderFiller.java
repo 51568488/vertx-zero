@@ -3,6 +3,7 @@ package io.vertx.up.rs.argument;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.rs.Filler;
+import io.vertx.zero.web.ZeroSerializer;
 
 public class HeaderFiller implements Filler {
     @Override
@@ -11,6 +12,6 @@ public class HeaderFiller implements Filler {
                         final RoutingContext context) {
         // Extract data from header
         final HttpServerRequest request = context.request();
-        return Value.get(request.getHeader(name), paramType);
+        return ZeroSerializer.getValue(paramType, request.getHeader(name));
     }
 }

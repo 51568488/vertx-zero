@@ -1,6 +1,6 @@
 package org.vie.fun;
 
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 import org.vie.fun.error.JdConsumer;
 import org.vie.fun.lang.JcConsumer;
 

@@ -1,6 +1,6 @@
 package io.vertx.zero.core;
 
-import org.vie.exception.ZeroException;
+import io.vertx.exception.ZeroException;
 
 public interface Visitor<T> {
     /**

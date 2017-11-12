@@ -3,8 +3,8 @@ package io.vertx.zero.core.equip;
 import io.vertx.core.http.HttpServerOptions;
 import org.junit.Assert;
 import org.junit.Test;
-import org.vie.exception.ZeroException;
-import org.vie.exception.run.ArgumentException;
+import io.vertx.exception.ZeroException;
+import io.vertx.exception.zero.ArgumentException;
 import org.vie.util.Instance;
 import top.UnitBase;
 

@@ -3,7 +3,7 @@ package org.vie.util.io;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import org.vie.exception.run.EmptyStreamException;
+import io.vertx.exception.zero.EmptyStreamException;
 import org.vie.fun.HBool;
 import org.vie.fun.HFail;
 import org.vie.util.Log;

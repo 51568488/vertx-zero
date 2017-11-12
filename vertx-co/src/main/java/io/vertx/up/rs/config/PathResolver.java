@@ -1,8 +1,8 @@
 package io.vertx.up.rs.config;
 
+import io.vertx.exception.up.PathAnnoEmptyException;
 import org.vie.cv.Strings;
 import org.vie.cv.Values;
-import org.vie.exception.up.PathAnnoEmptyException;
 import org.vie.fun.HBool;
 import org.vie.fun.HNull;
 import org.vie.util.StringUtil;

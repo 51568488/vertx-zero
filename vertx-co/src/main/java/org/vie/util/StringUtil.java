@@ -6,6 +6,7 @@ import org.vie.cv.Strings;
 import org.vie.fun.HFail;
 import org.vie.fun.HNull;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -51,6 +52,16 @@ public class StringUtil {
             }
             return builder.toString();
         }, input);
+    }
+
+    public static String join(final Object[] input) {
+        final Set<String> data = new HashSet<>();
+        for (final Object item : input) {
+            if (null != item) {
+                data.add(item.toString());
+            }
+        }
+        return join(data);
     }
 
     public static boolean isNil(final String input) {

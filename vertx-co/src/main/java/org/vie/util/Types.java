@@ -8,6 +8,8 @@ import org.vie.fun.HNull;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class Types {
 
@@ -72,4 +74,22 @@ public class Types {
         return (value instanceof Collection ||
                 value.getClass().isArray());
     }
+
+    public static Class<?> toPrimary(final Class<?> source) {
+        return UNBOXES.getOrDefault(source, source);
+    }
+
+    public static ConcurrentMap<Class<?>, Class<?>> UNBOXES =
+            new ConcurrentHashMap<Class<?>, Class<?>>() {
+                {
+                    put(Integer.class, int.class);
+                    put(Long.class, long.class);
+                    put(Short.class, short.class);
+                    put(Boolean.class, boolean.class);
+                    put(Character.class, char.class);
+                    put(Double.class, double.class);
+                    put(Float.class, float.class);
+                    put(Byte.class, byte.class);
+                }
+            };
 }

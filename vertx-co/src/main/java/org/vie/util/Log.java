@@ -29,7 +29,7 @@ public final class Log {
     }
 
     public static void debug(final Logger logger, final String pattern, final Object... rest) {
-        log(logger::isDebugEnabled, logger::debug, pattern, rest);
+        log(() -> true, logger::debug, pattern, rest);
     }
 
     public static void warn(final Logger logger, final String pattern, final Object... rest) {

@@ -50,5 +50,8 @@ public class ZeroHttpWorker extends AbstractVerticle {
 
     private void verify(final Method method) {
         // 1. Ensure method length.
+        final Class<?>[] params = method.getParameterTypes();
+        final Class<?> returnType = method.getReturnType();
+        // 2. The parameters
     }
 }

@@ -48,6 +48,7 @@ public class VertxApplication {
     };
 
     private transient final Class<?> clazz;
+    private transient final VertxPlugin plugin = Instance.singleton(VertxPlugin.class);
     private ConcurrentMap<String, Annotation> annotationMap = new ConcurrentHashMap<>();
 
     private VertxApplication(final Class<?> clazz) {
@@ -79,6 +80,8 @@ public class VertxApplication {
             deployAgents(vertx);
             /** 2.Find Worker for deploy **/
             deployWorkers(vertx);
+            /** 3.Initialize Plugin **/
+            this.plugin.connect(vertx);
             /** 4.Connect and started **/
         });
     }

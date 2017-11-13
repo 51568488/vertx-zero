@@ -4,7 +4,7 @@ import io.vertx.core.VertxException;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.exception.ZeroException;
-import io.vertx.zero.ce.Ambient;
+import io.vertx.zero.web.ZeroAmbient;
 import org.vie.util.Instance;
 import org.vie.util.Log;
 import org.vie.util.log.internal.Log4JAnnal;
@@ -39,7 +39,7 @@ class CommonAnnal implements Annal {
     private transient final Annal logger;
 
     public CommonAnnal(final Class<?> clazz) {
-        Class<?> inject = Ambient.get("logger");
+        Class<?> inject = ZeroAmbient.getPlugin("logger");
         if (null == inject) {
             Log.debug(RECORD, Info.INF_INJECT, clazz);
             inject = Log4JAnnal.class;

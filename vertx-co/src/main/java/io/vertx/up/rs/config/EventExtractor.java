@@ -105,7 +105,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
                     // Use root directly.
                     event.setPath(root);
                 } else {
-                    // TODO: Impossible to get here.
+                    // TODO: Impossible to getPlugin here.
                 }
             } else {
                 final String result = PathResolver.resolve(

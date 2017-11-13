@@ -5,6 +5,7 @@ import io.vertx.exception.ZeroException;
 import io.vertx.exception.ZeroRunException;
 import org.vie.fun.error.JdConsumer;
 import org.vie.fun.error.JdSupplier;
+import org.vie.fun.error.JeSupplier;
 import org.vie.fun.lang.JcConsumer;
 import org.vie.util.log.Annal;
 
@@ -61,6 +62,19 @@ public class HTry {
         } catch (final VertxException ex) {
             logger.vertx(ex);
         } catch (final Throwable ex) {
+            logger.jvm(ex);
+        }
+    }
+
+    /**
+     * @param supplier
+     * @param logger
+     */
+    public static void execJvm(final JeSupplier<Void> supplier,
+                               final Annal logger) {
+        try {
+            supplier.get();
+        } catch (final Exception ex) {
             logger.jvm(ex);
         }
     }

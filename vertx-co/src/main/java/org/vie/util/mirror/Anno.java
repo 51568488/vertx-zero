@@ -46,7 +46,7 @@ public final class Anno {
     }
 
     /**
-     * Query clazz's methods to get all annotated spec annotations.
+     * Query clazz's methods to getPlugin all annotated spec annotations.
      *
      * @param clazz
      * @param methodCls

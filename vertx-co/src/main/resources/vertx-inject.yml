@@ -1,2 +1,2 @@
 logger: org.vie.util.log.internal.Log4JAnnal
-
+mongo: io.vertx.zero.core.mongo.MongoInfix

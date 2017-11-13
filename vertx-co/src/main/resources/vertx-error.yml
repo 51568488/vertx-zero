@@ -20,6 +20,8 @@ E40011: Vert.x zero found method parameters without any annotated, it's conflict
 E40012: The address {0} does not existing in incoming address list. Position - type = {1}, method = {2}
 E40013: You want to send message to event bus, but agent method ({0}) of {1}''s return type is (void)
 E40014: Zero detected that there is no method of @Queue annotated @Address = {0}, the worker missing
+E40015: Plugin component met error when reading option on key = {0}
+E40016: You enabled the plugin ( key = {0} ), but this plugin has no method of ( public static void init(Vertx) )
 # (Web) Exception for web
 E60001: (400) - The input content could not be converted into valid resource user {0}
 E60002: (500) - The system detect some error in delivery on address {0}, error message = {1}

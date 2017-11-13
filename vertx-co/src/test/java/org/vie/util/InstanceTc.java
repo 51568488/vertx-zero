@@ -1,6 +1,7 @@
 package org.vie.util;
 
 import org.junit.Test;
+import org.vie.util.log.Annal;
 import top.test.UnitBase;
 
 public class InstanceTc extends UnitBase {
@@ -38,25 +39,30 @@ public class InstanceTc extends UnitBase {
 
 class Email {
 
+    private static final Annal LOGGER = Annal.get(Email.class);
+
     public void invoke(final Integer integer) {
-        System.out.println("Integer: " + integer);
+        LOGGER.info("Email: invoke(Integer) " + integer);
     }
 
     public void invoke(final int integer) {
-        System.out.println("int: " + integer);
+
+        LOGGER.info("Email: invoke(int)" + integer);
     }
 }
 
 class User {
+    private static final Annal LOGGER = Annal.get(User.class);
+
     public void invoke() {
-        System.out.println("Hello");
+        LOGGER.info("User: invoke. ");
     }
 
     public void invoke(final String name) {
-        System.out.println(name);
+        LOGGER.info("User: invoke(String)" + name);
     }
 
     public void invoke(final int integer) {
-        System.out.println(integer);
+        LOGGER.info("User: invoke(Integer)" + integer);
     }
 }

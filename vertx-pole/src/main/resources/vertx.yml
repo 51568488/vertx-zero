@@ -5,4 +5,4 @@ zero:
     - name: vx-zero
       options:
         # Fix block 2000 limit issue.
-        maxEventLoopExecuteTime: 6000000000
+        maxEventLoopExecuteTime: 30000000000

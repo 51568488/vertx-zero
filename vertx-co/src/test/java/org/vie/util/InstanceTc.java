@@ -1,7 +1,7 @@
 package org.vie.util;
 
 import org.junit.Test;
-import top.UnitBase;
+import top.test.UnitBase;
 
 public class InstanceTc extends UnitBase {
 

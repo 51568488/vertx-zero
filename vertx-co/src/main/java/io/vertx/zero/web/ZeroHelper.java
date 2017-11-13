@@ -57,7 +57,10 @@ public class ZeroHelper {
             final int size = filtered.size();
             HBool.execUp(1 < size,
                     LOGGER, AgentDuplicatedException.class,
-                    ZeroHelper.class, server, size);
+                    ZeroHelper.class, server, size,
+                    filtered.stream()
+                            .map(agent -> agent.getName())
+                            .collect(Collectors.toSet()));
             // == 0 means undefined
             // == 1 means correct defined
             defined.put(server, Values.ONE == size);

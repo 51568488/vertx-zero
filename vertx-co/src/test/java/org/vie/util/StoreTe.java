@@ -3,7 +3,7 @@ package org.vie.util;
 import io.vertx.exception.zero.EmptyStreamException;
 import io.vertx.exception.zero.JsonFormatException;
 import org.junit.Test;
-import top.StoreBase;
+import top.test.StoreBase;
 
 public class StoreTe extends StoreBase {
 

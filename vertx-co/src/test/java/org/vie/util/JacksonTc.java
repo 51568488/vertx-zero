@@ -4,7 +4,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.vie.util.io.IO;
-import top.StoreBase;
+import top.test.StoreBase;
 
 public class JacksonTc extends StoreBase {
 

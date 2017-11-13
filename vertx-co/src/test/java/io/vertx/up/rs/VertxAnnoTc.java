@@ -2,13 +2,13 @@ package io.vertx.up.rs;
 
 import io.vertx.exception.up.AgentDuplicatedException;
 import io.vertx.ext.unit.TestContext;
+import io.vertx.test.example.AnnoAgent;
+import io.vertx.test.example.AnnoExceAgent;
 import io.vertx.up.cv.em.ServerType;
 import io.vertx.zero.web.ZeroAnno;
 import io.vertx.zero.web.ZeroHttpAgent;
 import org.junit.Test;
-import top.UnitBase;
-import top.example.AnnoAgent;
-import top.example.AnnoExceAgent;
+import top.test.UnitBase;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;

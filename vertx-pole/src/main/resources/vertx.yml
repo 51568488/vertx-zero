@@ -1,5 +1,5 @@
 zero:
-  lime: db
+  lime: mongo
   vertx:
     instance:
     - name: vx-zero

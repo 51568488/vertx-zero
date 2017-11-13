@@ -8,9 +8,12 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.exception.zero.EmptyStreamException;
 import io.vertx.exception.zero.JsonFormatException;
+import org.vie.cv.Strings;
 import org.vie.cv.Values;
+import org.vie.cv.em.YamlType;
 import org.vie.fun.HBool;
 import org.vie.fun.HFail;
+import org.vie.fun.HNull;
 import org.vie.fun.HTry;
 import org.vie.util.Log;
 
@@ -29,6 +32,7 @@ public final class IO {
      * Yaml
      **/
     private static final ObjectMapper YAML = new YAMLMapper();
+
     /**
      * Direct read by vert.x logger to avoid dead lock
      */
@@ -93,10 +97,33 @@ public final class IO {
      * @param filename
      * @return
      */
-    public static JsonObject getYaml(final String filename) {
-        return HFail.exec(() -> new JsonObject(
-                YAML.readTree(Stream.read(filename)).toString()
-        ), filename);
+    @SuppressWarnings("unchecked")
+    public static <T> T getYaml(final String filename) {
+        final YamlType type = getYamlType(filename);
+        return HBool.exec(YamlType.ARRAY == type,
+                () -> (T) HFail.exec(() -> new JsonArray(
+                        YAML.readTree(Stream.read(filename)).toString()
+                ), filename),
+                () -> (T) HFail.exec(() -> new JsonObject(
+                        YAML.readTree(Stream.read(filename)).toString()
+                ), filename));
+    }
+
+    /**
+     * Check yaml type
+     *
+     * @param filename
+     * @return
+     */
+    public static YamlType getYamlType(final String filename) {
+        final String content = IO.getString(filename);
+        return HNull.get(content, () -> {
+            if (content.trim().startsWith(Strings.DASH)) {
+                return YamlType.ARRAY;
+            } else {
+                return YamlType.OBJECT;
+            }
+        }, YamlType.OBJECT);
     }
 
     /**

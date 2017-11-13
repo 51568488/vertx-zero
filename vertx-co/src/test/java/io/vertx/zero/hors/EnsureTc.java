@@ -5,7 +5,7 @@ import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
 import org.vie.exception.DemonException;
 import org.vie.exception.ensure.RequiredFieldException;
-import top.UnitBase;
+import top.test.UnitBase;
 
 public class EnsureTc extends UnitBase {
 

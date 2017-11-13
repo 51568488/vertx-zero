@@ -2,6 +2,7 @@ package io.vertx.zero.core.config;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.ZeroNode;
+import io.vertx.zero.cv.Plugins;
 import org.vie.cv.Strings;
 import org.vie.fun.HBool;
 import org.vie.fun.HFail;
@@ -40,12 +41,12 @@ public class ZeroVertx implements ZeroNode<JsonObject> {
         if (null != data) {
             final String limeStr = data.getString(Key.LIME);
             final Set<String> sets = StringUtil.split(limeStr, Strings.COMMA);
-            // Error table list
-            appendKey(sets, "error");
-            // Server List
-            appendKey(sets, "server");
-            // Injection points
-            appendKey(sets, "inject");
+            /**
+             * server, inject, error
+             */
+            for (final String item : Plugins.DATA) {
+                appendKey(sets, item);
+            }
             data.put(Key.LIME, StringUtil.join(sets));
         }
     }

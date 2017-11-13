@@ -9,7 +9,7 @@ E10004: (V) - The cluster options is enabled, but the "{0}" vertx instance = "{1
 E40001: Vert.x zero boot class should not be null, please provide the entry of this application
 E40002: Vert.x zero boot class must be marked with annotation "Up", but ( name= {0} ) it''s missing
 E40003: ZeroLauncher require input callback to handle vertx reference, but not it''s null
-E40004: You have defined {0} agent for server of type {1}, it''s fobbiden.
+E40004: You have defined {0} agent {2} for server of type {1}, it''s fobbiden
 E40005: Event extractor only accept to scan class of @EndPoint, but now it''s {0}
 E40006: PathResolver could not accept null pointer reference of @Path
 E40007: MethodResolver could not accept null pointer reference of Method

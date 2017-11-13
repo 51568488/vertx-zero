@@ -2,7 +2,7 @@ package org.vie.util.io;
 
 import io.vertx.ext.unit.TestContext;
 import org.junit.Test;
-import top.StoreBase;
+import top.test.StoreBase;
 
 public class StreamTc extends StoreBase {
 

@@ -5,7 +5,7 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.up.rs.config.example.*;
 import io.vertx.zero.web.ZeroHelper;
 import org.junit.Test;
-import top.UnitBase;
+import top.test.UnitBase;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.Method;

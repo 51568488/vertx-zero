@@ -1,12 +1,12 @@
 package org.vie.util.mirror;
 
 import io.vertx.ext.unit.TestContext;
+import io.vertx.test.example.AnnoAgent;
+import io.vertx.test.example.AnnoOne;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.annotations.Up;
 import org.junit.Test;
-import top.UnitBase;
-import top.example.AnnoAgent;
-import top.example.AnnoOne;
+import top.test.UnitBase;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentMap;

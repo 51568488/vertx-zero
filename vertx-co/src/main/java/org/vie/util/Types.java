@@ -1,5 +1,7 @@
 package org.vie.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.vie.cv.Values;
@@ -22,14 +24,14 @@ public class Types {
     public static boolean isJArray(final Object value) {
         return HBool.exec(null == value,
                 () -> false,
-                () -> value instanceof JsonArray);
+                () -> JsonArray.class == value.getClass());
     }
 
     public static boolean isJObject(final Object value) {
         return HBool.exec(null == value,
                 () -> false,
-                () -> value instanceof JsonObject ||
-                        value instanceof LinkedHashMap);
+                () -> JsonObject.class == value.getClass() ||
+                        LinkedHashMap.class == value.getClass());
     }
 
     public static boolean isInteger(final Object value) {
@@ -60,6 +62,8 @@ public class Types {
                     return logical;
                 });
     }
+
+    private static final ObjectMapper YAML = new YAMLMapper();
 
     public static boolean isDate(final Object value) {
         return HBool.exec(null == value,

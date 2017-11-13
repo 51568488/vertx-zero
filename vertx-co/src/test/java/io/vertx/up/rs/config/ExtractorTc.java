@@ -9,7 +9,7 @@ import io.vertx.up.rs.config.example.User;
 import io.vertx.zero.web.ZeroHttpAgent;
 import org.junit.Test;
 import org.vie.util.Instance;
-import top.UnitBase;
+import top.test.UnitBase;
 
 public class ExtractorTc extends UnitBase {
 

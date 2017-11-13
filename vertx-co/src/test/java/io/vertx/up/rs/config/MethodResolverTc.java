@@ -4,7 +4,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.up.rs.config.example.RMethod1;
 import org.junit.Test;
-import top.UnitBase;
+import top.test.UnitBase;
 
 import java.lang.reflect.Method;
 

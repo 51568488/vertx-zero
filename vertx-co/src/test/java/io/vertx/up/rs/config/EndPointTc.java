@@ -6,7 +6,7 @@ import io.vertx.up.ce.Event;
 import io.vertx.up.rs.config.example.ED;
 import io.vertx.up.rs.config.example.ED1;
 import org.junit.Test;
-import top.UnitBase;
+import top.test.UnitBase;
 
 import java.util.Set;
 

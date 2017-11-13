@@ -1,0 +1,5 @@
+database: vertx_zero_up
+port: 2008
+host: 127.0.0.1
+username: zero
+password: zero

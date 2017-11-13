@@ -3,7 +3,7 @@ package io.vertx.up.rs.config;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.up.rs.config.example.Media;
 import org.junit.Test;
-import top.UnitBase;
+import top.test.UnitBase;
 
 import javax.ws.rs.core.MediaType;
 import java.lang.reflect.Method;

@@ -49,7 +49,7 @@ public class ZeroHttpWorker extends AbstractVerticle {
                             Instance.invoke(reference, method.getName(), message);
                         } else {
                             // Envelop ( Envelop )
-                            sync(message, reference, method.getName());
+                            syncReply(message, reference, method.getName());
                         }
 
                     });
@@ -60,9 +60,9 @@ public class ZeroHttpWorker extends AbstractVerticle {
         }
     }
 
-    private void sync(final Message<Envelop> message,
-                      final Object reference,
-                      final String name) {
+    private void syncReply(final Message<Envelop> message,
+                           final Object reference,
+                           final String name) {
         // Call the handler
         final Envelop envelop = message.body();
         // Invoke

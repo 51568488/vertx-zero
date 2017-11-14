@@ -7,6 +7,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.exception.WebException;
 import io.vertx.ext.auth.User;
 import io.vertx.zero.web.ZeroSerializer;
+import org.vie.fun.HBool;
 import org.vie.util.Jackson;
 
 import java.io.Serializable;
@@ -38,7 +39,10 @@ public class Envelop implements Serializable {
      * @return
      */
     public JsonObject data() {
-        return this.data;
+        return HBool.exec(null != this.data && this.data.containsKey(Key.DATA),
+                () -> this.data.getJsonObject(Key.DATA),
+                () -> this.data
+        );
     }
 
     /**
@@ -60,30 +64,18 @@ public class Envelop implements Serializable {
     }
 
     /**
-     * Extract message part to t
-     *
-     * @param message
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    public static <T> T data(final Message<Envelop> message,
-                             final Class<T> clazz) {
-        final Envelop body = message.body();
-        if (null != body) {
-            return body.data(clazz);
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Convert to response
      *
      * @return
      */
     public String response() {
-        return this.data().encode();
+        final JsonObject response;
+        if (null == this.error) {
+            response = this.data;
+        } else {
+            response = fail(this.error);
+        }
+        return response.encode();
     }
 
     /**
@@ -116,19 +108,6 @@ public class Envelop implements Serializable {
         this.headers = headers;
     }
 
-    /**
-     * Empty content success
-     *
-     * @return
-     */
-    public static Envelop ok() {
-        return success(null);
-    }
-
-    public static <T> Envelop success(final T entity) {
-        return new Envelop(entity);
-    }
-
     private <T> Envelop(final T data) {
         this.data = build(ZeroSerializer.toSupport(data));
         this.error = null;
@@ -148,6 +127,20 @@ public class Envelop implements Serializable {
 
     // ------------------ Failure resource model ------------------
 
+
+    /**
+     * Empty content success
+     *
+     * @return
+     */
+    public static Envelop ok() {
+        return success(null);
+    }
+
+    public static <T> Envelop success(final T entity) {
+        return new Envelop(entity);
+    }
+
     /**
      * Failure response with exception
      *
@@ -156,6 +149,24 @@ public class Envelop implements Serializable {
      */
     public static Envelop failure(final WebException error) {
         return new Envelop(error);
+    }
+
+    /**
+     * Extract message part to t
+     *
+     * @param message
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public static <T> T data(final Message<Envelop> message,
+                             final Class<T> clazz) {
+        final Envelop body = message.body();
+        if (null != body) {
+            return body.data(clazz);
+        } else {
+            return null;
+        }
     }
 
     private Envelop(final WebException error) {

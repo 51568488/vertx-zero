@@ -5,13 +5,13 @@ This project is based on Vert.x, the idea came from Spring-Boot framework. It co
 ## 1. Documentation
 
 1. [Getting Start](doc/zero-starter.md)
-* [@Path usage](doc/zero-path.md)
-* [@BodyParam usage](doc/zero-param.md)
-* [Set POJO as parameters](doc/zero-pojo.md)
-* [Parameter type supported](doc/zero-typed.md)
-* [How to enable Event Bus](doc/zero-worker.md)
-* [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
-* [Mongo Plugin in Zero](doc/zero-mongo.md)
+2. [@Path usage](doc/zero-path.md)
+3. [@BodyParam usage](doc/zero-param.md)
+4. [Set POJO as parameters](doc/zero-pojo.md)
+5. [Parameter type supported](doc/zero-typed.md)
+6. [How to enable Event Bus](doc/zero-worker.md)
+7. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
+8. [Mongo Plugin in Zero](doc/zero-mongo.md)
 
 ## 2. Source Code
 

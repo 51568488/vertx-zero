@@ -1,5 +1,6 @@
 package io.vertx.up.rs.hunt;
 
+import io.vertx.core.eventbus.Message;
 import io.vertx.exception.up.ReturnTypeException;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.ce.Event;
@@ -7,11 +8,11 @@ import io.vertx.up.ce.Receipt;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Splitter;
 import io.vertx.zero.web.ZeroAnno;
+import org.vie.cv.Values;
 import org.vie.fun.HBool;
 import org.vie.fun.HNull;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
-import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -35,7 +36,7 @@ public class ModeSplitter implements Splitter {
     public Aim distribute(final Event event) {
         return HNull.get(() -> {
             // 1. Scan method to check @Address
-            final boolean annotated = Anno.isMark(event.getAction(), Address.class);
+            final boolean annotated = event.getAction().isAnnotationPresent(Address.class);
             final Method method = event.getAction();
             final Class<?> returnType = method.getReturnType();
             // 2. Split request flow
@@ -50,10 +51,16 @@ public class ModeSplitter implements Splitter {
                             getClass(), method);
                 } else {
                     // Scan the system to find replier method return type.
-                    final Class<?> replierType = findReplier(event);
+                    final Method replier = findReplier(event);
+                    final Class<?> replierType = replier.getReturnType();
                     if (Void.class == replierType || void.class == replierType) {
-                        // Mode 3: Event Bus: One-Way
-                        aim = Instance.singleton(OneWayAim.class);
+                        if (isAsync(replier)) {
+                            // Mode 5: Event Bus: ( Async ) Request-Response
+                            aim = Instance.singleton(AsyncAim.class);
+                        } else {
+                            // Mode 3: Event Bus: One-Way
+                            aim = Instance.singleton(OneWayAim.class);
+                        }
                     } else {
                         // Mode 1: Event Bus: Request-Response
                         aim = Instance.singleton(AsyncAim.class);
@@ -73,6 +80,18 @@ public class ModeSplitter implements Splitter {
         }, event, event.getAction());
     }
 
+    private boolean isAsync(final Method method) {
+        boolean async = false;
+        final Class<?>[] paramTypes = method.getParameterTypes();
+        if (Values.ONE == paramTypes.length) {
+            final Class<?> argumentCls = paramTypes[0];
+            if (Message.class == argumentCls) {
+                async = true;
+            }
+        }
+        return async;
+    }
+
     /**
      * If the event but enabled, it means that zero system must find
      * the Address matched target worker Receipt, this action is trying to
@@ -81,27 +100,25 @@ public class ModeSplitter implements Splitter {
      * @param event
      * @return
      */
-    private Class<?> findReplier(final Event event) {
-        final Annotation annotation = Anno.get(event.getAction(), Address.class);
+    private Method findReplier(final Event event) {
+        final Annotation annotation = event.getAction().getDeclaredAnnotation(Address.class);
         final String address = Instance.invoke(annotation, "value");
         // Here address mustn't be null or empty
         final Optional<Receipt> found = RECEIPTS.stream()
                 .filter(item -> address.equals(item.getAddress()))
                 .findFirst();
-        Class<?> returnType = null;
+        Method method = null;
         if (found.isPresent()) {
-            final Method method = found.get().getMethod();
+            method = found.get().getMethod();
             if (null == method) {
                 HBool.execUp(true, LOGGER, ReturnTypeException.class,
                         getClass(), address);
-            } else {
-                returnType = method.getReturnType();
             }
         } else {
             HBool.execUp(true, LOGGER, ReturnTypeException.class,
                     getClass(), address);
         }
-        return returnType;
+        return method;
     }
 
     private transient final AtomicBoolean isReturnType = new AtomicBoolean(false);

@@ -3,11 +3,13 @@ package io.vertx.zero.web;
 import io.vertx.core.ClusterOptions;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.exception.up.PluginOptionException;
 import io.vertx.zero.core.equip.HttpServerVisitor;
 import io.vertx.zero.core.equip.ServerVisitor;
 import io.vertx.zero.core.equip.UprightVisitor;
 import io.vertx.zero.core.equip.VertxVisitor;
 import org.vie.cv.em.YamlType;
+import org.vie.fun.HBool;
 import org.vie.fun.HTry;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
@@ -30,12 +32,12 @@ public class ZeroGrid {
     static {
         HTry.execZero(() -> {
             // Init for VertxOptions, ClusterOptions
-            // 1. Visit Vertx
+            // Visit Vertx
             if (VX_OPTS.isEmpty() || null == CLUSTER) {
                 final UprightVisitor visitor =
                         Instance.singleton(VertxVisitor.class);
                 VX_OPTS.putAll(visitor.visit());
-                // 2. Must after visit
+                // Must after visit
                 CLUSTER = visitor.getCluster();
             }
             // Init for HttpServerOptions
@@ -45,24 +47,22 @@ public class ZeroGrid {
                 SERVER_OPTS.putAll(visitor.visit());
             }
             // Init for all plugin options.
-            ZeroPlugin.init();
+            ZeroAmbient.init();
             return null;
         }, LOGGER);
     }
 
     @SuppressWarnings("unchecked")
     public static <T> T getOptions(final String name) {
-        final YamlType type = ZeroPlugin.getType(name);
-        if (null == type) {
-            // TODO: Missing Grid
+        final YamlType type = ZeroAmbient.getType(name);
+        HBool.execUp(null == type, LOGGER,
+                PluginOptionException.class,
+                ZeroGrid.class, name);
+        if (YamlType.OBJECT == type) {
+            return (T) ZeroAmbient.getObject(name);
         } else {
-            if (YamlType.OBJECT == type) {
-                return (T) ZeroPlugin.getObject(name);
-            } else {
-                return (T) ZeroPlugin.getArray(name);
-            }
+            return (T) ZeroAmbient.getArray(name);
         }
-        return null;
     }
 
     public static ConcurrentMap<String, VertxOptions> getVertxOptions() {

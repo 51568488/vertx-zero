@@ -95,4 +95,15 @@ public class UserApi {
         LOGGER.info(INPUT, "User = " + user.toString(), "Body", response);
         return response;
     }
+
+    @POST
+    @Path("/async/user")
+    @Address("ZERO://ROLE")
+    public String sendAsync(
+            @BodyParam final User user) {
+        final String response = Jackson.serialize(user);
+        LOGGER.info(INPUT, "( Mongo ) User = " + user.toString(),
+                "Body", response);
+        return response;
+    }
 }

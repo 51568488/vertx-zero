@@ -7,7 +7,6 @@ import org.vie.fun.HNull;
 import org.vie.fun.HPool;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
-import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +31,7 @@ public class WorkerExtractor implements Extractor<DeploymentOptions> {
     }
 
     private DeploymentOptions transform(final Class<?> clazz) {
-        final Annotation annotation = Anno.get(clazz, Worker.class);
+        final Annotation annotation = clazz.getDeclaredAnnotation(Worker.class);
         // 1. Instance
         final int instances = Instance.invoke(annotation, Key.INSTANCES);
         final boolean ha = Instance.invoke(annotation, Key.HA);

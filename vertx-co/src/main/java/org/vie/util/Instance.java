@@ -5,13 +5,19 @@ import com.esotericsoftware.reflectasm.MethodAccess;
 import org.vie.fun.HFail;
 import org.vie.fun.HNull;
 import org.vie.fun.HPool;
+import org.vie.fun.HTry;
+import org.vie.util.log.Annal;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
 public final class Instance {
+
+    private static final Annal LOGGER = Annal.get(Instance.class);
+
     /**
      * Create new instance with reflection
      *
@@ -96,6 +102,38 @@ public final class Instance {
             final Object ret = result;
             return HNull.get(() -> (T) ret, ret);
         }, instance, name);
+    }
+
+    public static <T> void set(final Object instance,
+                               final String name,
+                               final T value) {
+        HNull.exec(() -> {
+            HTry.execJvm(() -> {
+                final Field field = instance.getClass().getDeclaredField(name);
+                if (!field.isAccessible()) {
+                    field.setAccessible(true);
+                }
+                field.set(instance, value);
+                return null;
+            }, LOGGER);
+        }, instance, name, value);
+    }
+
+    public static <T> T get(final Object instance,
+                            final String name) {
+        return HNull.get(() -> HTry.execGet(() -> {
+                    final Field field = instance.getClass().getDeclaredField(name);
+                    if (!field.isAccessible()) {
+                        field.setAccessible(true);
+                    }
+                    final Object result = field.get(instance);
+                    if (null != result) {
+                        return (T) result;
+                    } else {
+                        return null;
+                    }
+                }, LOGGER)
+                , instance, name);
     }
 
     /**

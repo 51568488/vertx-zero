@@ -15,7 +15,6 @@ import io.vertx.up.rs.config.ReceiptExtractor;
 import org.vie.fun.HPool;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
-import org.vie.util.mirror.Anno;
 import org.vie.util.mirror.Pack;
 
 import java.util.List;
@@ -116,16 +115,18 @@ public class ZeroAnno {
         /** 2.Set to ENDPOINTS **/
         final Set<Class<?>> endpoints =
                 clazzes.stream()
-                        .filter((item) -> Anno.isMark(item, EndPoint.class))
+                        .filter((item) -> item.isAnnotationPresent(EndPoint.class))
                         .collect(Collectors.toSet());
         if (ENDPOINTS.isEmpty()) {
             ENDPOINTS.addAll(endpoints);
             LOGGER.info(Info.SCANED_ENDPOINT, endpoints.size());
+
             /** 2.1.Build Api metadata **/
             final Extractor<Set<Event>> extractor = Instance.singleton(EventExtractor.class);
             for (final Class<?> endpoint : ENDPOINTS) {
                 final Set<Event> events = extractor.extract(endpoint);
                 if (!events.isEmpty()) {
+
                     // 2.2. Report events for endpoint, wait for deployment.
                     LOGGER.info(Info.SCANED_EVENTS, endpoint.getName(), events.size());
                     EVENTS.addAll(events);
@@ -135,7 +136,7 @@ public class ZeroAnno {
         /** 3.Set to QUEUES **/
         final Set<Class<?>> queues =
                 clazzes.stream()
-                        .filter(item -> Anno.isMark(item, Queue.class))
+                        .filter(item -> item.isAnnotationPresent(Queue.class))
                         .collect(Collectors.toSet());
         if (RECEIPTS.isEmpty()) {
             LOGGER.info(Info.SCANED_QUEUE, queues.size());
@@ -153,7 +154,7 @@ public class ZeroAnno {
         /** 4.Set Agents **/
         final Set<Class<?>> agents =
                 clazzes.stream()
-                        .filter((item) -> Anno.isMark(item, Agent.class))
+                        .filter((item) -> item.isAnnotationPresent(Agent.class))
                         .collect(Collectors.toSet());
         /** 5.Scan duplicated **/
         if (AGENTS.isEmpty()) {
@@ -164,7 +165,7 @@ public class ZeroAnno {
         }
         /** 6.Workers scanned **/
         final Set<Class<?>> workers =
-                clazzes.stream().filter((item) -> Anno.isMark(item, Worker.class))
+                clazzes.stream().filter((item) -> item.isAnnotationPresent(Worker.class))
                         .collect(Collectors.toSet());
         if (WORKERS.isEmpty()) {
             WORKERS.addAll(workers);

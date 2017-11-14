@@ -4,21 +4,34 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.core.ZeroNode;
 import io.vertx.zero.core.config.ZeroLime;
+import io.vertx.zero.core.node.Opts;
 import io.vertx.zero.cv.Plugins;
 import org.vie.cv.em.YamlType;
+import org.vie.fun.HJson;
+import org.vie.fun.HTry;
 import org.vie.util.Instance;
 import org.vie.util.io.IO;
 import org.vie.util.log.Annal;
+import org.vie.util.log.internal.Log4JAnnal;
 
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Only access by ZeroGird
+ * Critical Environment
+ *
+ * @author lang
  */
-class ZeroPlugin {
+public final class ZeroAmbient {
 
-    private static final Annal LOGGER = Annal.get(ZeroPlugin.class);
+    private static final String KEY = "inject";
+    /**
+     * Avoid dead lock, use internal Log only.
+     **/
+    private static final Annal LOGGER = new Log4JAnnal(ZeroAmbient.class);
+
+    private static final ConcurrentMap<String, Class<?>> INJECTIONS;
 
     private static final ConcurrentMap<String, YamlType> GRIDS =
             new ConcurrentHashMap<>();
@@ -28,6 +41,26 @@ class ZeroPlugin {
 
     private static final ConcurrentMap<String, JsonArray> ARRAYS =
             new ConcurrentHashMap<>();
+
+    private static final Opts<JsonObject> OPTS = Opts.get();
+
+    static {
+        INJECTIONS = new ConcurrentHashMap<>();
+        HTry.exec(() -> {
+            final JsonObject opt = OPTS.ingest(KEY);
+            HJson.execIt(opt, (item, field) -> {
+                INJECTIONS.put(field, Instance.clazz(item.toString()));
+            });
+        }, LOGGER);
+    }
+
+    public static Class<?> getPlugin(final String key) {
+        return INJECTIONS.get(key);
+    }
+
+    public static Set<String> getPluginNames() {
+        return INJECTIONS.keySet();
+    }
 
     /**
      * Inited by ZeroGrid static
@@ -67,5 +100,8 @@ class ZeroPlugin {
 
     static JsonArray getArray(final String name) {
         return ARRAYS.get(name);
+    }
+
+    private ZeroAmbient() {
     }
 }

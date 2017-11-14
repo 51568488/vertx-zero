@@ -6,7 +6,7 @@
 
     <groupId>io.vertx.up</groupId>
     <artifactId>vertx-zero</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <name>vertx-zero: Vertx Up Zero Configuration</name>
     <modules>
         <module>vertx-dot</module>
@@ -227,6 +227,11 @@
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-config-yaml</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-mongo-client</artifactId>
                 <version>${vertx.version}</version>
             </dependency>
             <dependency>

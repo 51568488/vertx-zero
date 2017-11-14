@@ -14,7 +14,6 @@ import org.vie.fun.HNull;
 import org.vie.util.Instance;
 import org.vie.util.StringUtil;
 import org.vie.util.log.Annal;
-import org.vie.util.mirror.Anno;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.Method;
@@ -35,7 +34,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
             verify(clazz);
             // 2. Check whether clazz annotated with @PATH
             final Set<Event> result = new ConcurrentHashSet<>();
-            HBool.exec(Anno.isMark(clazz, Path.class), LOGGER,
+            HBool.exec(clazz.isAnnotationPresent(Path.class), LOGGER,
                     () -> {
                         // 3.1. Append Root Path
                         final Path path = ZeroHelper.getPath(clazz);
@@ -59,7 +58,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
                 AccessProxyException.class,
                 getClass(), clazz);
         // Event Source Checking
-        HBool.execUp(!Anno.isMark(clazz, EndPoint.class),
+        HBool.execUp(!clazz.isAnnotationPresent(EndPoint.class),
                 LOGGER, EventSourceException.class,
                 getClass(), clazz.getName());
     }
@@ -105,7 +104,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
                     // Use root directly.
                     event.setPath(root);
                 } else {
-                    // TODO: Impossible to get here.
+                    // TODO: Impossible to getPlugin here.
                 }
             } else {
                 final String result = PathResolver.resolve(

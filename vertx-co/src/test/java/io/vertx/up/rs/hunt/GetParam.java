@@ -13,7 +13,7 @@ public class GetParam {
     private void ensure(final Object input) {
         System.out.println(input);
         if (null == input) {
-            throw new RuntimeException("name could not be get:" + input);
+            throw new RuntimeException("name could not be getPlugin:" + input);
         }
     }
 

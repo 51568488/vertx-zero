@@ -14,7 +14,6 @@ import org.vie.fun.HNull;
 import org.vie.util.Instance;
 import org.vie.util.StringUtil;
 import org.vie.util.log.Annal;
-import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -57,7 +56,7 @@ public abstract class BaseAim {
      */
     protected String address(final Event event) {
         final Method method = event.getAction();
-        final Annotation annotation = Anno.get(method, Address.class);
+        final Annotation annotation = method.getDeclaredAnnotation(Address.class);
         return Instance.invoke(annotation, "value");
     }
 

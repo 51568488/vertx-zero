@@ -218,26 +218,56 @@
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-web</artifactId>
                 <version>${vertx.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.vertx</groupId>
+                        <artifactId>vertx-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-config</artifactId>
                 <version>${vertx.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.vertx</groupId>
+                        <artifactId>vertx-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-config-yaml</artifactId>
                 <version>${vertx.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.vertx</groupId>
+                        <artifactId>vertx-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-mongo-client</artifactId>
                 <version>${vertx.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.vertx</groupId>
+                        <artifactId>vertx-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-unit</artifactId>
                 <version>${vertx.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.vertx</groupId>
+                        <artifactId>vertx-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- Clustered -->
             <dependency>
@@ -249,6 +279,12 @@
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-hazelcast</artifactId>
                 <version>${vertx.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.vertx</groupId>
+                        <artifactId>vertx-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- java rs -->
             <!-- http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
@@ -263,8 +299,31 @@
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-yaml</artifactId>
                 <version>${jackson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
-            <!-- Unit -->
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
             <!-- Asm -->
             <!-- http://www.mvnrepository.com/artifact/com.esotericsoftware/reflectasm/ -->
             <dependency>
@@ -302,6 +361,12 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- http://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
             <dependency>

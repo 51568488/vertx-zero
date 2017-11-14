@@ -12,6 +12,7 @@ This project is based on Vert.x, the idea came from Spring-Boot framework. It co
 6. [How to enable Event Bus](doc/zero-worker.md)
 7. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
 8. [Mongo Plugin in Zero](doc/zero-mongo.md)
+9. [Define Exception](doc/zero-error.md)
 
 ## 2. Source Code
 

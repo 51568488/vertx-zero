@@ -2,11 +2,13 @@ package org.tlk.api;
 
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
+import io.vertx.exception.WebException;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.annotations.Queue;
 import io.vertx.up.annotations.infix.Mongo;
 import io.vertx.up.ce.Envelop;
+import org.tlk.exception.TestRequestException;
 import org.vie.util.Jackson;
 
 @Queue
@@ -18,8 +20,9 @@ public class UserWorker {
     @Address("ZERO://USER")
     public Envelop reply(final Envelop message) {
         final User user = message.data(User.class);
-        System.out.println(user);
-        return Envelop.success(user);
+        final WebException error = new TestRequestException(getClass(),
+                "Lang", "Detail");
+        return Envelop.failure(error);
     }
 
     @Address("ZERO://ROLE")

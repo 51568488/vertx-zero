@@ -2,6 +2,7 @@ package io.vertx.zero.web;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.impl.ConcurrentHashSet;
+import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.exception.web._400ParameterFromStringException;
@@ -90,12 +91,18 @@ public class ZeroSerializer {
 
             } else if (JsonObject.class == paramType) {
                 // JsonObject
-                reference = new JsonObject(literal);
-
+                try {
+                    reference = new JsonObject(literal);
+                } catch (final DecodeException ex) {
+                    throw new _400ParameterFromStringException(ZeroSerializer.class, paramType, literal);
+                }
             } else if (JsonArray.class == paramType) {
                 // JsonArray
-                reference = new JsonArray(literal);
-
+                try {
+                    reference = new JsonArray(literal);
+                } catch (final DecodeException ex) {
+                    throw new _400ParameterFromStringException(ZeroSerializer.class, paramType, literal);
+                }
             } else if (String.class == paramType) {
                 // String
                 reference = literal;

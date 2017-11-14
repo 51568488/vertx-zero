@@ -7,7 +7,6 @@ import org.vie.cv.Values;
 import org.vie.fun.HBool;
 import org.vie.util.Instance;
 import org.vie.util.log.Annal;
-import org.vie.util.mirror.Anno;
 
 import javax.ws.rs.Path;
 import java.lang.annotation.Annotation;
@@ -29,14 +28,9 @@ public class ZeroHelper {
 
     /** **/
     public static ServerType getAgentKey(final Class<?> clazz) {
-        return HBool.exec(Anno.isMark(clazz, Agent.class),
-                () -> Instance.invoke(getAgentValue(clazz), "type"),
+        return HBool.exec(clazz.isAnnotationPresent(Agent.class),
+                () -> Instance.invoke(clazz.getDeclaredAnnotation(Agent.class), "type"),
                 () -> null);
-    }
-
-    /** **/
-    public static Annotation getAgentValue(final Class<?> clazz) {
-        return Anno.get(clazz, Agent.class);
     }
 
     /** **/
@@ -70,12 +64,12 @@ public class ZeroHelper {
 
     /** **/
     public static Path getPath(final Class<?> clazz) {
-        return getPath(Anno.get(clazz, Path.class));
+        return getPath(clazz.getDeclaredAnnotation(Path.class));
     }
 
     /** **/
     public static Path getPath(final Method method) {
-        return getPath(Anno.get(method, Path.class));
+        return getPath(method.getDeclaredAnnotation(Path.class));
     }
 
     private static Path getPath(final Annotation anno) {

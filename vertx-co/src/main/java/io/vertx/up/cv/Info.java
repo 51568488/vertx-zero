@@ -22,4 +22,6 @@ public interface Info {
 
     String APP_CLUSTERD = "[ ZERO ] Current app is running in cluster mode, " +
             "manager = {0} on node {1} with status = {2}.";
+
+    String INFIX_INJECT = "[ ZERO ] ( Plugin ) Infix {0} has been set to {1} field {2}.";
 }

@@ -4,7 +4,6 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.exception.up.MethodNullException;
 import org.vie.fun.HBool;
 import org.vie.util.log.Annal;
-import org.vie.util.mirror.Anno;
 
 import javax.ws.rs.*;
 import java.lang.annotation.Annotation;
@@ -36,7 +35,7 @@ class MethodResolver {
         // 1. Method checking.
         HBool.execUp(null == method, LOGGER,
                 MethodNullException.class, MethodResolver.class);
-        final Annotation[] annotations = Anno.get(method);
+        final Annotation[] annotations = method.getDeclaredAnnotations();
         // 2. Method ignore
         HttpMethod result = null;
         for (final Annotation annotation : annotations) {

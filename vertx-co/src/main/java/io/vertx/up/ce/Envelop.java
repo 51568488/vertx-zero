@@ -1,6 +1,7 @@
 package io.vertx.up.ce;
 
 import io.vertx.core.MultiMap;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.core.json.JsonObject;
 import io.vertx.exception.WebException;
@@ -56,6 +57,24 @@ public class Envelop implements Serializable {
             }
         }
         return reference;
+    }
+
+    /**
+     * Extract message part to t
+     *
+     * @param message
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public static <T> T data(final Message<Envelop> message,
+                             final Class<T> clazz) {
+        final Envelop body = message.body();
+        if (null != body) {
+            return body.data(clazz);
+        } else {
+            return null;
+        }
     }
 
     /**

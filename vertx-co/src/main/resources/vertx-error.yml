@@ -22,6 +22,8 @@ E40013: You want to send message to event bus, but agent method ({0}) of {1}''s 
 E40014: Zero detected that there is no method of @Queue annotated @Address = {0}, the worker missing
 E40015: Plugin component met error when reading option on key = {0}
 E40016: You enabled the plugin ( key = {0} ), but this plugin has no method of ( public static void init(Vertx) )
+E40017: Worker method signature is wrong, the parameter length must be 1. method = {0}, class = {1}
+E40018: "Async mode: return = {0}, parameter = {1}, valid - Envelop method(Envelop), void method(Message<Envelop>;)"
 # (Web) Exception for web
 E60001: (400) - The input content could not be converted into valid resource user {0}
 E60002: (500) - The system detect some error in delivery on address {0}, error message = {1}

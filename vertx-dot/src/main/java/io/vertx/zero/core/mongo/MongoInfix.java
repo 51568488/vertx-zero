@@ -4,6 +4,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.annotations.Plugin;
+import io.vertx.zero.core.plugin.Infix;
 import io.vertx.zero.web.ZeroGrid;
 import org.vie.fun.HPool;
 
@@ -14,7 +15,8 @@ import java.util.concurrent.ConcurrentMap;
  *
  */
 @Plugin
-public class MongoInfix {
+@SuppressWarnings("unchecked")
+public class MongoInfix implements Infix {
 
     private static final String NAME = "ZERO_MONGO_POOL";
     /**
@@ -34,6 +36,7 @@ public class MongoInfix {
         initInternal(vertx, NAME);
     }
 
+    @Override
     public MongoClient get() {
         return CLIENTS.get(NAME);
     }

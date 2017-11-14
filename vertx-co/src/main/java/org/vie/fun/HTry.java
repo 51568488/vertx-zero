@@ -80,6 +80,23 @@ public class HTry {
     }
 
     /**
+     * @param supplier
+     * @param logger
+     * @param <T>
+     * @return
+     */
+    public static <T> T execGet(final JeSupplier<T> supplier,
+                                final Annal logger) {
+        T reference = null;
+        try {
+            reference = supplier.get();
+        } catch (final Exception ex) {
+            logger.jvm(ex);
+        }
+        return reference;
+    }
+
+    /**
      * Zero for exception transform
      *
      * @param supplier

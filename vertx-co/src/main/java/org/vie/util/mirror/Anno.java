@@ -1,11 +1,12 @@
 package org.vie.util.mirror;
 
-import org.vie.fun.HBool;
+import io.vertx.zero.cv.Plugins;
 import org.vie.fun.HNull;
 import org.vie.fun.HPool;
 import org.vie.util.Instance;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,26 +24,6 @@ public final class Anno {
                     (item) -> item.annotationType().getName(),
                     (item) -> item);
         }, clazz);
-    }
-
-    public static Annotation get(final Class<?> clazz,
-                                 final Class<? extends Annotation> annoCls) {
-        return HNull.get(() -> clazz.getDeclaredAnnotation(annoCls), clazz, annoCls);
-    }
-
-    public static Annotation get(final Method method,
-                                 final Class<? extends Annotation> annoCls) {
-        return HNull.get(() -> method.getDeclaredAnnotation(annoCls), method, annoCls);
-    }
-
-    /**
-     * Get all annotation
-     *
-     * @param method
-     * @return
-     */
-    public static Annotation[] get(final Method method) {
-        return HNull.get(() -> method.getDeclaredAnnotations(), method);
     }
 
     /**
@@ -72,32 +53,25 @@ public final class Anno {
     }
 
     /**
-     * Check whether clazz contains annotationCls marked.
+     * Get current field plugin ( Each field should set only one standard plugin )
      *
-     * @param clazz
-     * @param annotationCls
+     * @param field
      * @return
      */
-    public static boolean isMark(final Class<?> clazz,
-                                 final Class<? extends Annotation> annotationCls) {
-        return HBool.exec(null == clazz || null == annotationCls,
-                () -> false,
-                () -> clazz.isAnnotationPresent(annotationCls));
+    public static String getPlugin(final Field field) {
+        return HNull.get(() -> {
+            final Annotation[] annotations = field.getDeclaredAnnotations();
+            String key = null;
+            for (final Class<? extends Annotation> annoCls : Plugins.INFIX_MAP.keySet()) {
+                if (field.isAnnotationPresent(annoCls)) {
+                    key = Plugins.INFIX_MAP.get(annoCls);
+                    break;
+                }
+            }
+            return key;
+        }, field);
     }
 
-    /**
-     * Check whether clazz contains annotationCls marked.
-     *
-     * @param method
-     * @param annotationCls
-     * @return
-     */
-    public static boolean isMark(final Method method,
-                                 final Class<? extends Annotation> annotationCls) {
-        return HBool.exec(null == method || null == annotationCls,
-                () -> false,
-                () -> method.isAnnotationPresent(annotationCls));
-    }
 
     public static <T, E extends Annotation> T getAttribute(final Class<?> clazz,
                                                            final Class<E> annoCls,

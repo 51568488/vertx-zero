@@ -32,12 +32,12 @@ public class ZeroGrid {
     static {
         HTry.execZero(() -> {
             // Init for VertxOptions, ClusterOptions
-            // 1. Visit Vertx
+            // Visit Vertx
             if (VX_OPTS.isEmpty() || null == CLUSTER) {
                 final UprightVisitor visitor =
                         Instance.singleton(VertxVisitor.class);
                 VX_OPTS.putAll(visitor.visit());
-                // 2. Must after visit
+                // Must after visit
                 CLUSTER = visitor.getCluster();
             }
             // Init for HttpServerOptions
@@ -47,21 +47,21 @@ public class ZeroGrid {
                 SERVER_OPTS.putAll(visitor.visit());
             }
             // Init for all plugin options.
-            ZeroPlugin.init();
+            ZeroAmbient.init();
             return null;
         }, LOGGER);
     }
 
     @SuppressWarnings("unchecked")
     public static <T> T getOptions(final String name) {
-        final YamlType type = ZeroPlugin.getType(name);
+        final YamlType type = ZeroAmbient.getType(name);
         HBool.execUp(null == type, LOGGER,
                 PluginOptionException.class,
                 ZeroGrid.class, name);
         if (YamlType.OBJECT == type) {
-            return (T) ZeroPlugin.getObject(name);
+            return (T) ZeroAmbient.getObject(name);
         } else {
-            return (T) ZeroPlugin.getArray(name);
+            return (T) ZeroAmbient.getArray(name);
         }
     }
 

@@ -65,7 +65,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
             final Method[] methods = clazz.getDeclaredMethods();
             for (final Method method : methods) {
                 // 3. Only focus on annotated with @Address
-                if (Anno.isMark(method, Address.class)) {
+                if (method.isAnnotationPresent(Address.class)) {
                     final Receipt receipt = extract(method);
                     if (null != receipt) {
                         receipts.add(receipt);
@@ -79,7 +79,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
     private Receipt extract(final Method method) {
         // 1. Scan whole Endpoints
         final Class<?> clazz = method.getDeclaringClass();
-        final Annotation annotation = Anno.get(method, Address.class);
+        final Annotation annotation = method.getDeclaredAnnotation(Address.class);
         final String address = Instance.invoke(annotation, "value");
 
         // 2. Ensure address incoming.

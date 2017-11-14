@@ -4,7 +4,6 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.test.example.AnnoAgent;
 import io.vertx.test.example.AnnoOne;
 import io.vertx.up.annotations.Agent;
-import io.vertx.up.annotations.Up;
 import org.junit.Test;
 import top.test.UnitBase;
 
@@ -20,18 +19,6 @@ public class AnnoTc extends UnitBase {
             System.out.println("key=" + item + ",value=" + clazzes.get(item));
         }
         context.assertEquals(2, clazzes.size());
-    }
-
-    @Test
-    public void testMark(final TestContext context) {
-        final boolean isMark = Anno.isMark(AnnoOne.class, Up.class);
-        context.assertTrue(isMark);
-    }
-
-    @Test
-    public void testUnmark(final TestContext context) {
-        final boolean isMark = Anno.isMark(AnnoOne.class, Agent.class);
-        context.assertFalse(isMark);
     }
 
     @Test

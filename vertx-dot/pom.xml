@@ -21,5 +21,9 @@
             <artifactId>vertx-mongo-client</artifactId>
         </dependency>
         <!-- RabbitMQ Client -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-rabbitmq-client</artifactId>
+        </dependency>
     </dependencies>
 </project>

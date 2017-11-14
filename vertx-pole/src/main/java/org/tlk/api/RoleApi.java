@@ -1,4 +1,4 @@
-package org.tlk.starter;
+package org.tlk.api;
 
 import io.vertx.up.annotations.EndPoint;
 

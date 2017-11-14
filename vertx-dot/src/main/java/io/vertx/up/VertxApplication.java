@@ -22,6 +22,7 @@ import org.vie.util.log.Annal;
 import org.vie.util.mirror.Anno;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -134,6 +135,20 @@ public class VertxApplication {
         });
     }
 
+    private ConcurrentMap<ServerType, List<Class<?>>> getMergedAgents() {
+        final ConcurrentMap<ServerType, List<Class<?>>> agents = ZeroAnno.getAgents();
+        if (agents.isEmpty()) {
+            // Inject Http
+            final List<Class<?>> internals = new ArrayList<Class<?>>() {
+                {
+                    add(INTERNALS.get(ServerType.HTTP));
+                }
+            };
+            agents.put(ServerType.HTTP, internals);
+        }
+        return agents;
+    }
+
     /**
      * Find agent for each server type.
      *
@@ -141,11 +156,12 @@ public class VertxApplication {
      */
     private ConcurrentMap<ServerType, Class<?>> getAgents() {
         final ConcurrentMap<ServerType, List<Class<?>>> agents =
-                ZeroAnno.getAgents();
+                getMergedAgents();
         final ConcurrentMap<ServerType, Boolean> defines =
                 ZeroAnno.isDefined(agents, DEFAULT_AGENTS);
         final ConcurrentMap<ServerType, Class<?>> ret =
                 new ConcurrentHashMap<>();
+        // Fix Boot
         // 1. If defined, use default
         HMap.exec(agents, (type, list) -> {
             // 2. Defined -> You have defined

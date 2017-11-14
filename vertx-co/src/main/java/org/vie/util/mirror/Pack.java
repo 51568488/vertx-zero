@@ -70,6 +70,7 @@ public final class Pack {
                         // Call find and add
                         findAndAdd(packageDir, path, recursive, classes);
                     } else if (Protocols.JAR.equals(protocol)) {
+                        System.out.println(protocol);
                         classes.addAll(getClasses(packageDir, zeroScan, url, recursive));
                     }
                 }

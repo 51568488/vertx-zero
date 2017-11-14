@@ -2,15 +2,15 @@
 
 The parameters ( Not belong to specific ), must be annotated with following
 
-* `javax.ws.rs.QueryParam` ( Support )
-* `javax.ws.rs.FormParam` ( In future )
-* `javax.ws.rs.MatrixParam` ( In future )
-* `javax.ws.rs.PathParam` ( Support )
-* `javax.ws.rs.HeaderParam` ( Support )
-* `javax.ws.rs.CookieParam` ( In future )
-* `javax.ws.rs.BodyParam` ( Support )
-* `javax.ws.rs.StreamParam` ( In future )
-* `javax.ws.rs.SessionParam` ( In future )
+* [x] `javax.ws.rs.QueryParam` 
+* [ ] `javax.ws.rs.FormParam` 
+* [ ] `javax.ws.rs.MatrixParam` 
+* [x] `javax.ws.rs.PathParam` 
+* [x] `javax.ws.rs.HeaderParam` 
+* [ ] `javax.ws.rs.CookieParam` 
+* [x] `javax.ws.rs.BodyParam` 
+* [ ] `javax.ws.rs.StreamParam` 
+* [ ] `javax.ws.rs.SessionParam` 
 
 The following parameter could be used by type without annotation ( Mustn't include )
 

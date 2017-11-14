@@ -21,6 +21,7 @@ interface Storage {
             put("error", Path.ERROR);
             put("inject", Path.INJECT);
             put("server", Path.SERVER);
+            put("failure", Path.FAILURE);
         }
     };
 }
@@ -39,6 +40,9 @@ interface Path {
             + Strings.DOT + FileTypes.YML;
 
     String SERVER = Limes.SERVER
+            + Strings.DOT + FileTypes.YML;
+
+    String FAILURE = Limes.FAILURE
             + Strings.DOT + FileTypes.YML;
 }
 
@@ -62,4 +66,6 @@ interface Limes {
     String INJECT = PREFIX + Strings.DASH + "inject";
 
     String SERVER = PREFIX + Strings.DASH + "server";
+
+    String FAILURE = PREFIX + Strings.DASH + "failure";
 }

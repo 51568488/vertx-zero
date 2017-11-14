@@ -1,0 +1,32 @@
+# Core configuration Error
+E30001: Vert.x zero server config is missing in current data "{0}"
+# Configuration validation Error
+E10001: (V) - This rule require all elements of array is JsonObject, Now the index = {0} does not match, it''s {1}
+E10002: (V) - The data object {0} missed required field "{1}"
+E10003: (V) - The field {0} value is "{1}", but expected type is "{2}"
+E10004: (V) - The cluster options is enabled, but the "{0}" vertx instance = "{1}"
+# (Runtime) Vertx start up error
+E40001: Vert.x zero boot class should not be null, please provide the entry of this application
+E40002: Vert.x zero boot class must be marked with annotation "Up", but ( name= {0} ) it''s missing
+E40003: ZeroLauncher require input callback to handle vertx reference, but not it''s null
+E40004: You have defined {0} agent {2} for server of type {1}, it''s fobbiden
+E40005: Event extractor only accept to scan class of @EndPoint, but now it''s {0}
+E40006: PathResolver could not accept null pointer reference of @Path
+E40007: MethodResolver could not accept null pointer reference of Method
+E40008: The event handler of path {0} has not been set, please verify configuration
+E40009: Vert.x zero require class {0} contains at least one no-arg constructor, but now it''s missing
+E40010: Vert.x zero require class {0} access modifier contains PUBLIC scope, but now it couldn't be accessed
+E40011: Vert.x zero found method parameters without any annotated, it's conflict. Type = {0}
+E40012: The address {0} does not existing in incoming address list. Position - type = {1}, method = {2}
+E40013: You want to send message to event bus, but agent method ({0}) of {1}''s return type is (void)
+E40014: Zero detected that there is no method of @Queue annotated @Address = {0}, the worker missing
+E40015: Plugin component met error when reading option on key = {0}
+E40016: You enabled the plugin ( key = {0} ), but this plugin has no method of ( public static void init(Vertx) )
+E40017: Worker method signature is wrong, the parameter length must be 1. method = {0}, class = {1}
+E40018: "Async mode: return = {0}, parameter = {1}, valid - Envelop method(Envelop), void method(Message<Envelop>;)"
+E40019: Your plugin {0} met error when starting, please check the details {1}
+# (Web) Exception for web
+E60001: (400) - The input content could not be converted into valid resource user {0}
+E60002: (500) - The system detect some error in delivery on address {0}, error message = {1}
+E60003: (500) - The event bus detect some error in receiving message on address {0}, error message = {1}
+E60004: (400) - Zero system detect conversation from "{0}" to type "{1}", but it's conflict

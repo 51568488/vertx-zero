@@ -1,4 +1,4 @@
-package io.vertx.zero.core.mongo;
+package io.vertx.zero.infinite.mongo;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;

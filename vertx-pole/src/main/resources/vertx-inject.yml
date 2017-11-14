@@ -1,1 +1,1 @@
-mongo: io.vertx.zero.core.mongo.MongoInfix
+mongo: io.vertx.zero.infinite.mongo.MongoInfix

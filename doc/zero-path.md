@@ -48,7 +48,3 @@ curl http://localhost:8083/up/example/non-path
 curl http://localhost:8083/up/example/non-path\?name\=Lang
 {"brief":"OK","status":200,"data":"No Path Lang"}
 ```
-
-## 4. Hints
-
-* For 

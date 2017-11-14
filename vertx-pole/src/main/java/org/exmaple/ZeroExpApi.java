@@ -1,10 +1,10 @@
 package org.exmaple;
 
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.json.JsonObject;
 import io.vertx.up.annotations.EndPoint;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 
 @Path("/up/example")
 @EndPoint
@@ -15,5 +15,29 @@ public class ZeroExpApi {
     public String sayZero(
             @PathParam("name") final String name) {
         return "Hello " + name;
+    }
+
+    @POST
+    @Path("/body/json")
+    public JsonObject sayBody(
+            @BodyParam final JsonObject data
+    ) {
+        return data;
+    }
+
+    @POST
+    @Path("/body/pojo")
+    public Demo sayPojo(
+            @BodyParam final Demo data
+    ) {
+        return data;
+    }
+
+    @GET
+    @Path("/typed/request")
+    public String sayBody(
+            final HttpServerRequest request
+    ) {
+        return request.absoluteURI();
     }
 }

@@ -90,12 +90,10 @@ public class ZeroSerializer {
 
             } else if (JsonObject.class == paramType) {
                 // JsonObject
-                verifyInput(!Types.isJObject(literal), paramType, literal);
                 reference = new JsonObject(literal);
 
             } else if (JsonArray.class == paramType) {
                 // JsonArray
-                verifyInput(!Types.isJArray(literal), paramType, literal);
                 reference = new JsonArray(literal);
 
             } else if (String.class == paramType) {

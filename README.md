@@ -1,13 +1,13 @@
 # vertx-zero
 
-This project is based on vertx, it's refer to Spring-Boot to implement light application framework for developers.
+This project is based on Vert.x, the idea came from Spring-Boot framework. It could help developers focus on business requirements instead of more details of Vert.x. The project contains two parts "Up" and "Zero". "Up" means running up, "Zero" means no configuration provided, you could run your project with default configuration only. 
 
 ## 1. Documentation
 
-* [Getting Start](doc/vertx-starter.md)
-* [Complex Example](doc/vertx-zero.md)
+* [Getting Start](doc/zero-starter.md)
+* [@Path usage](doc/zero-path.md)
 
-## 2. Pull code and build
+## 2. Source Code
 
 1. Pull code from github
 
@@ -21,18 +21,56 @@ This project is based on vertx, it's refer to Spring-Boot to implement light app
 	mvn clean package install
 	```
 
+## 3. Envrionment
 
-## 3. Dependency Library
+Once you have built the project, you can add following dependency into you `pom.xml` to use Zero:
 
-* [Vert.x](http://www.mvnrepository.com/artifact/io.vertx) ( core, web, config, config-yml, unit, zookeeper, hazelcast )
-* [Jws Rs](http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api) 
-* [Jersey Common](http://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common) ( For media type parsing )
+```xml
+        <dependency>
+            <groupId>io.vertx.up</groupId>
+            <artifactId>vertx-dot</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
+```
+
+## 4. Boot Up
+
+In your project, you can provide main entry only as following to run Zero ( Annotated with `@Up` ) .
+
+```java
+import io.vertx.up.VertxApplication;
+import io.vertx.up.annotations.Up;
+
+@Up
+public class Driver {
+
+    public static void main(final String[] args) {
+        VertxApplication.run(Driver.class);
+    }
+}
+```
+
+Once the Zero is up, you can see following logs in your console ( The default port is 8083 ):
+
+```
+[ ZERO ] ZeroHttpAgent Http Server has been started successfully. \
+	Endpoint: http://0.0.0.0:8083/
+```
+
+
+## 5. Dependency Library
+
+*Lombok is standalone library, you can ignore this library in your project and write pojo with pure java. But we recommend you to use this library to simplify the POJO writting.*
+
+* [Vert.x (3.5.0)](http://www.mvnrepository.com/artifact/io.vertx) ( core, web, config, config-yml, unit, zookeeper, hazelcast )
+* [Jws Rs (2.1)](http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api) 
+* [Jersey Common (2.26)](http://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common) ( For media type parsing )
 * Logback
-	* [logback-classic](http://mvnrepository.com/artifact/ch.qos.logback/logback-classic)
-	* [logback-core](http://mvnrepository.com/artifact/ch.qos.logback/logback-core)
-	* [jul-to-slf4j](http://mvnrepository.com/artifact/org.slf4j/jul-to-slf4j)
-	* [log4j-slf4j-impl](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl)
-* [Junit](http://mvnrepository.com/artifact/junit/junit)
-* [ReflectAsm](http://www.mvnrepository.com/artifact/com.esotericsoftware/reflectasm/)
-* [Jackson-Yaml](http://www.mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml)
-* [Lombok](http://mvnrepository.com/artifact/org.projectlombok/lombok)
+	* [logback-classic (1.2.3)](http://mvnrepository.com/artifact/ch.qos.logback/logback-classic)
+	* [logback-core (1.2.3)](http://mvnrepository.com/artifact/ch.qos.logback/logback-core)
+	* [jul-to-slf4j (1.7.25)](http://mvnrepository.com/artifact/org.slf4j/jul-to-slf4j)
+	* [log4j-slf4j-impl (1.7.25)](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl)
+* [Junit (4.12)](http://mvnrepository.com/artifact/junit/junit)
+* [ReflectAsm (1.11.3)](http://www.mvnrepository.com/artifact/com.esotericsoftware/reflectasm/)
+* [Jackson-Yaml (2.9.2)](http://www.mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml)
+* [Lombok (1.16.18)](http://mvnrepository.com/artifact/org.projectlombok/lombok)

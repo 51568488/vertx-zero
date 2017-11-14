@@ -6,7 +6,7 @@
 
     <groupId>io.vertx.up</groupId>
     <artifactId>vertx-zero</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <name>vertx-zero: Vertx Up Zero Configuration</name>
     <modules>
         <module>vertx-dot</module>

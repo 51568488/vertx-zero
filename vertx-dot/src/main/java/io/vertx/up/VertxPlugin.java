@@ -40,6 +40,7 @@ public class VertxPlugin {
     void connect(final Vertx vertx) {
         /** Scan all plugins **/
         final Set<String> plugins = ZeroAmbient.getPluginNames();
+
         for (final String plugin : plugins) {
 
             initialize(plugin, vertx);
@@ -86,16 +87,18 @@ public class VertxPlugin {
                 if (null != pluginKey) {
                     final Class<?> infixCls = ZeroAmbient.getPlugin(pluginKey);
                     // If infix
-                    final List<Class<?>> infixes = Arrays.asList(infixCls.getInterfaces());
-                    if (infixes.contains(Infix.class)) {
-                        final Object seted = Instance.get(proxy, field.getName());
-                        if (null == seted) {
-                            // Infix
-                            final Infix reference = Instance.singleton(infixCls);
-                            final Object invoked = Instance.invoke(reference, "get");
-                            Instance.set(proxy, field.getName(), invoked);
-                            LOGGER.info(Info.INFIX_INJECT, infixCls.getName(),
-                                    clazz.getName(), field.getName());
+                    if (null != infixCls) {
+                        final List<Class<?>> infixes = Arrays.asList(infixCls.getInterfaces());
+                        if (infixes.contains(Infix.class)) {
+                            final Object seted = Instance.get(proxy, field.getName());
+                            if (null == seted) {
+                                // Infix
+                                final Infix reference = Instance.singleton(infixCls);
+                                final Object invoked = Instance.invoke(reference, "get");
+                                Instance.set(proxy, field.getName(), invoked);
+                                LOGGER.info(Info.INFIX_INJECT, infixCls.getName(),
+                                        clazz.getName(), field.getName());
+                            }
                         }
                     }
                 }

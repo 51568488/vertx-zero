@@ -1,7 +1,8 @@
-package io.vertx.zero.exception;
+package io.vertx.up.exception;
 
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.zero.eon.Strings;
+import io.vertx.zero.exception.ZeroRunException;
 import io.vertx.zero.log.Errors;
 
 /**

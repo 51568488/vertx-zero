@@ -7,7 +7,7 @@ import io.vertx.up.annotations.Address;
 import io.vertx.up.annotations.Queue;
 import io.vertx.up.annotations.infix.Mongo;
 import io.vertx.up.atom.Envelop;
-import io.vertx.zero.exception.WebException;
+import io.vertx.up.exception.WebException;
 import io.vertx.zero.tool.Jackson;
 import org.tlk.exception.TestRequestException;
 

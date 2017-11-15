@@ -1,7 +1,5 @@
 package io.vertx.up.exception;
 
-import io.vertx.zero.exception.WebException;
-
 public class AsyncSignatureException extends WebException {
 
     public AsyncSignatureException(final Class<?> clazz,

@@ -5,8 +5,8 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
+import io.vertx.up.exception.WebException;
 import io.vertx.up.web.ZeroSerializer;
-import io.vertx.zero.exception.WebException;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.tool.Jackson;
 

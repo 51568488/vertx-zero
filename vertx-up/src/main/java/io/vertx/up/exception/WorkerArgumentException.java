@@ -1,7 +1,5 @@
 package io.vertx.up.exception;
 
-import io.vertx.zero.exception.WebException;
-
 import java.lang.reflect.Method;
 
 public class WorkerArgumentException extends WebException {

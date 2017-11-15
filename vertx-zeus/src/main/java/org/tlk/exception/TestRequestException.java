@@ -1,6 +1,6 @@
 package org.tlk.exception;
 
-import io.vertx.zero.exception.WebException;
+import io.vertx.up.exception.WebException;
 
 public class TestRequestException extends
         WebException {

@@ -1,7 +1,5 @@
 package io.vertx.up.exception;
 
-import io.vertx.zero.exception.WebException;
-
 public class PluginOptionException extends WebException {
 
     public PluginOptionException(final Class<?> clazz,

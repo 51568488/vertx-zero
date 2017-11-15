@@ -9,7 +9,7 @@ import io.vertx.up.atom.Event;
 import io.vertx.up.exception.web._500DeliveryErrorException;
 import io.vertx.up.exception.web._500EntityCastException;
 import io.vertx.up.rs.mirror.ParamFiller;
-import io.vertx.zero.exception.WebException;
+import io.vertx.up.exception.WebException;
 import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.StringUtil;

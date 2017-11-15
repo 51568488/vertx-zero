@@ -1,4 +1,4 @@
-package io.vertx.zero.tool.io.filter;
+package zava.io;
 
 import io.vertx.zero.eon.Strings;
 

@@ -73,7 +73,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
      | - exception			# Exception definition
      | - func				# High order function
      | - plugin				# * Engine: Plugin Sub System
-     | - rs					# * Engine: JSR311 implementation
+     | - rs				# * Engine: JSR311 implementation
      | - test				# Testing tools
      | - web				# * Engine: Web container core system
      | - annotations		# * Engine: JSR311 Annotation extends

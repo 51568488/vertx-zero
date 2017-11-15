@@ -3,7 +3,7 @@ package io.vertx.zero.tool.io;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import io.vertx.up.exception.zero.EmptyStreamException;
+import io.vertx.zero.exception.EmptyStreamException;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HFail;
 import io.vertx.zero.log.Log;

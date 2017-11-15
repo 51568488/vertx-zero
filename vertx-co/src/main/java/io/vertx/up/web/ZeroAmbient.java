@@ -3,7 +3,7 @@ package io.vertx.up.web;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.Plugins;
-import io.vertx.up.eon.em.YamlType;
+import io.vertx.zero.eon.em.YamlType;
 import io.vertx.zero.func.HJson;
 import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;

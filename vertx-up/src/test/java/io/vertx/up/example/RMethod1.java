@@ -1,6 +1,6 @@
 package io.vertx.up.example;
 
-import io.vertx.up.eon.Strings;
+import io.vertx.zero.eon.Strings;
 
 import javax.ws.rs.GET;
 

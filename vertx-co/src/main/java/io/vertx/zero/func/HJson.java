@@ -2,7 +2,7 @@ package io.vertx.zero.func;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.Values;
+import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.func.error.JdBiConsumer;
 

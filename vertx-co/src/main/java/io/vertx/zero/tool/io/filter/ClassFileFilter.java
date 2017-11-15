@@ -1,6 +1,6 @@
 package io.vertx.zero.tool.io.filter;
 
-import io.vertx.up.eon.FileTypes;
+import io.vertx.zero.eon.FileSuffix;
 
 import java.io.FileFilter;
 
@@ -11,6 +11,6 @@ public class ClassFileFilter extends BaseFilter
         implements FileFilter {
     @Override
     public String getFileExtension() {
-        return FileTypes.CLASS;
+        return FileSuffix.CLASS;
     }
 }

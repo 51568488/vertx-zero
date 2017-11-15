@@ -2,8 +2,8 @@ package io.vertx.zero.marshal.reliable;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.exception.zero.DataTypeWrongException;
-import io.vertx.up.exception.zero.RequiredFieldException;
+import io.vertx.zero.exception.DataTypeWrongException;
+import io.vertx.zero.exception.RequiredFieldException;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.test.UnitBase;
 import io.vertx.zero.tool.io.IO;

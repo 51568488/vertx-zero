@@ -1,8 +1,8 @@
 package io.vertx.zero.log;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.Tpl;
-import io.vertx.up.exception.zero.ErrorMissingException;
+import io.vertx.zero.eon.Tpl;
+import io.vertx.zero.exception.ErrorMissingException;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HFail;
 import io.vertx.zero.marshal.node.JObjectBase;

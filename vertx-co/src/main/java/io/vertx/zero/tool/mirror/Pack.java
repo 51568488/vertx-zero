@@ -1,10 +1,10 @@
 package io.vertx.zero.tool.mirror;
 
 import io.vertx.core.impl.ConcurrentHashSet;
-import io.vertx.up.eon.FileTypes;
-import io.vertx.up.eon.Protocols;
-import io.vertx.up.eon.Strings;
-import io.vertx.up.eon.Values;
+import io.vertx.zero.eon.FileSuffix;
+import io.vertx.zero.eon.Protocols;
+import io.vertx.zero.eon.Strings;
+import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HFail;
 import io.vertx.zero.func.HNull;
@@ -113,7 +113,7 @@ public final class Pack {
                     }
                     if ((idx != -1) || recursive) {
                         // .class and not directory
-                        if (name.endsWith(Strings.DOT + FileTypes.CLASS) && !entry.isDirectory()) {
+                        if (name.endsWith(Strings.DOT + FileSuffix.CLASS) && !entry.isDirectory()) {
                             // Extract class Name
                             final String className = name.substring(packageName.length() + 1, name.length() - 6);
                             try {

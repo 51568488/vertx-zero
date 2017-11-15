@@ -1,12 +1,12 @@
 package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.FileTypes;
-import io.vertx.up.eon.Strings;
+import io.vertx.zero.eon.FileSuffix;
+import io.vertx.zero.eon.Strings;
 import io.vertx.zero.func.HPool;
 import io.vertx.zero.marshal.Node;
-import io.vertx.zero.tool.mirror.Instance;
 import io.vertx.zero.tool.StringUtil;
+import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
@@ -43,6 +43,6 @@ public class ZeroLime implements Node<ConcurrentMap<String, String>> {
 
     public static String calculatePath(final String key) {
         return Limes.PREFIX + Strings.DASH + key +
-                Strings.DOT + FileTypes.YML;
+                Strings.DOT + FileSuffix.YML;
     }
 }

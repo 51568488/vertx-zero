@@ -4,7 +4,7 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.example.AnnoAgent;
 import io.vertx.up.example.AnnoExceAgent;
-import io.vertx.up.exception.up.AgentDuplicatedException;
+import io.vertx.up.exception.AgentDuplicatedException;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHttpAgent;
 import io.vertx.zero.test.UnitBase;

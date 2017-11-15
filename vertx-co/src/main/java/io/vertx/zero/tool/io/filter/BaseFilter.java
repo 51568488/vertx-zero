@@ -1,6 +1,6 @@
 package io.vertx.zero.tool.io.filter;
 
-import io.vertx.up.eon.Strings;
+import io.vertx.zero.eon.Strings;
 
 import java.io.File;
 

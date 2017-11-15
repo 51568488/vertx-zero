@@ -5,7 +5,7 @@ import io.vertx.up.annotations.Plugin;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.eon.Info;
-import io.vertx.up.exception.up.PluginSpecificationException;
+import io.vertx.up.exception.PluginSpecificationException;
 import io.vertx.up.plugin.Infix;
 import io.vertx.up.web.ZeroAmbient;
 import io.vertx.up.web.ZeroAnno;

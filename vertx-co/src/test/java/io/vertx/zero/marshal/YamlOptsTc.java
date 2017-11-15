@@ -1,7 +1,7 @@
 package io.vertx.zero.marshal;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.exception.zero.LimeFileException;
+import io.vertx.zero.exception.LimeFileException;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.marshal.options.Opts;
 import io.vertx.zero.test.UnitBase;

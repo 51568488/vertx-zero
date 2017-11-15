@@ -2,7 +2,7 @@ package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.Plugins;
-import io.vertx.up.eon.Strings;
+import io.vertx.zero.eon.Strings;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HFail;
 import io.vertx.zero.func.HNull;

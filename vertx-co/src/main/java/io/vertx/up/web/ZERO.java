@@ -2,12 +2,6 @@ package io.vertx.up.web;
 
 interface Info {
 
-    String HTTP_SERVERS = "[ ZERO ] {0} (id = {1}) Agent has deployed HTTP Server on {2}.";
-
-    String MAPPED_ROUTE = "[ ZERO ] ( Uri Register ) \"{1}\" has been deployed by {0}, Options = {2}.";
-
-    String HTTP_LISTEN = "[ ZERO ] {0} Http Server has been started successfully. Endpoint: {1}.";
-
     String PLUGIN_LOAD = "[ ZERO ] The raw data ( node = {0} ) has been detected " +
             "the file = {1} to read data: type = {2}, content = {3}.";
 }

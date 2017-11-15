@@ -2,7 +2,7 @@ package io.vertx.zero.tool;
 
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.Strings;
+import io.vertx.zero.eon.Strings;
 import io.vertx.zero.func.HFail;
 import io.vertx.zero.func.HNull;
 

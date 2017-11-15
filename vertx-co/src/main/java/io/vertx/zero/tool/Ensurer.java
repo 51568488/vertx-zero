@@ -1,6 +1,6 @@
 package io.vertx.zero.tool;
 
-import io.vertx.up.exception.zero.ArgumentException;
+import io.vertx.zero.exception.ArgumentException;
 import io.vertx.zero.log.Errors;
 
 public final class Ensurer {

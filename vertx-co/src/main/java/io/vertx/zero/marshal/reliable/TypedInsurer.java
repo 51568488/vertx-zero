@@ -1,8 +1,8 @@
 package io.vertx.zero.marshal.reliable;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.em.DataType;
-import io.vertx.up.exception.zero.DataTypeWrongException;
+import io.vertx.zero.eon.em.DataType;
+import io.vertx.zero.exception.DataTypeWrongException;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.func.HJson;
 import io.vertx.zero.func.HNull;

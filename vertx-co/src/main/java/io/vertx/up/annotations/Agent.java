@@ -1,6 +1,6 @@
 package io.vertx.up.annotations;
 
-import io.vertx.up.eon.VertxValues;
+import io.vertx.up.eon.ZeroValue;
 import io.vertx.up.eon.em.ServerType;
 
 import java.lang.annotation.*;
@@ -26,7 +26,7 @@ public @interface Agent {
      *
      * @return
      */
-    int instances() default VertxValues.DEFAULT_INSTANCES;
+    int instances() default ZeroValue.DEFAULT_INSTANCES;
 
     /**
      * Isolation Group
@@ -34,12 +34,12 @@ public @interface Agent {
      *
      * @return
      */
-    String group() default VertxValues.DEFAULT_GROUP;
+    String group() default ZeroValue.DEFAULT_GROUP;
 
     /**
      * @return
      */
-    boolean ha() default VertxValues.DEFAULT_HA;
+    boolean ha() default ZeroValue.DEFAULT_HA;
 
     /**
      * Default server type: http

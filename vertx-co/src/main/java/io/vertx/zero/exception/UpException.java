@@ -1,6 +1,6 @@
 package io.vertx.zero.exception;
 
-import io.vertx.up.eon.Strings;
+import io.vertx.zero.eon.Strings;
 import io.vertx.zero.log.Errors;
 
 /**

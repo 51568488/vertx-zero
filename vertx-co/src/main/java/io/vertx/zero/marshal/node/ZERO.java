@@ -1,8 +1,8 @@
 package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.FileTypes;
-import io.vertx.up.eon.Strings;
+import io.vertx.zero.eon.FileSuffix;
+import io.vertx.zero.eon.Strings;
 import io.vertx.zero.marshal.Node;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,19 +31,19 @@ interface Path {
      * The root vertx file
      */
     String KE_VERTX = "vertx"
-            + Strings.DOT + FileTypes.YML;
+            + Strings.DOT + FileSuffix.YML;
 
     String ERROR = Limes.ERROR
-            + Strings.DOT + FileTypes.YML;
+            + Strings.DOT + FileSuffix.YML;
 
     String INJECT = Limes.INJECT
-            + Strings.DOT + FileTypes.YML;
+            + Strings.DOT + FileSuffix.YML;
 
     String SERVER = Limes.SERVER
-            + Strings.DOT + FileTypes.YML;
+            + Strings.DOT + FileSuffix.YML;
 
     String FAILURE = Limes.FAILURE
-            + Strings.DOT + FileTypes.YML;
+            + Strings.DOT + FileSuffix.YML;
 }
 
 interface Key {

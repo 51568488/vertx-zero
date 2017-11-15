@@ -5,7 +5,7 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.up.atom.Event;
 import io.vertx.up.example.ED;
 import io.vertx.up.example.ED1;
-import io.vertx.zero.test.UnitBase;
+import io.vertx.up.test.UnitBase;
 import org.junit.Test;
 
 import java.util.Set;

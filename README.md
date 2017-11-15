@@ -35,8 +35,8 @@ Once you have built the project, you can add following dependency into you `pom.
 ```xml
         <dependency>
             <groupId>io.vertx.up</groupId>
-            <artifactId>vertx-dot</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <artifactId>vertx-up</artifactId>
+            <version>0.4-SNAPSHOT</version>
         </dependency>
 ```
 

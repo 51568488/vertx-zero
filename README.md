@@ -64,8 +64,40 @@ Once the Zero is up, you can see following logs in your console ( The default po
 	Endpoint: http://0.0.0.0:8083/
 ```
 
+## 5. Code Structure
 
-## 5. Dependency Library
+```
+| - up
+     | - atom				# Model definition
+     | - eon				# Constant pool
+     | - exception			# Exception definition
+     | - func				# High order function
+     | - plugin				# * Engine: Plugin Sub System
+     | - rs				# * Engine: JSR311 implementation
+     | - test				# Testing tools
+     | - web				# * Engine: Web container core system
+     | - annotations			# * Engine: JSR311 Annotation extends
+| - zero
+     | - atom				# Model definition
+     | - eon				# Constant pool
+     | - exception			# Exception definition
+     | - func				# High order function
+     | - log				# * Engine: Logger/Error Sub System
+     | - marshal			# * Engine: Metadata/Config Sub System
+     | - test				# Testing tools
+     | - tool				# * Engine: Basic Infrastructure ( Utility Tool )
+```
+
+### Shared Package in each system.
+
+* `atom`: Model definition ( Internal Domain Definition )
+* `eon`: Constant pool 
+* `exception`: Exception definition
+* `func`: High order function
+* `test`: Testing tools.
+
+ 
+## 6. Dependency Library
 
 *Lombok is standalone library, you can ignore this library in your project and write pojo with pure java. But we recommend you to use this library to simplify the POJO writting.*
 

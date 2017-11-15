@@ -9,7 +9,7 @@ import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HFail;
 import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
-import io.vertx.zero.tool.io.filter.ClassFileFilter;
+import zava.io.ClassFileFilter;
 
 import java.io.File;
 import java.net.JarURLConnection;

@@ -1,7 +1,7 @@
 package io.vertx.up.web;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.test.UnitBase;
+import io.vertx.quiz.ZeroBase;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ZeroSerializerTc extends UnitBase {
+public class ZeroSerializerTc extends ZeroBase {
 
     private <T> void put(final T input) {
         final JsonObject data = new JsonObject();

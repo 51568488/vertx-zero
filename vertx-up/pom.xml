@@ -15,10 +15,20 @@
             <groupId>io.vertx.up</groupId>
             <artifactId>vertx-co</artifactId>
         </dependency>
+        <!-- Unit Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
         <!-- Mongo Client -->
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-mongo-client</artifactId>
+        </dependency>
+        <!-- MySql Client -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-mysql-postgresql-client</artifactId>
         </dependency>
         <!-- RabbitMQ Client -->
         <dependency>

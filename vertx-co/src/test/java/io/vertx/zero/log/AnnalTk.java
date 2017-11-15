@@ -1,9 +1,9 @@
 package io.vertx.zero.log;
 
-import io.vertx.zero.test.UnitBase;
+import io.vertx.quiz.ZeroBase;
 import org.junit.Test;
 
-public class AnnalTk extends UnitBase {
+public class AnnalTk extends ZeroBase {
 
     @Test
     public void testAnnal() {

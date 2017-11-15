@@ -1,16 +1,16 @@
 package io.vertx.zero.marshal.equip;
 
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.zero.exception.ArgumentException;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.test.UnitBase;
 import io.vertx.zero.tool.mirror.Instance;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.concurrent.ConcurrentMap;
 
-public class HttpServerVisitorTc extends UnitBase {
+public class HttpServerVisitorTc extends ZeroBase {
 
     private static final int EXPECTED_PORT = 8083;
     final ServerVisitor<HttpServerOptions> visitor

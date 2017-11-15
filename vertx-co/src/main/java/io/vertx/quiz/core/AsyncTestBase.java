@@ -1,4 +1,4 @@
-package io.vertx.zero.test.core;
+package io.vertx.quiz.core;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;

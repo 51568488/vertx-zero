@@ -1,9 +1,9 @@
 package io.vertx.up.web;
 
-import io.vertx.zero.test.UnitBase;
+import io.vertx.quiz.ZeroBase;
 import org.junit.Test;
 
-public class ZeroSerializationTc extends UnitBase {
+public class ZeroSerializationTc extends ZeroBase {
 
     @SuppressWarnings("unchecked")
     private <T> T get(final Class<?> clazz, final String literal) {

@@ -1,4 +1,4 @@
-package io.vertx.zero.test.core.tls;
+package io.vertx.quiz.core.tls;
 
 import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.PemTrustOptions;

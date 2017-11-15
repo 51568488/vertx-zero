@@ -5,8 +5,8 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
+import io.vertx.quiz.core.VertxTestBase;
 import io.vertx.up.web.ZeroGrid;
-import io.vertx.zero.test.core.VertxTestBase;
 import org.junit.Test;
 
 public class MongoDbTc extends VertxTestBase {

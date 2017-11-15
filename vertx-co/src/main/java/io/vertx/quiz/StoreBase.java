@@ -1,4 +1,4 @@
-package io.vertx.zero.test;
+package io.vertx.quiz;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
@@ -9,7 +9,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.tool.Store;
 
-public abstract class StoreBase extends UnitBase {
+public abstract class StoreBase extends ZeroBase {
 
     protected void execJObject(final String filename,
                                final Handler<AsyncResult<JsonObject>> handler) {

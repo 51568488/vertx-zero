@@ -1,4 +1,4 @@
-package io.vertx.up.plugin.mysql;
+package io.vertx.up.plugin.jdbc;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -31,7 +31,7 @@ public class MySqlInfix implements Infix {
     public static void init(final Vertx vertx) {
         initInternal(vertx, NAME);
     }
-    
+
     @Override
     public SQLClient get() {
         return CLIENTS.get(NAME);

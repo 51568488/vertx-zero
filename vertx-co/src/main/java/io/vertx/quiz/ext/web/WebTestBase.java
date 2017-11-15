@@ -1,9 +1,9 @@
-package io.vertx.zero.test.ext.web;
+package io.vertx.quiz.ext.web;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
 import io.vertx.ext.web.Router;
-import io.vertx.zero.test.core.VertxTestBase;
+import io.vertx.quiz.core.VertxTestBase;
 
 import java.util.Arrays;
 import java.util.HashSet;

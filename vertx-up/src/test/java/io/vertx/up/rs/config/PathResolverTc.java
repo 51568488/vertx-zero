@@ -1,10 +1,10 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.ext.unit.TestContext;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.up.example.*;
 import io.vertx.up.exception.PathAnnoEmptyException;
 import io.vertx.up.web.ZeroHelper;
-import io.vertx.zero.test.UnitBase;
 import org.junit.Test;
 
 import javax.ws.rs.Path;
@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class PathResolverTc extends UnitBase {
+public class PathResolverTc extends ZeroBase {
 
     private String parseRoot(final Class<?> root) {
         final Path path = ZeroHelper.getPath(root);

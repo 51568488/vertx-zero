@@ -3,13 +3,13 @@ package io.vertx.zero.marshal.equip;
 import io.vertx.core.http.Http2Settings;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.zero.marshal.Transformer;
-import io.vertx.zero.test.UnitBase;
 import io.vertx.zero.tool.mirror.Instance;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class HttpServerStradaTc extends UnitBase {
+public class HttpServerStradaTc extends ZeroBase {
     final Transformer<HttpServerOptions> transformer
             = Instance.singleton(HttpServerStrada.class);
 

@@ -1,11 +1,11 @@
-package io.vertx.zero.test.core;
+package io.vertx.quiz.core;
 
 import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.net.*;
 import io.vertx.core.spi.cluster.ClusterManager;
-import io.vertx.zero.test.fakecluster.FakeClusterManager;
+import io.vertx.quiz.fakecluster.FakeClusterManager;
 import org.junit.Rule;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package io.vertx.up.test;
+package io.vertx.quiz;
 
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.quiz.ext.web.WebTestBase;

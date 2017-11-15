@@ -2,13 +2,13 @@ package io.vertx.up.rs.config;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.unit.TestContext;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.up.example.RMethod1;
-import io.vertx.zero.test.UnitBase;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
 
-public class MethodResolverTc extends UnitBase {
+public class MethodResolverTc extends ZeroBase {
 
     @Test
     public void testMethod1(final TestContext context)

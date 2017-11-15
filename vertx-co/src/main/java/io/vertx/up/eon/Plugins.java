@@ -1,6 +1,7 @@
 package io.vertx.up.eon;
 
 import io.vertx.up.annotations.infix.Mongo;
+import io.vertx.up.annotations.infix.MySql;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,8 +27,10 @@ public interface Plugins {
 
         String MONGO = "mongo";
 
+        String MYSQL = "mysql";
+
         String[] DATA = new String[]{
-                MONGO
+                MONGO, MYSQL
         };
     }
 
@@ -35,6 +38,7 @@ public interface Plugins {
             new ConcurrentHashMap<Class<? extends Annotation>, String>() {
                 {
                     put(Mongo.class, Infix.MONGO);
+                    put(MySql.class, Infix.MYSQL);
                 }
             };
 }

@@ -1,4 +1,4 @@
-package io.vertx.zero.test;
+package io.vertx.quiz;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -14,7 +14,7 @@ import org.junit.Rule;
 import org.junit.runner.RunWith;
 
 @RunWith(VertxUnitRunner.class)
-public abstract class UnitBase {
+public abstract class ZeroBase {
     @Rule
     public final RunTestOnContext rule = new RunTestOnContext();
 

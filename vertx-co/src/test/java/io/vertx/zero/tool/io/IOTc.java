@@ -1,7 +1,7 @@
 package io.vertx.zero.tool.io;
 
 import io.vertx.ext.unit.TestContext;
-import io.vertx.zero.test.StoreBase;
+import io.vertx.quiz.StoreBase;
 import org.junit.Test;
 
 public class IOTc extends StoreBase {

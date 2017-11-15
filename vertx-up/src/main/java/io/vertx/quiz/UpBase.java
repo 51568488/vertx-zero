@@ -1,4 +1,4 @@
-package io.vertx.up.test;
+package io.vertx.quiz;
 
 import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
@@ -13,8 +13,8 @@ import org.junit.runner.RunWith;
 import java.util.Set;
 
 @RunWith(VertxUnitRunner.class)
-public abstract class UnitBase {
-    
+public abstract class UpBase {
+
     @Rule
     public final RunTestOnContext rule = new RunTestOnContext();
 

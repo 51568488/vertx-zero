@@ -1,15 +1,15 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.ext.unit.TestContext;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.up.example.Media;
-import io.vertx.zero.test.UnitBase;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
 import java.lang.reflect.Method;
 import java.util.Set;
 
-public class MediaResolverTc extends UnitBase {
+public class MediaResolverTc extends ZeroBase {
 
     @Test
     public void testProduce(final TestContext context) throws NoSuchMethodException {

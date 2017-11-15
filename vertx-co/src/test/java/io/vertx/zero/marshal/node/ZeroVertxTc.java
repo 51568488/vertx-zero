@@ -1,14 +1,14 @@
 package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.zero.marshal.Node;
-import io.vertx.zero.test.UnitBase;
 import io.vertx.zero.tool.mirror.Instance;
 import org.junit.Test;
 
 import java.util.concurrent.ConcurrentMap;
 
-public class ZeroVertxTc extends UnitBase {
+public class ZeroVertxTc extends ZeroBase {
 
     @Test
     public void testVertxRead() {

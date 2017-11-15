@@ -2,12 +2,12 @@ package io.vertx.zero.marshal.mongo;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.up.web.ZeroGrid;
-import io.vertx.zero.test.UnitBase;
 import io.vertx.zero.tool.mirror.Types;
 import org.junit.Test;
 
-public class MongoGridTc extends UnitBase {
+public class MongoGridTc extends ZeroBase {
     @Test
     public void testMongo(final TestContext context) {
         final JsonObject data = ZeroGrid.getOptions("mongo");

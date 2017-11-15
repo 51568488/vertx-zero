@@ -2,14 +2,14 @@ package io.vertx.zero.marshal.reliable;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.zero.exception.DataTypeWrongException;
 import io.vertx.zero.exception.RequiredFieldException;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.test.UnitBase;
 import io.vertx.zero.tool.io.IO;
 import org.junit.Test;
 
-public class JsonInsurerTc extends UnitBase {
+public class JsonInsurerTc extends ZeroBase {
 
     @Test(expected = RequiredFieldException.class)
     public void testRequiredObj() throws ZeroException {

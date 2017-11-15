@@ -1,13 +1,13 @@
 package io.vertx.zero.marshal;
 
 import io.vertx.core.json.JsonObject;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.zero.exception.LimeFileException;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.marshal.options.Opts;
-import io.vertx.zero.test.UnitBase;
 import org.junit.Test;
 
-public class YamlOptsTc extends UnitBase {
+public class YamlOptsTc extends ZeroBase {
 
     @Test(expected = LimeFileException.class)
     public void testYaml() throws ZeroException {

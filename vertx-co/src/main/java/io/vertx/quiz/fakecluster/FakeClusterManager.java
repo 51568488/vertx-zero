@@ -1,4 +1,4 @@
-package io.vertx.zero.test.fakecluster;
+package io.vertx.quiz.fakecluster;
 
 
 import io.vertx.core.*;

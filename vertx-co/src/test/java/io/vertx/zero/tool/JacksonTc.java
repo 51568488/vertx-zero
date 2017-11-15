@@ -2,7 +2,7 @@ package io.vertx.zero.tool;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
-import io.vertx.zero.test.StoreBase;
+import io.vertx.quiz.StoreBase;
 import io.vertx.zero.tool.io.IO;
 import org.junit.Test;
 

@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>io.vertx.up</groupId>
     <artifactId>vertx-zero</artifactId>
     <version>0.4-SNAPSHOT</version>
@@ -20,6 +19,7 @@
         <encoding>UTF-8</encoding>
         <!-- Vertx 3.5.1 SNAPSHOT, For testing -->
         <vertx.version>3.5.0</vertx.version>
+        <stack.version>3.5.0</stack.version>
         <!-- Vertx Snap -->
         <jackson.version>2.9.2</jackson.version>
         <reflect.asm.version>1.11.3</reflect.asm.version>
@@ -28,6 +28,8 @@
         <jersey.version>2.26</jersey.version>
         <lombok.version>1.16.18</lombok.version>
         <hazelcast.version>3.9</hazelcast.version>
+        <netty.tcnative.version>2.0.7.Final</netty.tcnative.version>
+        <netty.version>4.1.17.Final</netty.version>
         <!-- Testing -->
         <junit.version>4.12</junit.version>
         <!-- Logging -->
@@ -46,15 +48,10 @@
         <maven.plugin.site>3.6</maven.plugin.site>
         <maven.plugin.enforcer>3.0.0-M1</maven.plugin.enforcer>
         <maven.plugin.lombok>1.16.18.1</maven.plugin.lombok>
+        <maven.plugin.processor>3.1.0</maven.plugin.processor>
+        <maven.plugin.source>3.0.1</maven.plugin.source>
+        <maven.plugin.javadoc>3.0.0-M1</maven.plugin.javadoc>
     </properties>
-    <dependencies>
-        <!-- Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
     <prerequisites>
         <maven>3.5.0</maven>
     </prerequisites>
@@ -63,43 +60,36 @@
             <plugins>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-enforcer-plugin/ -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>${maven.plugin.enforcer}</version>
                 </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin/ -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>${maven.plugin.site}</version>
                 </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${maven.plugin.resource}</version>
                 </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin/ -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven.plugin.jar}</version>
                 </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-deploy-plugin -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>${maven.plugin.deploy}</version>
                 </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-install-plugin/ -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
                     <version>${maven.plugin.install}</version>
                 </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-clean-plugin -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>${maven.plugin.clean}</version>
                 </plugin>
@@ -111,13 +101,11 @@
                 </plugin>
                 <!-- http://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.plugin.compiler}</version>
                 </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.plugin.surefire}</version>
                 </plugin>
@@ -127,12 +115,35 @@
                     <artifactId>lombok-maven-plugin</artifactId>
                     <version>${maven.plugin.lombok}</version>
                 </plugin>
+                <!-- Import from vertx.core -->
+                <plugin>
+                    <groupId>org.bsc.maven</groupId>
+                    <artifactId>maven-processor-plugin</artifactId>
+                    <version>${maven.plugin.processor}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven.plugin.javadoc}</version>
+                    <configuration>
+                        <reportOutputDirectory>${project.build.directory}/docs</reportOutputDirectory>
+                    </configuration>
+                </plugin>
+                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven.plugin.source}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>docoverride/**</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <!-- Mojo -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <executions>
                     <execution>
@@ -167,7 +178,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>${java.version}</source>
@@ -178,7 +188,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <includes>
@@ -195,6 +204,13 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-dependencies</artifactId>
+                <version>${vertx.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>io.vertx.up</groupId>
                 <artifactId>vertx-co</artifactId>
                 <version>${project.parent.version}</version>
@@ -209,100 +225,28 @@
                 <artifactId>vertx-zeus</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
-            <!-- http://www.mvnrepository.com/artifact/io.vertx -->
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-core</artifactId>
-                <version>${vertx.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-web</artifactId>
-                <version>${vertx.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.vertx</groupId>
-                        <artifactId>vertx-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-config</artifactId>
-                <version>${vertx.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.vertx</groupId>
-                        <artifactId>vertx-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-config-yaml</artifactId>
-                <version>${vertx.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.vertx</groupId>
-                        <artifactId>vertx-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-mongo-client</artifactId>
-                <version>${vertx.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.vertx</groupId>
-                        <artifactId>vertx-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-rabbitmq-client</artifactId>
-                <version>${vertx.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.vertx</groupId>
-                        <artifactId>vertx-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-unit</artifactId>
-                <version>${vertx.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.vertx</groupId>
-                        <artifactId>vertx-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <!-- Clustered -->
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-zookeeper</artifactId>
-                <version>${vertx.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-hazelcast</artifactId>
-                <version>${vertx.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.vertx</groupId>
-                        <artifactId>vertx-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
             <!-- https://mvnrepository.com/artifact/com.hazelcast/hazelcast -->
             <dependency>
                 <groupId>com.hazelcast</groupId>
                 <artifactId>hazelcast</artifactId>
                 <version>${hazelcast.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/io.netty/netty-transport -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport-native-kqueue</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/io.netty/netty-tcnative-boringssl-static -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-tcnative-boringssl-static</artifactId>
+                <version>${netty.tcnative.version}</version>
             </dependency>
 
             <!-- java rs -->

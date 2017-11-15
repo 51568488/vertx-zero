@@ -1,10 +1,10 @@
 package io.vertx.zero.tool.mirror;
 
+import io.vertx.quiz.ZeroBase;
 import io.vertx.zero.log.Annal;
-import io.vertx.zero.test.UnitBase;
 import org.junit.Test;
 
-public class InstanceTc extends UnitBase {
+public class InstanceTc extends ZeroBase {
 
     @Test
     public void testInteger() {

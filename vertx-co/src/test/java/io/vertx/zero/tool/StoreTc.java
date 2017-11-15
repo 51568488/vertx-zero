@@ -1,8 +1,8 @@
 package io.vertx.zero.tool;
 
 import io.vertx.ext.unit.TestContext;
+import io.vertx.quiz.StoreBase;
 import io.vertx.zero.log.Log;
-import io.vertx.zero.test.StoreBase;
 import org.junit.Test;
 
 public class StoreTc extends StoreBase {

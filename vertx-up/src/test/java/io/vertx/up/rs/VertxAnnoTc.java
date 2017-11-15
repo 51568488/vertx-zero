@@ -1,19 +1,19 @@
 package io.vertx.up.rs;
 
 import io.vertx.ext.unit.TestContext;
+import io.vertx.quiz.ZeroBase;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.example.AnnoAgent;
 import io.vertx.up.example.AnnoExceAgent;
 import io.vertx.up.exception.AgentDuplicatedException;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHttpAgent;
-import io.vertx.zero.test.UnitBase;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
-public class VertxAnnoTc extends UnitBase {
+public class VertxAnnoTc extends ZeroBase {
 
     private static final ConcurrentMap<ServerType, List<Class<?>>>
             AGENTS = ZeroAnno.getAgents();

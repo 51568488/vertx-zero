@@ -1,1 +1,2 @@
-mongo: io.vertx.up.plugin.mongo.MongoInfix
+mongo: io.vertx.up.plugin.document.MongoInfix
+mysql: io.vertx.up.plugin.jdbc.MySqlInfix

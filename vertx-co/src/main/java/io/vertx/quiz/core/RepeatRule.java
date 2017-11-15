@@ -1,4 +1,4 @@
-package io.vertx.zero.test.core;
+package io.vertx.quiz.core;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;

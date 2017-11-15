@@ -1,8 +1,8 @@
 package io.vertx.up.rs.router;
 
 import io.vertx.ext.web.Route;
-import io.vertx.up.ce.Event;
-import org.vie.cv.Strings;
+import io.vertx.up.atom.Event;
+import io.vertx.up.eon.Strings;
 
 import javax.ws.rs.core.MediaType;
 import java.util.Set;

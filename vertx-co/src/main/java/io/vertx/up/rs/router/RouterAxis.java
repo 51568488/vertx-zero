@@ -3,7 +3,7 @@ package io.vertx.up.rs.router;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CookieHandler;
-import io.vertx.up.cv.Orders;
+import io.vertx.up.eon.Orders;
 import io.vertx.up.rs.Axis;
 
 public class RouterAxis implements Axis {

@@ -1,12 +1,12 @@
 package io.vertx.up.rs.config;
 
-import io.vertx.exception.up.PathAnnoEmptyException;
-import org.vie.cv.Strings;
-import org.vie.cv.Values;
-import org.vie.fun.HBool;
-import org.vie.fun.HNull;
-import org.vie.util.StringUtil;
-import org.vie.util.log.Annal;
+import io.vertx.up.eon.Strings;
+import io.vertx.up.eon.Values;
+import io.vertx.up.exception.up.PathAnnoEmptyException;
+import io.vertx.zero.func.HBool;
+import io.vertx.zero.func.HNull;
+import io.vertx.zero.log.Annal;
+import io.vertx.zero.tool.StringUtil;
 
 import javax.ws.rs.Path;
 import java.util.regex.Matcher;

@@ -3,8 +3,8 @@ package io.vertx.up.rs.hunt;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.ce.Envelop;
-import io.vertx.up.ce.Event;
+import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.Event;
 
 /**
  * Response process to normalize the response data.

@@ -17,7 +17,7 @@ The detail implementation used MessageFormat, do not support named parameters.
 Create new class that you wanted as following
 
 ```java
-import io.vertx.exception.WebException;
+import io.vertx.zero.exception.WebException;
 
 public class TestRequestException extends
         WebException {

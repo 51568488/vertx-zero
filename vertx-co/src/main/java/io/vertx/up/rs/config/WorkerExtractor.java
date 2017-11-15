@@ -3,10 +3,10 @@ package io.vertx.up.rs.config;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.up.annotations.Worker;
 import io.vertx.up.rs.Extractor;
-import org.vie.fun.HNull;
-import org.vie.fun.HPool;
-import org.vie.util.Instance;
-import org.vie.util.log.Annal;
+import io.vertx.zero.func.HNull;
+import io.vertx.zero.func.HPool;
+import io.vertx.zero.log.Annal;
+import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentHashMap;

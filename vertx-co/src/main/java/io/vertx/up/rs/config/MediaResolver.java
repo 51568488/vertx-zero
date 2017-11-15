@@ -1,10 +1,10 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.core.impl.ConcurrentHashSet;
-import org.vie.fun.HBool;
-import org.vie.fun.HNull;
-import org.vie.util.Instance;
-import org.vie.util.log.Annal;
+import io.vertx.zero.func.HBool;
+import io.vertx.zero.func.HNull;
+import io.vertx.zero.log.Annal;
+import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;

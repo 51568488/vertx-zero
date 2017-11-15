@@ -1,7 +1,7 @@
 package io.vertx.up.annotations;
 
-import io.vertx.up.cv.VertxValues;
-import io.vertx.up.cv.em.InteractionType;
+import io.vertx.up.eon.VertxValues;
+import io.vertx.up.eon.em.InteractionType;
 
 import java.lang.annotation.*;
 

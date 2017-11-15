@@ -4,11 +4,11 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.ce.Envelop;
-import io.vertx.up.ce.Event;
+import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.Event;
 import io.vertx.up.rs.Aim;
-import org.vie.fun.HNull;
-import org.vie.fun.HWeb;
+import io.vertx.zero.func.HNull;
+import io.vertx.zero.func.HWeb;
 
 /**
  * OneWayAim: Event Bus: One-Way

@@ -1,7 +1,7 @@
 package io.vertx.up;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.cv.em.Etat;
+import io.vertx.up.eon.em.Etat;
 
 public interface Monitor {
     /**

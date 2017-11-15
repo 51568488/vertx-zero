@@ -1,6 +1,6 @@
 package io.vertx.up.rs;
 
-import io.vertx.up.ce.Event;
+import io.vertx.up.atom.Event;
 
 /**
  * Splitter to get executor reference.

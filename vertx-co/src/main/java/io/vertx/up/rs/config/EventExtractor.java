@@ -2,18 +2,18 @@ package io.vertx.up.rs.config;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.impl.ConcurrentHashSet;
-import io.vertx.exception.up.AccessProxyException;
-import io.vertx.exception.up.EventSourceException;
-import io.vertx.exception.up.NoArgConstructorException;
 import io.vertx.up.annotations.EndPoint;
-import io.vertx.up.ce.Event;
+import io.vertx.up.atom.Event;
+import io.vertx.up.exception.up.AccessProxyException;
+import io.vertx.up.exception.up.EventSourceException;
+import io.vertx.up.exception.up.NoArgConstructorException;
 import io.vertx.up.rs.Extractor;
-import io.vertx.zero.web.ZeroHelper;
-import org.vie.fun.HBool;
-import org.vie.fun.HNull;
-import org.vie.util.Instance;
-import org.vie.util.StringUtil;
-import org.vie.util.log.Annal;
+import io.vertx.up.web.ZeroHelper;
+import io.vertx.zero.func.HBool;
+import io.vertx.zero.func.HNull;
+import io.vertx.zero.log.Annal;
+import io.vertx.zero.tool.StringUtil;
+import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.Method;

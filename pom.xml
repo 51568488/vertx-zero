@@ -27,6 +27,7 @@
         <jsr311.version>1.1.1</jsr311.version>
         <jersey.version>2.26</jersey.version>
         <lombok.version>1.16.18</lombok.version>
+        <hazelcast.version>3.9</hazelcast.version>
         <!-- Testing -->
         <junit.version>4.12</junit.version>
         <!-- Logging -->
@@ -260,6 +261,17 @@
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
+                <artifactId>vertx-rabbitmq-client</artifactId>
+                <version>${vertx.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.vertx</groupId>
+                        <artifactId>vertx-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
                 <artifactId>vertx-unit</artifactId>
                 <version>${vertx.version}</version>
                 <exclusions>
@@ -286,6 +298,13 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/com.hazelcast/hazelcast -->
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast</artifactId>
+                <version>${hazelcast.version}</version>
+            </dependency>
+
             <!-- java rs -->
             <!-- http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
             <dependency>

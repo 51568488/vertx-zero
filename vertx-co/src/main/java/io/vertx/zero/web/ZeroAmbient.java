@@ -46,10 +46,17 @@ public final class ZeroAmbient {
 
     static {
         INJECTIONS = new ConcurrentHashMap<>();
+        // 1. Pre-check if lime configured in vertx.yml
+        final ZeroNode<ConcurrentMap<String, String>> vertxNode =
+                Instance.singleton(ZeroLime.class);
+        final ConcurrentMap<String, String> limeData = vertxNode.read();
+        // 2. The injections must be configured in lime node.
         HTry.exec(() -> {
             final JsonObject opt = OPTS.ingest(KEY);
             HJson.execIt(opt, (item, field) -> {
-                INJECTIONS.put(field, Instance.clazz(item.toString()));
+                if (limeData.containsKey(field)) {
+                    INJECTIONS.put(field, Instance.clazz(item.toString()));
+                }
             });
         }, LOGGER);
     }

@@ -28,11 +28,6 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-core</artifactId>
         </dependency>
-        <!-- Mongo Client -->
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-mongo-client</artifactId>
-        </dependency>
         <!-- Unit Testing -->
         <dependency>
             <groupId>io.vertx</groupId>

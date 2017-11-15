@@ -30,10 +30,12 @@ public class ZeroLime implements ZeroNode<ConcurrentMap<String, String>> {
 
     private ConcurrentMap<String, String> build(final String literal) {
         final Set<String> sets = StringUtil.split(literal, Strings.COMMA);
-        for (final String set : sets) {
-            if (!StringUtil.isNil(set)) {
-                HPool.exec(Storage.DATA_LIME, set,
-                        () -> calculatePath(set));
+        if (null != literal) {
+            for (final String set : sets) {
+                if (!StringUtil.isNil(set)) {
+                    HPool.exec(Storage.DATA_LIME, set,
+                            () -> calculatePath(set));
+                }
             }
         }
         return Storage.DATA_LIME;

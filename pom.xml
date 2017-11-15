@@ -6,11 +6,11 @@
 
     <groupId>io.vertx.up</groupId>
     <artifactId>vertx-zero</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
     <name>vertx-zero: Vertx Up Zero Configuration</name>
     <modules>
-        <module>vertx-dot</module>
-        <module>vertx-pole</module>
+        <module>vertx-up</module>
+        <module>vertx-zeus</module>
         <module>vertx-co</module>
     </modules>
     <packaging>pom</packaging>
@@ -201,12 +201,12 @@
             </dependency>
             <dependency>
                 <groupId>io.vertx.up</groupId>
-                <artifactId>vertx-dot</artifactId>
+                <artifactId>vertx-up</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vertx.up</groupId>
-                <artifactId>vertx-pole</artifactId>
+                <artifactId>vertx-zeus</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <!-- http://www.mvnrepository.com/artifact/io.vertx -->

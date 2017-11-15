@@ -1,4 +1,4 @@
-package io.vertx.zero.test;
+package io.vertx.quiz;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;

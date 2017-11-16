@@ -22,15 +22,10 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 public class VertxPlugin {
 
     private static final Annal LOGGER = Annal.get(VertxPlugin.class);
-
-    private static final ConcurrentMap<String, Infix> INFIXES
-            = new ConcurrentHashMap<>();
 
     /**
      * Default package

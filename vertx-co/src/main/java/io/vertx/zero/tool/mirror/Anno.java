@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,6 @@ public final class Anno {
      */
     public static String getPlugin(final Field field) {
         return HNull.get(() -> {
-            final Annotation[] annotations = field.getDeclaredAnnotations();
             String key = null;
             for (final Class<? extends Annotation> annoCls : Plugins.INFIX_MAP.keySet()) {
                 if (field.isAnnotationPresent(annoCls)) {
@@ -71,6 +71,28 @@ public final class Anno {
         }, field);
     }
 
+    /**
+     * Get all injections for field
+     *
+     * @param clazz
+     * @return
+     */
+    public static ConcurrentMap<String, Field> getPlugins(final Class<?> clazz,
+                                                          final Class<? extends Annotation> annoCls) {
+        return HNull.get(clazz, () -> {
+            // Scan all class fields
+            final Field[] fields = clazz.getDeclaredFields();
+            final ConcurrentMap<String, Field> fieldMap =
+                    new ConcurrentHashMap<>();
+            for (final Field field : fields) {
+                if (field.isAnnotationPresent(annoCls)
+                        || null != getPlugin(field)) {
+                    fieldMap.put(field.getName(), field);
+                }
+            }
+            return fieldMap;
+        }, new ConcurrentHashMap<>());
+    }
 
     public static <T, E extends Annotation> T getAttribute(final Class<?> clazz,
                                                            final Class<E> annoCls,

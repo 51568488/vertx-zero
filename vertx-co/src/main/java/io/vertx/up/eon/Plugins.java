@@ -1,8 +1,7 @@
 package io.vertx.up.eon;
 
-import io.vertx.up.annotations.infix.Mongo;
-import io.vertx.up.annotations.infix.MySql;
-
+import javax.inject.infix.Mongo;
+import javax.inject.infix.MySql;
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

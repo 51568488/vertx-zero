@@ -34,7 +34,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.annotations.Queue;
-import io.vertx.up.annotations.infix.Mongo;
+import javax.inject.infix.Mongo;
 import io.vertx.up.atom.Envelop;
 import io.vertx.zero.tool.Jackson;
 

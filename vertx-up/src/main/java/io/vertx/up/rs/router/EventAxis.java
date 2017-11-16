@@ -10,6 +10,7 @@ import io.vertx.up.rs.Splitter;
 import io.vertx.up.rs.hunt.ModeSplitter;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.func.HBool;
+import io.vertx.zero.func.HPool;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
@@ -23,7 +24,8 @@ public class EventAxis implements Axis {
      */
     private static final Set<Event> EVENTS =
             ZeroAnno.getEvents();
-    private transient final Splitter splitter = Instance.singleton(ModeSplitter.class);
+    private transient final Splitter splitter = HPool.exec(Pool.THREADS,
+            Thread.currentThread().getName(), () -> Instance.instance(ModeSplitter.class));
 
     @Override
     public void mount(final Router router) {
@@ -40,10 +42,14 @@ public class EventAxis implements Axis {
 
                         final Route route = router.route();
                         // 2. Path, Method, Order
-                        Hub hub = Instance.singleton(UriHub.class);
+                        Hub hub = HPool.exec(Pool.URIHUBS,
+                                Thread.currentThread().getName(),
+                                () -> Instance.instance(UriHub.class));
                         hub.mount(route, event);
                         // 3. Consumes/Produces
-                        hub = Instance.singleton(MediaHub.class);
+                        hub = HPool.exec(Pool.MEDIAHUBS,
+                                Thread.currentThread().getName(),
+                                () -> Instance.instance(MediaHub.class));
                         hub.mount(route, event);
 
                         final Aim aim = this.splitter.distribute(event);

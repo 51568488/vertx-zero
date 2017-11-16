@@ -14,12 +14,6 @@ public interface Info {
     String SCANED_QUEUE = "[ ZERO ] ( {0} Queue ) The Zero system has found " +
             "{0} components of @Queue.";
 
-    String SCANED_EVENTS = "[ ZERO ] ( {1} Event ) The endpoint {0} scanned {1} events of Event, " +
-            "will be mounted to routing system.";
-
-    String SCANED_RECEIPTS = "[ ZERO ] ( {1} Receipt ) The queue {0} scanned {1} records of Receipt, " +
-            "will be mounted to event bus.";
-
     String APP_CLUSTERD = "[ ZERO ] Current app is running in cluster mode, " +
             "manager = {0} on node {1} with status = {2}.";
 

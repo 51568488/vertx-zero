@@ -16,12 +16,12 @@ public class QueueThread extends Thread {
 
     private final Set<Receipt> receipts = new HashSet<>();
 
-    private final CountDownLatch countDownLatch;
+    private final transient CountDownLatch countDownLatch;
 
-    private final Extractor<Set<Receipt>> extractor =
+    private final transient Extractor<Set<Receipt>> extractor =
             Instance.instance(ReceiptExtractor.class);
 
-    private final Class<?> reference;
+    private final transient Class<?> reference;
 
     public QueueThread(final Class<?> clazz,
                        final CountDownLatch countDownLatch) {

@@ -16,12 +16,12 @@ public class EndPointThread extends Thread {
 
     private final Set<Event> events = new HashSet<>();
 
-    private final CountDownLatch countDownLatch;
+    private final transient CountDownLatch countDownLatch;
 
-    private final Extractor<Set<Event>> extractor =
+    private final transient Extractor<Set<Event>> extractor =
             Instance.instance(EventExtractor.class);
 
-    private final Class<?> reference;
+    private final transient Class<?> reference;
 
     public EndPointThread(final Class<?> clazz,
                           final CountDownLatch countDownLatch) {

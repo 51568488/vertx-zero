@@ -10,6 +10,7 @@ import io.vertx.up.atom.Receipt;
 import io.vertx.up.eon.Info;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.web.thread.EndPointThread;
+import io.vertx.up.web.thread.InjectThread;
 import io.vertx.up.web.thread.QueueThread;
 import io.vertx.zero.func.HPool;
 import io.vertx.zero.func.HTry;
@@ -173,7 +174,6 @@ public class ZeroAnno {
             final CountDownLatch counter = new CountDownLatch(queues.size());
             final List<QueueThread> threadReference = new ArrayList<>();
             /** 3.1. Build Metadata **/
-            // final Extractor<Set<Receipt>> extractor = Instance.singleton(ReceiptExtractor.class);
             for (final Class<?> queue : queues) {
                 final QueueThread thread =
                         new QueueThread(queue, counter);
@@ -197,7 +197,28 @@ public class ZeroAnno {
      */
     private static void initPlugin(final Set<Class<?>> clazzes) {
         if (PENDINGS.isEmpty()) {
-            
+            final List<InjectThread> threadReference = new ArrayList<>();
+            for (final Class<?> clazz : clazzes) {
+                final InjectThread thread = new
+                        InjectThread(clazz);
+                threadReference.add(thread);
+                thread.start();
+            }
+            threadReference.forEach(thread -> {
+                try {
+                    thread.join();
+                } catch (final InterruptedException ex) {
+                    LOGGER.jvm(ex);
+                }
+            });
+            for (final InjectThread thread : threadReference) {
+                if (!thread.isEmpty()) {
+                    final Class<?> key = thread.getClassKey();
+                    final ConcurrentMap<String, Field> fields = thread.getFieldMap();
+                    PENDINGS.put(key, fields);
+                    LOGGER.info(Info.SCANED_INJECTION, key.getName(), fields.size());
+                }
+            }
         }
     }
 
@@ -229,6 +250,6 @@ public class ZeroAnno {
             WORKERS.addAll(workers);
         }
         /** 7.Scan all classes which could be inject **/
-
+        initPlugin(clazzes);
     }
 }

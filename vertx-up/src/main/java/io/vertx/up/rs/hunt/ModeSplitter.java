@@ -11,6 +11,7 @@ import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HNull;
+import io.vertx.zero.func.HPool;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
@@ -56,24 +57,29 @@ public class ModeSplitter implements Splitter {
                     if (Void.class == replierType || void.class == replierType) {
                         if (isAsync(replier)) {
                             // Mode 5: Event Bus: ( Async ) Request-Response
-                            aim = Instance.singleton(AsyncAim.class);
+                            aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "5",
+                                    () -> Instance.instance(AsyncAim.class));
                         } else {
                             // Mode 3: Event Bus: One-Way
-                            aim = Instance.singleton(OneWayAim.class);
+                            aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "3",
+                                    () -> Instance.instance(OneWayAim.class));
                         }
                     } else {
                         // Mode 1: Event Bus: Request-Response
-                        aim = Instance.singleton(AsyncAim.class);
+                        aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "1",
+                                () -> Instance.instance(AsyncAim.class));
                     }
                 }
             } else {
                 // Non Event Bus
                 if (Void.class == returnType || void.class == returnType) {
                     // Mode 4: Non-Event Bus: One-Way
-                    aim = Instance.singleton(BlockAim.class);
+                    aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "4",
+                            () -> Instance.instance(BlockAim.class));
                 } else {
                     // Mode 2: Non-Event Bus: Request-Response\
-                    aim = Instance.singleton(SyncAim.class);
+                    aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "2",
+                            () -> Instance.instance(SyncAim.class));
                 }
             }
             return aim;

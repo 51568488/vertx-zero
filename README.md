@@ -5,14 +5,19 @@ This project is based on Vert.x, the idea came from Spring-Boot framework. It co
 ## 1. Documentation
 
 1. [Getting Start](doc/zero-starter.md)
-2. [@Path usage](doc/zero-path.md)
-3. [@BodyParam usage](doc/zero-param.md)
-4. [Set POJO as parameters](doc/zero-pojo.md)
-5. [Parameter type supported](doc/zero-typed.md)
-6. [How to enable Event Bus](doc/zero-worker.md)
-7. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
-8. [Mongo Plugin in Zero](doc/zero-mongo.md)
-9. [Define Exception](doc/zero-error.md)
+2. Parameters
+	1. [@Path usage](doc/zero-path.md)
+	2. [ ( JSR311 Extend ) @BodyParam usage](doc/zero-param.md)
+	3. [Set POJO as parameters](doc/zero-pojo.md)
+	4. [Parameter type supported](doc/zero-typed.md)
+3. Request Flow
+	1. [How to enable Event Bus](doc/zero-worker.md)
+	2. [Mode supported describption](doc/zero-mode.md)
+	3. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
+4. Plugin
+	1. [How to use MongoClient in Zero](doc/zero-mongo.md)
+5. Exception ( Error )
+	1. [How to define WebException](doc/zero-error.md)
 
 ## 2. Source Code
 

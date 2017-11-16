@@ -17,14 +17,6 @@ public class UserWorker {
     @Mongo
     private transient MongoClient client;
 
-    @Address("ZERO://USER")
-    public Envelop reply(final Envelop message) {
-        final User user = message.data(User.class);
-        final WebException error = new TestRequestException(getClass(),
-                "Lang", "Detail");
-        return Envelop.failure(error);
-    }
-
     @Address("ZERO://ROLE")
     public void async(final Message<Envelop> message) {
         final User user = Envelop.data(message, User.class);
@@ -37,4 +29,14 @@ public class UserWorker {
             }
         });
     }
+
+    @Address("ZERO://USER")
+    public Envelop reply(final Envelop message) {
+        final User user = message.data(User.class);
+        final WebException error = new TestRequestException(getClass(),
+                "Lang", "Detail");
+        return Envelop.failure(error);
+    }
+
+
 }

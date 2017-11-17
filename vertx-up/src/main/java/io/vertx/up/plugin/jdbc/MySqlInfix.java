@@ -1,12 +1,12 @@
 package io.vertx.up.plugin.jdbc;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.asyncsql.MySQLClient;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.up.annotations.Plugin;
+import io.vertx.up.eon.Plugins;
 import io.vertx.up.plugin.Infix;
-import io.vertx.up.web.ZeroGrid;
+import io.vertx.up.plugin.document.MongoInfix;
 import io.vertx.zero.func.HPool;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,9 +23,10 @@ public class MySqlInfix implements Infix {
 
     private static void initInternal(final Vertx vertx,
                                      final String name) {
-        final JsonObject config = ZeroGrid.getOptions("mysql");
         HPool.exec(CLIENTS, name,
-                () -> MySQLClient.createShared(vertx, config, name));
+                () -> Infix.init(Plugins.Infix.MYSQL,
+                        (config) -> MySQLClient.createShared(vertx, config, name),
+                        MongoInfix.class));
     }
 
     public static void init(final Vertx vertx) {

@@ -50,26 +50,28 @@ public class ZeroHttpAgent extends AbstractVerticle {
 
     @Override
     public void start() {
-        /** 1.Get the default HttpServer Options **/
+        /** 1.Call router hub to mount commont **/
+        final Axis routerAxiser = HPool.exec(ROUTERS, Thread.currentThread().getName(),
+                () -> Instance.instance(RouterAxis.class));
+        /** 2.Call route hub to mount defined **/
+        final Axis axiser = HPool.exec(EVENTS, Thread.currentThread().getName(),
+                () -> Instance.instance(EventAxis.class));
+
+        /** 3.Get the default HttpServer Options **/
         SERVERS.forEach((port, option) -> {
-            /** 2.Single server processing **/
+            /** 3.1.Single server processing **/
             final HttpServer server = this.vertx.createHttpServer(option);
-            /** 3.Build router with current option **/
+            
+            /** 3.2. Build router with current option **/
             final Router router = Router.router(this.vertx);
 
-            /** 4.Call router hub to mount commont **/
-            Axis axiser = HPool.exec(ROUTERS, Thread.currentThread().getName(),
-                    () -> Instance.instance(RouterAxis.class));
-            axiser.mount(router);
-            /** 5.Call route hub to mount defined **/
-            axiser = HPool.exec(EVENTS, Thread.currentThread().getName(),
-                    () -> Instance.instance(EventAxis.class));
+            routerAxiser.mount(router);
             axiser.mount(router);
 
-            /** 6.Listen for router on the server **/
+            /** 3.3.Listen for router on the server **/
             server.requestHandler(router::accept).listen();
             {
-                // 7. Log output
+                // 3.4. Log output
                 recordServer(option, router);
             }
         });

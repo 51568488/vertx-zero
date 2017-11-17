@@ -17,6 +17,7 @@ import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HMap;
 import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;
+import io.vertx.zero.tool.Runner;
 import io.vertx.zero.tool.Statute;
 import io.vertx.zero.tool.mirror.Anno;
 import io.vertx.zero.tool.mirror.Instance;
@@ -78,11 +79,19 @@ public class VertxApplication {
         final Launcher launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
             /** 1.Find Agent for deploy **/
-            deployAgents(vertx);
+            final String threadName = Thread.currentThread().getName();
+            Runner.run(() -> {
+                deployAgents(vertx);
+            }, threadName + "-zero-agent");
             /** 2.Find Worker for deploy **/
-            deployWorkers(vertx);
+
+            Runner.run(() -> {
+                deployWorkers(vertx);
+            }, threadName + "-zero-worker");
             /** 3.Initialize Plugin **/
-            this.plugin.connect(vertx);
+            Runner.run(() -> {
+                this.plugin.connect(vertx);
+            }, threadName + "-zero-plugin");
             /** 4.Connect and started **/
         });
     }

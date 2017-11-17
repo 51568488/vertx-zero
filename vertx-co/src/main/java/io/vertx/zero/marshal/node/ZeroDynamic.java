@@ -12,13 +12,13 @@ import java.util.concurrent.ConcurrentMap;
 
 public class ZeroDynamic implements Node<JsonObject> {
 
-    private transient final Node<ConcurrentMap<String, String>> node
+    private static final Node<ConcurrentMap<String, String>> node
             = Instance.singleton(ZeroLime.class);
 
-    @Override
-    public JsonObject read() {
-        final JsonObject data = new JsonObject();
-        final ConcurrentMap<String, String> keys = this.node.read();
+    private static final JsonObject ONE_DATA = new JsonObject();
+
+    private static JsonObject readConfig() {
+        final ConcurrentMap<String, String> keys = node.read();
         /**
          * Remote default
          */
@@ -32,9 +32,26 @@ public class ZeroDynamic implements Node<JsonObject> {
                             () -> IO.getYaml(filename),
                             new JsonObject(), filename));
             if (null != each) {
-                data.mergeIn(each, true);
+                ONE_DATA.mergeIn(each, true);
             }
         }
-        return data;
+        return ONE_DATA;
+    }
+
+    static {
+        final ConcurrentMap<String, String> keys = node.read();
+        /**
+         * Remote default
+         */
+        readConfig();
+    }
+
+
+    @Override
+    public JsonObject read() {
+        if (ONE_DATA.isEmpty()) {
+            readConfig();
+        }
+        return ONE_DATA;
     }
 }

@@ -37,7 +37,8 @@ public class VertxPlugin {
         final Set<String> plugins = ZeroAmbient.getPluginNames();
 
         for (final String plugin : plugins) {
-
+            System.out.println(Thread.currentThread().getName());
+            System.out.println(plugin);
             initialize(plugin, vertx);
 
             inject(plugin);

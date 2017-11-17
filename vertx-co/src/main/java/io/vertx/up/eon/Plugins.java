@@ -16,9 +16,13 @@ public interface Plugins {
     String SERVER = "server";
 
     String ERROR = "error";
+    /**
+     * Internal
+     **/
+    String FAILURE = "failure";
 
     String[] DATA = new String[]{
-            INJECT, SERVER, ERROR
+            INJECT, ERROR, FAILURE, SERVER
     };
 
     // Default infix

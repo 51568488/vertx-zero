@@ -11,6 +11,7 @@ import io.vertx.zero.log.Annal;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
@@ -68,6 +69,19 @@ public final class Instance {
     public static Class<?> clazz(final String name) {
         return HPool.exec(Storage.CLASSES, name,
                 () -> HFail.exec(() -> Class.forName(name), name));
+    }
+
+    /**
+     * Check whether clazz implement the interfaceCls
+     *
+     * @param clazz
+     * @param interfaceCls
+     * @return
+     */
+    public static boolean isMatch(final Class<?> clazz, final Class<?> interfaceCls) {
+        final Class<?>[] interfaces = clazz.getInterfaces();
+        return Arrays.stream(interfaces)
+                .anyMatch(item -> item.equals(interfaceCls));
     }
 
     /**

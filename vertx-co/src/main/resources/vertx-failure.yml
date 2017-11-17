@@ -26,6 +26,7 @@ E40017: Worker method signature is wrong, the parameter length must be 1. method
 E40018: "Async mode: return = {0}, parameter = {1}, valid - Envelop method(Envelop), void method(Message<Envelop>;)"
 E40019: Your plugin {0} met error when starting, please check the details {1}
 E40020: Zero system could not find the config of key = {0}, please check your configurations
+E40021: The field "{0}" of class {1} has been annotated with Zero annotation more than once, data = {2}.
 # (Web) Exception for web
 E60001: (400) - The input content could not be converted into valid resource user {0}
 E60002: (500) - The system detect some error in delivery on address {0}, error message = {1}

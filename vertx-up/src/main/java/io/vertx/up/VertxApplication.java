@@ -17,7 +17,6 @@ import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HMap;
 import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;
-import io.vertx.zero.tool.Runner;
 import io.vertx.zero.tool.Statute;
 import io.vertx.zero.tool.mirror.Anno;
 import io.vertx.zero.tool.mirror.Instance;
@@ -79,19 +78,11 @@ public class VertxApplication {
         final Launcher launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
             /** 1.Find Agent for deploy **/
-            final String threadName = Thread.currentThread().getName();
-            Runner.run(() -> {
-                deployAgents(vertx);
-            }, threadName + "-zero-agent");
+            deployAgents(vertx);
             /** 2.Find Worker for deploy **/
-
-            Runner.run(() -> {
-                deployWorkers(vertx);
-            }, threadName + "-zero-worker");
+            deployWorkers(vertx);
             /** 3.Initialize Plugin **/
-            Runner.run(() -> {
-                this.plugin.connect(vertx);
-            }, threadName + "-zero-plugin");
+            this.plugin.connect(vertx);
             /** 4.Connect and started **/
         });
     }
@@ -101,7 +92,7 @@ public class VertxApplication {
         final ConcurrentMap<ServerType, Class<?>> agents
                 = getAgents();
         final Extractor<DeploymentOptions> extractor =
-                Instance.singleton(AgentExtractor.class);
+                Instance.instance(AgentExtractor.class);
 
         HMap.exec(agents, (type, clazz) -> {
             // 2.1 Agent deployment options
@@ -115,7 +106,7 @@ public class VertxApplication {
         /** 1.Find Workers for deploy **/
         final Set<Class<?>> workers = ZeroAnno.getWorkers();
         final Extractor<DeploymentOptions> extractor =
-                Instance.singleton(WorkerExtractor.class);
+                Instance.instance(WorkerExtractor.class);
 
         for (final Class<?> worker : workers) {
             // 2.1 Worker deployment options

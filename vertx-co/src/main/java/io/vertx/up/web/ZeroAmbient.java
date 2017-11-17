@@ -1,9 +1,6 @@
 package io.vertx.up.web;
 
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.Plugins;
-import io.vertx.zero.eon.em.YamlType;
 import io.vertx.zero.func.HJson;
 import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;
@@ -11,7 +8,6 @@ import io.vertx.zero.log.internal.Log4JAnnal;
 import io.vertx.zero.marshal.Node;
 import io.vertx.zero.marshal.node.ZeroLime;
 import io.vertx.zero.marshal.options.Opts;
-import io.vertx.zero.tool.io.IO;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.Set;
@@ -32,15 +28,6 @@ public final class ZeroAmbient {
     private static final Annal LOGGER = new Log4JAnnal(ZeroAmbient.class);
 
     private static final ConcurrentMap<String, Class<?>> INJECTIONS;
-
-    private static final ConcurrentMap<String, YamlType> GRIDS =
-            new ConcurrentHashMap<>();
-
-    private static final ConcurrentMap<String, JsonObject> OBJECTS =
-            new ConcurrentHashMap<>();
-
-    private static final ConcurrentMap<String, JsonArray> ARRAYS =
-            new ConcurrentHashMap<>();
 
     private static final Opts<JsonObject> OPTS = Opts.get();
 
@@ -73,40 +60,6 @@ public final class ZeroAmbient {
      * Inited by ZeroGrid static
      */
     static void init() {
-        final Node<ConcurrentMap<String, String>> node
-                = Instance.singleton(ZeroLime.class);
-        final ConcurrentMap<String, String> metadata = node.read();
-        for (final String item : Plugins.DATA) {
-            metadata.remove(item);
-        }
-        // Loaded resource options into
-        for (final String name : metadata.keySet()) {
-            final String filename = metadata.get(name);
-            final YamlType type = IO.getYamlType(filename);
-            if (YamlType.OBJECT == type) {
-                final JsonObject data = IO.getYaml(filename);
-                LOGGER.info(Info.PLUGIN_LOAD, name, filename, type, data.encode());
-                OBJECTS.put(name, data);
-            } else {
-                final JsonArray data = IO.getYaml(filename);
-                LOGGER.info(Info.PLUGIN_LOAD, name, filename, type, data.encode());
-                ARRAYS.put(name, data);
-            }
-            // Fill types.
-            GRIDS.put(name, type);
-        }
-    }
-
-    static YamlType getType(final String name) {
-        return GRIDS.get(name);
-    }
-
-    static JsonObject getObject(final String name) {
-        return OBJECTS.get(name);
-    }
-
-    static JsonArray getArray(final String name) {
-        return ARRAYS.get(name);
     }
 
     private ZeroAmbient() {

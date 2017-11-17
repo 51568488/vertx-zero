@@ -1,0 +1,4 @@
+mongo:
+  db_name: vertx_zero_up
+  port: 27017
+  host: 127.0.0.1

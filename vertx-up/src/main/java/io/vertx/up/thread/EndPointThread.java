@@ -1,4 +1,4 @@
-package io.vertx.up.web.thread;
+package io.vertx.up.thread;
 
 import io.vertx.up.atom.Event;
 import io.vertx.up.rs.Extractor;

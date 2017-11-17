@@ -1,6 +1,5 @@
 package io.vertx.up.web;
 
-import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.annotations.Queue;
@@ -8,17 +7,19 @@ import io.vertx.up.annotations.Worker;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.eon.Info;
+import io.vertx.up.eon.Plugins;
 import io.vertx.up.eon.em.ServerType;
-import io.vertx.up.web.thread.EndPointThread;
-import io.vertx.up.web.thread.InjectThread;
-import io.vertx.up.web.thread.QueueThread;
+import io.vertx.up.thread.EndPointThread;
+import io.vertx.up.thread.InjectThread;
+import io.vertx.up.thread.QueueThread;
 import io.vertx.zero.func.HPool;
 import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;
+import io.vertx.zero.tool.mirror.Anno;
 import io.vertx.zero.tool.mirror.Pack;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,22 +37,22 @@ public class ZeroAnno {
      * Class -> EndPoint
      */
     private final static Set<Class<?>> ENDPOINTS
-            = new ConcurrentHashSet<>();
+            = new HashSet<>();
     /**
      * Class -> Inject
      */
-    private final static ConcurrentMap<Class<?>, ConcurrentMap<String, Field>> PENDINGS
+    private final static ConcurrentMap<Class<?>, ConcurrentMap<String, Class<?>>> PENDINGS
             = new ConcurrentHashMap<>();
     /**
      * Class -> Queues
      */
     private final static Set<Receipt> RECEIPTS
-            = new ConcurrentHashSet<>();
+            = new HashSet<>();
     /**
      * Event Set
      */
     private final static Set<Event> EVENTS
-            = new ConcurrentHashSet<>();
+            = new HashSet<>();
     /**
      * Class -> PATH
      */
@@ -61,14 +62,14 @@ public class ZeroAnno {
      * Type -> Worker1, Worker2
      */
     private final static Set<Class<?>> WORKERS
-            = new ConcurrentHashSet<>();
+            = new HashSet<>();
 
     /**
      * Get all plugins
      *
      * @return
      */
-    public static ConcurrentMap<Class<?>, ConcurrentMap<String, Field>> getPlugins() {
+    public static ConcurrentMap<Class<?>, ConcurrentMap<String, Class<?>>> getPlugins() {
         return PENDINGS;
     }
 
@@ -195,12 +196,18 @@ public class ZeroAnno {
      *
      * @param clazzes
      */
-    private static void initPlugin(final Set<Class<?>> clazzes) {
+    private static void initPlugin(final Set<Class<?>> clazzes,
+                                   final Set<Class<?>> named) {
         if (PENDINGS.isEmpty()) {
+            // Find condition ok
+            final Set<Class<?>> enabled = clazzes.stream()
+                    .filter(item -> Anno.isMark(item, Plugins.INJECT_ANNOTATIONS))
+                    .collect(Collectors.toSet());
+            // Scan each class.
             final List<InjectThread> threadReference = new ArrayList<>();
-            for (final Class<?> clazz : clazzes) {
+            for (final Class<?> clazz : enabled) {
                 final InjectThread thread = new
-                        InjectThread(clazz);
+                        InjectThread(clazz, named);
                 threadReference.add(thread);
                 thread.start();
             }
@@ -214,7 +221,7 @@ public class ZeroAnno {
             for (final InjectThread thread : threadReference) {
                 if (!thread.isEmpty()) {
                     final Class<?> key = thread.getClassKey();
-                    final ConcurrentMap<String, Field> fields = thread.getFieldMap();
+                    final ConcurrentMap<String, Class<?>> fields = thread.getFieldMap();
                     PENDINGS.put(key, fields);
                     LOGGER.info(Info.SCANED_INJECTION, key.getName(), fields.size());
                 }
@@ -250,6 +257,6 @@ public class ZeroAnno {
             WORKERS.addAll(workers);
         }
         /** 7.Scan all classes which could be inject **/
-        initPlugin(clazzes);
+        initPlugin(clazzes, clazzes);
     }
 }

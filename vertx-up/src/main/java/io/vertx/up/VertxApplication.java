@@ -67,15 +67,15 @@ public class VertxApplication {
 
             /** 3.Initialize Infix **/
             Runner.run(() -> {
-                final Scatter scatter = Instance.singleton(InfixScatter.class);
+                // Infix
+                Scatter scatter = Instance.singleton(InfixScatter.class);
                 scatter.connect(vertx);
-            }, "infix-runner");
+                // Injection
+                scatter = Instance.singleton(AffluxScatter.class);
+                scatter.connect(vertx);
+            }, "infix-afflux-runner");
 
             /** 4.Injection system with JSR 330 **/
-            Runner.run(() -> {
-                final Scatter scatter = Instance.singleton(AffluxScatter.class);
-                scatter.connect(vertx);
-            }, "afflux-runner");
         });
     }
 }

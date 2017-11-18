@@ -31,6 +31,7 @@ public class InjectWorker {
     public Envelop reply(final Envelop message) {
         System.out.println(this.dao);
         System.out.println(this.stub);
+        System.out.println(this.injectA);
         final User user = message.data(User.class);
         try {
             Errors.normalize(getClass(), -100001, "Lang", "Detail");

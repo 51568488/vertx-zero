@@ -2,13 +2,13 @@
 
 ## 1. Configuration
 
-In your class path:
+In your classpath:
 
-vertx.yml
+**vertx.yml**
 
 ```yaml
 zero:
-  lime: mongo	# Mongo Enable
+  lime: mongo
   vertx:
     instance:
     - name: vx-zero
@@ -16,15 +16,22 @@ zero:
         maxEventLoopExecuteTime: 30000000000
 ```
 
-vertx-mongo.yml
+**vertx-mongo.yml**
 
 ```yaml
-db_name: vertx_zero_up
-port: 27017
-host: 127.0.0.1
+mongo: # The key must be mongo, could not be replaced.
+    db_name: vertx_zero_up
+    port: 27017
+    host: 127.0.0.1
 ```
 
-*: Here ignored sender code, the mongo db only supported in consumer class in standard way.
+*: Here ignored sender code, the mongo db only supported in consumer class in standard way. Also the lime part is random, for example: Once you set the code as following:
+
+```yaml
+    lime: mongo-db
+```
+
+You must set the file name in resource path is as `vertx-mongo-db.yml`, then you could set mongo db configuration in this file.
 
 ## 2. Consumer Code
 

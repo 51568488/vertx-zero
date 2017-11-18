@@ -30,6 +30,7 @@ public class MongoInfix implements Infix {
                 () -> Infix.init(Plugins.Infix.MONGO,
                         (config) -> MongoClient.createShared(vertx, config, name),
                         MongoInfix.class));
+        System.out.println(CLIENTS);
     }
 
     public static void init(final Vertx vertx) {

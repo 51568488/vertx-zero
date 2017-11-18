@@ -6,7 +6,6 @@ import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.web.origin.*;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.log.Annal;
-import io.vertx.zero.tool.Runner;
 import io.vertx.zero.tool.mirror.Instance;
 import io.vertx.zero.tool.mirror.Pack;
 
@@ -96,62 +95,50 @@ public class ZeroAnno {
         return EVENTS;
     }
 
-
     static {
         /** 1.Scan the packages **/
         final Set<Class<?>> clazzes = Pack.getClasses(null);
+        /** EndPoint **/
+        Inquirer<Set<Class<?>>> inquirer =
+                Instance.singleton(EndPointInquirer.class);
+        ENDPOINTS.addAll(inquirer.scan(clazzes));
 
-        Runner.run(() -> {
-            /** EndPoint **/
-            final Inquirer<Set<Class<?>>> inquirer =
-                    Instance.singleton(EndPointInquirer.class);
-            ENDPOINTS.addAll(inquirer.scan(clazzes));
+        /** EndPoint -> Event **/
+        HBool.exec(!ENDPOINTS.isEmpty(),
+                LOGGER,
+                () -> {
+                    final Inquirer<Set<Event>> event =
+                            Instance.singleton(EventInquirer.class);
+                    EVENTS.addAll(event.scan(ENDPOINTS));
+                }, null);
 
-            /** EndPoint -> Event **/
-            HBool.exec(!ENDPOINTS.isEmpty(),
-                    LOGGER,
-                    () -> {
-                        final Inquirer<Set<Event>> event =
-                                Instance.singleton(EventInquirer.class);
-                        EVENTS.addAll(event.scan(ENDPOINTS));
-                    }, null);
-        }, "zero-endpoint");
+        /** Queue **/
+        inquirer =
+                Instance.singleton(QueueInquirer.class);
+        final Set<Class<?>> queues = inquirer.scan(clazzes);
 
-        Runner.run(() -> {
-            /** Queue **/
-            final Inquirer<Set<Class<?>>> inquirer =
-                    Instance.singleton(QueueInquirer.class);
-            final Set<Class<?>> queues = inquirer.scan(clazzes);
-
-            /** Queue -> Receipt **/
-            HBool.exec(!queues.isEmpty(),
-                    LOGGER,
-                    () -> {
-                        final Inquirer<Set<Receipt>> receipt =
-                                Instance.singleton(ReceiptInquirer.class);
-                        RECEIPTS.addAll(receipt.scan(queues));
-                    }, null);
-        }, "zero-queue");
+        /** Queue -> Receipt **/
+        HBool.exec(!queues.isEmpty(),
+                LOGGER,
+                () -> {
+                    final Inquirer<Set<Receipt>> receipt =
+                            Instance.singleton(ReceiptInquirer.class);
+                    RECEIPTS.addAll(receipt.scan(queues));
+                }, null);
 
         /** Agent **/
-        Runner.run(() -> {
-            final Inquirer<ConcurrentMap<ServerType, List<Class<?>>>> inquirer =
-                    Instance.singleton(AgentInquirer.class);
-            AGENTS.putAll(inquirer.scan(clazzes));
-        }, "zero-agent");
+        final Inquirer<ConcurrentMap<ServerType, List<Class<?>>>> agent =
+                Instance.singleton(AgentInquirer.class);
+        AGENTS.putAll(agent.scan(clazzes));
 
         /** Worker **/
-        Runner.run(() -> {
-            final Inquirer<Set<Class<?>>> inquirer =
-                    Instance.singleton(WorkerInquirer.class);
-            WORKERS.addAll(inquirer.scan(clazzes));
-        }, "zero-worker");
+        final Inquirer<Set<Class<?>>> worker =
+                Instance.singleton(WorkerInquirer.class);
+        WORKERS.addAll(worker.scan(clazzes));
 
         /** Injections **/
-        Runner.run(() -> {
-            final Inquirer<ConcurrentMap<Class<?>, ConcurrentMap<String, Class<?>>>> inquirer =
-                    Instance.singleton(AffluxInquirer.class);
-            PLUGINS.putAll(inquirer.scan(clazzes));
-        }, "zero-afflux");
+        final Inquirer<ConcurrentMap<Class<?>, ConcurrentMap<String, Class<?>>>> afflux =
+                Instance.singleton(AffluxInquirer.class);
+        PLUGINS.putAll(afflux.scan(clazzes));
     }
 }

@@ -42,7 +42,6 @@ public class InfixScatter implements Scatter {
         final ConcurrentMap<Class<? extends Annotation>, Class<?>> injections =
                 Statute.reduce(Plugins.INFIX_MAP, enabled);
 
-        System.out.println(enabled);
         injections.values().stream().forEach(item -> {
             if (null != item && item.isAnnotationPresent(Plugin.class)) {
                 final Method method = findInit(item);

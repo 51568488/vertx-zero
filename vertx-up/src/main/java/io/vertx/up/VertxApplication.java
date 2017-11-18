@@ -50,6 +50,7 @@ public class VertxApplication {
     }
 
     private void run(final Object... args) {
+
         final Launcher launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
             /** 1.Find Agent for deploy **/

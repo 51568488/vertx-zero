@@ -1,49 +1,49 @@
-package io.vertx.up;
+package io.vertx.up.web;
 
 import io.vertx.core.Vertx;
 import io.vertx.up.annotations.Plugin;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.eon.Info;
+import io.vertx.up.eon.Plugins;
 import io.vertx.up.exception.PluginSpecificationException;
 import io.vertx.up.plugin.Infix;
-import io.vertx.up.web.ZeroAmbient;
-import io.vertx.up.web.ZeroAnno;
+import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HNull;
 import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;
+import io.vertx.zero.tool.Statute;
 import io.vertx.zero.tool.mirror.Anno;
 import io.vertx.zero.tool.mirror.Instance;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
-public class VertxPlugin {
+public class ZeroPlugin {
 
-    private static final Annal LOGGER = Annal.get(VertxPlugin.class);
+    private static final Annal LOGGER = Annal.get(ZeroPlugin.class);
+
+    private transient final ZeroAfflux injector = Instance.singleton(ZeroAfflux.class);
 
     /**
      * Default package
      *
      * @param vertx
      */
-    void connect(final Vertx vertx) {
-        /** Scan all plugins **/
-        final Set<String> plugins = ZeroAmbient.getPluginNames();
-
-        for (final String plugin : plugins) {
-            System.out.println(Thread.currentThread().getName());
-            System.out.println(plugin);
-            initialize(plugin, vertx);
-
-            inject(plugin);
-        }
+    public void connect(final Vertx vertx) {
+        // Infix initialized
+        initInfix(vertx);
+        // Injection system started up
     }
+
 
     private void initialize(final String plugin, final Vertx vertx) {
         // Initialize
@@ -102,6 +102,24 @@ public class VertxPlugin {
         }, proxy);
     }
 
+    private void initInfix(final Vertx vertx) {
+        /** Scan all plugins **/
+        final ConcurrentMap<Class<? extends Annotation>, Class<?>>
+                injections = Statute.zipperMerge(Plugins.INFIX_MAP, ZeroAmbient.getInjections());
+        injections.values().stream().forEach(item -> {
+            if (null != item && item.isAnnotationPresent(Plugin.class)) {
+                final Method method = findInit(item);
+                HBool.execUp(null == method, LOGGER,
+                        PluginSpecificationException.class,
+                        getClass(), item.getName());
+                HTry.execJvm(() -> {
+                    method.invoke(null, vertx);
+                    return null;
+                }, LOGGER);
+            }
+        });
+    }
+
     /**
      * Check whether clazz has the method of name
      *
@@ -111,18 +129,10 @@ public class VertxPlugin {
     private Method findInit(final Class<?> clazz) {
         return HNull.get(() -> {
             final Method[] methods = clazz.getDeclaredMethods();
-            Method found = null;
-            for (final Method method : methods) {
-                // Multi
-                if ("init".equals(method.getName())) {
-                    // 1. Method must be public static void
-                    if (validMethod(method)) {
-                        found = method;
-                        break;
-                    }
-                }
-            }
-            return found;
+            final List<Method> found = Arrays.stream(methods)
+                    .filter(item -> "init".equals(item.getName()) && validMethod(item))
+                    .collect(Collectors.toList());
+            return Values.ONE == found.size() ? found.get(Values.IDX) : null;
         }, clazz);
     }
 

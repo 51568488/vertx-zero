@@ -1,6 +1,7 @@
 package org.di;
 
 import io.vertx.up.annotations.Address;
+import io.vertx.up.annotations.Qualifier;
 import io.vertx.up.annotations.Queue;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
@@ -20,6 +21,7 @@ public class InjectWorker {
     private transient InjectStub stub;
 
     @Inject
+    @Qualifier("NameInjectA")
     private transient InjectA injectA;
 
     @Inject

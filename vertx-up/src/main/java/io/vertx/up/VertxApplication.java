@@ -13,6 +13,7 @@ import io.vertx.up.rs.config.WorkerExtractor;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHttpAgent;
 import io.vertx.up.web.ZeroLauncher;
+import io.vertx.up.web.ZeroPlugin;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HMap;
 import io.vertx.zero.func.HTry;
@@ -49,7 +50,7 @@ public class VertxApplication {
     };
 
     private transient final Class<?> clazz;
-    private transient final VertxPlugin plugin = Instance.singleton(VertxPlugin.class);
+    private transient final ZeroPlugin plugin = Instance.singleton(ZeroPlugin.class);
     private ConcurrentMap<String, Annotation> annotationMap = new ConcurrentHashMap<>();
 
     private VertxApplication(final Class<?> clazz) {

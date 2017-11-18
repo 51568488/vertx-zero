@@ -5,12 +5,9 @@ import io.vertx.zero.func.HJson;
 import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.log.internal.Log4JAnnal;
-import io.vertx.zero.marshal.Node;
-import io.vertx.zero.marshal.node.ZeroLime;
 import io.vertx.zero.marshal.options.Opts;
 import io.vertx.zero.tool.mirror.Instance;
 
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -33,17 +30,11 @@ public final class ZeroAmbient {
 
     static {
         INJECTIONS = new ConcurrentHashMap<>();
-        // 1. Pre-check if lime configured in vertx.yml
-        final Node<ConcurrentMap<String, String>> vertxNode =
-                Instance.singleton(ZeroLime.class);
-        final ConcurrentMap<String, String> limeData = vertxNode.read();
         // 2. The injections must be configured in lime node.
         HTry.exec(() -> {
             final JsonObject opt = OPTS.ingest(KEY);
             HJson.execIt(opt, (item, field) -> {
-                if (limeData.containsKey(field)) {
-                    INJECTIONS.put(field, Instance.clazz(item.toString()));
-                }
+                INJECTIONS.put(field, Instance.clazz(item.toString()));
             });
         }, LOGGER);
     }
@@ -52,8 +43,8 @@ public final class ZeroAmbient {
         return INJECTIONS.get(key);
     }
 
-    public static Set<String> getPluginNames() {
-        return INJECTIONS.keySet();
+    public static ConcurrentMap<String, Class<?>> getInjections() {
+        return INJECTIONS;
     }
 
     /**

@@ -1,10 +1,15 @@
 package io.vertx.up.thread;
 
+import io.vertx.up.annotations.Qualifier;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.exception.MultiAnnotatedException;
+import io.vertx.up.exception.NamedImplementionException;
+import io.vertx.up.exception.NamedNotFoundException;
+import io.vertx.up.exception.QualifierMissedException;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.log.Annal;
+import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Anno;
 import io.vertx.zero.tool.mirror.Instance;
 
@@ -12,10 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -63,29 +65,76 @@ public class InjectThread extends Thread {
         final Class<?> type = field.getType();
         if (type.isInterface()) {
             // Interface
-            final Set<Class<?>> target = this.classes.stream().filter(
+            final List<Class<?>> target = this.classes.stream().filter(
                     item -> Instance.isMatch(item, type)
-            ).collect(Collectors.toSet());
-            System.out.println(type.getName());
-            System.out.println(target);
+            ).collect(Collectors.toList());
+            // Unique
+            if (Values.ONE == target.size()) {
+                final Class<?> targetCls = target.get(Values.IDX);
+                LOGGER.info(Info.SCANED_FIELD, this.reference,
+                        field.getName(), targetCls.getName(), Inject.class);
+                this.fieldMap.put(field.getName(), targetCls);
+            } else {
+                // By Named and Qualifier
+                scanQualifier(field, target);
+            }
         } else {
             this.fieldMap.put(field.getName(), type);
-            LOGGER.info(Info.SCANED_FIELD, type.getName(),
-                    field.getName(), Inject.class);
+            LOGGER.info(Info.SCANED_FIELD, this.reference,
+                    field.getName(), type.getName(), Inject.class);
         }
 
     }
 
+    private void scanQualifier(final Field field,
+                               final List<Class<?>> instanceCls) {
+        // Field must annotated with @Qualifier
+        final Annotation annotation = field.getAnnotation(Qualifier.class);
+
+        HBool.execUp(null == annotation,
+                LOGGER, QualifierMissedException.class,
+                getClass(), field.getName(), field.getDeclaringClass().getName());
+
+        // All implementation class must be annotated with @Named
+        final boolean match = instanceCls.stream()
+                .allMatch(item -> item.isAnnotationPresent(Named.class));
+
+        final Set<String> names = instanceCls.stream()
+                .map(Class::getName).collect(Collectors.toSet());
+
+        HBool.execUp(!match,
+                LOGGER, NamedImplementionException.class,
+                getClass(), names, field.getType().getName());
+
+        // Named value must be reflect with @Qualifier
+        final String value = Instance.invoke(annotation, "value");
+
+        final Optional<Class<?>> verified = instanceCls.stream()
+                .filter(item -> {
+                    final Annotation target = item.getAnnotation(Named.class);
+                    final String targetValue = Instance.invoke(target, "value");
+                    return value.equals(targetValue)
+                            && !StringUtil.isNil(targetValue);
+                }).findAny();
+
+        HBool.execUp(!verified.isPresent(),
+                LOGGER, NamedNotFoundException.class,
+                getClass(), names, value);
+
+        // Passed all specification
+        this.fieldMap.put(field.getName(), verified.get());
+    }
+
     private void scanSpecific(final Field field) {
         // Vert.x Defined
-        final Set<Class<? extends Annotation>> DEFINED
+        final Set<Class<? extends Annotation>> defineds
                 = Plugins.INFIX_MAP.keySet();
         final Annotation[] annotations = field.getDeclaredAnnotations();
         // Annotation counter
         final Set<String> set = new HashSet<>();
         Annotation hitted = null;
         for (final Annotation annotation : annotations) {
-            if (DEFINED.contains(annotation.annotationType())) {
+            if (defineds.contains(annotation.annotationType())) {
                 hitted = annotation;
                 set.add(annotation.annotationType().getName());
             }
@@ -95,8 +144,10 @@ public class InjectThread extends Thread {
                 MultiAnnotatedException.class, getClass(),
                 field.getName(), field.getDeclaringClass().getName(), set);
         // Fill typed directly.
-        LOGGER.info(Info.SCANED_FIELD, field.getDeclaringClass().getName(),
-                field.getName(), hitted.annotationType().getName());
+        LOGGER.info(Info.SCANED_FIELD, this.reference,
+                field.getName(),
+                field.getDeclaringClass().getName(),
+                hitted.annotationType().getName());
         this.fieldMap.put(field.getName(), field.getType());
     }
 

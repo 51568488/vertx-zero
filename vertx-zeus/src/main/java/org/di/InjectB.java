@@ -2,6 +2,6 @@ package org.di;
 
 import javax.inject.Named;
 
-@Named
+@Named("NameInjectA")
 public class InjectB implements InjectA {
 }

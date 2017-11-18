@@ -8,7 +8,10 @@ import io.vertx.zero.marshal.Node;
 import io.vertx.zero.tool.io.IO;
 import io.vertx.zero.tool.mirror.Instance;
 
+import java.util.Arrays;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 public class ZeroDynamic implements Node<JsonObject> {
 
@@ -17,40 +20,27 @@ public class ZeroDynamic implements Node<JsonObject> {
 
     private static final JsonObject ONE_DATA = new JsonObject();
 
-    private static JsonObject readConfig() {
-        final ConcurrentMap<String, String> keys = node.read();
-        /**
-         * Remote default
-         */
-        for (final String key : Plugins.DATA) {
-            keys.remove(key);
-        }
-        for (final String key : keys.keySet()) {
-            final String filename = keys.get(key);
-            final JsonObject each = HPool.exec(Storage.CONFIG, filename,
-                    () -> HFail.execDft(
-                            () -> IO.getYaml(filename),
-                            new JsonObject(), filename));
-            if (null != each) {
-                ONE_DATA.mergeIn(each, true);
-            }
-        }
-        return ONE_DATA;
-    }
-
-    static {
-        final ConcurrentMap<String, String> keys = node.read();
-        /**
-         * Remote default
-         */
-        readConfig();
-    }
-
 
     @Override
     public JsonObject read() {
         if (ONE_DATA.isEmpty()) {
-            readConfig();
+            final ConcurrentMap<String, String> keys = node.read();
+            final Set<String> skipped = Arrays
+                    .stream(Plugins.DATA).collect(Collectors.toSet());
+            for (final String key : keys.keySet()) {
+                // Skip some internal keys.
+                if (skipped.contains(key)) {
+                    continue;
+                }
+                final String filename = keys.get(key);
+                final JsonObject each = HPool.exec(Storage.CONFIG, filename,
+                        () -> HFail.execDft(
+                                () -> IO.getYaml(filename),
+                                new JsonObject(), filename));
+                if (null != each) {
+                    ONE_DATA.mergeIn(each, true);
+                }
+            }
         }
         return ONE_DATA;
     }

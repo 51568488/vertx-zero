@@ -110,7 +110,8 @@ Once you have built the project, you can add following dependency into you `pom.
 *Lombok is standalone library, you can ignore this library in your project and write pojo with pure java. But we recommend you to use this library to simplify the POJO writting.*
 
 * [Vert.x (3.5.0)](http://www.mvnrepository.com/artifact/io.vertx) ( core, web, config, config-yml, unit, zookeeper, hazelcast )
-* [Jws Rs (2.1)](http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api) 
+* [ ( JSR311 ) Jws Rs (2.1)](http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api) 
+* [ ( JSR330 ) Inject (1) ](https://mvnrepository.com/artifact/javax.inject/javax.inject)
 * [Jersey Common (2.26)](http://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common) ( For media type parsing )
 * Logback
 	* [logback-classic (1.2.3)](http://mvnrepository.com/artifact/ch.qos.logback/logback-classic)

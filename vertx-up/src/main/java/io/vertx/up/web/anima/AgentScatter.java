@@ -10,7 +10,7 @@ import io.vertx.up.rs.config.AgentExtractor;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHelper;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HMap;
+import io.vertx.zero.func.HMulti;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.Statute;
 import io.vertx.zero.tool.mirror.Instance;
@@ -46,7 +46,7 @@ public class AgentScatter implements Scatter {
         final Extractor<DeploymentOptions> extractor =
                 Instance.instance(AgentExtractor.class);
 
-        HMap.exec(agents, (type, clazz) -> {
+        HMulti.exec(agents, (type, clazz) -> {
             // 2.1 Agent deployment options
             final DeploymentOptions option = extractor.extract(clazz);
             // 2.2 Agent deployment
@@ -72,7 +72,7 @@ public class AgentScatter implements Scatter {
                 new ConcurrentHashMap<>();
         // Fix Boot
         // 1. If defined, use default
-        HMap.exec(agents, (type, list) -> {
+        HMulti.exec(agents, (type, list) -> {
             // 2. Defined -> You have defined
             HBool.exec(defines.containsKey(type) && defines.get(type),
                     () -> {

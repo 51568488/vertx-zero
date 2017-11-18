@@ -6,6 +6,7 @@ import io.vertx.up.eon.Info;
 import io.vertx.up.plugin.Infix;
 import io.vertx.up.web.ZeroAmbient;
 import io.vertx.up.web.ZeroAnno;
+import io.vertx.zero.func.HMulti;
 import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Anno;
@@ -23,6 +24,9 @@ public class ZeroAfflux {
     private void inject(final String plugin) {
         // Extract all events.
         final Set<Event> events = ZeroAnno.getEvents();
+        HMulti.exec(events, (item, index) -> {
+
+        });
         for (final Event event : events) {
             inject(event.getProxy());
         }

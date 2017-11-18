@@ -2,53 +2,7 @@
 
 This project is based on Vert.x, the idea came from Spring-Boot framework. It could help developers focus on business requirements instead of more details of Vert.x. The project contains two parts "Up" and "Zero". "Up" means running up, "Zero" means no configuration provided, you could run your project with default configuration only. 
 
-## 1. Documentation
-
-1. [Getting Start](doc/zero-starter.md)
-2. Parameters
-	1. [@Path usage](doc/zero-path.md)
-	2. [ ( JSR311 Extend ) @BodyParam usage](doc/zero-param.md)
-	3. [Set POJO as parameters](doc/zero-pojo.md)
-	4. [Parameter type supported](doc/zero-typed.md)
-3. Request Flow
-	1. [How to enable Event Bus](doc/zero-worker.md)
-	2. [Mode supported describption](doc/zero-mode.md)
-	3. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
-4. Plugin
-	1. [How to use MongoClient in Zero](doc/zero-mongo.md)
-	2. [How to use MySqlClient in Zero](doc/zero-mysql.md)
-5. DI
-	1. [How to use Dependency Injection ( JSR330 )](doc/zero-di.md)
-5. Exception ( Error )
-	1. [How to define WebException](doc/zero-error.md)
-
-## 2. Source Code
-
-1. Pull code from github
-
-	```
-	git clone https://github.com/silentbalanceyh/vertx-zero.git
-	```
-
-2. Build the whole project to be sure all the testing case have been passed. ( Some testing will take 8080 port )
-
-	```
-	mvn clean package install
-	```
-
-## 3. Envrionment
-
-Once you have built the project, you can add following dependency into you `pom.xml` to use Zero:
-
-```xml
-        <dependency>
-            <groupId>io.vertx.up</groupId>
-            <artifactId>vertx-up</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-```
-
-## 4. Boot Up
+## 1. Boot Up
 
 In your project, you can provide main entry only as following to run Zero ( Annotated with `@Up` ) .
 
@@ -70,6 +24,52 @@ Once the Zero is up, you can see following logs in your console ( The default po
 ```
 [ ZERO ] ZeroHttpAgent Http Server has been started successfully. \
 	Endpoint: http://0.0.0.0:8083/
+```
+
+## 2. Documentation
+
+1. [Getting Start](doc/zero-starter.md)
+2. Parameters
+	1. [@Path usage](doc/zero-path.md)
+	2. [ ( JSR311 Extend ) @BodyParam usage](doc/zero-param.md)
+	3. [Set POJO as parameters](doc/zero-pojo.md)
+	4. [Parameter type supported](doc/zero-typed.md)
+3. Request Flow
+	1. [How to enable Event Bus](doc/zero-worker.md)
+	2. [Mode supported describption](doc/zero-mode.md)
+	3. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
+4. Plugin
+	1. [How to use MongoClient in Zero](doc/zero-mongo.md)
+	2. [How to use MySqlClient in Zero](doc/zero-mysql.md)
+5. DI
+	1. [How to use Dependency Injection ( JSR330 )](doc/zero-di.md)
+5. Exception ( Error )
+	1. [How to define WebException](doc/zero-error.md)
+
+## 3. Source Code
+
+1. Pull code from github
+
+	```
+	git clone https://github.com/silentbalanceyh/vertx-zero.git
+	```
+
+2. Build the whole project to be sure all the testing case have been passed. ( Some testing will take 8080 port )
+
+	```
+	mvn clean package install
+	```
+
+## 4. Envrionment
+
+Once you have built the project, you can add following dependency into you `pom.xml` to use Zero:
+
+```xml
+        <dependency>
+            <groupId>io.vertx.up</groupId>
+            <artifactId>vertx-up</artifactId>
+            <version>0.4-SNAPSHOT</version>
+        </dependency>
 ```
 
 ## 5. Code Structure

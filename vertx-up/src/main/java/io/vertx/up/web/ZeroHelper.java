@@ -53,7 +53,7 @@ public class ZeroHelper {
                     LOGGER, AgentDuplicatedException.class,
                     ZeroHelper.class, server, size,
                     filtered.stream()
-                            .map(agent -> agent.getName())
+                            .map(Class::getName)
                             .collect(Collectors.toSet()));
             // == 0 means undefined
             // == 1 means correct defined

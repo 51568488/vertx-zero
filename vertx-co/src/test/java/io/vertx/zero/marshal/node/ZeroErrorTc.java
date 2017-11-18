@@ -13,5 +13,6 @@ public class ZeroErrorTc extends ZeroBase {
         final JObjectBase node
                 = Instance.singleton(ZeroError.class);
         final JsonObject map = node.read();
+        System.out.println(map);
     }
 }

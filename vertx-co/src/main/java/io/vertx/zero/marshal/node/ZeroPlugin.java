@@ -2,8 +2,8 @@ package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.zero.func.HFail;
-import io.vertx.zero.tool.io.IO;
 import io.vertx.zero.marshal.Node;
+import io.vertx.zero.tool.io.IO;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.concurrent.ConcurrentMap;

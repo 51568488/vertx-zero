@@ -4,7 +4,6 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.annotations.Address;
-import io.vertx.up.annotations.Queue;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
 import io.vertx.zero.tool.Jackson;
@@ -12,7 +11,6 @@ import org.tlk.exception.TestRequestException;
 
 import javax.inject.infix.Mongo;
 
-@Queue
 public class UserWorker {
 
     @Mongo

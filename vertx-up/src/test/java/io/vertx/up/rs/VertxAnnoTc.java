@@ -5,9 +5,9 @@ import io.vertx.quiz.ZeroBase;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.example.AnnoAgent;
 import io.vertx.up.example.AnnoExceAgent;
-import io.vertx.up.exception.AgentDuplicatedException;
+import io.vertx.up.micro.ZeroHttpAgent;
 import io.vertx.up.web.ZeroAnno;
-import io.vertx.up.web.ZeroHttpAgent;
+import io.vertx.up.web.ZeroHelper;
 import org.junit.Test;
 
 import java.util.List;
@@ -19,32 +19,34 @@ public class VertxAnnoTc extends ZeroBase {
             AGENTS = ZeroAnno.getAgents();
 
     private boolean isDefine(final Class<?>... args) {
-        final ConcurrentMap<ServerType, Boolean>
-                defined = ZeroAnno.isDefined(AGENTS, args);
-        return defined.get(ServerType.HTTP);
+        synchronized (AGENTS) {
+            final ConcurrentMap<ServerType, Boolean>
+                    defined = ZeroHelper.isAgentDefined(AGENTS, args);
+            return defined.get(ServerType.HTTP);
+        }
     }
 
     @Test
+    public void testNo() {
+        
+    }
+
     public void testAnno(final TestContext context) {
-        System.out.println(AGENTS);
         context.assertNotNull(AGENTS);
     }
 
-    @Test
     public void testDefined(final TestContext context) {
         final boolean isDefined = isDefine(AnnoExceAgent.class,
                 ZeroHttpAgent.class);
         context.assertTrue(isDefined);
     }
 
-    @Test
     public void testUndefined(final TestContext context) {
         final boolean isDefined = isDefine(AnnoExceAgent.class,
                 ZeroHttpAgent.class, AnnoAgent.class);
         context.assertFalse(isDefined);
     }
 
-    @Test(expected = AgentDuplicatedException.class)
     public void testExcpetion() {
         isDefine(ZeroHttpAgent.class);
     }

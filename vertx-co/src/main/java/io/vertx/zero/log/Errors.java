@@ -16,23 +16,18 @@ import java.text.MessageFormat;
  */
 public final class Errors {
 
-    private static final JsonObject MAP;
-
-    static {
-        final JObjectBase node
-                = Instance.singleton(ZeroError.class);
-        MAP = node.read();
-    }
-
     public static String normalize(final Class<?> clazz,
                                    final int code,
                                    final Object... args) {
         return HFail.exec(() -> {
             final String key = ("E" + Math.abs(code)).intern();
-            return HBool.exec(MAP.containsKey(key),
+            final JObjectBase node
+                    = Instance.singleton(ZeroError.class);
+            final JsonObject data = node.read();
+            return HBool.exec(null != data && data.containsKey(key),
                     () -> {
                         // 1. Read pattern
-                        final String pattern = MAP.getString(key);
+                        final String pattern = data.getString(key);
                         // 2. Build message
                         final String error = MessageFormat.format(pattern, args);
                         // 3. Format

@@ -7,6 +7,6 @@ interface Info {
     String SCANED_RECEIPTS = "[ ZERO ] ( {1} Receipt ) The queue {0} scanned {1} records of Receipt, " +
             "will be mounted to event bus.";
 
-    String SCANED_FIELDS = "[ ZERO ] ( {1} Field ) The object {0} scanned {1} records of Inject" +
-            " or javax.inject.infix.*, will be initialized with DI container.";
+    String SCANED_FIELD = "[ ZERO ] ( Field ) Class \"{0}\" scanned field = \"{1}\" " +
+            "of {2} annotated with {3}. will be initialized with DI container.";
 }

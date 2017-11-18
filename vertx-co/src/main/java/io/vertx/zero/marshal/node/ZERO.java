@@ -10,13 +10,20 @@ import java.util.concurrent.ConcurrentMap;
 
 interface Storage {
     /**
+     * Data for each file
+     */
+    ConcurrentMap<String, JsonObject> CONFIG
+            = new ConcurrentHashMap<>();
+    /**
      * Nodes
      */
-    ConcurrentMap<String, Node<JsonObject>> NODES = new ConcurrentHashMap<>();
+    ConcurrentMap<String, Node<JsonObject>> NODES
+            = new ConcurrentHashMap<>();
     /**
      * Lime Data
      */
-    ConcurrentMap<String, String> DATA_LIME = new ConcurrentHashMap<String, String>() {
+    ConcurrentMap<String, String> DATA_LIME
+            = new ConcurrentHashMap<String, String>() {
         {
             put("error", Path.ERROR);
             put("inject", Path.INJECT);

@@ -3,9 +3,6 @@ package io.vertx.up.web;
 import io.vertx.core.ClusterOptions;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.up.exception.PluginOptionException;
-import io.vertx.zero.eon.em.YamlType;
-import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.marshal.equip.HttpServerVisitor;
@@ -50,19 +47,6 @@ public class ZeroGrid {
             ZeroAmbient.init();
             return null;
         }, LOGGER);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T getOptions(final String name) {
-        final YamlType type = ZeroAmbient.getType(name);
-        HBool.execUp(null == type, LOGGER,
-                PluginOptionException.class,
-                ZeroGrid.class, name);
-        if (YamlType.OBJECT == type) {
-            return (T) ZeroAmbient.getObject(name);
-        } else {
-            return (T) ZeroAmbient.getArray(name);
-        }
     }
 
     public static ConcurrentMap<String, VertxOptions> getVertxOptions() {

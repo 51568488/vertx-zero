@@ -6,8 +6,8 @@ import io.vertx.zero.marshal.Node;
 import io.vertx.zero.marshal.Visitor;
 import io.vertx.zero.marshal.node.ZeroVertx;
 import io.vertx.zero.tool.Ensurer;
-import io.vertx.zero.tool.mirror.Instance;
 import io.vertx.zero.tool.Jackson;
+import io.vertx.zero.tool.mirror.Instance;
 
 public class JObjectOpts implements Visitor<JsonObject> {
 

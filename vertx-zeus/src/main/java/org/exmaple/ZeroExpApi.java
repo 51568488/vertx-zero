@@ -2,12 +2,10 @@ package org.exmaple;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.annotations.EndPoint;
 
 import javax.ws.rs.*;
 
 @Path("/up/example")
-@EndPoint
 public class ZeroExpApi {
 
     @GET

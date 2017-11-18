@@ -2,10 +2,8 @@ package org.exmaple;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.annotations.Address;
-import io.vertx.up.annotations.Queue;
 import io.vertx.up.atom.Envelop;
 
-@Queue
 public class ZeroConsumer {
 
     @Address("ZERO://EVENT")

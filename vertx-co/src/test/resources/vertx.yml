@@ -1,5 +1,5 @@
 zero:
-  lime: db, mongo
+  lime: db, mongo, redis, ribbit, mq
   vertx:
     clustered:
       enabled: false

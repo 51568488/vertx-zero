@@ -14,7 +14,7 @@ public interface Info {
     String SCANED_QUEUE = "[ ZERO ] ( {0} Queue ) The Zero system has found " +
             "{0} components of @Queue.";
 
-    String SCANED_INJECTION = "[ ZERO ] ( Injection ) The Zero system has found \"{0}\" object contains " +
+    String SCANED_INJECTION = "[ ZERO ] ( {1} Inject ) The Zero system has found \"{0}\" object contains " +
             "{1} components of @Inject or ( javax.inject.infix.* ).";
 
     String APP_CLUSTERD = "[ ZERO ] Current app is running in cluster mode, " +

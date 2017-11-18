@@ -6,8 +6,8 @@ import io.vertx.quiz.UpBase;
 import io.vertx.up.eon.ZeroValue;
 import io.vertx.up.example.User;
 import io.vertx.up.exception.EventSourceException;
+import io.vertx.up.micro.ZeroHttpAgent;
 import io.vertx.up.rs.Extractor;
-import io.vertx.up.web.ZeroHttpAgent;
 import io.vertx.zero.tool.mirror.Instance;
 import org.junit.Test;
 

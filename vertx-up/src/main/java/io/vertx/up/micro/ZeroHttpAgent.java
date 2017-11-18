@@ -1,4 +1,4 @@
-package io.vertx.up.web;
+package io.vertx.up.micro;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServer;
@@ -9,6 +9,7 @@ import io.vertx.up.annotations.Agent;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
+import io.vertx.up.web.ZeroGrid;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HPool;
 import io.vertx.zero.log.Annal;
@@ -19,9 +20,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static io.vertx.up.web.Pool.EVENTS;
-import static io.vertx.up.web.Pool.ROUTERS;
 
 /**
  * Default Http Server agent for router handlers.
@@ -50,26 +48,28 @@ public class ZeroHttpAgent extends AbstractVerticle {
 
     @Override
     public void start() {
-        /** 1.Get the default HttpServer Options **/
+        /** 1.Call router hub to mount commont **/
+        final Axis routerAxiser = HPool.exec(Pool.ROUTERS, Thread.currentThread().getName(),
+                () -> Instance.instance(RouterAxis.class));
+        /** 2.Call route hub to mount defined **/
+        final Axis axiser = HPool.exec(Pool.EVENTS, Thread.currentThread().getName(),
+                () -> Instance.instance(EventAxis.class));
+
+        /** 3.Get the default HttpServer Options **/
         SERVERS.forEach((port, option) -> {
-            /** 2.Single server processing **/
+            /** 3.1.Single server processing **/
             final HttpServer server = this.vertx.createHttpServer(option);
-            /** 3.Build router with current option **/
+
+            /** 3.2. Build router with current option **/
             final Router router = Router.router(this.vertx);
 
-            /** 4.Call router hub to mount commont **/
-            Axis axiser = HPool.exec(ROUTERS, Thread.currentThread().getName(),
-                    () -> Instance.instance(RouterAxis.class));
-            axiser.mount(router);
-            /** 5.Call route hub to mount defined **/
-            axiser = HPool.exec(EVENTS, Thread.currentThread().getName(),
-                    () -> Instance.instance(EventAxis.class));
+            routerAxiser.mount(router);
             axiser.mount(router);
 
-            /** 6.Listen for router on the server **/
+            /** 3.3.Listen for router on the server **/
             server.requestHandler(router::accept).listen();
             {
-                // 7. Log output
+                // 3.4. Log output
                 recordServer(option, router);
             }
         });

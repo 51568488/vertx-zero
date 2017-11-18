@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
@@ -72,26 +72,28 @@ public final class Anno {
     }
 
     /**
-     * Get all injections for field
+     * Check whether current field marked with specific annotation
      *
-     * @param clazz
+     * @param field
+     * @param annoCls
      * @return
      */
-    public static ConcurrentMap<String, Field> getPlugins(final Class<?> clazz,
-                                                          final Class<? extends Annotation> annoCls) {
-        return HNull.get(clazz, () -> {
-            // Scan all class fields
-            final Field[] fields = clazz.getDeclaredFields();
-            final ConcurrentMap<String, Field> fieldMap =
-                    new ConcurrentHashMap<>();
-            for (final Field field : fields) {
-                if (field.isAnnotationPresent(annoCls)
-                        || null != getPlugin(field)) {
-                    fieldMap.put(field.getName(), field);
-                }
-            }
-            return fieldMap;
-        }, new ConcurrentHashMap<>());
+    public static boolean isMark(final Field field,
+                                 final Set<Class<? extends Annotation>> annoCls) {
+        return annoCls.stream().anyMatch(field::isAnnotationPresent);
+    }
+
+    /**
+     * Check wether class contains annotated field
+     *
+     * @param clazz
+     * @param annoCls
+     * @return
+     */
+    public static boolean isMark(final Class<?> clazz,
+                                 final Set<Class<? extends Annotation>> annoCls) {
+        final List<Field> fields = Arrays.asList(clazz.getDeclaredFields());
+        return fields.stream().anyMatch(field -> isMark(field, annoCls));
     }
 
     public static <T, E extends Annotation> T getAttribute(final Class<?> clazz,

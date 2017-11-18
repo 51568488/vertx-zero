@@ -1,11 +1,10 @@
 package io.vertx.up.plugin.document;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.annotations.Plugin;
+import io.vertx.up.eon.Plugins;
 import io.vertx.up.plugin.Infix;
-import io.vertx.up.web.ZeroGrid;
 import io.vertx.zero.func.HPool;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,9 +26,11 @@ public class MongoInfix implements Infix {
 
     private static void initInternal(final Vertx vertx,
                                      final String name) {
-        final JsonObject config = ZeroGrid.getOptions("mongo");
         HPool.exec(CLIENTS, name,
-                () -> MongoClient.createShared(vertx, config, name));
+                () -> Infix.init(Plugins.Infix.MONGO,
+                        (config) -> MongoClient.createShared(vertx, config, name),
+                        MongoInfix.class));
+        System.out.println(CLIENTS);
     }
 
     public static void init(final Vertx vertx) {

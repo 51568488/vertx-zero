@@ -1,8 +1,11 @@
 package io.vertx.up.eon;
 
+import javax.inject.Inject;
 import javax.inject.infix.Mongo;
 import javax.inject.infix.MySql;
 import java.lang.annotation.Annotation;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -16,9 +19,13 @@ public interface Plugins {
     String SERVER = "server";
 
     String ERROR = "error";
+    /**
+     * Internal
+     **/
+    String FAILURE = "failure";
 
     String[] DATA = new String[]{
-            INJECT, SERVER, ERROR
+            INJECT, ERROR, FAILURE, SERVER
     };
 
     // Default infix
@@ -40,4 +47,11 @@ public interface Plugins {
                     put(MySql.class, Infix.MYSQL);
                 }
             };
+
+    Set<Class<? extends Annotation>> INJECT_ANNOTATIONS = new HashSet<Class<? extends Annotation>>() {
+        {
+            addAll(INFIX_MAP.keySet());
+            add(Inject.class);
+        }
+    };
 }

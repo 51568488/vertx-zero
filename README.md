@@ -16,6 +16,9 @@ This project is based on Vert.x, the idea came from Spring-Boot framework. It co
 	3. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
 4. Plugin
 	1. [How to use MongoClient in Zero](doc/zero-mongo.md)
+	2. [How to use MySqlClient in Zero](doc/zero-mysql.md)
+5. DI
+	1. [How to use Dependency Injection ( JSR330 )](doc/zero-di.md)
 5. Exception ( Error )
 	1. [How to define WebException](doc/zero-error.md)
 

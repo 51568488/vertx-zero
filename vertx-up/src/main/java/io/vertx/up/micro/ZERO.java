@@ -1,4 +1,4 @@
-package io.vertx.up.web;
+package io.vertx.up.micro;
 
 import io.vertx.up.rs.Axis;
 

@@ -1,6 +1,7 @@
 package org.tlk.api;
 
 import io.vertx.up.annotations.Address;
+import io.vertx.up.annotations.EndPoint;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.Jackson;
 
@@ -10,7 +11,8 @@ import java.util.Date;
 /**
  *
  */
-@Path("/zero/exmaple")
+@Path("/zero")
+@EndPoint
 public class UserApi {
 
     private static final Annal LOGGER = Annal.get(UserApi.class);

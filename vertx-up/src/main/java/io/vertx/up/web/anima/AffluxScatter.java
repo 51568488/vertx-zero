@@ -1,15 +1,21 @@
 package io.vertx.up.web.anima;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.eon.Plugins;
+import io.vertx.up.exception.InjectionLimeKeyException;
 import io.vertx.up.plugin.Infix;
 import io.vertx.up.web.ZeroAmbient;
 import io.vertx.up.web.ZeroAnno;
+import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HMulti;
 import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
+import io.vertx.zero.marshal.Node;
+import io.vertx.zero.marshal.node.ZeroDynamic;
+import io.vertx.zero.marshal.node.ZeroLime;
 import io.vertx.zero.tool.Runner;
 import io.vertx.zero.tool.mirror.Anno;
 import io.vertx.zero.tool.mirror.Instance;
@@ -28,6 +34,8 @@ public class AffluxScatter implements Scatter {
 
     private static final ConcurrentMap<Class<?>, ConcurrentMap<String, Class<?>>>
             PENDINGS = ZeroAnno.getPlugins();
+
+    private static final Node<JsonObject> LIME = Instance.singleton(ZeroLime.class);
 
     @Override
     public void connect(final Vertx vertx) {
@@ -104,6 +112,13 @@ public class AffluxScatter implements Scatter {
         Object ret = null;
         if (null != infixCls) {
             if (Instance.isMatch(infixCls, Infix.class)) {
+                // Config checking
+                final Node<JsonObject> node = Instance.instance(ZeroDynamic.class);
+                final JsonObject options = node.read();
+                HBool.execUp(!options.containsKey(pluginKey), LOGGER,
+                        InjectionLimeKeyException.class,
+                        getClass(), infixCls, pluginKey);
+                
                 final Infix reference = Instance.singleton(infixCls);
                 ret = Instance.invoke(reference, "get");
             } else {

@@ -1,4 +1,4 @@
-package io.vertx.up.thread;
+package io.vertx.up.web.thread;
 
 import io.vertx.up.annotations.Qualifier;
 import io.vertx.up.eon.Plugins;
@@ -22,9 +22,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-public class InjectThread extends Thread {
+public class AffluxThread extends Thread {
 
-    private static final Annal LOGGER = Annal.get(InjectThread.class);
+    private static final Annal LOGGER = Annal.get(AffluxThread.class);
 
     private final ConcurrentMap<String, Class<?>> fieldMap = new ConcurrentHashMap<>();
 
@@ -32,7 +32,7 @@ public class InjectThread extends Thread {
     private final transient Set<Class<?>> namedSet;
     private final transient Set<Class<?>> classes;
 
-    public InjectThread(final Class<?> clazz, final Set<Class<?>> classes) {
+    public AffluxThread(final Class<?> clazz, final Set<Class<?>> classes) {
         this.setName("zero-injection-scanner-" + this.getId());
         this.reference = clazz;
         this.classes = classes;

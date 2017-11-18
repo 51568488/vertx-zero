@@ -1,4 +1,4 @@
-package io.vertx.up.thread;
+package io.vertx.up.web.thread;
 
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.rs.Extractor;

@@ -32,6 +32,13 @@ public class HBool {
         return ret;
     }
 
+    public static void execTrue(final boolean condition,
+                                final JcConsumer consumer) {
+        if (condition) {
+            consumer.exec();
+        }
+    }
+
     /**
      * @param condition
      * @param supplier
@@ -77,10 +84,14 @@ public class HBool {
                             final JcConsumer fSupplier) {
         HTry.execZero(() -> execZero(condition,
                 () -> {
-                    tSupplier.exec();
+                    if (null != tSupplier) {
+                        tSupplier.exec();
+                    }
                     return null;
                 }, () -> {
-                    fSupplier.exec();
+                    if (null != fSupplier) {
+                        fSupplier.exec();
+                    }
                     return null;
                 }), logger);
     }

@@ -1,4 +1,4 @@
-package io.vertx.up.thread;
+package io.vertx.up.web.thread;
 
 interface Info {
     String SCANED_EVENTS = "[ ZERO ] ( {1} Event ) The endpoint {0} scanned {1} events of Event, " +

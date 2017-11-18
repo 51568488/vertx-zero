@@ -1,10 +1,13 @@
 package org.tlk.api;
 
+import io.vertx.up.annotations.EndPoint;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
 @Path("/zero")
+@EndPoint
 public class RoleApi {
 
     @GET

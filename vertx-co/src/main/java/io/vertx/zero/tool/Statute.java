@@ -5,6 +5,7 @@ import io.vertx.zero.func.HBool;
 import io.vertx.zero.func.HNull;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Predicate;
@@ -40,12 +41,33 @@ public final class Statute {
      * @param <V>
      * @return
      */
-    public static <K, T, V> ConcurrentMap<K, V> zipperMerge(
+    public static <K, T, V> ConcurrentMap<K, V> reduce(
             final ConcurrentMap<K, T> from,
             final ConcurrentMap<T, V> to) {
         final ConcurrentMap<K, V> result = new ConcurrentHashMap<>();
         from.forEach((key, middle) -> {
             final V value = to.get(middle);
+            if (null != value) {
+                result.put(key, value);
+            }
+        });
+        return result;
+    }
+
+    /**
+     * @param from
+     * @param to
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+    public static <K, V> ConcurrentMap<K, V> reduce(
+            final Set<K> from,
+            final ConcurrentMap<K, V> to
+    ) {
+        final ConcurrentMap<K, V> result = new ConcurrentHashMap<>();
+        from.forEach((key) -> {
+            final V value = to.get(key);
             if (null != value) {
                 result.put(key, value);
             }

@@ -24,7 +24,7 @@ public class ZeroServer extends JObjectBase {
         final ConcurrentMap<String, String> keys = this.node.read();
 
         final String filename = keys.get(getKey());
-        
+
         return HFail.execDft(
                 () -> IO.getYaml(filename),
                 new JsonObject(), filename);

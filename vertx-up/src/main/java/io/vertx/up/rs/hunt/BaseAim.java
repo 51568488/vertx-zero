@@ -10,8 +10,8 @@ import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._500DeliveryErrorException;
 import io.vertx.up.exception.web._500EntityCastException;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.rs.mirror.ParamFiller;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Instance;
 

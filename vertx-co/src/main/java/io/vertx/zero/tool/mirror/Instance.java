@@ -3,7 +3,7 @@ package io.vertx.zero.tool.mirror;
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import io.vertx.up.func.Fn;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -31,9 +31,9 @@ public final class Instance {
 
     public static <T> T instance(final Class<?> clazz,
                                  final Object... params) {
-        final Object created = Fn.obtain(
+        final Object created = Fn.getJvm(
                 () -> construct(clazz, params), clazz);
-        return Fn.obtain(() -> (T) created, created);
+        return Fn.getJvm(() -> (T) created, created);
     }
 
     /**
@@ -54,7 +54,7 @@ public final class Instance {
         final Object created = Fn.pool(Storage.SINGLETON, clazz.getName(),
                 () -> instance(clazz, params));
         // Must reference to created first.
-        return Fn.obtain(() -> (T) created, created);
+        return Fn.getJvm(() -> (T) created, created);
     }
 
     /**
@@ -65,7 +65,7 @@ public final class Instance {
      */
     public static Class<?> clazz(final String name) {
         return Fn.pool(Storage.CLASSES, name,
-                () -> Fn.obtain(() -> Class.forName(name), name));
+                () -> Fn.getJvm(() -> Class.forName(name), name));
     }
 
     /**
@@ -167,7 +167,7 @@ public final class Instance {
 
     private static <T> T construct(final Class<?> clazz,
                                    final Object... params) {
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             T ret = null;
             final Constructor<?>[] constructors = clazz.getDeclaredConstructors();
             // Pack all constructors
@@ -182,14 +182,14 @@ public final class Instance {
                 }
                 // The slowest construct
                 final Object reference = constructor.newInstance(params);
-                ret = Fn.obtain(() -> ((T) reference), reference);
+                ret = Fn.getJvm(() -> ((T) reference), reference);
             }
             return ret;
         }, clazz, params);
     }
 
     private static <T> T construct(final Class<T> clazz) {
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             // Reflect Asm
             final ConstructorAccess<T> access = ConstructorAccess.get(clazz);
             return access.newInstance();

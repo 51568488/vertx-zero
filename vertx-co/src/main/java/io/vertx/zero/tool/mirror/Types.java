@@ -5,8 +5,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
 import io.vertx.zero.tool.Numeric;
 import io.vertx.zero.tool.Period;
 
@@ -17,6 +17,8 @@ import java.util.concurrent.ConcurrentMap;
 
 public class Types {
 
+    private static final Annal LOGGER = Annal.get(Types.class);
+
     public static <T extends Enum<T>> T fromStr(
             final Class<T> clazz,
             final String input) {
@@ -24,32 +26,32 @@ public class Types {
     }
 
     public static boolean isJArray(final Object value) {
-        return HBool.exec(null == value,
+        return Fn.getSemi(null == value, LOGGER,
                 () -> false,
                 () -> JsonArray.class == value.getClass());
     }
 
     public static boolean isJObject(final Object value) {
-        return HBool.exec(null == value,
+        return Fn.getSemi(null == value, LOGGER,
                 () -> false,
                 () -> JsonObject.class == value.getClass() ||
                         LinkedHashMap.class == value.getClass());
     }
 
     public static boolean isInteger(final Object value) {
-        return HBool.exec(null == value,
+        return Fn.getSemi(null == value, LOGGER,
                 () -> false,
                 () -> Numeric.isInteger(value.toString()));
     }
 
     public static boolean isDecimal(final Object value) {
-        return HBool.exec(null == value,
+        return Fn.getSemi(null == value, LOGGER,
                 () -> false,
                 () -> Numeric.isDecimal(value.toString()));
     }
 
     public static boolean isBoolean(final Object value) {
-        return HBool.exec(null == value,
+        return Fn.getSemi(null == value, LOGGER,
                 () -> false,
                 () -> {
                     boolean logical = false;
@@ -68,7 +70,7 @@ public class Types {
     private static final ObjectMapper YAML = new YAMLMapper();
 
     public static boolean isDate(final Object value) {
-        return HBool.exec(null == value,
+        return Fn.getSemi(null == value, LOGGER,
                 () -> false,
                 () -> Period.isValid(value.toString()));
     }

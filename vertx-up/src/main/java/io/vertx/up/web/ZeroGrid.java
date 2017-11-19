@@ -4,7 +4,7 @@ import io.vertx.core.ClusterOptions;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.up.func.Fn;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.marshal.equip.HttpServerVisitor;
 import io.vertx.zero.marshal.equip.NodeVisitor;
 import io.vertx.zero.marshal.equip.ServerVisitor;

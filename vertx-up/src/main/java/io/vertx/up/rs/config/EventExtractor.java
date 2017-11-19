@@ -9,10 +9,9 @@ import io.vertx.up.exception.AccessProxyException;
 import io.vertx.up.exception.EventSourceException;
 import io.vertx.up.exception.NoArgConstructorException;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.web.ZeroHelper;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Instance;
 
@@ -35,7 +34,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
             verify(clazz);
             // 2. Check whether clazz annotated with @PATH
             final Set<Event> result = new ConcurrentHashSet<>();
-            HBool.exec(clazz.isAnnotationPresent(Path.class), LOGGER,
+            Fn.safeSemi(clazz.isAnnotationPresent(Path.class), LOGGER,
                     () -> {
                         // 3.1. Append Root Path
                         final Path path = ZeroHelper.getPath(clazz);

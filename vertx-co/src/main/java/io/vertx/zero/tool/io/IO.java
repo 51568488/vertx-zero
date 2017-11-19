@@ -13,7 +13,6 @@ import io.vertx.zero.eon.Values;
 import io.vertx.zero.eon.em.YamlType;
 import io.vertx.zero.exception.EmptyStreamException;
 import io.vertx.zero.exception.JsonFormatException;
-import io.vertx.zero.func.HBool;
 import io.vertx.zero.log.Log;
 
 import java.io.BufferedReader;
@@ -70,7 +69,7 @@ public final class IO {
      */
     public static String getString(final InputStream in) {
         final StringBuilder buffer = new StringBuilder(Values.BUFFER_SIZE);
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             final BufferedReader reader =
                     new BufferedReader(
                             new InputStreamReader(in, Values.ENCODING)
@@ -86,7 +85,7 @@ public final class IO {
     }
 
     public static String getString(final String filename) {
-        return Fn.obtain(
+        return Fn.getJvm(
                 () -> getString(Stream.read(filename)), filename);
     }
 
@@ -99,24 +98,27 @@ public final class IO {
     @SuppressWarnings("unchecked")
     public static <T> T getYaml(final String filename) {
         final YamlType type = getYamlType(filename);
-        return HBool.exec(YamlType.ARRAY == type,
-                () -> (T) Fn.obtain(() -> new JsonArray(
+        return Fn.getSemi(YamlType.ARRAY == type, null,
+                () -> (T) Fn.getJvm(() -> new JsonArray(
                         getYamlNode(filename).toString()
                 ), filename),
-                () -> (T) Fn.obtain(() -> new JsonObject(
+                () -> (T) Fn.getJvm(() -> new JsonObject(
                         getYamlNode(filename).toString()
                 ), filename));
     }
 
     private static JsonNode getYamlNode(final String filename) {
         final InputStream in = Stream.read(filename);
-        final JsonNode node = Fn.safeJvm(() -> YAML.readTree(
-                HBool.exec(null != in,
-                        () -> in,
-                        new EmptyStreamException(filename))), null);
-        return HBool.exec(null != node,
-                () -> node,
-                new EmptyStreamException(filename));
+        final JsonNode node = Fn.safeJvm(() -> {
+            if (null == in) {
+                throw new EmptyStreamException(filename);
+            }
+            return YAML.readTree(in);
+        }, null);
+        if (null == node) {
+            throw new EmptyStreamException(filename);
+        }
+        return node;
     }
 
     /**
@@ -143,7 +145,7 @@ public final class IO {
      * @return
      */
     public static Properties getProp(final String filename) {
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             final Properties prop = new Properties();
             final InputStream in = Stream.read(filename);
             prop.load(in);
@@ -159,10 +161,10 @@ public final class IO {
      * @return
      */
     public static URL getURL(final String filename) {
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             final URL url = Thread.currentThread().getContextClassLoader()
                     .getResource(filename);
-            return HBool.exec(null == url,
+            return Fn.getSemi(null == url, null,
                     () -> IO.class.getResource(filename),
                     () -> url);
         }, filename);
@@ -175,15 +177,16 @@ public final class IO {
      * @return
      */
     public static File getFile(final String filename) {
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             final File file = new File(filename);
-            return HBool.exec(file.exists(),
+            return Fn.getSemi(file.exists(), null,
                     () -> file,
                     () -> {
                         final URL url = getURL(filename);
-                        return HBool.exec(null != url,
-                                () -> new File(url.getFile()),
-                                new EmptyStreamException(filename));
+                        if (null == url) {
+                            throw new EmptyStreamException(filename);
+                        }
+                        return new File(url.getFile());
                     });
         }, filename);
     }
@@ -195,9 +198,9 @@ public final class IO {
      * @return
      */
     public static String getPath(final String filename) {
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             final File file = getFile(filename);
-            return Fn.obtain(() -> {
+            return Fn.getJvm(() -> {
                 Log.info(LOGGER, Info.INF_APATH, file.getAbsolutePath());
                 return file.getAbsolutePath();
             }, file);

@@ -7,7 +7,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.exception.web._400ParameterFromStringException;
 import io.vertx.up.func.Fn;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.tool.Jackson;
 import io.vertx.zero.tool.Period;
 import io.vertx.zero.tool.mirror.Instance;

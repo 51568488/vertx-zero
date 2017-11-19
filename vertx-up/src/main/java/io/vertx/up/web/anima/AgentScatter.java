@@ -5,13 +5,12 @@ import io.vertx.core.Vertx;
 import io.vertx.up.eon.Info;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ZeroHttpAgent;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.AgentExtractor;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHelper;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.Statute;
 import io.vertx.zero.tool.mirror.Instance;
 
@@ -74,7 +73,7 @@ public class AgentScatter implements Scatter {
         // 1. If defined, use default
         Fn.itMap(agents, (type, list) -> {
             // 2. Defined -> You have defined
-            HBool.exec(defines.containsKey(type) && defines.get(type),
+            Fn.getSemi(defines.containsKey(type) && defines.get(type), LOGGER,
                     () -> {
 
                         // Use user-defined Agent instead.

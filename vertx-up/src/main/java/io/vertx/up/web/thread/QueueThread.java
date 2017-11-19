@@ -1,9 +1,9 @@
 package io.vertx.up.web.thread;
 
 import io.vertx.up.atom.Receipt;
+import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.ReceiptExtractor;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.HashSet;

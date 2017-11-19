@@ -2,12 +2,11 @@ package io.vertx.zero.tool.mirror;
 
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.FileSuffix;
 import io.vertx.zero.eon.Protocols;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
 import zava.io.ClassFileFilter;
 
 import java.io.File;
@@ -53,7 +52,7 @@ public final class Pack {
             final String packageDir = (Strings.DOT.equals(zeroScan)) ?
                     zeroScan.replace(Strings.DOT, Strings.EMPTY)
                     : zeroScan.replace(Strings.DOT, Strings.SLASH);
-            Fn.obtain(() -> {
+            Fn.getJvm(() -> {
                 // Define enumeration
                 final Enumeration<URL> dirs = Thread.currentThread()
                         .getContextClassLoader().getResources(packageDir);
@@ -76,7 +75,7 @@ public final class Pack {
                 // No Return
                 return null;
             }, LOGGER);
-            return HBool.exec(null == filter,
+            return Fn.getSemi(null == filter, LOGGER,
                     () -> classes,
                     () -> classes.stream().filter(filter).collect(Collectors.toSet()));
         }, zeroScan);
@@ -87,7 +86,7 @@ public final class Pack {
                                             final URL url,
                                             final boolean recursive) {
         final Set<Class<?>> classes = new LinkedHashSet<>();
-        Fn.obtain(() -> {
+        Fn.getJvm(() -> {
             String packageName = (packName.startsWith(Strings.DOT)) ?
                     packName.substring(1, packName.length()) :
                     packName;

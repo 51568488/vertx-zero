@@ -11,8 +11,7 @@ import io.vertx.up.exception.WorkerArgumentException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.reflect.Method;
@@ -88,7 +87,7 @@ public class ZeroHttpWorker extends AbstractVerticle {
                 getClass(), method);
         // 3. Split worker flow to verify
         final Class<?> paramCls = params[Values.IDX];
-        HBool.exec(isVoid(method), LOGGER,
+        Fn.safeSemi(isVoid(method), LOGGER,
                 () -> {
                     // void method(Message<Envelop>);
                     verify(Message.class != paramCls, returnType, paramCls);

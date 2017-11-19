@@ -2,9 +2,9 @@ package io.vertx.up.func;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.log.Annal;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;

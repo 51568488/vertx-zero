@@ -3,8 +3,8 @@ package io.vertx.up.rs.config;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.up.annotations.Worker;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.annotation.Annotation;

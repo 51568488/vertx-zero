@@ -49,7 +49,7 @@ public class Period {
                 Fn.get(Optional.empty(),
                         () -> DATETIMES.stream()
                                 .filter(formatter ->
-                                        null != Fn.obtain(
+                                        null != Fn.getJvm(
                                                 null,
                                                 () -> LocalDateTime.parse(literal, formatter),
                                                 literal))
@@ -68,7 +68,7 @@ public class Period {
                 Fn.get(Optional.empty(),
                         () -> DATES.stream()
                                 .filter(formatter ->
-                                        null != Fn.obtain(
+                                        null != Fn.getJvm(
                                                 null,
                                                 () -> LocalDate.parse(literal, formatter),
                                                 literal))
@@ -87,7 +87,7 @@ public class Period {
                 Fn.get(Optional.empty(),
                         () -> TIMES.stream()
                                 .filter(formatter ->
-                                        null != Fn.obtain(
+                                        null != Fn.getJvm(
                                                 null,
                                                 () -> LocalTime.parse(literal, formatter),
                                                 literal))

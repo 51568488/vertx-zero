@@ -22,7 +22,7 @@ public class StringUtil {
     }
 
     public static Set<String> split(final String input, final String separator) {
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             final String[] array = input.split(separator);
             final Set<String> result = new ConcurrentHashSet<>();
             for (final String item : array) {
@@ -38,7 +38,7 @@ public class StringUtil {
 
     public static String join(final Set<String> input, final String separator) {
         final String connector = (null == separator) ? Strings.COMMA : separator;
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             final StringBuilder builder = new StringBuilder();
             final int size = input.size();
             int start = 0;

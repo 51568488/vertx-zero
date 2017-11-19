@@ -3,10 +3,10 @@ package io.vertx.zero.marshal.reliable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.JObjectElementException;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Types;
 
 /**

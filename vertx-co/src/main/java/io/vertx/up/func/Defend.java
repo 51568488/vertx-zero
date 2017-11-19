@@ -1,8 +1,8 @@
 package io.vertx.up.func;
 
 import io.vertx.core.VertxException;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.log.Annal;
 
 /**
  * Defend means swapper the exception part for specific statement.

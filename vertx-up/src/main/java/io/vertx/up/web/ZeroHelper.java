@@ -4,9 +4,8 @@ import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.exception.AgentDuplicatedException;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.Path;
@@ -29,7 +28,7 @@ public class ZeroHelper {
 
     /** **/
     public static ServerType getAgentKey(final Class<?> clazz) {
-        return HBool.exec(clazz.isAnnotationPresent(Agent.class),
+        return Fn.getSemi(clazz.isAnnotationPresent(Agent.class), LOGGER,
                 () -> Instance.invoke(clazz.getDeclaredAnnotation(Agent.class), "type"),
                 () -> null);
     }
@@ -74,8 +73,6 @@ public class ZeroHelper {
     }
 
     private static Path getPath(final Annotation anno) {
-        return HBool.exec(anno instanceof Path,
-                () -> (Path) anno,
-                () -> null);
+        return (anno instanceof Path) ? (Path) anno : null;
     }
 }

@@ -25,7 +25,7 @@ public class ZeroServer extends JObjectBase {
 
         final String filename = keys.get(getKey());
 
-        return Fn.obtain(
+        return Fn.getJvm(
                 new JsonObject(),
                 () -> IO.getYaml(filename),
                 filename);

@@ -2,9 +2,9 @@ package io.vertx.up.func;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.exception.ZeroRunException;
-import io.vertx.zero.log.Annal;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
@@ -127,6 +127,15 @@ public class Fn {
         Defend.zeroVoid(actuator, logger);
     }
 
+    public static void safeSemi(
+            final boolean condition,
+            final Annal logger,
+            final Actuator tSupplier,
+            final Actuator fSupplier
+    ) {
+        Semi.exec(condition, logger, tSupplier, fSupplier);
+    }
+
     /**
      * @param supplier
      * @param runCls
@@ -170,7 +179,7 @@ public class Fn {
      * @param <T>
      * @return
      */
-    public static <T> T obtain(
+    public static <T> T getJvm(
             final JvmSupplier<T> supplier,
             final Object... input
     ) {
@@ -188,6 +197,40 @@ public class Fn {
             final Object... input
     ) {
         return Zero.get(null, supplier, input);
+    }
+
+    /**
+     * @param condition
+     * @param logger
+     * @param tSupplier
+     * @param fSupplier
+     * @param <T>
+     * @return
+     */
+    public static <T> T getSemi(
+            final boolean condition,
+            final Annal logger,
+            final Supplier<T> tSupplier,
+            final Supplier<T> fSupplier
+    ) {
+        return Defend.zeroReturn(() -> Semi.execZero(condition,
+                tSupplier::get, fSupplier::get), logger);
+    }
+
+    /**
+     * @param condition
+     * @param tSupplier
+     * @param fSupplier
+     * @param <T>
+     * @return
+     * @throws ZeroException
+     */
+    public static <T> T getSemi(
+            final boolean condition,
+            final ZeroSupplier<T> tSupplier,
+            final ZeroSupplier<T> fSupplier
+    ) throws ZeroException {
+        return Semi.execZero(condition, tSupplier, fSupplier);
     }
 
     /**
@@ -212,7 +255,7 @@ public class Fn {
      * @param <T>
      * @return
      */
-    public static <T> T obtain(
+    public static <T> T getJvm(
             final T defaultValue,
             final JvmSupplier<T> supplier,
             final Object... input

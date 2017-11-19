@@ -10,8 +10,7 @@ import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.Splitter;
 import io.vertx.up.rs.hunt.ModeSplitter;
 import io.vertx.up.web.ZeroAnno;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.reflect.Method;
@@ -33,10 +32,8 @@ public class EventAxis implements Axis {
         // Extract Event foreach
         EVENTS.forEach(event -> {
             // Build Route and connect to each Action
-            HBool.exec(null == event, LOGGER,
-                    () -> {
-                        LOGGER.warn(Info.NULL_EVENT, getClass().getName());
-                    },
+            Fn.safeSemi(null == event, LOGGER,
+                    () -> LOGGER.warn(Info.NULL_EVENT, getClass().getName()),
                     () -> {
                         // 1. Verify
                         this.verify(event);

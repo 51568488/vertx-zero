@@ -18,9 +18,9 @@ public final class Store {
      * @return
      */
     public static ConfigStoreOptions getJson(final String filename) {
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             final JsonObject data = IO.getJObject(filename);
-            return Fn.obtain(() ->
+            return Fn.getJvm(() ->
                             Fn.pool(Storage.STORE, filename,
                                     () -> new ConfigStoreOptions()
                                             .setType(StoreType.JSON.key())
@@ -51,7 +51,7 @@ public final class Store {
 
     private static ConfigStoreOptions getFile(final String filename,
                                               final StoreFormat format) {
-        return Fn.obtain(() -> {
+        return Fn.getJvm(() -> {
             final JsonObject config = new JsonObject()
                     .put(StoreConfig.PATH.key(), IO.getPath(filename));
             return Fn.pool(Storage.STORE, filename,

@@ -2,8 +2,7 @@ package io.vertx.up.rs.config;
 
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.func.Fn;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.Consumes;
@@ -47,7 +46,7 @@ class MediaResolver {
                                                   mediaCls) {
         return Fn.get(() -> {
             final Annotation anno = method.getAnnotation(mediaCls);
-            return HBool.exec(null == anno,
+            return Fn.getSemi(null == anno, LOGGER,
                     ConcurrentHashSet::new,
                     () -> {
                         final String[] value = Instance.invoke(anno, "value");

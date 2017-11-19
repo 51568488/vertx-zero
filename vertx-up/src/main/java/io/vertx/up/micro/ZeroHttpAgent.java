@@ -7,12 +7,12 @@ import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
 import io.vertx.up.web.ZeroGrid;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.text.MessageFormat;

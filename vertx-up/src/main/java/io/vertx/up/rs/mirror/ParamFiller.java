@@ -4,11 +4,10 @@ import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.exception.ParameterConflictException;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Filler;
 import io.vertx.up.rs.argument.*;
 import io.vertx.up.web.ZeroSerializer;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.*;
@@ -133,8 +132,8 @@ public class ParamFiller {
                 .filter(item -> null != item &&
                         item.annotationType() == clazz)
                 .findFirst();
-        return HBool.exec(
-                null != anno && anno.isPresent(),
+        return Fn.getSemi(
+                null != anno && anno.isPresent(), LOGGER,
                 anno::get,
                 () -> null);
     }

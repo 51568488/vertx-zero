@@ -29,7 +29,7 @@ public class ZeroPlugin implements Node<JsonObject> {
         // 2. Read error configuration
         final String filename = dataMap.get(this.key);
         // 3. Read new data from extension file
-        return Fn.obtain(
+        return Fn.getJvm(
                 new JsonObject(),
                 () -> IO.getYaml(filename),
                 filename);

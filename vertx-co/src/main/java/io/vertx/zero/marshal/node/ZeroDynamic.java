@@ -33,7 +33,7 @@ public class ZeroDynamic implements Node<JsonObject> {
                 }
                 final String filename = keys.get(key);
                 final JsonObject each = Fn.pool(Storage.CONFIG, filename,
-                        () -> Fn.obtain(
+                        () -> Fn.getJvm(
                                 new JsonObject(),
                                 () -> IO.getYaml(filename),
                                 filename));

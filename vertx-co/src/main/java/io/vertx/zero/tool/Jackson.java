@@ -5,8 +5,8 @@ import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
 import io.vertx.zero.tool.mirror.Types;
 
 import java.util.Arrays;
@@ -17,6 +17,8 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings({"unchecked"})
 public final class Jackson {
+
+    private static final Annal LOGGER = Annal.get(Jackson.class);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -56,42 +58,40 @@ public final class Jackson {
     private static <T> T searchData(final JsonObject data,
                                     final Class<T> clazz,
                                     final String... pathes) {
-        return HBool.exec(null == data || Values.ZERO == pathes.length,
-                () -> null,
+        if (null == data || Values.ZERO == pathes.length) {
+            return null;
+        }/** 1. Get current node  **/
+        final JsonObject current = data;
+        /** 2. Extract current input key **/
+        final String path = pathes[Values.IDX];
+        /** 3. Continue searching if key existing, otherwise terminal. **/
+        return Fn.getSemi(current.containsKey(path) && null != current.getValue(path),
+                LOGGER,
                 () -> {
-                    /** 1. Get current node  **/
-                    final JsonObject current = data;
-                    /** 2. Extract current input key **/
-                    final String path = pathes[Values.IDX];
-                    /** 3. Continue searching if key existing, otherwise terminal. **/
-                    return HBool.exec(current.containsKey(path) && null != current.getValue(path),
-                            () -> {
-                                final Object curVal = current.getValue(path);
-                                T result = null;
-                                if (Values.ONE == pathes.length) {
-                                    /** 3.1. Get the end node. **/
-                                    if (clazz == curVal.getClass()) {
-                                        result = (T) curVal;
-                                    }
-                                } else {
-                                    /** 3.2. Address the middle search **/
-                                    if (Types.isJObject(curVal)) {
-                                        final JsonObject continueNode = current.getJsonObject(path);
-                                        /** 4.Extract new key **/
-                                        final String[] continueKeys =
-                                                Arrays.copyOfRange(pathes,
-                                                        Values.ONE,
-                                                        pathes.length);
-                                        result = searchData(continueNode,
-                                                clazz,
-                                                continueKeys);
-                                    }
-                                }
-                                return result;
-                            },
-                            () -> null);
-                });
-
+                    final Object curVal = current.getValue(path);
+                    T result = null;
+                    if (Values.ONE == pathes.length) {
+                        /** 3.1. Get the end node. **/
+                        if (clazz == curVal.getClass()) {
+                            result = (T) curVal;
+                        }
+                    } else {
+                        /** 3.2. Address the middle search **/
+                        if (Types.isJObject(curVal)) {
+                            final JsonObject continueNode = current.getJsonObject(path);
+                            /** 4.Extract new key **/
+                            final String[] continueKeys =
+                                    Arrays.copyOfRange(pathes,
+                                            Values.ONE,
+                                            pathes.length);
+                            result = searchData(continueNode,
+                                    clazz,
+                                    continueKeys);
+                        }
+                    }
+                    return result;
+                },
+                () -> null);
     }
 
     public static JsonObject validJObject(final Supplier<JsonObject> supplier) {
@@ -128,12 +128,12 @@ public final class Jackson {
 
     public static <T> String serialize(final T t) {
         return Fn.get(null, () ->
-                Fn.obtain(() -> MAPPER.writeValueAsString(t), t), t);
+                Fn.getJvm(() -> MAPPER.writeValueAsString(t), t), t);
     }
 
     public static <T> T deserialize(final String value, final Class<T> type) {
         return Fn.get(null,
-                () -> Fn.obtain(() -> MAPPER.readValue(value, type)), value);
+                () -> Fn.getJvm(() -> MAPPER.readValue(value, type)), value);
     }
 
     private Jackson() {

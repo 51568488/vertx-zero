@@ -2,8 +2,8 @@ package io.vertx.up.web.origin;
 
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.web.thread.QueueThread;
-import io.vertx.zero.log.Annal;
 
 import java.util.ArrayList;
 import java.util.HashSet;

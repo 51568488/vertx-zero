@@ -2,8 +2,8 @@ package io.vertx.up.rs.config;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.up.exception.MethodNullException;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 
 import javax.ws.rs.*;
 import java.lang.annotation.Annotation;
@@ -33,7 +33,7 @@ class MethodResolver {
 
     public static HttpMethod resolve(final Method method) {
         // 1. Method checking.
-        HBool.execUp(null == method, LOGGER,
+        Fn.flingUp(null == method, LOGGER,
                 MethodNullException.class, MethodResolver.class);
         final Annotation[] annotations = method.getDeclaredAnnotations();
         // 2. Method ignore

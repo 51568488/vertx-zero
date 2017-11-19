@@ -4,12 +4,10 @@ import io.vertx.core.Vertx;
 import io.vertx.up.annotations.Plugin;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.exception.PluginSpecificationException;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.web.ZeroAmbient;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HNull;
-import io.vertx.zero.func.HTry;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.marshal.Node;
 import io.vertx.zero.marshal.node.ZeroLime;
 import io.vertx.zero.tool.Statute;
@@ -45,13 +43,10 @@ public class InfixScatter implements Scatter {
         injections.values().stream().forEach(item -> {
             if (null != item && item.isAnnotationPresent(Plugin.class)) {
                 final Method method = findInit(item);
-                HBool.execUp(null == method, LOGGER,
+                Fn.flingUp(null == method, LOGGER,
                         PluginSpecificationException.class,
                         getClass(), item.getName());
-                HTry.execJvm(() -> {
-                    method.invoke(null, vertx);
-                    return null;
-                }, LOGGER);
+                Fn.safeJvm(() -> method.invoke(null, vertx), LOGGER);
             }
         });
     }
@@ -64,7 +59,7 @@ public class InfixScatter implements Scatter {
      * @return
      */
     private Method findInit(final Class<?> clazz) {
-        return HNull.get(() -> {
+        return Fn.get(() -> {
             final Method[] methods = clazz.getDeclaredMethods();
             final List<Method> found = Arrays.stream(methods)
                     .filter(item -> "init".equals(item.getName()) && validMethod(item))

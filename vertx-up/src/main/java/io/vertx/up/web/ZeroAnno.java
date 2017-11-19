@@ -3,9 +3,9 @@ package io.vertx.up.web;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.eon.em.ServerType;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.web.origin.*;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 import io.vertx.zero.tool.mirror.Pack;
 
@@ -104,7 +104,7 @@ public class ZeroAnno {
         ENDPOINTS.addAll(inquirer.scan(clazzes));
 
         /** EndPoint -> Event **/
-        HBool.exec(!ENDPOINTS.isEmpty(),
+        Fn.safeSemi(!ENDPOINTS.isEmpty(),
                 LOGGER,
                 () -> {
                     final Inquirer<Set<Event>> event =
@@ -118,7 +118,7 @@ public class ZeroAnno {
         final Set<Class<?>> queues = inquirer.scan(clazzes);
 
         /** Queue -> Receipt **/
-        HBool.exec(!queues.isEmpty(),
+        Fn.safeSemi(!queues.isEmpty(),
                 LOGGER,
                 () -> {
                     final Inquirer<Set<Receipt>> receipt =

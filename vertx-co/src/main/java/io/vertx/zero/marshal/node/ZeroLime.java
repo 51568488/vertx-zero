@@ -1,9 +1,9 @@
 package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.FileSuffix;
 import io.vertx.zero.eon.Strings;
-import io.vertx.zero.func.HPool;
 import io.vertx.zero.marshal.Node;
 import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Instance;
@@ -33,7 +33,7 @@ public class ZeroLime implements Node<ConcurrentMap<String, String>> {
         if (null != literal) {
             for (final String set : sets) {
                 if (!StringUtil.isNil(set)) {
-                    HPool.exec(Storage.DATA_LIME, set,
+                    Fn.pool(Storage.DATA_LIME, set,
                             () -> calculatePath(set));
                 }
             }

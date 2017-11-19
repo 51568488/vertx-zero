@@ -3,9 +3,8 @@ package io.vertx.zero.tool.io;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.exception.EmptyStreamException;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HFail;
 import io.vertx.zero.log.Log;
 
 import java.io.*;
@@ -23,12 +22,12 @@ public final class Stream {
      */
     public static <T> byte[] to(final T message) {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        return HFail.exec(() -> {
+        return Fn.getJvm(new byte[0], () -> {
             final ObjectOutputStream out = new ObjectOutputStream(bytes);
             out.writeObject(message);
             out.close();
             return bytes.toByteArray();
-        }, new byte[0]);
+        }, bytes);
     }
 
     /**
@@ -42,10 +41,10 @@ public final class Stream {
     @SuppressWarnings("unchecked")
     public static <T> T from(final int pos, final Buffer buffer) {
         final ByteArrayInputStream stream = new ByteArrayInputStream(buffer.getBytes());
-        return HFail.exec(() -> {
+        return Fn.getJvm(null, () -> {
             final ObjectInputStream in = new ObjectInputStream(stream);
             return (T) in.readObject();
-        }, null);
+        }, stream);
     }
 
     /**
@@ -76,16 +75,14 @@ public final class Stream {
                                    final Class<?> clazz) {
         final File file = new File(filename);
         Log.debug(LOGGER, Info.INF_CUR, file.exists());
-        final InputStream in = HBool.exec(file.exists(),
+        final InputStream in = Fn.getSemi(file.exists(), null,
                 () -> in(file),
-                () -> HBool.exec(null == clazz,
-                        () -> in(filename),
-                        () -> in(filename, clazz)));
-
+                () -> (null == clazz) ? in(filename) : in(filename, clazz));
         Log.debug(LOGGER, Info.INF_PATH, filename, in);
-        return HBool.exec(null != in,
-                () -> in,
-                new EmptyStreamException(filename));
+        if (null == in) {
+            throw new EmptyStreamException(filename);
+        }
+        return in;
     }
 
     /**
@@ -96,9 +93,8 @@ public final class Stream {
      * @return
      */
     public static InputStream in(final File file) {
-        return HFail.exec(
-                () -> HBool.execTrue(file.exists() && file.isFile(),
-                        () -> new FileInputStream(file)), file);
+        return Fn.getJvm(() -> (file.exists() && file.isFile())
+                ? new FileInputStream(file) : null, file);
     }
 
     /**
@@ -111,7 +107,7 @@ public final class Stream {
      */
     public static InputStream in(final String filename,
                                  final Class<?> clazz) {
-        return HFail.exec(
+        return Fn.getJvm(
                 () -> clazz.getResourceAsStream(filename), clazz, filename);
     }
 
@@ -124,7 +120,7 @@ public final class Stream {
      */
     public static InputStream in(final String filename) {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        return HFail.exec(
+        return Fn.getJvm(
                 () -> loader.getResourceAsStream(filename), filename);
     }
 

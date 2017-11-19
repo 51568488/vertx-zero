@@ -1,9 +1,8 @@
 package io.vertx.up.web;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.func.HJson;
-import io.vertx.zero.func.HTry;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.log.internal.Log4JAnnal;
 import io.vertx.zero.marshal.options.Opts;
 import io.vertx.zero.tool.mirror.Instance;
@@ -31,11 +30,10 @@ public final class ZeroAmbient {
     static {
         INJECTIONS = new ConcurrentHashMap<>();
         // 2. The injections must be configured in lime node.
-        HTry.exec(() -> {
+        Fn.safeZero(() -> {
             final JsonObject opt = OPTS.ingest(KEY);
-            HJson.execIt(opt, (item, field) -> {
-                INJECTIONS.put(field, Instance.clazz(item.toString()));
-            });
+            Fn.itJObject(opt, (item, field) ->
+                    INJECTIONS.put(field, Instance.clazz(item.toString())));
         }, LOGGER);
     }
 

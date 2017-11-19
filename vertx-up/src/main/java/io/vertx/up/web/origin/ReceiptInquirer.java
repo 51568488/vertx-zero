@@ -1,9 +1,9 @@
 package io.vertx.up.web.origin;
 
 import io.vertx.up.atom.Receipt;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.web.thread.QueueThread;
-import io.vertx.zero.func.HTry;
-import io.vertx.zero.log.Annal;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,12 +30,11 @@ public class ReceiptInquirer implements Inquirer<Set<Receipt>> {
             thread.start();
         }
         final Set<Receipt> receipts = new HashSet<>();
-        HTry.execJvm(() -> {
+        Fn.safeJvm(() -> {
             counter.await();
             for (final QueueThread item : threadReference) {
                 receipts.addAll(item.getReceipts());
             }
-            return null;
         }, LOGGER);
         return receipts;
     }

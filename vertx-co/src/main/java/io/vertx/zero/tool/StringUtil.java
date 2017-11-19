@@ -2,9 +2,8 @@ package io.vertx.zero.tool;
 
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Strings;
-import io.vertx.zero.func.HFail;
-import io.vertx.zero.func.HNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,11 +22,11 @@ public class StringUtil {
     }
 
     public static Set<String> split(final String input, final String separator) {
-        return HFail.exec(() -> {
+        return Fn.getJvm(() -> {
             final String[] array = input.split(separator);
             final Set<String> result = new ConcurrentHashSet<>();
             for (final String item : array) {
-                HNull.exec(() -> result.add(item.trim().intern()), item);
+                Fn.safeNull(() -> result.add(item.trim().intern()), item);
             }
             return result;
         }, input, separator);
@@ -39,7 +38,7 @@ public class StringUtil {
 
     public static String join(final Set<String> input, final String separator) {
         final String connector = (null == separator) ? Strings.COMMA : separator;
-        return HFail.exec(() -> {
+        return Fn.getJvm(() -> {
             final StringBuilder builder = new StringBuilder();
             final int size = input.size();
             int start = 0;

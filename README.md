@@ -30,7 +30,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
 
 1. [Getting Start](doc/zero-starter.md)
 2. Parameters
-	1. [@Path usage](doc/zero-path.md)
+	1. [Restful Api, @Path usage](doc/zero-path.md)
 	2. [ ( JSR311 Extend ) @BodyParam usage](doc/zero-param.md)
 	3. [Set POJO as parameters](doc/zero-pojo.md)
 	4. [Parameter type supported](doc/zero-typed.md)
@@ -43,8 +43,10 @@ Once the Zero is up, you can see following logs in your console ( The default po
 	2. [How to use MySqlClient in Zero](doc/zero-mysql.md)
 5. DI
 	1. [How to use Dependency Injection ( JSR330 )](doc/zero-di.md)
-5. Exception ( Error )
+6. Exception ( Error )
 	1. [How to define WebException](doc/zero-error.md)
+7. Core Library
+	1. [Function style programming](doc/zero-hoc.md)
 
 ## 3. Source Code
 

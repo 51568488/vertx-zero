@@ -1,8 +1,8 @@
 package io.vertx.zero.tool;
 
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HNull;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
  * Do some specification statute operations
  */
 public final class Statute {
+
+    private static final Annal LOGGER = Annal.get(Statute.class);
+
     /**
      * @param list
      * @param fnFilter
@@ -22,10 +25,10 @@ public final class Statute {
      * @return
      */
     public static <T> T findUnique(final List<T> list, final Predicate<T> fnFilter) {
-        return HNull.get(() -> {
+        return Fn.get(() -> {
             final List<T> filtered = list.stream()
                     .filter(fnFilter).collect(Collectors.toList());
-            return HBool.exec(filtered.isEmpty(),
+            return Fn.getSemi(filtered.isEmpty(), LOGGER,
                     () -> null,
                     () -> filtered.get(Values.IDX));
         }, list, fnFilter);

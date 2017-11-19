@@ -1,10 +1,10 @@
 package io.vertx.zero.marshal.options;
 
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.exception.DemonException;
 import io.vertx.zero.exception.LimeFileException;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.func.HPool;
 import io.vertx.zero.marshal.Node;
 import io.vertx.zero.marshal.node.ZeroLime;
 import io.vertx.zero.marshal.node.ZeroPlugin;
@@ -70,7 +70,7 @@ class YamlOpts implements Opts<JsonObject> {
     public JsonObject ingest(final String key)
             throws ZeroException {
         final Node<JsonObject> node =
-                HPool.exec(EXTENSIONS, key,
+                Fn.pool(EXTENSIONS, key,
                         () -> Instance.instance(ZeroPlugin.class, key));
         final JsonObject data = node.read();
         if (null == data) {

@@ -1,4 +1,4 @@
-package io.vertx.zero.log;
+package io.vertx.up.log;
 
 interface Info {
     /** **/

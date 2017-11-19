@@ -2,7 +2,7 @@ package org.tlk.api;
 
 import io.vertx.up.annotations.Address;
 import io.vertx.up.annotations.EndPoint;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.tool.Jackson;
 
 import javax.ws.rs.*;

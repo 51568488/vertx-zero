@@ -2,12 +2,10 @@ package io.vertx.zero.atom;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.func.HJson;
-import io.vertx.zero.func.HNull;
-import io.vertx.zero.func.HPool;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.marshal.reliable.Insurer;
 import io.vertx.zero.marshal.reliable.RequiredInsurer;
 import io.vertx.zero.marshal.reliable.TypedInsurer;
@@ -42,14 +40,14 @@ public class Ruler {
             final String file,
             final JsonObject data)
             throws ZeroException {
-        HNull.execZero(() -> {
+        Fn.shuntZero(() -> {
             // 1. Rule for json object
             final JsonObject rule = getRule(file);
             verifyItem(data, rule);
             // 2. For json item
             for (final String field : data.fieldNames()) {
                 final Object value = data.getValue(field);
-                HNull.execZero(() -> {
+                Fn.shuntZero(() -> {
                     if (Types.isJObject(value) || Types.isJArray(value)) {
                         final String filename = file + Strings.DOT + field;
                         if (Types.isJObject(value)) {
@@ -76,24 +74,21 @@ public class Ruler {
             final String file,
             final JsonArray data)
             throws ZeroException {
-        HNull.execZero(() -> {
+        Fn.shuntZero(() -> {
             // 1. Rule for json array
             final JsonObject rule = getRule(file);
             verifyItem(data, rule);
             // 2. For json item
-            HJson.execZero(data, JsonObject.class, (element, index) -> {
-                // 3. Each item
-                HJson.execZero(element, (value, field) -> {
-                    // 4.Value = JsonObject, identify if extension.
-                    final String filename = file + Strings.DOT + field;
-                    if (Types.isJObject(value)) {
-                        // JsonObject
-                        verify(filename, (JsonObject) value);
-                    } else if (Types.isJArray(value)) {
-                        // JsonArray
-                        verify(filename, (JsonArray) value);
-                    }
-                });
+            Fn.etJArray(data, (value, field) -> {
+                // 3. Value = JsonObject, identify if extension.
+                final String filename = file + Strings.DOT + field;
+                if (Types.isJObject(value)) {
+                    // JsonObject
+                    verify(filename, (JsonObject) value);
+                } else if (Types.isJArray(value)) {
+                    // JsonArray
+                    verify(filename, (JsonArray) value);
+                }
             });
         }, file, data);
     }
@@ -107,7 +102,7 @@ public class Ruler {
      */
     private static <T> void verifyItem(final T input, final JsonObject rule)
             throws ZeroException {
-        HNull.execZero(() -> {
+        Fn.shuntZero(() -> {
             if (Types.isJArray(input)) {
                 final JsonArray data = (JsonArray) input;
                 // Required
@@ -136,6 +131,6 @@ public class Ruler {
         } else {
             LOGGER.debug(Info.RULE_FILE, filename);
         }
-        return HPool.exec(RULE_MAP, filename, () -> IO.getYaml(filename));
+        return Fn.pool(RULE_MAP, filename, () -> IO.getYaml(filename));
     }
 }

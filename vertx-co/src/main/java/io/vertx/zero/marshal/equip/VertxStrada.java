@@ -2,15 +2,18 @@ package io.vertx.zero.marshal.equip;
 
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.func.HBool;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.marshal.Transformer;
 
 public class VertxStrada implements Transformer<VertxOptions> {
 
+    private static final Annal LOGGER = Annal.get(VertxStrada.class);
+
     @Override
     public VertxOptions transform(final JsonObject input) {
         final JsonObject config = input.getJsonObject(NodeVisitor.YKEY_OPTIONS, null);
-        return HBool.exec(null == config,
+        return Fn.getSemi(null == config, LOGGER,
                 VertxOptions::new,
                 () -> new VertxOptions(config));
     }

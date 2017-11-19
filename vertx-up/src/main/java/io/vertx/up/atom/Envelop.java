@@ -7,7 +7,6 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.web.ZeroSerializer;
-import io.vertx.zero.func.HBool;
 import io.vertx.zero.tool.Jackson;
 
 import java.io.Serializable;
@@ -39,10 +38,8 @@ public class Envelop implements Serializable {
      * @return
      */
     public JsonObject data() {
-        return HBool.exec(null != this.data && this.data.containsKey(Key.DATA),
-                () -> this.data.getJsonObject(Key.DATA),
-                () -> this.data
-        );
+        return (null != this.data && this.data.containsKey(Key.DATA)) ?
+                this.data.getJsonObject(Key.DATA) : this.data;
     }
 
     /**

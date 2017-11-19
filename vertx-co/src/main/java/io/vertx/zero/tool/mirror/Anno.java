@@ -1,8 +1,6 @@
 package io.vertx.zero.tool.mirror;
 
-import io.vertx.up.eon.Plugins;
-import io.vertx.zero.func.HNull;
-import io.vertx.zero.func.HPool;
+import io.vertx.up.func.Fn;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -17,10 +15,10 @@ import java.util.stream.Collectors;
 public final class Anno {
 
     public static ConcurrentMap<String, Annotation> get(final Class<?> clazz) {
-        return HNull.get(() -> {
+        return Fn.get(() -> {
             final Annotation[] annotationes = clazz.getDeclaredAnnotations();
             // Zapper
-            return HPool.zapper(annotationes,
+            return Fn.zipper(annotationes,
                     (item) -> item.annotationType().getName(),
                     (item) -> item);
         }, clazz);
@@ -35,7 +33,7 @@ public final class Anno {
      */
     public static Annotation[] query(final Class<?> clazz,
                                      final Class<? extends Annotation> methodCls) {
-        return HNull.get(() -> {
+        return Fn.get(() -> {
             final Method[] methods = clazz.getDeclaredMethods();
             final List<Method> methodSet = Arrays.asList(methods);
             final List<Method> result = methodSet.stream()
@@ -50,25 +48,6 @@ public final class Anno {
             }
             return resultAnnos.toArray(new Annotation[]{});
         }, clazz, methodCls);
-    }
-
-    /**
-     * Get current field plugin ( Each field should set only one standard plugin )
-     *
-     * @param field
-     * @return
-     */
-    public static String getPlugin(final Field field) {
-        return HNull.get(() -> {
-            String key = null;
-            for (final Class<? extends Annotation> annoCls : Plugins.INFIX_MAP.keySet()) {
-                if (field.isAnnotationPresent(annoCls)) {
-                    key = Plugins.INFIX_MAP.get(annoCls);
-                    break;
-                }
-            }
-            return key;
-        }, field);
     }
 
     /**

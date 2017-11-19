@@ -3,8 +3,8 @@ package io.vertx.zero.log.internal;
 import io.vertx.core.VertxException;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.log.Log;
 
 public class Log4JAnnal implements Annal {

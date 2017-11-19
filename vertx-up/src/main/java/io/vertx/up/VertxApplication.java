@@ -3,11 +3,10 @@ package io.vertx.up;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.exception.UpClassArgsException;
 import io.vertx.up.exception.UpClassInvalidException;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.web.ZeroLauncher;
 import io.vertx.up.web.anima.*;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HTry;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.Runner;
 import io.vertx.zero.tool.mirror.Anno;
 import io.vertx.zero.tool.mirror.Instance;
@@ -29,21 +28,21 @@ public class VertxApplication {
 
     private VertxApplication(final Class<?> clazz) {
         // Must not null
-        HBool.execUp(
+        Fn.flingUp(
                 null == clazz,
                 LOGGER,
                 UpClassArgsException.class, getClass());
         this.clazz = clazz;
         this.annotationMap = Anno.get(clazz);
         // Must be invalid
-        HBool.execUp(
+        Fn.flingUp(
                 !this.annotationMap.containsKey(Up.class.getName()),
                 LOGGER,
                 UpClassInvalidException.class, getClass(), clazz.getName());
     }
 
     public static void run(final Class<?> clazz, final Object... args) {
-        HTry.execUp(() -> {
+        Fn.shuntRun(() -> {
             // Run vertx application.
             new VertxApplication(clazz).run(args);
         }, LOGGER);

@@ -8,11 +8,10 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.exception.AsyncSignatureException;
 import io.vertx.up.exception.WorkerArgumentException;
+import io.vertx.up.func.Fn;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HNull;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.reflect.Method;
@@ -43,7 +42,7 @@ public class ZeroHttpWorker extends AbstractVerticle {
             // 5. Verify
             verify(method);
             try {
-                HNull.exec(() -> {
+                Fn.safeNull(() -> {
                     bus.<Envelop>consumer(address, message -> {
                         if (isVoid(method)) {
                             // void Message<Envelop>
@@ -83,12 +82,12 @@ public class ZeroHttpWorker extends AbstractVerticle {
         final Class<?>[] params = method.getParameterTypes();
         final Class<?> returnType = method.getReturnType();
         // 2. The parameters
-        HBool.execUp(Values.ONE != params.length,
+        Fn.flingUp(Values.ONE != params.length,
                 LOGGER, WorkerArgumentException.class,
                 getClass(), method);
         // 3. Split worker flow to verify
         final Class<?> paramCls = params[Values.IDX];
-        HBool.exec(isVoid(method), LOGGER,
+        Fn.safeSemi(isVoid(method), LOGGER,
                 () -> {
                     // void method(Message<Envelop>);
                     verify(Message.class != paramCls, returnType, paramCls);
@@ -103,7 +102,7 @@ public class ZeroHttpWorker extends AbstractVerticle {
     private void verify(final boolean condition,
                         final Class<?> returnType,
                         final Class<?> paramType) {
-        HBool.execUp(condition,
+        Fn.flingUp(condition,
                 LOGGER, AsyncSignatureException.class,
                 getClass(), returnType.getName(), paramType.getName());
     }

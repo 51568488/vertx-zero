@@ -4,8 +4,8 @@ import io.vertx.core.Vertx;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.annotations.Plugin;
 import io.vertx.up.eon.Plugins;
+import io.vertx.up.func.Fn;
 import io.vertx.up.plugin.Infix;
-import io.vertx.zero.func.HPool;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -26,7 +26,7 @@ public class MongoInfix implements Infix {
 
     private static void initInternal(final Vertx vertx,
                                      final String name) {
-        HPool.exec(CLIENTS, name,
+        Fn.pool(CLIENTS, name,
                 () -> Infix.init(Plugins.Infix.MONGO,
                         (config) -> MongoClient.createShared(vertx, config, name),
                         MongoInfix.class));

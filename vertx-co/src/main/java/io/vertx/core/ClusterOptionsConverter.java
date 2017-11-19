@@ -2,7 +2,7 @@ package io.vertx.core;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.spi.cluster.ClusterManager;
-import io.vertx.zero.func.HBool;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.tool.mirror.Instance;
 
 class ClusterOptionsConverter {
@@ -16,15 +16,14 @@ class ClusterOptionsConverter {
         if (json.getValue("options") instanceof JsonObject) {
             obj.setOptions(json.getJsonObject("options"));
         }
-        if (null != json.getValue("manager")) {
-            final Class<?> clazz = Instance.clazz(json.getString("manager"));
-            HBool.execTrue(null != clazz,
-                    () -> {
-                        // If null, keep default
-                        final ClusterManager manager = Instance.instance(clazz);
-                        obj.setManager(manager);
-                        return null;
-                    });
-        }
+        final Object managerObj = json.getValue("manager");
+        Fn.safeNull(() -> {
+            final Class<?> clazz = Instance.clazz(managerObj.toString());
+            Fn.safeNull(() -> {
+                // If null, keep default
+                final ClusterManager manager = Instance.instance(clazz);
+                obj.setManager(manager);
+            }, clazz);
+        }, managerObj);
     }
 }

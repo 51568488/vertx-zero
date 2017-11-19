@@ -1,7 +1,6 @@
 package io.vertx.zero.tool;
 
-import io.vertx.zero.func.HFail;
-import io.vertx.zero.func.HNull;
+import io.vertx.up.func.Fn;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,14 +46,14 @@ public class Period {
      */
     public static LocalDateTime toFull(final String literal) {
         final Optional<DateTimeFormatter> hit =
-                HNull.get(literal,
+                Fn.get(Optional.empty(),
                         () -> DATETIMES.stream()
                                 .filter(formatter ->
-                                        null != HFail.exec(
-                                                () -> LocalDateTime.parse(literal, formatter),
+                                        null != Fn.getJvm(
                                                 null,
+                                                () -> LocalDateTime.parse(literal, formatter),
                                                 literal))
-                                .findAny(), Optional.empty());
+                                .findAny(), literal);
         return hit.isPresent() ? LocalDateTime.parse(literal, hit.get()) : null;
     }
 
@@ -66,14 +65,14 @@ public class Period {
      */
     public static LocalDate toDate(final String literal) {
         final Optional<DateTimeFormatter> hit =
-                HNull.get(literal,
+                Fn.get(Optional.empty(),
                         () -> DATES.stream()
                                 .filter(formatter ->
-                                        null != HFail.exec(
-                                                () -> LocalDate.parse(literal, formatter),
+                                        null != Fn.getJvm(
                                                 null,
+                                                () -> LocalDate.parse(literal, formatter),
                                                 literal))
-                                .findFirst(), Optional.empty());
+                                .findFirst(), literal);
         return hit.isPresent() ? LocalDate.parse(literal, hit.get()) : null;
     }
 
@@ -85,14 +84,14 @@ public class Period {
      */
     public static LocalTime toTime(final String literal) {
         final Optional<DateTimeFormatter> hit =
-                HNull.get(literal,
+                Fn.get(Optional.empty(),
                         () -> TIMES.stream()
                                 .filter(formatter ->
-                                        null != HFail.exec(
-                                                () -> LocalTime.parse(literal, formatter),
+                                        null != Fn.getJvm(
                                                 null,
+                                                () -> LocalTime.parse(literal, formatter),
                                                 literal))
-                                .findFirst(), Optional.empty());
+                                .findFirst(), literal);
         return hit.isPresent() ? LocalTime.parse(literal, hit.get()) : null;
     }
 
@@ -108,7 +107,7 @@ public class Period {
     }
 
     public static Date parse(final String literal) {
-        return HNull.get(literal, () -> {
+        return Fn.get(null, () -> {
             final int length = literal.length();
             final String pattern = Storage.PATTERNS_MAP.get(length);
             if (null != pattern) {
@@ -129,7 +128,7 @@ public class Period {
             } else {
                 return parseFull(literal);
             }
-        }, null);
+        }, literal);
     }
 
     /**
@@ -139,15 +138,15 @@ public class Period {
      * @return
      */
     public static Date parseFull(final String literal) {
-        return HNull.get(literal, () -> {
+        return Fn.get(null, () -> {
             // Datetime解析
             final LocalDateTime datetime = toFull(literal);
-            return HNull.chain(datetime,
+            return Fn.nullFlow(datetime,
                     (ref) -> Date.from(ref.atZone(ZoneId.systemDefault()).toInstant()),
                     () -> {
                         // Date解析
                         final LocalDate date = toDate(literal);
-                        return HNull.chain(date,
+                        return Fn.nullFlow(date,
                                 (ref) -> Date.from(ref.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
                                 () -> {
                                     // Time解析
@@ -155,7 +154,7 @@ public class Period {
                                     return null == time ? null : parse(time);
                                 });
                     });
-        }, null);
+        }, literal);
     }
 
     public static boolean equalDate(final Date left, final Date right) {

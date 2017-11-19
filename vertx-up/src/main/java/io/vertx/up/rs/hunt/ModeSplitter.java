@@ -5,14 +5,12 @@ import io.vertx.up.annotations.Address;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.exception.ReturnTypeException;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Splitter;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HNull;
-import io.vertx.zero.func.HPool;
-import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.annotation.Annotation;
@@ -35,7 +33,7 @@ public class ModeSplitter implements Splitter {
 
     @Override
     public Aim distribute(final Event event) {
-        return HNull.get(() -> {
+        return Fn.get(() -> {
             // 1. Scan method to check @Address
             final boolean annotated = event.getAction().isAnnotationPresent(Address.class);
             final Method method = event.getAction();
@@ -48,7 +46,7 @@ public class ModeSplitter implements Splitter {
                     // Exception because this method must has return type to
                     // send message to event bus. It means that it require
                     // return types.
-                    HBool.execUp(true, LOGGER, ReturnTypeException.class,
+                    Fn.flingUp(true, LOGGER, ReturnTypeException.class,
                             getClass(), method);
                 } else {
                     // Scan the system to find replier method return type.
@@ -57,16 +55,16 @@ public class ModeSplitter implements Splitter {
                     if (Void.class == replierType || void.class == replierType) {
                         if (isAsync(replier)) {
                             // Mode 5: Event Bus: ( Async ) Request-Response
-                            aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "5",
+                            aim = Fn.pool(Pool.AIMS, Thread.currentThread().getName() + "5",
                                     () -> Instance.instance(AsyncAim.class));
                         } else {
                             // Mode 3: Event Bus: One-Way
-                            aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "3",
+                            aim = Fn.pool(Pool.AIMS, Thread.currentThread().getName() + "3",
                                     () -> Instance.instance(OneWayAim.class));
                         }
                     } else {
                         // Mode 1: Event Bus: Request-Response
-                        aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "1",
+                        aim = Fn.pool(Pool.AIMS, Thread.currentThread().getName() + "1",
                                 () -> Instance.instance(AsyncAim.class));
                     }
                 }
@@ -74,11 +72,11 @@ public class ModeSplitter implements Splitter {
                 // Non Event Bus
                 if (Void.class == returnType || void.class == returnType) {
                     // Mode 4: Non-Event Bus: One-Way
-                    aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "4",
+                    aim = Fn.pool(Pool.AIMS, Thread.currentThread().getName() + "4",
                             () -> Instance.instance(BlockAim.class));
                 } else {
                     // Mode 2: Non-Event Bus: Request-Response\
-                    aim = HPool.exec(Pool.AIMS, Thread.currentThread().getName() + "2",
+                    aim = Fn.pool(Pool.AIMS, Thread.currentThread().getName() + "2",
                             () -> Instance.instance(SyncAim.class));
                 }
             }
@@ -113,17 +111,15 @@ public class ModeSplitter implements Splitter {
         final Optional<Receipt> found = RECEIPTS.stream()
                 .filter(item -> address.equals(item.getAddress()))
                 .findFirst();
-        Method method = null;
-        if (found.isPresent()) {
-            method = found.get().getMethod();
-            if (null == method) {
-                HBool.execUp(true, LOGGER, ReturnTypeException.class,
-                        getClass(), address);
-            }
-        } else {
-            HBool.execUp(true, LOGGER, ReturnTypeException.class,
-                    getClass(), address);
-        }
+        final Method method;
+
+        Fn.flingUp(!found.isPresent(), LOGGER, ReturnTypeException.class,
+                getClass(), address);
+
+        method = found.get().getMethod();
+
+        Fn.flingUp(null == method, LOGGER, ReturnTypeException.class,
+                getClass(), address);
         return method;
     }
 

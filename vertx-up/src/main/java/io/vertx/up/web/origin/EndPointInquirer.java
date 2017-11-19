@@ -2,7 +2,7 @@ package io.vertx.up.web.origin;
 
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.eon.Info;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 
 import java.util.Set;
 import java.util.stream.Collectors;

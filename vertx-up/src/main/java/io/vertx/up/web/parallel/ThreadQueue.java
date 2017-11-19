@@ -1,7 +1,7 @@
 package io.vertx.up.web.parallel;
 
-import io.vertx.zero.func.lang.JcConsumer;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.func.Actuator;
+import io.vertx.up.log.Annal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class ThreadQueue {
         this.counter = new CountDownLatch(size);
     }
 
-    public void add(final JcConsumer runnable,
+    public void add(final Actuator runnable,
                     final String name) {
         final Thread thread = new ThreadAtom(this.counter, runnable);
         thread.setName(name);

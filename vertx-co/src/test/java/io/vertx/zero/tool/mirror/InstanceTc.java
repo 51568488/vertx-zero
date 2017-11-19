@@ -1,7 +1,7 @@
 package io.vertx.zero.tool.mirror;
 
 import io.vertx.quiz.ZeroBase;
-import io.vertx.zero.log.Annal;
+import io.vertx.up.log.Annal;
 import org.junit.Test;
 
 public class InstanceTc extends ZeroBase {

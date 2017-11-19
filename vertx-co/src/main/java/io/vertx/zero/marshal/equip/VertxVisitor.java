@@ -4,12 +4,10 @@ import io.vertx.core.ClusterOptions;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.atom.Ruler;
 import io.vertx.zero.exception.ClusterConflictException;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.func.HJson;
-import io.vertx.zero.func.HNull;
-import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.marshal.Node;
 import io.vertx.zero.marshal.Transformer;
@@ -41,7 +39,7 @@ public class VertxVisitor implements NodeVisitor {
         final JsonObject data = this.NODE.read();
         // 3. Vertx node validation.
         final JsonObject vertxData = data.getJsonObject(Key.VERTX);
-        HNull.execZero(() -> {
+        Fn.shuntZero(() -> {
             LOGGER.info(Info.INF_B_VERIFY, Key.VERTX, vertxData);
             Ruler.verify(Files.VERTX, vertxData);
         }, vertxData);
@@ -62,16 +60,15 @@ public class VertxVisitor implements NodeVisitor {
         final ConcurrentMap<String, VertxOptions> map =
                 new ConcurrentHashMap<>();
         final boolean clustered = this.clusterOptions.isEnabled();
-        HJson.execZero(vertxData, JsonObject.class, (item, index) -> {
+        Fn.etJArray(vertxData, JsonObject.class, (item, index) -> {
             // 1. Extract single
             final String name = item.getString(YKEY_NAME);
             // 2. Extract VertxOptions
             final VertxOptions options = this.transformer.transform(item);
             // 3. Check the configuration for cluster sync
-            if (clustered != options.isClustered()) {
-                HTry.execZero(LOGGER,
-                        new ClusterConflictException(getClass(), name, options.toString()));
-            }
+            Fn.flingZero(clustered != options.isClustered(), LOGGER,
+                    ClusterConflictException.class,
+                    getClass(), name, options.toString());
             // 4. Put the options into map
             map.put(name, options);
         });

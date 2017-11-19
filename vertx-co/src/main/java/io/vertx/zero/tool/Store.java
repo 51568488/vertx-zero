@@ -2,8 +2,7 @@ package io.vertx.zero.tool;
 
 import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.func.HFail;
-import io.vertx.zero.func.HPool;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.tool.io.IO;
 
 /**
@@ -19,10 +18,10 @@ public final class Store {
      * @return
      */
     public static ConfigStoreOptions getJson(final String filename) {
-        return HFail.exec(() -> {
+        return Fn.obtain(() -> {
             final JsonObject data = IO.getJObject(filename);
-            return HFail.exec(() ->
-                            HPool.exec(Storage.STORE, filename,
+            return Fn.obtain(() ->
+                            Fn.pool(Storage.STORE, filename,
                                     () -> new ConfigStoreOptions()
                                             .setType(StoreType.JSON.key())
                                             .setConfig(data))
@@ -52,10 +51,10 @@ public final class Store {
 
     private static ConfigStoreOptions getFile(final String filename,
                                               final StoreFormat format) {
-        return HFail.exec(() -> {
+        return Fn.obtain(() -> {
             final JsonObject config = new JsonObject()
                     .put(StoreConfig.PATH.key(), IO.getPath(filename));
-            return HPool.exec(Storage.STORE, filename,
+            return Fn.pool(Storage.STORE, filename,
                     () -> new ConfigStoreOptions()
                             .setType(StoreType.FILE.key())
                             .setFormat(format.key())

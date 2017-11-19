@@ -1,7 +1,6 @@
-package io.vertx.zero.func;
+package io.vertx.up.func;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,7 +8,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class HPool {
+class Pond {
 
     /**
      * Enhancement
@@ -21,21 +20,17 @@ public class HPool {
      * @param <V>
      * @return
      */
-    public static <K, V> V exec(final ConcurrentMap<K, V> pool,
-                                final K key,
-                                final Supplier<V> poolFn) {
-        return HBool.exec(null == pool || null == key,
-                () -> null,
-                () -> {
-                    V reference = pool.get(key);
-                    if (null == reference) {
-                        reference = poolFn.get();
-                        if (null != reference) {
-                            pool.put(key, reference);
-                        }
-                    }
-                    return reference;
-                });
+    static <K, V> V exec(final ConcurrentMap<K, V> pool,
+                         final K key,
+                         final Supplier<V> poolFn) {
+        V reference = pool.get(key);
+        if (null == reference) {
+            reference = poolFn.get();
+            if (null != reference) {
+                pool.put(key, reference);
+            }
+        }
+        return reference;
     }
 
     /**
@@ -49,7 +44,7 @@ public class HPool {
      * @param <E>
      * @return
      */
-    public static <K, V, E> ConcurrentMap<K, List<V>> group(
+    static <K, V, E> ConcurrentMap<K, List<V>> group(
             final Collection<E> object,
             final Function<E, K> keyFn,
             final Function<E, V> valueFn
@@ -83,26 +78,6 @@ public class HPool {
     }
 
     /**
-     * Zipper ->
-     * [{key,value},{key1,value1}]
-     * -> key = value, key1 = value1
-     *
-     * @param object
-     * @param keyFn
-     * @param valueFn
-     * @param <K>
-     * @param <V>
-     * @param <E>
-     * @return
-     */
-    public static <K, V, E> ConcurrentMap<K, V> zapper(
-            final E[] object,
-            final Function<E, K> keyFn,
-            final Function<E, V> valueFn) {
-        return zapper(Arrays.asList(object), keyFn, valueFn);
-    }
-
-    /**
      * Zipper
      *
      * @param object
@@ -111,7 +86,7 @@ public class HPool {
      * @param <E>
      * @return
      */
-    public static <K, V, E> ConcurrentMap<K, V> zapper(
+    static <K, V, E> ConcurrentMap<K, V> zipper(
             final Collection<E> object,
             final Function<E, K> keyFn,
             final Function<E, V> valueFn

@@ -1,8 +1,8 @@
 package io.vertx.up.web.origin;
 
 import io.vertx.up.atom.Event;
+import io.vertx.up.func.Fn;
 import io.vertx.up.web.thread.EndPointThread;
-import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Annal;
 
 import java.util.ArrayList;
@@ -30,12 +30,11 @@ public class EventInquirer implements Inquirer<Set<Event>> {
             thread.start();
         }
         final Set<Event> events = new HashSet<>();
-        HTry.execJvm(() -> {
+        Fn.safeJvm(() -> {
             counter.await();
             for (final EndPointThread item : threadReference) {
                 events.addAll(item.getEvents());
             }
-            return null;
         }, LOGGER);
         return events;
     }

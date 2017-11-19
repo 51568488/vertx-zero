@@ -2,10 +2,7 @@ package io.vertx.zero.tool.mirror;
 
 import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
-import io.vertx.zero.func.HFail;
-import io.vertx.zero.func.HNull;
-import io.vertx.zero.func.HPool;
-import io.vertx.zero.func.HTry;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.log.Annal;
 
 import java.lang.reflect.Constructor;
@@ -34,9 +31,9 @@ public final class Instance {
 
     public static <T> T instance(final Class<?> clazz,
                                  final Object... params) {
-        final Object created = HFail.exec(
+        final Object created = Fn.obtain(
                 () -> construct(clazz, params), clazz);
-        return HFail.exec(() -> (T) created, created);
+        return Fn.obtain(() -> (T) created, created);
     }
 
     /**
@@ -54,10 +51,10 @@ public final class Instance {
 
     public static <T> T singleton(final Class<?> clazz,
                                   final Object... params) {
-        final Object created = HPool.exec(Storage.SINGLETON, clazz.getName(),
+        final Object created = Fn.pool(Storage.SINGLETON, clazz.getName(),
                 () -> instance(clazz, params));
         // Must reference to created first.
-        return HFail.exec(() -> (T) created, created);
+        return Fn.obtain(() -> (T) created, created);
     }
 
     /**
@@ -67,8 +64,8 @@ public final class Instance {
      * @return
      */
     public static Class<?> clazz(final String name) {
-        return HPool.exec(Storage.CLASSES, name,
-                () -> HFail.exec(() -> Class.forName(name), name));
+        return Fn.pool(Storage.CLASSES, name,
+                () -> Fn.obtain(() -> Class.forName(name), name));
     }
 
     /**
@@ -95,7 +92,7 @@ public final class Instance {
     public static <T> T invoke(final Object instance,
                                final String name,
                                final Object... args) {
-        return HNull.get(() -> {
+        return Fn.get(() -> {
             final MethodAccess access = MethodAccess.get(instance.getClass());
             // Direct invoke, multi overwrite for unbox/box issue still existing.
             // TODO: Unbox/Box type issue
@@ -114,28 +111,27 @@ public final class Instance {
                 result = access.invoke(instance, index, args);
             }
             final Object ret = result;
-            return HNull.get(() -> (T) ret, ret);
+            return Fn.get(() -> (T) ret, ret);
         }, instance, name);
     }
 
     public static <T> void set(final Object instance,
                                final String name,
                                final T value) {
-        HNull.exec(() -> {
-            HTry.execJvm(() -> {
+        Fn.safeNull(() -> {
+            Fn.safeJvm(() -> {
                 final Field field = instance.getClass().getDeclaredField(name);
                 if (!field.isAccessible()) {
                     field.setAccessible(true);
                 }
                 field.set(instance, value);
-                return null;
             }, LOGGER);
         }, instance, name, value);
     }
 
     public static <T> T get(final Object instance,
                             final String name) {
-        return HNull.get(() -> HTry.execGet(() -> {
+        return Fn.get(() -> Fn.safeJvm(() -> {
                     final Field field = instance.getClass().getDeclaredField(name);
                     if (!field.isAccessible()) {
                         field.setAccessible(true);
@@ -157,7 +153,7 @@ public final class Instance {
      * @return
      */
     public static boolean noarg(final Class<?> clazz) {
-        return HNull.get(clazz, () -> {
+        return Fn.get(Boolean.FALSE, () -> {
             final Constructor<?>[] constructors = clazz.getDeclaredConstructors();
             boolean noarg = false;
             for (final Constructor<?> constructor : constructors) {
@@ -166,12 +162,12 @@ public final class Instance {
                 }
             }
             return noarg;
-        }, false);
+        }, clazz);
     }
 
     private static <T> T construct(final Class<?> clazz,
                                    final Object... params) {
-        return HFail.exec(() -> {
+        return Fn.obtain(() -> {
             T ret = null;
             final Constructor<?>[] constructors = clazz.getDeclaredConstructors();
             // Pack all constructors
@@ -186,14 +182,14 @@ public final class Instance {
                 }
                 // The slowest construct
                 final Object reference = constructor.newInstance(params);
-                ret = HFail.exec(() -> ((T) reference), reference);
+                ret = Fn.obtain(() -> ((T) reference), reference);
             }
             return ret;
         }, clazz, params);
     }
 
     private static <T> T construct(final Class<T> clazz) {
-        return HFail.exec(() -> {
+        return Fn.obtain(() -> {
             // Reflect Asm
             final ConstructorAccess<T> access = ConstructorAccess.get(clazz);
             return access.newInstance();

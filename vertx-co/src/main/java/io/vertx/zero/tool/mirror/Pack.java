@@ -1,13 +1,12 @@
 package io.vertx.zero.tool.mirror;
 
 import io.vertx.core.impl.ConcurrentHashSet;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.FileSuffix;
 import io.vertx.zero.eon.Protocols;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HFail;
-import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
 import zava.io.ClassFileFilter;
 
@@ -47,14 +46,14 @@ public final class Pack {
                                             final String zeroScan) {
         // The first class collection
         final Set<Class<?>> classes = new LinkedHashSet<>();
-        return HNull.get(() -> {
+        return Fn.get(() -> {
             // Recurisive
             final boolean recursive = true;
             // Get package name;
             final String packageDir = (Strings.DOT.equals(zeroScan)) ?
                     zeroScan.replace(Strings.DOT, Strings.EMPTY)
                     : zeroScan.replace(Strings.DOT, Strings.SLASH);
-            HFail.exec(() -> {
+            Fn.obtain(() -> {
                 // Define enumeration
                 final Enumeration<URL> dirs = Thread.currentThread()
                         .getContextClassLoader().getResources(packageDir);
@@ -88,7 +87,7 @@ public final class Pack {
                                             final URL url,
                                             final boolean recursive) {
         final Set<Class<?>> classes = new LinkedHashSet<>();
-        HFail.exec(() -> {
+        Fn.obtain(() -> {
             String packageName = (packName.startsWith(Strings.DOT)) ?
                     packName.substring(1, packName.length()) :
                     packName;
@@ -150,7 +149,7 @@ public final class Pack {
         final String packageName = (packName.startsWith(Strings.DOT)) ?
                 packName.substring(1, packName.length()) :
                 packName;
-        HNull.exec(() -> {
+        Fn.safeNull(() -> {
             for (final File classFile : dirfiles) {
                 // If directory, continue
                 if (classFile.isDirectory()) {

@@ -1,8 +1,8 @@
 package io.vertx.up.plugin;
 
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.exception.ConfigKeyMissingException;
-import io.vertx.zero.func.HBool;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.marshal.Node;
 import io.vertx.zero.marshal.node.ZeroDynamic;
@@ -20,7 +20,7 @@ public interface Infix {
         final Node<JsonObject> node = Instance.instance(ZeroDynamic.class);
         final JsonObject options = node.read();
         final Annal logger = Annal.get(clazz);
-        HBool.execUp(null == options || !options.containsKey(key)
+        Fn.flingUp(null == options || !options.containsKey(key)
                 , logger, ConfigKeyMissingException.class,
                 clazz, key);
         return executor.apply(options.getJsonObject(key));

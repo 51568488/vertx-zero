@@ -4,12 +4,11 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.em.ServerType;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.atom.Ruler;
 import io.vertx.zero.exception.ServerConfigException;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HJson;
-import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.marshal.Transformer;
 import io.vertx.zero.marshal.node.JObjectBase;
@@ -58,13 +57,13 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
         Ruler.verify(Files.SERVER, serverData);
         final ConcurrentMap<Integer, HttpServerOptions> map =
                 new ConcurrentHashMap<>();
-        HJson.execIt(serverData, (item, index) -> {
+        Fn.itJArray(serverData, JsonObject.class, (item, index) -> {
             if (ServerType.HTTP.match(item.getString(YKEY_TYPE))) {
                 // 1. Extract port
                 final int port = extractPort(item.getJsonObject(YKEY_CONFIG));
                 // 2. Convert JsonObject to HttpServerOptions
                 final HttpServerOptions options = this.transformer.transform(item);
-                HNull.exec(() -> {
+                Fn.safeNull(() -> {
                     // 3. Add to map;
                     map.put(port, options);
                 }, port, options);

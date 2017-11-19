@@ -2,7 +2,7 @@ package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.Plugins;
-import io.vertx.zero.func.HFail;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.marshal.Node;
 import io.vertx.zero.tool.io.IO;
 import io.vertx.zero.tool.mirror.Instance;
@@ -25,8 +25,9 @@ public class ZeroServer extends JObjectBase {
 
         final String filename = keys.get(getKey());
 
-        return HFail.execDft(
+        return Fn.obtain(
+                new JsonObject(),
                 () -> IO.getYaml(filename),
-                new JsonObject(), filename);
+                filename);
     }
 }

@@ -4,13 +4,13 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.up.eon.Info;
 import io.vertx.up.eon.em.ServerType;
+import io.vertx.up.func.Fn;
 import io.vertx.up.micro.ZeroHttpAgent;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.AgentExtractor;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHelper;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HMulti;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.Statute;
 import io.vertx.zero.tool.mirror.Instance;
@@ -40,13 +40,13 @@ public class AgentScatter implements Scatter {
 
     @Override
     public void connect(final Vertx vertx) {
-/** 1.Find Agent for deploy **/
+        /** 1.Find Agent for deploy **/
         final ConcurrentMap<ServerType, Class<?>> agents
                 = getAgents();
         final Extractor<DeploymentOptions> extractor =
                 Instance.instance(AgentExtractor.class);
 
-        HMulti.exec(agents, (type, clazz) -> {
+        Fn.itMap(agents, (type, clazz) -> {
             // 2.1 Agent deployment options
             final DeploymentOptions option = extractor.extract(clazz);
             // 2.2 Agent deployment
@@ -72,7 +72,7 @@ public class AgentScatter implements Scatter {
                 new ConcurrentHashMap<>();
         // Fix Boot
         // 1. If defined, use default
-        HMulti.exec(agents, (type, list) -> {
+        Fn.itMap(agents, (type, list) -> {
             // 2. Defined -> You have defined
             HBool.exec(defines.containsKey(type) && defines.get(type),
                     () -> {

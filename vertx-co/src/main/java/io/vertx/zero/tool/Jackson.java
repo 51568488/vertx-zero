@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HFail;
-import io.vertx.zero.func.HNull;
 import io.vertx.zero.tool.mirror.Types;
 
 import java.util.Arrays;
@@ -117,7 +116,7 @@ public final class Jackson {
 
     public static JsonArray toJArray(final Object value) {
         final JsonArray result = new JsonArray();
-        HNull.exec(() -> {
+        Fn.safeNull(() -> {
             if (Types.isJArray(value)) {
                 result.addAll((JsonArray) value);
             } else {
@@ -128,12 +127,13 @@ public final class Jackson {
     }
 
     public static <T> String serialize(final T t) {
-        return HNull.get(t, () ->
-                HFail.exec(() -> MAPPER.writeValueAsString(t), t), null);
+        return Fn.get(null, () ->
+                Fn.obtain(() -> MAPPER.writeValueAsString(t), t), t);
     }
 
     public static <T> T deserialize(final String value, final Class<T> type) {
-        return HNull.get(value, () -> HFail.exec(() -> MAPPER.readValue(value, type)), null);
+        return Fn.get(null,
+                () -> Fn.obtain(() -> MAPPER.readValue(value, type)), value);
     }
 
     private Jackson() {

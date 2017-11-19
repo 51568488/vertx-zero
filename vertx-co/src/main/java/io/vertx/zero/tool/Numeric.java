@@ -1,6 +1,6 @@
 package io.vertx.zero.tool;
 
-import io.vertx.zero.func.HNull;
+import io.vertx.up.func.Fn;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class Numeric {
 
     private static boolean isMatch(final String regex, final String original) {
-        return HNull.get(() -> {
+        return Fn.get(() -> {
             final Pattern pattern = Pattern.compile(regex);
             final Matcher matcher = pattern.matcher(original);
             return matcher.matches();

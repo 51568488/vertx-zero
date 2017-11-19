@@ -2,9 +2,8 @@ package io.vertx.up.rs.config;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.up.annotations.Agent;
+import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Extractor;
-import io.vertx.zero.func.HNull;
-import io.vertx.zero.func.HPool;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
@@ -24,10 +23,8 @@ public class AgentExtractor implements Extractor<DeploymentOptions> {
 
     @Override
     public DeploymentOptions extract(final Class<?> clazz) {
-        HNull.exec(() -> {
-            LOGGER.info(Info.AGENT_HIT, clazz.getName());
-        }, clazz);
-        return HPool.exec(OPTIONS, clazz, () -> transform(clazz));
+        Fn.safeNull(() -> LOGGER.info(Info.AGENT_HIT, clazz.getName()), clazz);
+        return Fn.pool(OPTIONS, clazz, () -> transform(clazz));
     }
 
     private DeploymentOptions transform(final Class<?> clazz) {

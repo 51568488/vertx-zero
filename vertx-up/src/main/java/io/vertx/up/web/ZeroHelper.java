@@ -3,6 +3,7 @@ package io.vertx.up.web;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.exception.AgentDuplicatedException;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HBool;
 import io.vertx.zero.log.Annal;
@@ -49,7 +50,7 @@ public class ZeroHelper {
                             .collect(Collectors.toList());
             // > 1 means duplicated defined
             final int size = filtered.size();
-            HBool.execUp(1 < size,
+            Fn.flingUp(1 < size,
                     LOGGER, AgentDuplicatedException.class,
                     ZeroHelper.class, server, size,
                     filtered.stream()

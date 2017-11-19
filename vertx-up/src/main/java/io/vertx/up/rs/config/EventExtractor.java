@@ -1,5 +1,6 @@
 package io.vertx.up.rs.config;
 
+import com.google.common.collect.Sets;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.EndPoint;
@@ -7,10 +8,10 @@ import io.vertx.up.atom.Event;
 import io.vertx.up.exception.AccessProxyException;
 import io.vertx.up.exception.EventSourceException;
 import io.vertx.up.exception.NoArgConstructorException;
+import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.web.ZeroHelper;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Instance;
@@ -29,7 +30,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
 
     @Override
     public Set<Event> extract(final Class<?> clazz) {
-        return HNull.get(clazz, () -> {
+        return Fn.get(Sets.newConcurrentHashSet(), () -> {
             // 1. Class verify
             verify(clazz);
             // 2. Check whether clazz annotated with @PATH
@@ -46,19 +47,19 @@ public class EventExtractor implements Extractor<Set<Event>> {
                         result.addAll(extract(clazz, null));
                     });
             return result;
-        }, new ConcurrentHashSet<>());
+        }, clazz);
     }
 
     private void verify(final Class<?> clazz) {
         // Check basic specification: No Arg Constructor
-        HBool.execUp(!Instance.noarg(clazz), LOGGER,
+        Fn.flingUp(!Instance.noarg(clazz), LOGGER,
                 NoArgConstructorException.class,
                 getClass(), clazz);
-        HBool.execUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
+        Fn.flingUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
                 AccessProxyException.class,
                 getClass(), clazz);
         // Event Source Checking
-        HBool.execUp(!clazz.isAnnotationPresent(EndPoint.class),
+        Fn.flingUp(!clazz.isAnnotationPresent(EndPoint.class),
                 LOGGER, EventSourceException.class,
                 getClass(), clazz.getName());
     }

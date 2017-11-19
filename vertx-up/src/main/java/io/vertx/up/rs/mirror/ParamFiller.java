@@ -3,6 +3,7 @@ package io.vertx.up.rs.mirror;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.exception.ParameterConflictException;
+import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Filler;
 import io.vertx.up.rs.argument.*;
 import io.vertx.up.web.ZeroSerializer;
@@ -69,7 +70,7 @@ public class ParamFiller {
             final Object dft = getDefault(paramAnnos, paramType);
 
             // 2. Exception checking.
-            HBool.execUp(!byAnnotated(paramAnnos), LOGGER,
+            Fn.flingUp(!byAnnotated(paramAnnos), LOGGER,
                     ParameterConflictException.class,
                     ParamFiller.class, paramType);
 

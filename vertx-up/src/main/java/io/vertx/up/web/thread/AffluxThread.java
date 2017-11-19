@@ -6,8 +6,8 @@ import io.vertx.up.exception.MultiAnnotatedException;
 import io.vertx.up.exception.NamedImplementionException;
 import io.vertx.up.exception.NamedNotFoundException;
 import io.vertx.up.exception.QualifierMissedException;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.func.HBool;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Anno;
@@ -91,7 +91,7 @@ public class AffluxThread extends Thread {
         // Field must annotated with @Qualifier
         final Annotation annotation = field.getAnnotation(Qualifier.class);
 
-        HBool.execUp(null == annotation,
+        Fn.flingUp(null == annotation,
                 LOGGER, QualifierMissedException.class,
                 getClass(), field.getName(), field.getDeclaringClass().getName());
 
@@ -102,7 +102,7 @@ public class AffluxThread extends Thread {
         final Set<String> names = instanceCls.stream()
                 .map(Class::getName).collect(Collectors.toSet());
 
-        HBool.execUp(!match,
+        Fn.flingUp(!match,
                 LOGGER, NamedImplementionException.class,
                 getClass(), names, field.getType().getName());
 
@@ -117,7 +117,7 @@ public class AffluxThread extends Thread {
                             && !StringUtil.isNil(targetValue);
                 }).findAny();
 
-        HBool.execUp(!verified.isPresent(),
+        Fn.flingUp(!verified.isPresent(),
                 LOGGER, NamedNotFoundException.class,
                 getClass(), names, value);
 
@@ -140,7 +140,7 @@ public class AffluxThread extends Thread {
             }
         }
         // Duplicated annotated
-        HBool.execUp(Values.ONE < set.size(), LOGGER,
+        Fn.flingUp(Values.ONE < set.size(), LOGGER,
                 MultiAnnotatedException.class, getClass(),
                 field.getName(), field.getDeclaringClass().getName(), set);
         // Fill typed directly.

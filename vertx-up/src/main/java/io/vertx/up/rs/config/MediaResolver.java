@@ -1,8 +1,8 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.core.impl.ConcurrentHashSet;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
@@ -45,7 +45,7 @@ class MediaResolver {
     private static Set<MediaType> resolve(final Method method,
                                           final Class<? extends Annotation>
                                                   mediaCls) {
-        return HNull.get(() -> {
+        return Fn.get(() -> {
             final Annotation anno = method.getAnnotation(mediaCls);
             return HBool.exec(null == anno,
                     ConcurrentHashSet::new,

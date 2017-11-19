@@ -7,15 +7,13 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.eon.em.YamlType;
 import io.vertx.zero.exception.EmptyStreamException;
 import io.vertx.zero.exception.JsonFormatException;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HFail;
-import io.vertx.zero.func.HNull;
-import io.vertx.zero.func.HTry;
 import io.vertx.zero.log.Log;
 
 import java.io.BufferedReader;
@@ -47,8 +45,8 @@ public final class IO {
      * @return
      */
     public static JsonArray getJArray(final String filename) {
-        return HTry.exec(() -> new JsonArray(getString(filename)),
-                (ex) -> new JsonFormatException(filename, ex));
+        return Fn.transRun(() -> new JsonArray(getString(filename)),
+                JsonFormatException.class, filename);
     }
 
     /**
@@ -60,8 +58,8 @@ public final class IO {
     public static JsonObject getJObject(final String filename) {
         final String content = getString(filename);
         // TODO: For debug
-        return HTry.exec(() -> new JsonObject(content),
-                (ex) -> new JsonFormatException(filename, ex));
+        return Fn.transRun(() -> new JsonObject(content),
+                JsonFormatException.class, filename);
     }
 
     /**
@@ -72,7 +70,7 @@ public final class IO {
      */
     public static String getString(final InputStream in) {
         final StringBuilder buffer = new StringBuilder(Values.BUFFER_SIZE);
-        return HFail.exec(() -> {
+        return Fn.obtain(() -> {
             final BufferedReader reader =
                     new BufferedReader(
                             new InputStreamReader(in, Values.ENCODING)
@@ -88,7 +86,7 @@ public final class IO {
     }
 
     public static String getString(final String filename) {
-        return HFail.exec(
+        return Fn.obtain(
                 () -> getString(Stream.read(filename)), filename);
     }
 
@@ -102,17 +100,17 @@ public final class IO {
     public static <T> T getYaml(final String filename) {
         final YamlType type = getYamlType(filename);
         return HBool.exec(YamlType.ARRAY == type,
-                () -> (T) HFail.exec(() -> new JsonArray(
+                () -> (T) Fn.obtain(() -> new JsonArray(
                         getYamlNode(filename).toString()
                 ), filename),
-                () -> (T) HFail.exec(() -> new JsonObject(
+                () -> (T) Fn.obtain(() -> new JsonObject(
                         getYamlNode(filename).toString()
                 ), filename));
     }
 
     private static JsonNode getYamlNode(final String filename) {
         final InputStream in = Stream.read(filename);
-        final JsonNode node = HTry.execGet(() -> YAML.readTree(
+        final JsonNode node = Fn.safeJvm(() -> YAML.readTree(
                 HBool.exec(null != in,
                         () -> in,
                         new EmptyStreamException(filename))), null);
@@ -129,13 +127,13 @@ public final class IO {
      */
     public static YamlType getYamlType(final String filename) {
         final String content = IO.getString(filename);
-        return HNull.get(content, () -> {
+        return Fn.get(YamlType.OBJECT, () -> {
             if (content.trim().startsWith(Strings.DASH)) {
                 return YamlType.ARRAY;
             } else {
                 return YamlType.OBJECT;
             }
-        }, YamlType.OBJECT);
+        }, content);
     }
 
     /**
@@ -145,7 +143,7 @@ public final class IO {
      * @return
      */
     public static Properties getProp(final String filename) {
-        return HFail.exec(() -> {
+        return Fn.obtain(() -> {
             final Properties prop = new Properties();
             final InputStream in = Stream.read(filename);
             prop.load(in);
@@ -161,7 +159,7 @@ public final class IO {
      * @return
      */
     public static URL getURL(final String filename) {
-        return HFail.exec(() -> {
+        return Fn.obtain(() -> {
             final URL url = Thread.currentThread().getContextClassLoader()
                     .getResource(filename);
             return HBool.exec(null == url,
@@ -177,7 +175,7 @@ public final class IO {
      * @return
      */
     public static File getFile(final String filename) {
-        return HFail.exec(() -> {
+        return Fn.obtain(() -> {
             final File file = new File(filename);
             return HBool.exec(file.exists(),
                     () -> file,
@@ -197,9 +195,9 @@ public final class IO {
      * @return
      */
     public static String getPath(final String filename) {
-        return HFail.exec(() -> {
+        return Fn.obtain(() -> {
             final File file = getFile(filename);
-            return HFail.exec(() -> {
+            return Fn.obtain(() -> {
                 Log.info(LOGGER, Info.INF_APATH, file.getAbsolutePath());
                 return file.getAbsolutePath();
             }, file);

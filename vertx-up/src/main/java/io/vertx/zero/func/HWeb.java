@@ -5,11 +5,11 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.rs.hunt.Answer;
-import io.vertx.zero.func.lang.JcConsumer;
+import io.vertx.zero.func.refine.UpConsumer;
 
 public class HWeb {
 
-    public static void exec(final JcConsumer consumer,
+    public static void exec(final UpConsumer consumer,
                             final RoutingContext context,
                             final Event event) {
         try {

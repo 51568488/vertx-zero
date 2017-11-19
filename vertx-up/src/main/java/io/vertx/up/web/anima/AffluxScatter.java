@@ -6,12 +6,10 @@ import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.exception.InjectionLimeKeyException;
+import io.vertx.up.func.Fn;
 import io.vertx.up.plugin.Infix;
 import io.vertx.up.web.ZeroAmbient;
 import io.vertx.up.web.ZeroAnno;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HMulti;
-import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.marshal.Node;
 import io.vertx.zero.marshal.node.ZeroDynamic;
@@ -41,14 +39,14 @@ public class AffluxScatter implements Scatter {
     public void connect(final Vertx vertx) {
         // Extract all events.
         final Set<Event> events = ZeroAnno.getEvents();
-        HMulti.exec(events, (item, index) -> {
+        Fn.itSet(events, (item, index) -> {
             Runner.run(() -> {
                 inject(item.getProxy());
             }, "event-afflux-" + index);
         });
         // Extract all receipts.
         final Set<Receipt> receipts = ZeroAnno.getReceipts();
-        HMulti.exec(receipts, (item, index) -> {
+        Fn.itSet(receipts, (item, index) -> {
             Runner.run(() -> {
                 inject(item.getProxy());
             }, "receipt-afflux-" + index);
@@ -56,7 +54,7 @@ public class AffluxScatter implements Scatter {
     }
 
     private void inject(final Object proxy) {
-        HNull.exec(() -> {
+        Fn.safeNull(() -> {
             final Class<?> clazz = proxy.getClass();
             if (PENDINGS.containsKey(clazz)) {
                 // Scanned in started up
@@ -115,10 +113,10 @@ public class AffluxScatter implements Scatter {
                 // Config checking
                 final Node<JsonObject> node = Instance.instance(ZeroDynamic.class);
                 final JsonObject options = node.read();
-                HBool.execUp(!options.containsKey(pluginKey), LOGGER,
+                Fn.flingUp(!options.containsKey(pluginKey), LOGGER,
                         InjectionLimeKeyException.class,
                         getClass(), infixCls, pluginKey);
-                
+
                 final Infix reference = Instance.singleton(infixCls);
                 ret = Instance.invoke(reference, "get");
             } else {

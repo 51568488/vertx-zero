@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HNull;
 import io.vertx.zero.tool.Numeric;
 import io.vertx.zero.tool.Period;
 
@@ -20,7 +20,7 @@ public class Types {
     public static <T extends Enum<T>> T fromStr(
             final Class<T> clazz,
             final String input) {
-        return HNull.get(clazz, () -> Enum.valueOf(clazz, input), null);
+        return Fn.get(null, () -> Enum.valueOf(clazz, input), clazz, input);
     }
 
     public static boolean isJArray(final Object value) {

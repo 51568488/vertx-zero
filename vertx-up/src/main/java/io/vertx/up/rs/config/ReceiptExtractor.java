@@ -1,15 +1,15 @@
 package io.vertx.up.rs.config;
 
+import com.google.common.collect.Sets;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.exception.AccessProxyException;
 import io.vertx.up.exception.AddressWrongException;
 import io.vertx.up.exception.NoArgConstructorException;
+import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.web.ZeroAnno;
-import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Anno;
@@ -57,7 +57,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
 
     @Override
     public Set<Receipt> extract(final Class<?> clazz) {
-        return HNull.get(clazz, () -> {
+        return Fn.get(Sets.newConcurrentHashSet(), () -> {
             // 1. Class verify
             verify(clazz);
             // 2. Scan method to find @Address
@@ -73,7 +73,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
                 }
             }
             return receipts;
-        }, new ConcurrentHashSet<>());
+        }, clazz);
     }
 
     private Receipt extract(final Method method) {
@@ -83,7 +83,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
         final String address = Instance.invoke(annotation, "value");
 
         // 2. Ensure address incoming.
-        HBool.execUp(!ADDRESS.contains(address), LOGGER,
+        Fn.flingUp(!ADDRESS.contains(address), LOGGER,
                 AddressWrongException.class,
                 getClass(), address, clazz, method);
 
@@ -98,10 +98,10 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
 
     private void verify(final Class<?> clazz) {
         // Check basic specification: No Arg Constructor
-        HBool.execUp(!Instance.noarg(clazz), LOGGER,
+        Fn.flingUp(!Instance.noarg(clazz), LOGGER,
                 NoArgConstructorException.class,
                 getClass(), clazz);
-        HBool.execUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
+        Fn.flingUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
                 AccessProxyException.class,
                 getClass(), clazz);
     }

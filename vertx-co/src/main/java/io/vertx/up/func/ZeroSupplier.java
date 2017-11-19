@@ -1,9 +1,9 @@
-package io.vertx.zero.func.error;
+package io.vertx.up.func;
 
 import io.vertx.zero.exception.ZeroException;
 
 @FunctionalInterface
-public interface JdSupplier<T> {
+public interface ZeroSupplier<T> {
 
     T get() throws ZeroException;
 }

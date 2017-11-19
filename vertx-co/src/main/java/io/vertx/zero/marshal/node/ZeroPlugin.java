@@ -1,7 +1,7 @@
 package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.func.HFail;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.marshal.Node;
 import io.vertx.zero.tool.io.IO;
 import io.vertx.zero.tool.mirror.Instance;
@@ -29,8 +29,9 @@ public class ZeroPlugin implements Node<JsonObject> {
         // 2. Read error configuration
         final String filename = dataMap.get(this.key);
         // 3. Read new data from extension file
-        return HFail.execDft(
+        return Fn.obtain(
+                new JsonObject(),
                 () -> IO.getYaml(filename),
-                new JsonObject(), filename);
+                filename);
     }
 }

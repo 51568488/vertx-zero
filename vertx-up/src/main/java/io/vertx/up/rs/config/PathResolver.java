@@ -1,10 +1,10 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.up.exception.PathAnnoEmptyException;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.func.HBool;
-import io.vertx.zero.func.HNull;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.StringUtil;
 
@@ -28,7 +28,7 @@ class PathResolver {
      * @return
      */
     public static String resolve(final Path path) {
-        HBool.execUp(null == path, LOGGER,
+        Fn.flingUp(null == path, LOGGER,
                 PathAnnoEmptyException.class, PathResolver.class);
         // Calculate single path
         return resolve(path, null);
@@ -42,7 +42,7 @@ class PathResolver {
      * @return
      */
     public static String resolve(final Path path, final String root) {
-        HBool.execUp(null == path, LOGGER,
+        Fn.flingUp(null == path, LOGGER,
                 PathAnnoEmptyException.class, PathResolver.class);
         return HBool.exec(StringUtil.isNil(root), () -> calculate(path.value()),
                 () -> {
@@ -98,7 +98,7 @@ class PathResolver {
         }
         // Uri must start with SLASH
         final String processed = uri;
-        return HNull.get(() -> HBool.exec(processed.startsWith(Strings.SLASH),
+        return Fn.get(() -> HBool.exec(processed.startsWith(Strings.SLASH),
                 () -> processed,
                 () -> Strings.SLASH + processed),
                 uri);

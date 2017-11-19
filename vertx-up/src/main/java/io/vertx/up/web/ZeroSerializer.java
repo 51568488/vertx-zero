@@ -6,7 +6,7 @@ import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.exception.web._400ParameterFromStringException;
-import io.vertx.zero.func.HBool;
+import io.vertx.up.func.Fn;
 import io.vertx.zero.log.Annal;
 import io.vertx.zero.tool.Jackson;
 import io.vertx.zero.tool.Period;
@@ -33,7 +33,7 @@ public class ZeroSerializer {
     private static void verifyInput(final boolean condition,
                                     final Class<?> paramType,
                                     final String literal) {
-        HBool.execUp(condition,
+        Fn.flingUp(condition,
                 LOGGER, _400ParameterFromStringException.class,
                 ZeroSerializer.class, paramType, literal);
     }

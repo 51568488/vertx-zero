@@ -1,23 +1,15 @@
 package io.vertx.up.web;
 
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.impl.ConcurrentHashSet;
-import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.exception.web._400ParameterFromStringException;
-import io.vertx.up.func.Fn;
-import io.vertx.up.log.Annal;
-import io.vertx.zero.tool.Jackson;
-import io.vertx.zero.tool.Period;
+import io.vertx.up.web.serialization.*;
 import io.vertx.zero.tool.mirror.Instance;
-import io.vertx.zero.tool.mirror.Types;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * ZeroSerializer the data by different type.
@@ -28,15 +20,43 @@ import java.util.Set;
  */
 public class ZeroSerializer {
 
-    private static final Annal LOGGER = Annal.get(ZeroSerializer.class);
+    private static final ConcurrentMap<Class<?>, Saber> SABERS =
+            new ConcurrentHashMap<Class<?>, Saber>() {
+                {
+                    put(int.class, Instance.singleton(IntegerSaber.class));
+                    put(Integer.class, Instance.singleton(IntegerSaber.class));
+                    put(short.class, Instance.singleton(ShortSaber.class));
+                    put(Short.class, Instance.singleton(ShortSaber.class));
+                    put(long.class, Instance.singleton(LongSaber.class));
+                    put(Long.class, Instance.singleton(LongSaber.class));
 
-    private static void verifyInput(final boolean condition,
-                                    final Class<?> paramType,
-                                    final String literal) {
-        Fn.flingUp(condition,
-                LOGGER, _400ParameterFromStringException.class,
-                ZeroSerializer.class, paramType, literal);
-    }
+                    put(Enum.class, Instance.singleton(EnumSaber.class));
+
+                    put(double.class, Instance.singleton(DecimalSaber.class));
+                    put(Double.class, Instance.singleton(DecimalSaber.class));
+                    put(float.class, Instance.singleton(DecimalSaber.class));
+                    put(Float.class, Instance.singleton(DecimalSaber.class));
+                    put(BigDecimal.class, Instance.singleton(DecimalSaber.class));
+
+                    put(boolean.class, Instance.singleton(BooleanSaber.class));
+                    put(Boolean.class, Instance.singleton(BooleanSaber.class));
+
+                    put(Date.class, Instance.singleton(DateSaber.class));
+                    put(Calendar.class, Instance.singleton(DateSaber.class));
+
+                    put(JsonObject.class, Instance.singleton(JsonObjectSaber.class));
+                    put(JsonArray.class, Instance.singleton(JsonArraySaber.class));
+
+                    put(String.class, Instance.singleton(StringSaber.class));
+                    put(StringBuffer.class, Instance.singleton(StringBufferSaber.class));
+                    put(StringBuilder.class, Instance.singleton(StringBufferSaber.class));
+
+                    put(Buffer.class, Instance.singleton(BufferSaber.class));
+                    put(Set.class, Instance.singleton(CollectionSaber.class));
+                    put(List.class, Instance.singleton(CollectionSaber.class));
+                    put(Collection.class, Instance.singleton(CollectionSaber.class));
+                }
+            };
 
     /**
      * String -> T
@@ -49,118 +69,13 @@ public class ZeroSerializer {
                                   final String literal) {
         Object reference = null;
         if (null != literal) {
-            if (int.class == paramType || Integer.class == paramType) {
-                // int, Integer
-                verifyInput(!Types.isInteger(literal), paramType, literal);
-                reference = Integer.parseInt(literal);
-
-            } else if (short.class == paramType || Short.class == paramType) {
-                // short, Short
-                verifyInput(!Types.isInteger(literal), paramType, literal);
-                reference = Short.parseShort(literal);
-
-            } else if (long.class == paramType || Long.class == paramType) {
-                // long, Long
-                verifyInput(!Types.isInteger(literal), paramType, literal);
-                reference = Long.parseLong(literal);
-
-            } else if (double.class == paramType || Double.class == paramType) {
-                // double, Double
-                verifyInput(!Types.isDecimal(literal), paramType, literal);
-                reference = Double.parseDouble(literal);
-
-            } else if (BigDecimal.class == paramType) {
-                // BigDecimal
-                verifyInput(!Types.isDecimal(literal), paramType, literal);
-                reference = new BigDecimal(literal);
-
-            } else if (float.class == paramType || Float.class == paramType) {
-                // float, Short
-                verifyInput(!Types.isDecimal(literal), paramType, literal);
-                reference = Float.parseFloat(literal);
-
-            } else if (boolean.class == paramType || Boolean.class == paramType) {
-                // boolean, Boolean
-                verifyInput(!Types.isBoolean(literal), paramType, literal);
-                reference = Boolean.valueOf(literal);
-
-            } else if (Date.class == paramType) {
-                // Date
-                verifyInput(!Types.isDate(literal), paramType, literal);
-                reference = Period.parse(literal);
-
-            } else if (JsonObject.class == paramType) {
-                // JsonObject
-                try {
-                    reference = new JsonObject(literal);
-                } catch (final DecodeException ex) {
-                    throw new _400ParameterFromStringException(ZeroSerializer.class, paramType, literal);
-                }
-            } else if (JsonArray.class == paramType) {
-                // JsonArray
-                try {
-                    reference = new JsonArray(literal);
-                } catch (final DecodeException ex) {
-                    throw new _400ParameterFromStringException(ZeroSerializer.class, paramType, literal);
-                }
-            } else if (String.class == paramType) {
-                // String
-                reference = literal;
-
-            } else if (StringBuilder.class == paramType) {
-                // StringBuilder
-                reference = new StringBuilder(literal);
-
-            } else if (Buffer.class == paramType) {
-                // Buffer
-                final Buffer buffer = Buffer.buffer();
-                buffer.appendBytes(literal.getBytes());
-                reference = buffer;
-
-            } else {
-                // Other type, deserialize directly
-                reference = Jackson.deserialize(literal, paramType);
+            Saber saber = SABERS.get(paramType);
+            if (null == saber) {
+                saber = Instance.singleton(CommonSaber.class);
             }
+            reference = saber.from(paramType, literal);
         }
         return reference;
-    }
-
-    private static final Set<Class<?>> SUPPORTED =
-            new ConcurrentHashSet<Class<?>>() {
-                {
-                    add(int.class);
-                    add(Integer.class);
-                    add(short.class);
-                    add(Short.class);
-                    add(double.class);
-                    add(Double.class);
-                    add(long.class);
-                    add(Long.class);
-                    add(boolean.class);
-                    add(Boolean.class);
-                    add(float.class);
-                    add(Float.class);
-                    add(JsonObject.class);
-                    add(JsonArray.class);
-                    add(String.class);
-                    add(byte[].class);
-                    add(Byte[].class);
-                }
-            };
-
-    /**
-     * Check whether JsonObject supported
-     *
-     * @param input
-     * @param <T>
-     * @return
-     */
-    public static <T> boolean isSupport(final T input) {
-        if (null == input) {
-            return true;
-        }
-        final Class<?> type = input.getClass();
-        return SUPPORTED.contains(type);
     }
 
     /**
@@ -172,46 +87,12 @@ public class ZeroSerializer {
      */
     public static <T> Object toSupport(final T input) {
         Object reference = null;
-        if (isSupport(input)) {
-            // Support type directly.
-            reference = input;
-        } else {
-            // BigDecimal
-            if (input instanceof BigDecimal) {
-                final BigDecimal decimal = (BigDecimal) input;
-                reference = decimal.doubleValue();
+        if (null != input) {
+            Saber saber = SABERS.get(input.getClass());
+            if (null == saber) {
+                saber = Instance.singleton(CommonSaber.class);
             }
-            // Date
-            if (input instanceof Date) {
-                final Date date = (Date) input;
-                reference = date.getTime();
-            }
-            // Time
-            if (input instanceof Calendar) {
-                final Calendar date = (Calendar) input;
-                reference = date.getTime().getTime();
-            }
-            // StringBuffer, StringBuilder
-            if (input instanceof StringBuffer ||
-                    input instanceof StringBuilder) {
-                reference = input.toString();
-            }
-            // Enum
-            if (input instanceof Enum) {
-                reference = Instance.invoke(input, "name");
-            }
-            // Null detect
-            if (null == reference) {
-                // Collection
-                if (input instanceof Collection ||
-                        input.getClass().isArray()) {
-                    final String literal = Jackson.serialize(input);
-                    reference = new JsonArray(literal);
-                } else {
-                    final String literal = Jackson.serialize(input);
-                    reference = new JsonObject(literal);
-                }
-            }
+            reference = saber.from(input);
         }
         return reference;
     }

@@ -7,7 +7,7 @@ import io.vertx.up.rs.hunt.BaseAim;
 
 import java.lang.reflect.Method;
 
-public class FieldVerifier extends BaseAim implements Sentry {
+public class PojoVerifier extends BaseAim implements Sentry {
 
     @Override
     public ValidationHandler signal(final Depot depot) {
@@ -16,7 +16,6 @@ public class FieldVerifier extends BaseAim implements Sentry {
             // Get parameters
             final Object[] params = buildArgs(context, depot.getEvent());
             depot.setParamValues(params);
-            
             // Must call next in Sentry
             context.next();
         };

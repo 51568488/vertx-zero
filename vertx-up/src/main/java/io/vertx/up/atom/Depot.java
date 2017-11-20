@@ -89,6 +89,10 @@ public class Depot implements Serializable {
         return Statute.zipper(this.paramNames, this.paramValues);
     }
 
+    public ConcurrentMap<String, Class<? extends Annotation>> getAnnotations() {
+        return Statute.zipper(this.paramNames, this.paramAnnos);
+    }
+
     public void setParamValues(final Object[] parameters) {
         this.paramValues = Arrays.asList(parameters);
     }

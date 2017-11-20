@@ -8,14 +8,14 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Aim;
-import io.vertx.zero.func.HWeb;
+import io.vertx.zero.func.Responser;
 
 public class AsyncAim extends BaseAim implements Aim {
 
     @Override
     public Handler<RoutingContext> attack(final Event event) {
         return Fn.get(() -> (context) -> {
-            HWeb.exec(() -> {
+            Responser.exec(() -> {
                 // 1. Build Arguments
                 final Object[] arguments = buildArgs(context, event);
                 // 2. Method call

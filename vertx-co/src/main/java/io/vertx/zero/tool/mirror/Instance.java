@@ -4,12 +4,17 @@ import com.esotericsoftware.reflectasm.ConstructorAccess;
 import com.esotericsoftware.reflectasm.MethodAccess;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.zero.eon.Values;
+import io.vertx.zero.exception.DuplicatedImplException;
+import io.vertx.zero.exception.UniqueImplMissingException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public final class Instance {
@@ -163,6 +168,33 @@ public final class Instance {
             }
             return noarg;
         }, clazz);
+    }
+
+    /**
+     * Find the unique implementation for interfaceCls
+     *
+     * @param interfaceCls
+     * @return
+     */
+    public static Class<?> uniqueChild(final Class<?> interfaceCls) {
+        return Fn.get(null, () -> {
+            final Set<Class<?>> classes = Pack.getClasses(null);
+            final List<Class<?>> filtered = classes.stream()
+                    .filter(item -> interfaceCls.isAssignableFrom(item)
+                            && item != interfaceCls)
+                    .collect(Collectors.toList());
+            final int size = filtered.size();
+            Fn.flingUp(Values.ONE > size, LOGGER,
+                    UniqueImplMissingException.class,
+                    Instance.class, interfaceCls);
+
+            // Non-Unique throw error out.
+            Fn.flingUp(Values.ONE < size, LOGGER,
+                    DuplicatedImplException.class,
+                    Instance.class, interfaceCls);
+
+            return filtered.get(Values.IDX);
+        }, interfaceCls);
     }
 
     private static <T> T construct(final Class<?> clazz,

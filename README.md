@@ -30,6 +30,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
 
 1. [Getting Start](doc/zero-starter.md)
 2. Parameters
+	1. [Interface annotation ( Non Event )](doc/zero-interface.md)
 	1. [Restful Api, @Path usage](doc/zero-path.md)
 	2. [ ( JSR311 Extend ) @BodyParam usage](doc/zero-param.md)
 	3. [Set POJO as parameters](doc/zero-pojo.md)

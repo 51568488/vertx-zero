@@ -31,6 +31,8 @@ E40023: "Zero system found field \"{0}\" of class {1} is interface with non-uniq
 E40024: "One of the classes \"{0}\" missed @Named annotation, because they implement the same interface {1}"
 E40025: "All the implementation class \"{0}\" with @Named contains no value of \"{1}\""
 E40026: "You will initialize infix = \"{0}\", but the configuration missed \"{1}\" in lime node of vertx.xml"
+E40027: You are trying to find the unique implementation of interface \"{0}\", but now it''s missing
+E40028: Duplicated implementation of interface \"{0}\" found in the system, it''s invalid
 # (Web) Exception for web
 E60001: (400) - The input content could not be converted into valid resource user {0}
 E60002: (500) - The system detect some error in delivery on address {0}, error message = {1}

@@ -24,15 +24,20 @@
         <jackson.version>2.9.2</jackson.version>
         <reflect.asm.version>1.11.3</reflect.asm.version>
         <jws.version>2.1</jws.version>
-        <jsr311.version>1.1.1</jsr311.version>
-        <jsr330.version>1</jsr330.version>
-        <jsr303.version>2.0.0.Final</jsr303.version>
         <jersey.version>2.26</jersey.version>
         <lombok.version>1.16.18</lombok.version>
         <hazelcast.version>3.9</hazelcast.version>
         <netty.tcnative.version>2.0.7.Final</netty.tcnative.version>
         <netty.version>4.1.17.Final</netty.version>
         <guice.version>4.1.0</guice.version>
+        <hibernate.validator.version>6.0.5.Final</hibernate.validator.version>
+        <scala.version>2.12.4</scala.version>
+        <common.lang3.version>3.7</common.lang3.version>
+        <javax.el.version>3.0.0</javax.el.version>
+        <!-- JSR -->
+        <jsr311.version>1.1.1</jsr311.version>
+        <jsr330.version>1</jsr330.version>
+        <jsr303.version>2.0.0.Final</jsr303.version>
         <!-- Testing -->
         <junit.version>4.12</junit.version>
         <!-- Logging -->
@@ -271,6 +276,24 @@
                 <artifactId>validation-api</artifactId>
                 <version>${jsr303.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/javax.el/javax.el-api -->
+            <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>${javax.el.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.glassfish/javax.el -->
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${javax.el.version}</version>
+            </dependency>
             <!-- jackson -->
             <!-- http://www.mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
             <dependency>
@@ -315,6 +338,12 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${common.lang3.version}</version>
+            </dependency>
             <!-- Logging -->
             <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl -->
             <dependency>
@@ -333,6 +362,17 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-ext</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.scala-lang/scala-library -->
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
             </dependency>
             <!-- http://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
             <dependency>
@@ -370,6 +410,7 @@
                 <artifactId>lombok-maven-plugin</artifactId>
                 <version>${maven.plugin.lombok}</version>
             </dependency>
+            <!-- Build Dependency Tree -->
         </dependencies>
     </dependencyManagement>
 </project>

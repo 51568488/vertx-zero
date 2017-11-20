@@ -13,8 +13,9 @@ public class BooleanSaber extends BaseSaber {
                        final String literal) {
         return Fn.getSemi(boolean.class == paramType || Boolean.class == paramType, getLogger(),
                 () -> {
-                    verifyInput(!Types.isDecimal(literal), paramType, literal);
-                    return Boolean.valueOf(literal);
+
+                    verifyInput(!Types.isBoolean(literal), paramType, literal);
+                    return Boolean.parseBoolean(literal);
                 }, () -> Boolean.FALSE);
     }
 }

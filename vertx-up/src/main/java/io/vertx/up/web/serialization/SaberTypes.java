@@ -30,6 +30,8 @@ public class SaberTypes {
                     add(String.class);
                     add(byte[].class);
                     add(Byte[].class);
+                    add(byte.class);
+                    add(Byte.class);
                 }
             };
 
@@ -58,11 +60,10 @@ public class SaberTypes {
         return NATIVE.contains(type);
     }
 
-    public static <T> boolean isSupport(final T input) {
-        if (null == input) {
-            return true;
+    public static <T> boolean isSupport(final Class<?> inputCls) {
+        if (null == inputCls) {
+            return false;
         }
-        final Class<?> type = input.getClass();
-        return SUPPORTED.contains(type);
+        return SUPPORTED.contains(inputCls);
     }
 }

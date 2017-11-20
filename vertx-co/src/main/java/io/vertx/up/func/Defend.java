@@ -3,6 +3,7 @@ package io.vertx.up.func;
 import io.vertx.core.VertxException;
 import io.vertx.up.log.Annal;
 import io.vertx.zero.exception.ZeroException;
+import io.vertx.zero.exception.ZeroRunException;
 
 /**
  * Defend means swapper the exception part for specific statement.
@@ -84,6 +85,11 @@ class Defend {
         } catch (final ZeroException ex) {
             if (null != logger) {
                 logger.zero(ex);
+            }
+        } catch (final ZeroRunException ex) {
+            if (null != logger) {
+                logger.vertx(ex);
+                throw ex;
             }
         } catch (final VertxException ex) {
             if (null != logger) {

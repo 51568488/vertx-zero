@@ -17,6 +17,7 @@ public class PojoVerifier extends BaseAim implements Sentry {
             final Object[] params = buildArgs(context, depot.getEvent());
             depot.setParamValues(params);
             // Must call next in Sentry
+            System.out.println(params);
             context.next();
         };
     }

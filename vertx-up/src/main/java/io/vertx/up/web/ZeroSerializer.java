@@ -30,13 +30,13 @@ public class ZeroSerializer {
                     put(long.class, Instance.singleton(LongSaber.class));
                     put(Long.class, Instance.singleton(LongSaber.class));
 
-                    put(Enum.class, Instance.singleton(EnumSaber.class));
+                    put(double.class, Instance.singleton(DoubleSaber.class));
+                    put(Double.class, Instance.singleton(DoubleSaber.class));
+                    put(float.class, Instance.singleton(FloatSaber.class));
+                    put(Float.class, Instance.singleton(FloatSaber.class));
+                    put(BigDecimal.class, Instance.singleton(BigDecimalSaber.class));
 
-                    put(double.class, Instance.singleton(DecimalSaber.class));
-                    put(Double.class, Instance.singleton(DecimalSaber.class));
-                    put(float.class, Instance.singleton(DecimalSaber.class));
-                    put(Float.class, Instance.singleton(DecimalSaber.class));
-                    put(BigDecimal.class, Instance.singleton(DecimalSaber.class));
+                    put(Enum.class, Instance.singleton(EnumSaber.class));
 
                     put(boolean.class, Instance.singleton(BooleanSaber.class));
                     put(Boolean.class, Instance.singleton(BooleanSaber.class));
@@ -55,6 +55,9 @@ public class ZeroSerializer {
                     put(Set.class, Instance.singleton(CollectionSaber.class));
                     put(List.class, Instance.singleton(CollectionSaber.class));
                     put(Collection.class, Instance.singleton(CollectionSaber.class));
+
+                    put(byte[].class, Instance.singleton(ByteArraySaber.class));
+                    put(Byte[].class, Instance.singleton(ByteArraySaber.class));
                 }
             };
 
@@ -69,7 +72,14 @@ public class ZeroSerializer {
                                   final String literal) {
         Object reference = null;
         if (null != literal) {
-            Saber saber = SABERS.get(paramType);
+            Saber saber;
+            if (paramType.isEnum()) {
+                saber = SABERS.get(Enum.class);
+            } else if (Collection.class.isAssignableFrom(paramType)) {
+                saber = SABERS.get(Collection.class);
+            } else {
+                saber = SABERS.get(paramType);
+            }
             if (null == saber) {
                 saber = Instance.singleton(CommonSaber.class);
             }
@@ -88,7 +98,24 @@ public class ZeroSerializer {
     public static <T> Object toSupport(final T input) {
         Object reference = null;
         if (null != input) {
-            Saber saber = SABERS.get(input.getClass());
+            Saber saber;
+            final Class<?> cls = input.getClass();
+            if (cls.isEnum()) {
+                saber = SABERS.get(Enum.class);
+            } else if (Calendar.class.isAssignableFrom(cls)) {
+                saber = SABERS.get(Date.class);
+            } else if (Collection.class.isAssignableFrom(cls)) {
+                saber = SABERS.get(Collection.class);
+            } else if (cls.isArray()) {
+                final Class<?> type = cls.getComponentType();
+                if (byte.class == type || Byte.class == type) {
+                    saber = SABERS.get(byte[].class);
+                } else {
+                    saber = SABERS.get(Collection.class);
+                }
+            } else {
+                saber = SABERS.get(cls);
+            }
             if (null == saber) {
                 saber = Instance.singleton(CommonSaber.class);
             }

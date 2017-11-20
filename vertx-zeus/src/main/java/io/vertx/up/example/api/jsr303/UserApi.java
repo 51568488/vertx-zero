@@ -1,6 +1,5 @@
 package io.vertx.up.example.api.jsr303;
 
-import io.vertx.core.json.JsonObject;
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.example.domain.Demo;
 
@@ -16,10 +15,10 @@ public interface UserApi {
     @GET
     String login(
             @QueryParam("username")
-            @NotNull(message = Validation.UserName.NOT_NULL)
+            @NotNull(message = "用户名不能为空")
                     String username,
             @QueryParam("password")
-            @NotNull(message = Validation.Password.NOT_NULL)
+            @NotNull(message = "密码不能为空")
                     String password
     );
 
@@ -27,9 +26,4 @@ public interface UserApi {
     @POST
     Demo authorize(
             @BodyParam @Valid final Demo demo);
-
-    @Path("/json")
-    @POST
-    JsonObject serialize(
-            @BodyParam @Valid final JsonObject data);
 }

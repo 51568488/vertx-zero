@@ -6,6 +6,7 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
+import io.vertx.up.eon.ID;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._500DeliveryErrorException;
 import io.vertx.up.exception.web._500EntityCastException;
@@ -24,6 +25,7 @@ import java.util.List;
  * Base class to provide template method
  */
 public abstract class BaseAim {
+
     /**
      * Template method
      *
@@ -33,19 +35,25 @@ public abstract class BaseAim {
      */
     protected Object[] buildArgs(final RoutingContext context,
                                  final Event event) {
-        // 1. Call action
-        final Method method = event.getAction();
-        final List<Object> arguments = new ArrayList<>();
+        Object[] cached = context.get(ID.PARAMS);
+        if (null == cached) {
+            // 1. Call action
+            final Method method = event.getAction();
+            final List<Object> arguments = new ArrayList<>();
 
-        // 2. Extract definition from method
-        final Class<?>[] parameterTypes = method.getParameterTypes();
-        final Annotation[][] annotations = method.getParameterAnnotations();
-        for (int idx = 0; idx < parameterTypes.length; idx++) {
-            // 3. Process filler to build parameters.
-            arguments.add(ParamFiller.process(context,
-                    parameterTypes[idx], annotations[idx]));
+            // 2. Extract definition from method
+            final Class<?>[] parameterTypes = method.getParameterTypes();
+            final Annotation[][] annotations = method.getParameterAnnotations();
+            for (int idx = 0; idx < parameterTypes.length; idx++) {
+                // 3. Process filler to build parameters.
+                arguments.add(ParamFiller.process(context,
+                        parameterTypes[idx], annotations[idx]));
+            }
+            cached = arguments.toArray();
+            context.put(ID.PARAMS, cached);
         }
-        return arguments.toArray();
+        // Validation handler has been get the parameters.
+        return cached;
     }
 
     /**

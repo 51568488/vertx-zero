@@ -2,6 +2,7 @@ package io.vertx.up.rs.router;
 
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
+import io.vertx.up.atom.Depot;
 import io.vertx.up.atom.Event;
 import io.vertx.up.exception.EventActionNoneException;
 import io.vertx.up.func.Fn;
@@ -51,12 +52,15 @@ public class EventAxis implements Axis {
                         hub = Fn.poolThread(Pool.MEDIAHUBS,
                                 () -> Instance.instance(MediaHub.class));
                         hub.mount(route, event);
+
                         // 4. Request validation
-                        final Sentry sentry = this.verifier.distribbute(event);
+                        final Depot depot = Depot.create(event);
+                        final Sentry sentry = this.verifier.distribute(depot);
                         // 5. Request workflow executor: handler
                         final Aim aim = this.splitter.distribute(event);
+                        
                         // 6. Inject handler, event dispatch
-                        route.handler(sentry.signal(event))
+                        route.handler(sentry.signal(depot))
                                 .handler(aim.attack(event));
                     });
         });

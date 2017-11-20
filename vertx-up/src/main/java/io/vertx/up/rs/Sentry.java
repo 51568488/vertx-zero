@@ -1,15 +1,15 @@
 package io.vertx.up.rs;
 
 import io.vertx.ext.web.api.validation.ValidationHandler;
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.Depot;
 
 /**
  * JSR330 signal
  */
 public interface Sentry {
     /**
-     * @param event
+     * @param depot
      * @return
      */
-    ValidationHandler signal(final Event event);
+    ValidationHandler signal(final Depot depot);
 }

@@ -1,20 +1,28 @@
 package io.vertx.up.rs.sentry;
 
 import io.vertx.ext.web.api.validation.ValidationHandler;
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.Depot;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.hunt.BaseAim;
+
+import java.lang.reflect.Method;
 
 public class FieldVerifier extends BaseAim implements Sentry {
 
     @Override
-    public ValidationHandler signal(final Event event) {
+    public ValidationHandler signal(final Depot depot) {
 
         return (context) -> {
-            System.out.println("Hello");
-
+            // Get parameters
+            final Object[] params = buildArgs(context, depot.getEvent());
+            depot.setParamValues(params);
+            
             // Must call next in Sentry
             context.next();
         };
+    }
+
+    private void verifyEach(final Method method, final Object[] params) {
+
     }
 }

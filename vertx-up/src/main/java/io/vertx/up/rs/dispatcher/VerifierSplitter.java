@@ -1,6 +1,6 @@
 package io.vertx.up.rs.dispatcher;
 
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.Depot;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.sentry.FieldVerifier;
@@ -14,8 +14,9 @@ import io.vertx.up.rs.sentry.FieldVerifier;
 public class VerifierSplitter {
     private static final Annal LOGGER = Annal.get(VerifierSplitter.class);
 
-    public Sentry distribbute(final Event event) {
-
+    public Sentry distribute(final Depot depot) {
+        System.out.println(depot.getTypes());
+        System.out.println(depot.getValues());
         return new FieldVerifier();
     }
 }

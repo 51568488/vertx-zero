@@ -116,8 +116,6 @@ public class Envelop implements Serializable {
         final JsonObject data = new JsonObject();
         final HttpStatusCode status = (null == this.error)
                 ? HttpStatusCode.OK : this.error.getStatus();
-        data.put(Key.BRIEF, status.message());
-        data.put(Key.STATUS, status.code());
         data.put(Key.DATA, input);
         return data;
     }
@@ -174,8 +172,6 @@ public class Envelop implements Serializable {
 
     private JsonObject fail(final WebException error) {
         final JsonObject data = new JsonObject();
-        data.put(Key.BRIEF, error.getStatus().message());
-        data.put(Key.STATUS, error.getStatus().code());
         data.put(Key.CODE, error.getCode());
         data.put(Key.MESSAGE, error.getMessage());
         if (null != error.getReadible()) {

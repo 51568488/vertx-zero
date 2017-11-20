@@ -1,4 +1,4 @@
-package io.vertx.up.rs.hunt;
+package io.vertx.up.rs.dispatcher;
 
 import io.vertx.core.eventbus.Message;
 import io.vertx.up.annotations.Address;
@@ -8,7 +8,10 @@ import io.vertx.up.exception.ReturnTypeException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Aim;
-import io.vertx.up.rs.Splitter;
+import io.vertx.up.rs.hunt.AsyncAim;
+import io.vertx.up.rs.hunt.BlockAim;
+import io.vertx.up.rs.hunt.OneWayAim;
+import io.vertx.up.rs.hunt.SyncAim;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.tool.mirror.Instance;
@@ -17,21 +20,29 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
+ * Splitter to get executor reference.
+ * It will happen in startup of route building to avoid
+ * request resource spending.
+ * 1. Level 1: Distinguish whether enable EventBus
+ * EventBus mode: Async
+ * Non-EventBus mode: Sync
+ * 2. Level 2: Distinguish the request mode
+ * One-Way mode: No response needed. ( Return Type )
+ * Request-Response mode: Must require response. ( Return Type )
+ * Support modes:
  * 1. AsyncAim: Event Bus: Request-Response
  * 2. SyncAim: Non-Event Bus: Request-Response
  * 3. OneWayAim: Event Bus: One-Way
  * 4. BlockAim: Non-Event Bus: One-Way
  */
-public class ModeSplitter implements Splitter {
+public class ModeSplitter {
 
     private static final Annal LOGGER = Annal.get(ModeSplitter.class);
 
     private static final Set<Receipt> RECEIPTS = ZeroAnno.getReceipts();
 
-    @Override
     public Aim distribute(final Event event) {
         return Fn.get(() -> {
             // 1. Scan method to check @Address
@@ -122,6 +133,4 @@ public class ModeSplitter implements Splitter {
                 getClass(), address);
         return method;
     }
-
-    private transient final AtomicBoolean isReturnType = new AtomicBoolean(false);
 }

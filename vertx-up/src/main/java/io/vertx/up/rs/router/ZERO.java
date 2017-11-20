@@ -1,6 +1,7 @@
 package io.vertx.up.rs.router;
 
-import io.vertx.up.rs.Splitter;
+import io.vertx.up.rs.dispatcher.ModeSplitter;
+import io.vertx.up.rs.dispatcher.VerifierSplitter;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -13,7 +14,9 @@ interface Info {
 }
 
 interface Pool {
-    ConcurrentMap<String, Splitter> THREADS
+    ConcurrentMap<String, ModeSplitter> THREADS
+            = new ConcurrentHashMap<>();
+    ConcurrentMap<String, VerifierSplitter> VERIFIERS
             = new ConcurrentHashMap<>();
 
     ConcurrentMap<String, Hub> URIHUBS

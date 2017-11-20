@@ -14,21 +14,19 @@ import io.vertx.zero.func.Responser;
 public class SyncAim extends BaseAim implements Aim {
     @Override
     public Handler<RoutingContext> attack(final Event event) {
-        return Fn.get(() -> (context) -> {
-            Responser.exec(() -> {
-                // 1. Build Arguments
-                final Object[] arguments = buildArgs(context, event);
+        return Fn.get(() -> (context) -> Responser.exec(() -> {
+            // 1. Build Arguments
+            final Object[] arguments = buildArgs(context, event);
 
-                // 2. Method call
-                final Object result = invoke(event, arguments);
+            // 2. Method call
+            final Object result = invoke(event, arguments);
 
-                // 3. Resource model building
-                final Envelop data = Envelop.success(result);
+            // 3. Resource model building
+            final Envelop data = Envelop.success(result);
 
-                // 4. Process modal
-                Answer.reply(context, data, event);
+            // 4. Process modal
+            Answer.reply(context, data, event);
 
-            }, context, event);
-        }, event);
+        }, context, event), event);
     }
 }

@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
- * Period时间处理专用
+ * Period for datetime processing based on Java8
  */
 public class Period {
 
@@ -39,7 +39,7 @@ public class Period {
     };
 
     /**
-     * 转换日期时间
+     * Convert to datetime
      *
      * @param literal
      * @return
@@ -58,7 +58,7 @@ public class Period {
     }
 
     /**
-     * 转换日期
+     * Convert to date
      *
      * @param literal
      * @return
@@ -77,7 +77,7 @@ public class Period {
     }
 
     /**
-     * 转换时间
+     * Convert to time
      *
      * @param literal
      * @return
@@ -96,7 +96,7 @@ public class Period {
     }
 
     /**
-     * 是否日期，时间格式
+     * Check whether it's valid
      *
      * @param literal
      * @return
@@ -111,7 +111,7 @@ public class Period {
             final int length = literal.length();
             final String pattern = Storage.PATTERNS_MAP.get(length);
             if (null != pattern) {
-                // 时间 + 日期
+                // Time + Date, fast parsing first.
                 final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
                 Date converted = null;
                 if (10 == pattern.length()) {
@@ -132,24 +132,24 @@ public class Period {
     }
 
     /**
-     * 不推荐直接调用，直接调用会有Parse的流程在
+     * Not recommend directly for deep parsing
      *
      * @param literal
      * @return
      */
     public static Date parseFull(final String literal) {
         return Fn.get(null, () -> {
-            // Datetime解析
+            // Datetime parsing
             final LocalDateTime datetime = toFull(literal);
             return Fn.nullFlow(datetime,
                     (ref) -> Date.from(ref.atZone(ZoneId.systemDefault()).toInstant()),
                     () -> {
-                        // Date解析
+                        // Date parsing
                         final LocalDate date = toDate(literal);
                         return Fn.nullFlow(date,
                                 (ref) -> Date.from(ref.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
                                 () -> {
-                                    // Time解析
+                                    // Time parsing
                                     final LocalTime time = toTime(literal);
                                     return null == time ? null : parse(time);
                                 });
@@ -158,15 +158,15 @@ public class Period {
     }
 
     public static boolean equalDate(final Date left, final Date right) {
-        // 先比较年
+        // Compare year
         int leftVal = toItem(left, Calendar.YEAR);
         int rightVal = toItem(right, Calendar.YEAR);
         if (leftVal == rightVal) {
-            // 再比较月
+            // Compare month
             leftVal = toItem(left, Calendar.MONTH);
             rightVal = toItem(right, Calendar.MONTH);
             if (leftVal == rightVal) {
-                // 最后比较日期
+                // Compare day
                 leftVal = toItem(left, Calendar.DAY_OF_MONTH);
                 rightVal = toItem(right, Calendar.DAY_OF_MONTH);
                 return leftVal == rightVal;

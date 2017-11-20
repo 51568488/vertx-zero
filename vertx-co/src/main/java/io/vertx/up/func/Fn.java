@@ -96,6 +96,17 @@ public class Fn {
 
     /**
      * @param actuator
+     * @param logger
+     */
+    public static void safeZero(
+            final ZeroActuator actuator,
+            final Annal logger
+    ) {
+        Defend.zeroVoid(actuator, logger);
+    }
+
+    /**
+     * @param actuator
      */
     public static void safeNull(
             final Actuator actuator,
@@ -116,16 +127,6 @@ public class Fn {
         Zero.exec(consumer, input);
     }
 
-    /**
-     * @param actuator
-     * @param logger
-     */
-    public static void safeZero(
-            final ZeroActuator actuator,
-            final Annal logger
-    ) {
-        Defend.zeroVoid(actuator, logger);
-    }
 
     public static void safeSemi(
             final boolean condition,

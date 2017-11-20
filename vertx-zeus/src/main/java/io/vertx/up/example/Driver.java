@@ -1,4 +1,4 @@
-package org.tlk.app;
+package io.vertx.up.example;
 
 import io.vertx.up.VertxApplication;
 import io.vertx.up.annotations.Up;

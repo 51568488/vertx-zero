@@ -51,9 +51,18 @@ public class EventExtractor implements Extractor<Set<Event>> {
 
     private void verify(final Class<?> clazz) {
         // Check basic specification: No Arg Constructor
-        Fn.flingUp(!Instance.noarg(clazz), LOGGER,
-                NoArgConstructorException.class,
-                getClass(), clazz);
+        if (clazz.isInterface()) {
+            // Implementation class
+            final Class<?> implClass = Instance.uniqueChild(clazz);
+            Fn.flingUp(!Instance.noarg(implClass), LOGGER,
+                    NoArgConstructorException.class,
+                    getClass(), clazz);
+        } else {
+            // Class direct.
+            Fn.flingUp(!Instance.noarg(clazz), LOGGER,
+                    NoArgConstructorException.class,
+                    getClass(), clazz);
+        }
         Fn.flingUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
                 AccessProxyException.class,
                 getClass(), clazz);
@@ -118,7 +127,15 @@ public class EventExtractor implements Extractor<Set<Event>> {
         event.setConsumes(MediaResolver.consumes(method));
         event.setProduces(MediaResolver.produces(method));
         // 7. Instance clazz for proxy
-        final Object proxy = Instance.singleton(method.getDeclaringClass());
+        final Class<?> clazz = method.getDeclaringClass();
+        final Object proxy;
+        if (clazz.isInterface()) {
+            final Class<?> implClass = Instance.uniqueChild(clazz);
+            System.out.println(implClass);
+            proxy = Instance.singleton(implClass);
+        } else {
+            proxy = Instance.singleton(method.getDeclaringClass());
+        }
         event.setProxy(proxy);
         return event;
     }

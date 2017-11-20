@@ -7,7 +7,7 @@ import io.vertx.up.exception.WebException;
 import io.vertx.up.func.Actuator;
 import io.vertx.up.rs.hunt.Answer;
 
-public class HWeb {
+public class Responser {
 
     public static void exec(final Actuator consumer,
                             final RoutingContext context,

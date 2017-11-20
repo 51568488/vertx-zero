@@ -28,17 +28,20 @@ public final class Pack {
 
     private static final Annal LOGGER = Annal.get(Pack.class);
 
+    private static final Set<Class<?>> CLASSES = new ConcurrentHashSet<>();
+
     public static Set<Class<?>> getClasses(final Predicate<Class<?>> filter,
                                            final String... zeroScans) {
-        final Set<Class<?>> all = new ConcurrentHashSet<>();
-        if (0 < zeroScans.length) {
-            for (final String scan : zeroScans) {
-                all.addAll(getClasses(filter, scan));
+        if (CLASSES.isEmpty()) {
+            if (0 < zeroScans.length) {
+                for (final String scan : zeroScans) {
+                    CLASSES.addAll(getClasses(filter, scan));
+                }
+            } else {
+                CLASSES.addAll(getClasses(filter, Strings.DOT));
             }
-        } else {
-            all.addAll(getClasses(filter, Strings.DOT));
         }
-        return all;
+        return CLASSES;
     }
 
     private static Set<Class<?>> getClasses(final Predicate<Class<?>> filter,

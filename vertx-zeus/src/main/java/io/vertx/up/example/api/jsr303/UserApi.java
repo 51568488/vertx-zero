@@ -15,9 +15,11 @@ public interface UserApi {
     @Path("/login")
     @GET
     String login(
-            @QueryParam("username") @NotNull(message = "用户名不能为空")
+            @QueryParam("username")
+            @NotNull(message = Validation.UserName.NOT_NULL)
                     String username,
-            @QueryParam("password") @NotNull(message = "密码不能为空")
+            @QueryParam("password")
+            @NotNull(message = Validation.Password.NOT_NULL)
                     String password
     );
 

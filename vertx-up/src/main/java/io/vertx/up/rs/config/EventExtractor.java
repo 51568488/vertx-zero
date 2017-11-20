@@ -131,7 +131,6 @@ public class EventExtractor implements Extractor<Set<Event>> {
         final Object proxy;
         if (clazz.isInterface()) {
             final Class<?> implClass = Instance.uniqueChild(clazz);
-            System.out.println(implClass);
             proxy = Instance.singleton(implClass);
         } else {
             proxy = Instance.singleton(method.getDeclaringClass());

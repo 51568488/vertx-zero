@@ -78,6 +78,25 @@ public final class Statute {
         return result;
     }
 
+    /**
+     * @param <F>
+     * @param <T>
+     * @return
+     */
+    public static <F, T> ConcurrentMap<F, T> zipper(
+            final List<F> keys,
+            final List<T> values
+    ) {
+        final ConcurrentMap<F, T> result = new ConcurrentHashMap<>();
+        Fn.itList(keys, (key, index) -> {
+            final T value = values.get(index);
+            if (null != key && null != value) {
+                result.put(key, value);
+            }
+        });
+        return result;
+    }
+
     private Statute() {
     }
 }

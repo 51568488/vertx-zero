@@ -302,6 +302,18 @@ public class Fn {
     }
 
     /**
+     * @param array
+     * @param fnEach
+     * @param <V>
+     */
+    public static <V> void itArray(
+            final V[] array,
+            final BiConsumer<V, Integer> fnEach
+    ) {
+        Congregation.exec(Arrays.asList(array), fnEach);
+    }
+
+    /**
      * @param data
      * @param fnEach
      * @param <T>

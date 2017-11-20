@@ -8,10 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ZeroSerializerTc extends ZeroBase {
 
@@ -25,13 +22,21 @@ public class ZeroSerializerTc extends ZeroBase {
     @Test
     public void testInt() {
         put(2);
+    }
+
+    @Test
+    public void testInt1() {
         put(new Integer("3"));
     }
 
     @Test
     public void testLong() {
-        put(22);
         put(new Long("3"));
+    }
+
+    @Test
+    public void testLong2() {
+        put(22L);
     }
 
     @Test
@@ -41,15 +46,32 @@ public class ZeroSerializerTc extends ZeroBase {
 
     @Test
     public void testDecimal() {
-        put(2.33);
         put(3.33f);
         put(new BigDecimal("2.44"));
     }
 
     @Test
+    public void testDecimal2() {
+        put(2.33);
+    }
+
+    @Test
+    public void testDecimal3() {
+        put(3.33f);
+    }
+
+    @Test
     public void testDate() {
         put(new Date());
+    }
+
+    @Test
+    public void testDate1() {
         put(Calendar.getInstance());
+    }
+
+    @Test
+    public void testDate2() {
         put(LocalDate.now());
         put(LocalTime.now());
         put(LocalDateTime.now());
@@ -74,10 +96,25 @@ public class ZeroSerializerTc extends ZeroBase {
     }
 
     @Test
+    public void testSet() {
+        final Set<String> sets = new HashSet<>();
+        sets.add("Hello");
+        put(sets);
+    }
+
+    @Test
     public void testUsers() {
         final User[] users = new User[2];
         users[0] = new User();
         put(users);
+    }
+
+    @Test
+    public void testStringArray() {
+        final String[] str = new String[2];
+        str[0] = "Hello";
+        str[1] = "Lang";
+        put(str);
     }
 
     @Test

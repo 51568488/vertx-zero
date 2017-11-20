@@ -2,15 +2,17 @@ package io.vertx.up.rs.router;
 
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
+import io.vertx.up.atom.Depot;
 import io.vertx.up.atom.Event;
 import io.vertx.up.exception.EventActionNoneException;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Axis;
-import io.vertx.up.rs.Splitter;
-import io.vertx.up.rs.hunt.ModeSplitter;
+import io.vertx.up.rs.Sentry;
+import io.vertx.up.rs.dispatcher.ModeSplitter;
+import io.vertx.up.rs.dispatcher.VerifierSplitter;
 import io.vertx.up.web.ZeroAnno;
-import io.vertx.up.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.reflect.Method;
@@ -23,9 +25,12 @@ public class EventAxis implements Axis {
      */
     private static final Set<Event> EVENTS =
             ZeroAnno.getEvents();
-    private transient final Splitter splitter =
+    private transient final ModeSplitter splitter =
             Fn.poolThread(Pool.THREADS,
                     () -> Instance.instance(ModeSplitter.class));
+    private transient final VerifierSplitter verifier =
+            Fn.poolThread(Pool.VERIFIERS,
+                    () -> Instance.instance(VerifierSplitter.class));
 
     @Override
     public void mount(final Router router) {
@@ -48,12 +53,15 @@ public class EventAxis implements Axis {
                                 () -> Instance.instance(MediaHub.class));
                         hub.mount(route, event);
 
+                        // 4. Request validation
+                        final Depot depot = Depot.create(event);
+                        final Sentry sentry = this.verifier.distribute(depot);
+                        // 5. Request workflow executor: handler
                         final Aim aim = this.splitter.distribute(event);
-                        // 4. Inject handler, event dispatch
-                        route.handler(res -> {
-                            System.out.println("Hello");
-                            res.next();
-                        }).handler(aim.attack(event));
+                        
+                        // 6. Inject handler, event dispatch
+                        route.handler(sentry.signal(depot))
+                                .handler(aim.attack(event));
                     });
         });
     }

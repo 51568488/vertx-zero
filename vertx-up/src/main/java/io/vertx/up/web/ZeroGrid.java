@@ -45,7 +45,6 @@ public class ZeroGrid {
             }
             // Init for all plugin options.
             ZeroAmbient.init();
-            return null;
         }, LOGGER);
     }
 

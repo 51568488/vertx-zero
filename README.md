@@ -41,12 +41,18 @@ Once the Zero is up, you can see following logs in your console ( The default po
 4. Plugin
 	1. [How to use MongoClient in Zero](doc/zero-mongo.md)
 	2. [How to use MySqlClient in Zero](doc/zero-mysql.md)
-5. DI
+5. Dependency Injection
 	1. [How to use Dependency Injection ( JSR330 )](doc/zero-di.md)
 6. Exception ( Error )
 	1. [How to define WebException](doc/zero-error.md)
-7. Core Library
-	1. [Function style programming](doc/zero-hoc.md)
+7. Function style ( Fn )
+	1. [Function Programming: fling](doc/zero-fling.md)
+	2. [Function Programming: safe](doc/zero-safe.md)
+	3. [Function Programming: trans, shunt](doc/zero-trans-shunt.md)
+	4. [Function Programming: get](doc/zero-get.md)
+	5. [Function Programming: it](doc/zero-it.md)
+	6. [Function Programming: pool/packet/zipper](doc/zero-pool.md)
+	7. [Function Programming: nullFlow](doc/zero-flow.md)
 
 ## 3. Source Code
 
@@ -106,14 +112,57 @@ Once you have built the project, you can add following dependency into you `pom.
 * `func`: High order function
 * `test`: Testing tools.
 
+## 6. Function Interface Extend
+
+Zero system extend function interface system based on java8.
+
+* `java.util.function.Consumer<T>`：`void accept(T t)`；
+* `java.util.function.BiConsumer<T, U>`：`void accept(T t, U u)`；
+* `java.util.function.Predicate<T>`：`boolean test(T t)`;
+* `java.util.function.Supplier<T>`：`T get()`；
+* `java.util.function.Function<T, R>`：`R apply(T t)`；
+
+Extension by zero for specifical usage.
+
+* `io.vertx.up.func.Actuator`：`void execute()`；
+* `io.vertx.up.func.JvmSupplier<T>`：`T get() throws Exception`；
+* `io.vertx.up.func.JvmActuator`：`void execute() throws Exception`；
+* `io.vertx.up.func.ZeroActuator`：`void execute() throws ZeroException`；
+* `io.vertx.up.func.ZeroSupplier<T>`：`T get() throws ZeroException`；
+* `io.vertx.up.func.ZeroBiConsumer<T,R>`: `void accept(T input, R second) throws ZeroException`
+
+## 7. Logging in Zero
+
+In Zero system, there defined a supper static class for function abstract to simply the coding, this class is `io.vertx.up.func.Fn`, You also could use following function in your coding.
+
+```java
+// Zero Logger initialized, connect to vert.x logging system directly but uniform managed by zero.
+import io.vertx.up.log.Annal;
+
+// Then in your class
+public final class Statute {
+
+    private static final Annal LOGGER = Annal.get(Statute.class);
+    ......
+}
+```
  
-## 6. Dependency Library
+## 8. Dependency Library
 
 *Lombok is standalone library, you can ignore this library in your project and write pojo with pure java. But we recommend you to use this library to simplify the POJO writting.*
 
-* [Vert.x (3.5.0)](http://www.mvnrepository.com/artifact/io.vertx) ( core, web, config, config-yml, unit, zookeeper, hazelcast )
+* [Vert.x (3.5.0)](http://www.mvnrepository.com/artifact/io.vertx) 
+	* core
+	* web
+	* config
+	* config-yml
+	* unit,
+	* zookeeper
+	* hazelcast
+	* web-api-contract
 * [ ( JSR311 ) Jws Rs (2.1)](http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api) 
 * [ ( JSR330 ) Inject (1) ](https://mvnrepository.com/artifact/javax.inject/javax.inject)
+* [ ( JSR303 ) Validation ( 2.0.0.Final ) ](https://mvnrepository.com/artifact/javax.validation/validation-api)
 * [Jersey Common (2.26)](http://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common) ( For media type parsing )
 * Logback
 	* [logback-classic (1.2.3)](http://mvnrepository.com/artifact/ch.qos.logback/logback-classic)

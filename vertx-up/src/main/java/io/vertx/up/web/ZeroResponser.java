@@ -1,4 +1,4 @@
-package io.vertx.zero.func;
+package io.vertx.up.web;
 
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Envelop;
@@ -7,7 +7,7 @@ import io.vertx.up.exception.WebException;
 import io.vertx.up.func.Actuator;
 import io.vertx.up.rs.hunt.Answer;
 
-public class Responser {
+public class ZeroResponser {
 
     public static void exec(final Actuator consumer,
                             final RoutingContext context,

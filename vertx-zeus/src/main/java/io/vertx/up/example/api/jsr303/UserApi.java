@@ -1,11 +1,12 @@
 package io.vertx.up.example.api.jsr303;
 
+import io.vertx.core.json.JsonObject;
 import io.vertx.up.annotations.EndPoint;
+import io.vertx.up.example.domain.Demo;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 
 @Path("/zero/user")
 @EndPoint
@@ -19,4 +20,14 @@ public interface UserApi {
             @QueryParam("password") @NotNull(message = "密码不能为空")
                     String password
     );
+
+    @Path("/authorize")
+    @POST
+    Demo authorize(
+            @BodyParam @Valid final Demo demo);
+
+    @Path("/json")
+    @POST
+    JsonObject serialize(
+            @BodyParam @Valid final JsonObject data);
 }

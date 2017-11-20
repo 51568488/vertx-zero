@@ -12,6 +12,8 @@ public abstract class WebException extends ZeroRunException {
 
     private final String message;
 
+    private String readible;
+
     public WebException(final String message) {
         super(message);
         this.message = message;
@@ -32,5 +34,13 @@ public abstract class WebException extends ZeroRunException {
     public HttpStatusCode getStatus() {
         // Default exception for 400
         return HttpStatusCode.BAD_REQUEST;
+    }
+
+    public void setReadible(final String readible) {
+        this.readible = readible;
+    }
+
+    public String getReadible() {
+        return this.readible;
     }
 }

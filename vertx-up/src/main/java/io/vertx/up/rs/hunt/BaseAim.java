@@ -26,6 +26,9 @@ import java.util.List;
  */
 public abstract class BaseAim {
 
+    private transient final Verifier verifier =
+            Verifier.create();
+
     /**
      * Template method
      *
@@ -104,6 +107,10 @@ public abstract class BaseAim {
             envelop = Envelop.failure(error);
         }
         return envelop;
+    }
+
+    protected Verifier verifier() {
+        return this.verifier;
     }
 
     protected Annal getLogger() {

@@ -6,6 +6,10 @@ interface Key {
     String STATUS = "status";
 
     String MESSAGE = "message";
+    /**
+     * Readible by client
+     **/
+    String INFO = "info";
 
     String CODE = "code";
 

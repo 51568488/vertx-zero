@@ -178,6 +178,9 @@ public class Envelop implements Serializable {
         data.put(Key.STATUS, error.getStatus().code());
         data.put(Key.CODE, error.getCode());
         data.put(Key.MESSAGE, error.getMessage());
+        if (null != error.getReadible()) {
+            data.put(Key.INFO, error.getReadible());
+        }
         return data;
     }
 }

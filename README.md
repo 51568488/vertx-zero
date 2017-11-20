@@ -41,7 +41,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
 4. Plugin
 	1. [How to use MongoClient in Zero](doc/zero-mongo.md)
 	2. [How to use MySqlClient in Zero](doc/zero-mysql.md)
-5. DI
+5. Dependency Injection
 	1. [How to use Dependency Injection ( JSR330 )](doc/zero-di.md)
 6. Exception ( Error )
 	1. [How to define WebException](doc/zero-error.md)
@@ -112,7 +112,7 @@ Once you have built the project, you can add following dependency into you `pom.
 * `func`: High order function
 * `test`: Testing tools.
 
-## 6. Function Interface
+## 6. Function Interface Extend
 
 Zero system extend function interface system based on java8.
 
@@ -151,9 +151,18 @@ public final class Statute {
 
 *Lombok is standalone library, you can ignore this library in your project and write pojo with pure java. But we recommend you to use this library to simplify the POJO writting.*
 
-* [Vert.x (3.5.0)](http://www.mvnrepository.com/artifact/io.vertx) ( core, web, config, config-yml, unit, zookeeper, hazelcast )
+* [Vert.x (3.5.0)](http://www.mvnrepository.com/artifact/io.vertx) 
+	* core
+	* web
+	* config
+	* config-yml
+	* unit,
+	* zookeeper
+	* hazelcast
+	* web-api-contract
 * [ ( JSR311 ) Jws Rs (2.1)](http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api) 
 * [ ( JSR330 ) Inject (1) ](https://mvnrepository.com/artifact/javax.inject/javax.inject)
+* [ ( JSR303 ) Validation ( 2.0.0.Final ) ](https://mvnrepository.com/artifact/javax.validation/validation-api)
 * [Jersey Common (2.26)](http://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common) ( For media type parsing )
 * Logback
 	* [logback-classic (1.2.3)](http://mvnrepository.com/artifact/ch.qos.logback/logback-classic)

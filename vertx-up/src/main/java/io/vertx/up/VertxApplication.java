@@ -74,7 +74,11 @@ public class VertxApplication {
                 scatter.connect(vertx);
             }, "infix-afflux-runner");
 
-            /** 4.Injection system with JSR 330 **/
+            /** 4.Rule started **/
+            Runner.run(() -> {
+                final Scatter scatter = Instance.singleton(CodexScatter.class);
+                scatter.connect(vertx);
+            }, "codex-engine-runner");
         });
     }
 }

@@ -7,4 +7,6 @@ interface Info {
 
     String INFIX_IMPL = "[ ZERO ] The hitted class {0} does not implement the interface" +
             "of {1}";
+    
+    String SCANED_RULE = "[ ZERO ] Zero system scanned the folder /codex/ to pickup {0} rule definition files.";
 }

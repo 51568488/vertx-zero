@@ -5,22 +5,22 @@ import io.vertx.up.func.Fn;
 
 import java.io.Serializable;
 
-public class Ruler implements Serializable {
+public class Rule implements Serializable {
 
     private final String type;
 
     private final String message;
 
-    private final JsonObject config;
+    private final JsonObject config = new JsonObject();
 
-    public static Ruler create(final JsonObject data) {
-        return Fn.get(null, () -> new Ruler(data), data);
+    public static Rule create(final JsonObject data) {
+        return Fn.get(null, () -> new Rule(data), data);
     }
 
-    private Ruler(final JsonObject data) {
+    private Rule(final JsonObject data) {
         this.type = data.getString("type");
         this.message = data.getString("message");
-        this.config = data;
+        this.config.mergeIn(data.copy());
         this.config.remove("type");
         this.config.remove("message");
     }
@@ -39,7 +39,7 @@ public class Ruler implements Serializable {
 
     @Override
     public String toString() {
-        return "Ruler{" +
+        return "Rule{" +
                 "type='" + this.type + '\'' +
                 ", message='" + this.message + '\'' +
                 ", config=" + this.config.encode() +

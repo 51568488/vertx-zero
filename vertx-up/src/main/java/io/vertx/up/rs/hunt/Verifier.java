@@ -4,7 +4,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.atom.Depot;
 import io.vertx.up.atom.Event;
-import io.vertx.up.atom.Ruler;
+import io.vertx.up.atom.Rule;
 import io.vertx.up.eon.ID;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._400ValidationException;
@@ -19,10 +19,7 @@ import javax.validation.executable.ExecutableValidator;
 import javax.ws.rs.BodyParam;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -31,7 +28,7 @@ public class Verifier {
     private static final Validator VALIDATOR
             = Validation.buildDefaultValidatorFactory().getValidator();
 
-    private static final ConcurrentMap<String, ConcurrentMap<String, List<Ruler>>>
+    private static final ConcurrentMap<String, Map<String, List<Rule>>>
             RULERS = new ConcurrentHashMap<>();
 
     private static Verifier INSTANCE;
@@ -67,10 +64,10 @@ public class Verifier {
         }
     }
 
-    public ConcurrentMap<String, List<Ruler>> buildRulers(
+    public Map<String, List<Rule>> buildRulers(
             final Depot depot) {
-        final ConcurrentMap<String, List<Ruler>> rulers
-                = new ConcurrentHashMap<>();
+        final Map<String, List<Rule>> rulers
+                = new LinkedHashMap<>();
         final ConcurrentMap<String, Class<? extends Annotation>>
                 annotions = depot.getAnnotations();
         if (annotions.containsKey(ID.DIRECT)) {
@@ -86,17 +83,17 @@ public class Verifier {
         return rulers;
     }
 
-    private ConcurrentMap<String, List<Ruler>> buildRulers(final String key) {
+    private Map<String, List<Rule>> buildRulers(final String key) {
         if (RULERS.containsKey(key)) {
             return RULERS.get(key);
         } else {
             final JsonObject rule = ZeroCodex.getCodex(key);
-            final ConcurrentMap<String, List<Ruler>> ruler
-                    = new ConcurrentHashMap<>();
+            final Map<String, List<Rule>> ruler
+                    = new LinkedHashMap<>();
             if (null != rule) {
                 Fn.itJObject(rule, (value, field) -> {
                     // Checked valid rule config
-                    final List<Ruler> rulers = buildRulers(value);
+                    final List<Rule> rulers = buildRulers(value);
                     if (!rulers.isEmpty()) {
                         ruler.put(field, rulers);
                     }
@@ -109,12 +106,12 @@ public class Verifier {
         }
     }
 
-    private List<Ruler> buildRulers(final Object config) {
-        final List<Ruler> rulers = new ArrayList<>();
+    private List<Rule> buildRulers(final Object config) {
+        final List<Rule> rulers = new ArrayList<>();
         if (null != config && config instanceof JsonArray) {
             final JsonArray configData = (JsonArray) config;
             Fn.itJArray(configData, JsonObject.class, (item, index) -> {
-                final Ruler ruler = Ruler.create(item);
+                final Rule ruler = Rule.create(item);
                 if (null != ruler) {
                     rulers.add(ruler);
                 }

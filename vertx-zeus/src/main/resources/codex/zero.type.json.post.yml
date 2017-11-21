@@ -8,6 +8,6 @@ username:
 password:
 - type: "required"
   message: "密码不能为空，请输入密码！"
-- type: "min"
-  value: 8
+- type: "minlength"
+  min: 8
   message: "密码最小长度为8！"

@@ -76,6 +76,7 @@ public class StandardVerifier extends BaseAim implements Sentry {
             final Map<String, List<Rule>> rulers,
             final JsonObject data) {
         WebException error = null;
+        outer:
         for (final String field : rulers.keySet()) {
             final Object value = data.getValue(field);
             final List<Rule> rules = rulers.get(field);
@@ -87,7 +88,7 @@ public class StandardVerifier extends BaseAim implements Sentry {
                 }
                 // Error found.
                 if (null != error) {
-                    break;
+                    break outer;
                 }
                 // Else skip
             }

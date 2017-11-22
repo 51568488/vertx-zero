@@ -1,0 +1,3 @@
+default: io.vertx.up.media.resolver.BufferResolver
+application:
+  json: io.vertx.up.media.resolver.JsonResolver

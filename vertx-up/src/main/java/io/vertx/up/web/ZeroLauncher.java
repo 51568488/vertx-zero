@@ -6,7 +6,7 @@ import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EnvelopCodec;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.up.Launcher;
-import io.vertx.up.atom.EnvelopOld;
+import io.vertx.up.atom.Envelop;
 import io.vertx.up.eon.Info;
 import io.vertx.up.exception.VertxCallbackException;
 import io.vertx.up.log.Annal;
@@ -83,7 +83,7 @@ public class ZeroLauncher implements Launcher {
     }
 
     private void registryCodec(final Vertx vertx) {
-        vertx.eventBus().registerDefaultCodec(EnvelopOld.class,
+        vertx.eventBus().registerDefaultCodec(Envelop.class,
                 Instance.singleton(EnvelopCodec.class));
     }
 }

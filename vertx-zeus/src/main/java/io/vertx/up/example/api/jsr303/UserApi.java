@@ -15,6 +15,7 @@ public interface UserApi {
     @GET
     String login(
             @QueryParam("username")
+            @DefaultValue("lang.lang")
             @NotNull(message = "用户名不能为空")
                     String username,
             @QueryParam("password")

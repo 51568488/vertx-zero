@@ -3,7 +3,7 @@ package io.vertx.up.rs.hunt;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.up.atom.EnvelopOld;
+import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 
 import javax.ws.rs.core.MediaType;
@@ -21,7 +21,7 @@ public final class Normalizer {
      * @param event
      */
     public static void out(final HttpServerResponse response,
-                           final EnvelopOld envelop,
+                           final Envelop envelop,
                            final Event event) {
         response.putHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
     }
@@ -34,7 +34,7 @@ public final class Normalizer {
      * @param event
      */
     public static void in(final HttpServerRequest request,
-                          final EnvelopOld envelop,
+                          final Envelop envelop,
                           final Event event) {
 
     }

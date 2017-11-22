@@ -1,29 +1,51 @@
 package io.vertx.up.atom;
 
+import io.vertx.up.eon.ID;
+import io.vertx.up.eon.em.MimeFlow;
+
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
 
 /**
  * Parameter container to get parameters
  */
+@SuppressWarnings("unchecked")
 public class Epsilon<T> implements Serializable {
 
     private String name;
+
+    private MimeFlow mime;
+
+    private Class<?> argType;
+
+    public Object defaultValue;
+
+    private Annotation annotation;
+
+    private T value;
 
     public String getName() {
         return this.name;
     }
 
     public void setName(final String name) {
+        if (ID.DIRECT.equals(name)) {
+            this.mime = MimeFlow.RESOLVER;
+        } else if (ID.IGNORE.equals(name)) {
+            this.mime = MimeFlow.TYPED;
+        } else {
+            this.mime = MimeFlow.STANDARD;
+        }
         this.name = name;
     }
 
-    private Class<?> argType;
+    public Annotation getAnnotation() {
+        return this.annotation;
+    }
 
-    private Annotation[] annotations;
-
-    private T value;
+    public void setAnnotation(final Annotation annotation) {
+        this.annotation = annotation;
+    }
 
     public Class<?> getArgType() {
         return this.argType;
@@ -33,28 +55,47 @@ public class Epsilon<T> implements Serializable {
         this.argType = argType;
     }
 
-    public Annotation[] getAnnotations() {
-        return this.annotations;
-    }
-
-    public void setAnnotations(final Annotation[] annotations) {
-        this.annotations = annotations;
-    }
-
     public T getValue() {
-        return this.value;
+        if (null == this.value) {
+            if (null == this.defaultValue) {
+                return null;
+            } else {
+                return (T) this.defaultValue;
+            }
+        } else {
+            return this.value;
+        }
+    }
+    
+    public Epsilon<T> setValue(final T value) {
+        this.value = value;
+        return this;
     }
 
-    public void setValue(final T value) {
-        this.value = value;
+    public Object getDefaultValue() {
+        return this.defaultValue;
+    }
+
+    public void setDefaultValue(final Object defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public MimeFlow getMime() {
+        return this.mime;
+    }
+
+    public void setMime(final MimeFlow mime) {
+        this.mime = mime;
     }
 
     @Override
     public String toString() {
         return "Epsilon{" +
                 "name='" + this.name + '\'' +
+                ", mime=" + this.mime +
                 ", argType=" + this.argType +
-                ", annotations=" + Arrays.toString(this.annotations) +
+                ", defaultValue=" + this.defaultValue +
+                ", annotation=" + this.annotation +
                 ", value=" + this.value +
                 '}';
     }

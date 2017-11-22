@@ -3,6 +3,7 @@ package io.vertx.up.media;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 import io.vertx.up.exception.WebException;
+import io.vertx.up.media.parse.Income;
 
 /**
  * Mime resolution for web request
@@ -29,5 +30,4 @@ public interface Analyzer extends Income<Object[]> {
      */
     Envelop out(Envelop envelop, Event event)
             throws WebException;
-
 }

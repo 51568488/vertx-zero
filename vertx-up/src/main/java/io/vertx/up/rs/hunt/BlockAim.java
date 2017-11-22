@@ -2,7 +2,7 @@ package io.vertx.up.rs.hunt;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.atom.EnvelopOld;
+import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Aim;
@@ -23,7 +23,7 @@ public class BlockAim extends BaseAim implements Aim {
             invoke(event, arguments);
 
             // 3. Resource model building
-            final EnvelopOld data = EnvelopOld.ok();
+            final Envelop data = Envelop.ok();
 
             // 4. Process modal
             Answer.reply(context, data, event);

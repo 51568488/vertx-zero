@@ -3,7 +3,7 @@ package io.vertx.up.rs.hunt;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.atom.EnvelopOld;
+import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 
 /**
@@ -15,7 +15,7 @@ public final class Answer {
 
     public static void reply(
             final RoutingContext context,
-            final EnvelopOld envelop,
+            final Envelop envelop,
             final Event event
     ) {
         // 1. Get response reference

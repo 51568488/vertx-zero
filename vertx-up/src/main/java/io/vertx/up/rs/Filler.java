@@ -32,13 +32,13 @@ public interface Filler {
                     // JSR311 Provided
                     put(QueryParam.class, Instance.singleton(QueryFiller.class));
                     put(FormParam.class, Instance.singleton(FormFiller.class));
-                    put(MatrixParam.class, Instance.singleton(MatrixFiller.class));
+                    put(MatrixParam.class, Instance.singleton(QueryFiller.class));
                     put(PathParam.class, Instance.singleton(PathFiller.class));
                     put(HeaderParam.class, Instance.singleton(HeaderFiller.class));
                     put(CookieParam.class, Instance.singleton(CookieFiller.class));
                     // Extension
-                    put(BodyParam.class, Instance.singleton(BodyFiller.class));
-                    put(StreamParam.class, Instance.singleton(StreamFiller.class));
+                    put(BodyParam.class, Instance.singleton(EmptyFiller.class));
+                    put(StreamParam.class, Instance.singleton(EmptyFiller.class));
                     put(SessionParam.class, Instance.singleton(SessionFiller.class));
                 }
             };

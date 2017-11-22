@@ -4,7 +4,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.eventbus.Message;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.annotations.Address;
-import io.vertx.up.atom.EnvelopOld;
+import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 import io.vertx.up.eon.ID;
 import io.vertx.up.exception.WebException;
@@ -74,28 +74,28 @@ public abstract class BaseAim {
         return Instance.invoke(event.getProxy(), method.getName(), args);
     }
 
-    protected EnvelopOld failure(final String address,
-                                 final AsyncResult<Message<EnvelopOld>> handler) {
+    protected Envelop failure(final String address,
+                              final AsyncResult<Message<Envelop>> handler) {
         final WebException error
                 = new _500DeliveryErrorException(getClass(),
                 address,
                 Fn.get(null,
                         () -> handler.cause().getMessage(), handler.cause()));
-        return EnvelopOld.failure(error);
+        return Envelop.failure(error);
     }
 
-    protected EnvelopOld success(final String address,
-                                 final AsyncResult<Message<EnvelopOld>> handler
+    protected Envelop success(final String address,
+                              final AsyncResult<Message<Envelop>> handler
     ) {
-        EnvelopOld envelop;
+        Envelop envelop;
         try {
-            final Message<EnvelopOld> message = handler.result();
+            final Message<Envelop> message = handler.result();
             envelop = message.body();
         } catch (final Throwable ex) {
             final WebException error
                     = new _500EntityCastException(getClass(),
                     address, ex.getMessage());
-            envelop = EnvelopOld.failure(error);
+            envelop = Envelop.failure(error);
         }
         return envelop;
     }

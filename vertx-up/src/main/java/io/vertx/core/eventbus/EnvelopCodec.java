@@ -1,24 +1,24 @@
 package io.vertx.core.eventbus;
 
 import io.vertx.core.buffer.Buffer;
-import io.vertx.up.atom.EnvelopOld;
+import io.vertx.up.atom.Envelop;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.tool.io.Stream;
 
 /**
  * Codec to transfer envelop
  */
-public final class EnvelopCodec implements MessageCodec<EnvelopOld, EnvelopOld> {
+public final class EnvelopCodec implements MessageCodec<Envelop, Envelop> {
 
     @Override
     public void encodeToWire(final Buffer buffer,
-                             final EnvelopOld message) {
+                             final Envelop message) {
         buffer.appendBytes(Stream.to(message));
     }
 
     @Override
-    public EnvelopOld decodeFromWire(final int i,
-                                     final Buffer buffer) {
+    public Envelop decodeFromWire(final int i,
+                                  final Buffer buffer) {
         return Stream.from(i, buffer);
     }
 
@@ -29,7 +29,7 @@ public final class EnvelopCodec implements MessageCodec<EnvelopOld, EnvelopOld> 
      * @return
      */
     @Override
-    public EnvelopOld transform(final EnvelopOld message) {
+    public Envelop transform(final Envelop message) {
         return message;
     }
 

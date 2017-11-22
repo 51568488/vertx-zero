@@ -1,7 +1,7 @@
 package io.vertx.up.web;
 
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.atom.EnvelopOld;
+import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.func.Actuator;
@@ -15,7 +15,7 @@ public class ZeroResponser {
         try {
             consumer.execute();
         } catch (final WebException ex) {
-            final EnvelopOld envelop = EnvelopOld.failure(ex);
+            final Envelop envelop = Envelop.failure(ex);
             Answer.reply(context, envelop, event);
         }
     }

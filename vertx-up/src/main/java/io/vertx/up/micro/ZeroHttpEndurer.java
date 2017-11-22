@@ -6,17 +6,20 @@ import io.vertx.ext.web.RoutingContext;
 /**
  * Common handler to handle failure
  */
-public class HttpZeroEndurer implements Handler<RoutingContext> {
+public class ZeroHttpEndurer implements Handler<RoutingContext> {
 
     public static Handler<RoutingContext> create() {
-        return new HttpZeroEndurer();
+        return new ZeroHttpEndurer();
     }
 
-    private HttpZeroEndurer() {
+    private ZeroHttpEndurer() {
     }
 
     @Override
     public void handle(final RoutingContext event) {
-        System.out.println("Exception");
+        if (event.failed()) {
+            final Throwable ex = event.failure();
+            ex.printStackTrace();
+        }
     }
 }

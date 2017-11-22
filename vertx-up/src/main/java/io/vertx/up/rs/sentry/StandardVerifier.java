@@ -4,7 +4,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Depot;
-import io.vertx.up.atom.EnvelopOld;
+import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Rule;
 import io.vertx.up.exception.WebException;
@@ -52,7 +52,7 @@ public class StandardVerifier extends BaseAim implements Sentry {
     private void replyError(final RoutingContext context,
                             final WebException error,
                             final Event event) {
-        final EnvelopOld envelop = EnvelopOld.failure(error);
+        final Envelop envelop = Envelop.failure(error);
         Answer.reply(context, envelop, event);
     }
 

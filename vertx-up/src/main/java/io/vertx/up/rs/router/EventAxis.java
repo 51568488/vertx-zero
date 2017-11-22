@@ -9,13 +9,12 @@ import io.vertx.up.exception.EventActionNoneException;
 import io.vertx.up.exception.ParamAnnotationException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.micro.HttpZeroEndurer;
+import io.vertx.up.micro.ZeroHttpEndurer;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.Filler;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.dispatcher.ModeSplitter;
-import io.vertx.up.rs.sentry.MimeAnalyzer;
 import io.vertx.up.rs.sentry.StandardVerifier;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.tool.mirror.Anno;
@@ -50,9 +49,6 @@ public class EventAxis implements Axis {
     private transient final Sentry verifier =
             Fn.poolThread(Pool.VERIFIERS,
                     () -> Instance.instance(StandardVerifier.class));
-    private transient final Sentry analyzer =
-            Fn.poolThread(Pool.ANALYZERS,
-                    () -> Instance.instance(MimeAnalyzer.class));
 
     @Override
     public void mount(final Router router) {
@@ -87,10 +83,9 @@ public class EventAxis implements Axis {
                          * 3) Execute handler ( Code Logical )
                          * 4) Uniform failure handler
                          */
-                        route.handler(this.analyzer.signal(depot))
-                                .handler(this.verifier.signal(depot))
+                        route.handler(this.verifier.signal(depot))
                                 .handler(aim.attack(event))
-                                .failureHandler(HttpZeroEndurer.create());
+                                .failureHandler(ZeroHttpEndurer.create());
                     });
         });
     }
@@ -119,7 +114,7 @@ public class EventAxis implements Axis {
     private void verify(final Parameter parameter) {
         final Annotation[] annotations = parameter.getDeclaredAnnotations();
         final List<Annotation> annotationList = Arrays.stream(annotations)
-                .filter(item -> Filler.PARAMS.keySet().contains(item))
+                .filter(item -> Filler.PARAMS.containsKey(item.annotationType()))
                 .collect(Collectors.toList());
 
         final int multi = annotationList.size();

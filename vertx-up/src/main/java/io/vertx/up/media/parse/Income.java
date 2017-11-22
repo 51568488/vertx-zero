@@ -1,4 +1,4 @@
-package io.vertx.up.media;
+package io.vertx.up.media.parse;
 
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Event;

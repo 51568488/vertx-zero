@@ -2,18 +2,14 @@ package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
 
-/**
- * @author lang
- */
-public class ZeroError extends JObjectBase {
-
+public class ZeroResolver extends JObjectBase {
     @Override
     public String getKey() {
-        return "error";
+        return "resolver";
     }
 
     @Override
     public JsonObject read() {
-        return mergeIn("failure");
+        return mergeIn("resolver-internal");
     }
 }

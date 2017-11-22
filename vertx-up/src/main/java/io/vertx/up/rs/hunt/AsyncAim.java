@@ -4,7 +4,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.EnvelopOld;
 import io.vertx.up.atom.Event;
 import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Aim;
@@ -19,15 +19,15 @@ public class AsyncAim extends BaseAim implements Aim {
             final Object[] arguments = buildArgs(context, event);
             // 2. Method call
             final Object returnValue = invoke(event, arguments);
-            final Envelop request = Envelop.success(returnValue);
+            final EnvelopOld request = EnvelopOld.success(returnValue);
 
             // 3. Build event bus
             final Vertx vertx = context.vertx();
             final EventBus bus = vertx.eventBus();
             // 4. Send message
             final String address = address(event);
-            bus.<Envelop>send(address, request, handler -> {
-                final Envelop response;
+            bus.<EnvelopOld>send(address, request, handler -> {
+                final EnvelopOld response;
                 if (handler.succeeded()) {
                     // Request - Response message
                     response = success(address, handler);

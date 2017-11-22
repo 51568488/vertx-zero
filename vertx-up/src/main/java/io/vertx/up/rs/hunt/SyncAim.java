@@ -2,7 +2,7 @@ package io.vertx.up.rs.hunt;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.EnvelopOld;
 import io.vertx.up.atom.Event;
 import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Aim;
@@ -22,7 +22,7 @@ public class SyncAim extends BaseAim implements Aim {
             final Object result = invoke(event, arguments);
 
             // 3. Resource model building
-            final Envelop data = Envelop.success(result);
+            final EnvelopOld data = EnvelopOld.success(result);
 
             // 4. Process modal
             Answer.reply(context, data, event);

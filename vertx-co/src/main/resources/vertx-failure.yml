@@ -40,3 +40,4 @@ E60002: (500) - The system detect some error in delivery on address {0}, error m
 E60003: (500) - The event bus detect some error in receiving message on address {0}, error message = {1}
 E60004: (400) - Zero system detect conversation from "{0}" to type "{1}", but it's conflict
 E60005: (400) - Request body validation failure, field = {0}, value = {1}, message = {2}
+E60006: (400) - Server could not accept the mime "{0}", expected should be one of {1}

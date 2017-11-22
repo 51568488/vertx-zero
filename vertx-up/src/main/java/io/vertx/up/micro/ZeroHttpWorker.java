@@ -4,7 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.up.annotations.Worker;
-import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.EnvelopOld;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.exception.AsyncSignatureException;
 import io.vertx.up.exception.WorkerArgumentException;
@@ -43,7 +43,7 @@ public class ZeroHttpWorker extends AbstractVerticle {
             verify(method);
             try {
                 Fn.safeNull(() -> {
-                    bus.<Envelop>consumer(address, message -> {
+                    bus.<EnvelopOld>consumer(address, message -> {
                         if (isVoid(method)) {
                             // void Message<Envelop>
                             Instance.invoke(reference, method.getName(), message);
@@ -60,13 +60,13 @@ public class ZeroHttpWorker extends AbstractVerticle {
         }
     }
 
-    private void syncReply(final Message<Envelop> message,
+    private void syncReply(final Message<EnvelopOld> message,
                            final Object reference,
                            final String name) {
         // Call the handler
-        final Envelop envelop = message.body();
+        final EnvelopOld envelop = message.body();
         // Invoke
-        final Envelop reply =
+        final EnvelopOld reply =
                 Instance.invoke(reference, name, envelop);
         // Reply Message
         message.reply(reply);
@@ -94,7 +94,7 @@ public class ZeroHttpWorker extends AbstractVerticle {
                 },
                 () -> {
                     // Envelop method(Envelop);
-                    verify(Envelop.class != paramCls || Envelop.class != returnType,
+                    verify(EnvelopOld.class != paramCls || EnvelopOld.class != returnType,
                             returnType, paramCls);
                 });
     }

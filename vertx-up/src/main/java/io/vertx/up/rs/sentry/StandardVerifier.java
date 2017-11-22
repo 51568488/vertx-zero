@@ -1,10 +1,10 @@
 package io.vertx.up.rs.sentry;
 
+import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.api.validation.ValidationHandler;
 import io.vertx.up.atom.Depot;
-import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.EnvelopOld;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Rule;
 import io.vertx.up.exception.WebException;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class StandardVerifier extends BaseAim implements Sentry {
 
     @Override
-    public ValidationHandler signal(final Depot depot) {
+    public Handler<RoutingContext> signal(final Depot depot) {
         // continue to verify JsonObject/JsonArray type
         final Map<String, List<Rule>> rulers
                 = verifier().buildRulers(depot);
@@ -52,7 +52,7 @@ public class StandardVerifier extends BaseAim implements Sentry {
     private void replyError(final RoutingContext context,
                             final WebException error,
                             final Event event) {
-        final Envelop envelop = Envelop.failure(error);
+        final EnvelopOld envelop = EnvelopOld.failure(error);
         Answer.reply(context, envelop, event);
     }
 

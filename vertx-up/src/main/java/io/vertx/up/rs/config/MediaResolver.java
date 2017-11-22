@@ -60,6 +60,10 @@ class MediaResolver {
                                 }
                             }
                         }
+                        /** Ward Card for default **/
+                        if (result.isEmpty()) {
+                            result.add(MediaType.WILDCARD_TYPE);
+                        }
                         return result;
                     });
         }, method, mediaCls);

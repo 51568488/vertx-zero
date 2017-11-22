@@ -4,7 +4,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.eventbus.Message;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.annotations.Address;
-import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.EnvelopOld;
 import io.vertx.up.atom.Event;
 import io.vertx.up.eon.ID;
 import io.vertx.up.exception.WebException;
@@ -12,6 +12,8 @@ import io.vertx.up.exception.web._500DeliveryErrorException;
 import io.vertx.up.exception.web._500EntityCastException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.media.Analyzer;
+import io.vertx.up.media.MediaAnalyzer;
 import io.vertx.up.rs.mirror.ParamFiller;
 import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Instance;
@@ -29,6 +31,9 @@ public abstract class BaseAim {
     private transient final Verifier verifier =
             Verifier.create();
 
+    private transient final Analyzer analyzer =
+            Instance.singleton(MediaAnalyzer.class);
+
     /**
      * Template method
      *
@@ -36,6 +41,7 @@ public abstract class BaseAim {
      * @param event
      * @return
      */
+    @Deprecated
     protected Object[] buildArgs(final RoutingContext context,
                                  final Event event) {
         Object[] cached = context.get(ID.PARAMS);
@@ -58,6 +64,7 @@ public abstract class BaseAim {
         // Validation handler has been get the parameters.
         return cached;
     }
+
 
     /**
      * Get event bus address.
@@ -83,34 +90,38 @@ public abstract class BaseAim {
         return Instance.invoke(event.getProxy(), method.getName(), args);
     }
 
-    protected Envelop failure(final String address,
-                              final AsyncResult<Message<Envelop>> handler) {
+    protected EnvelopOld failure(final String address,
+                                 final AsyncResult<Message<EnvelopOld>> handler) {
         final WebException error
                 = new _500DeliveryErrorException(getClass(),
                 address,
                 Fn.get(null,
                         () -> handler.cause().getMessage(), handler.cause()));
-        return Envelop.failure(error);
+        return EnvelopOld.failure(error);
     }
 
-    protected Envelop success(final String address,
-                              final AsyncResult<Message<Envelop>> handler
+    protected EnvelopOld success(final String address,
+                                 final AsyncResult<Message<EnvelopOld>> handler
     ) {
-        Envelop envelop;
+        EnvelopOld envelop;
         try {
-            final Message<Envelop> message = handler.result();
+            final Message<EnvelopOld> message = handler.result();
             envelop = message.body();
         } catch (final Throwable ex) {
             final WebException error
                     = new _500EntityCastException(getClass(),
                     address, ex.getMessage());
-            envelop = Envelop.failure(error);
+            envelop = EnvelopOld.failure(error);
         }
         return envelop;
     }
 
     protected Verifier verifier() {
         return this.verifier;
+    }
+
+    protected Analyzer analyzer() {
+        return this.analyzer;
     }
 
     protected Annal getLogger() {

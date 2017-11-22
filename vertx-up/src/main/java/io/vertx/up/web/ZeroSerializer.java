@@ -60,7 +60,7 @@ public class ZeroSerializer {
                     put(Byte[].class, Instance.singleton(ByteArraySaber.class));
                 }
             };
-
+    
     /**
      * String -> T
      *

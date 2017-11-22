@@ -7,11 +7,13 @@ import io.vertx.up.atom.Event;
 import io.vertx.up.exception.EventActionNoneException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.micro.HttpZeroEndurer;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.dispatcher.ModeSplitter;
-import io.vertx.up.rs.dispatcher.VerifierSplitter;
+import io.vertx.up.rs.sentry.MimeAnalyzer;
+import io.vertx.up.rs.sentry.StandardVerifier;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.tool.mirror.Instance;
 
@@ -25,12 +27,21 @@ public class EventAxis implements Axis {
      */
     private static final Set<Event> EVENTS =
             ZeroAnno.getEvents();
+    /**
+     * Splitter
+     */
     private transient final ModeSplitter splitter =
             Fn.poolThread(Pool.THREADS,
                     () -> Instance.instance(ModeSplitter.class));
-    private transient final VerifierSplitter verifier =
+    /**
+     * Sentry
+     */
+    private transient final Sentry verifier =
             Fn.poolThread(Pool.VERIFIERS,
-                    () -> Instance.instance(VerifierSplitter.class));
+                    () -> Instance.instance(StandardVerifier.class));
+    private transient final Sentry analyzer =
+            Fn.poolThread(Pool.ANALYZERS,
+                    () -> Instance.instance(MimeAnalyzer.class));
 
     @Override
     public void mount(final Router router) {
@@ -55,13 +66,20 @@ public class EventAxis implements Axis {
 
                         // 4. Request validation
                         final Depot depot = Depot.create(event);
-                        final Sentry sentry = this.verifier.distribute(depot);
                         // 5. Request workflow executor: handler
                         final Aim aim = this.splitter.distribute(event);
-                        
-                        // 6. Inject handler, event dispatch
-                        route.handler(sentry.signal(depot))
-                                .handler(aim.attack(event));
+
+                        /**
+                         * 6. Handler chain
+                         * 1) Mime Analyzer ( Build arguments )
+                         * 2) Validation
+                         * 3) Execute handler ( Code Logical )
+                         * 4) Uniform failure handler
+                         */
+                        route.handler(this.analyzer.signal(depot))
+                                .handler(this.verifier.signal(depot))
+                                .handler(aim.attack(event))
+                                .failureHandler(HttpZeroEndurer.create());
                     });
         });
     }

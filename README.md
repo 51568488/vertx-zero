@@ -37,7 +37,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
 	4. [Parameter type supported](doc/zero-typed.md)
 3. Request Flow
 	1. [How to enable Event Bus](doc/zero-worker.md)
-	2. [Mode supported describption](doc/zero-mode.md)
+	2. [Request Workflow Introduction](doc/zero-mode.md)
 	3. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
 4. Plugin
 	1. [How to use MongoClient in Zero](doc/zero-mongo.md)
@@ -47,6 +47,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
 6. Exception ( Error )
 	1. [How to define WebException](doc/zero-error.md)
 	2. [How to validate request ( JSR 303 with Hibernate-Validator )](doc/zero-validate.md)
+	3. [Advanced Validation ( Rule for @BodyParam )](doc/zero-verify.md)
 7. Function style ( Fn )
 	1. [Function Programming: fling](doc/zero-fling.md)
 	2. [Function Programming: safe](doc/zero-safe.md)

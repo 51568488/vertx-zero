@@ -1,6 +1,5 @@
 package io.vertx.up.media;
 
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 import io.vertx.up.exception.WebException;
@@ -19,18 +18,7 @@ import io.vertx.up.exception.WebException;
  * 3. Vary
  * New resource model usage for this analyzer.
  */
-public interface Analyzer {
-    /**
-     * request mime analyzing
-     *
-     * @param context
-     * @param event
-     * @return
-     * @throws WebException
-     */
-    Object[] in(RoutingContext context, Event event)
-            throws WebException;
-
+public interface Analyzer extends Income<Object[]> {
     /**
      * response mime analyzing
      *

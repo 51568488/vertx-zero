@@ -18,6 +18,7 @@ public class MimeAnalyzer implements Sentry {
 
     @Override
     public Handler<RoutingContext> signal(final Depot depot) {
+        
         return (context) -> {
             final Event reference = depot.getEvent();
             /** Build argument **/

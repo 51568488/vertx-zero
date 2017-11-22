@@ -314,6 +314,18 @@ public class Fn {
     }
 
     /**
+     * @param array
+     * @param fnEach
+     * @param <V>
+     */
+    public static <V> void itMatrix(
+            final V[][] array,
+            final Consumer<V> fnEach
+    ) {
+        Congregation.exec(array, fnEach);
+    }
+
+    /**
      * @param data
      * @param fnEach
      * @param <T>

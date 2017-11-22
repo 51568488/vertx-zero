@@ -2,65 +2,73 @@ package io.vertx.up.media;
 
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.Epsilon;
 import io.vertx.up.atom.Event;
 import io.vertx.up.exception.WebException;
-import io.vertx.up.exception.web._415MediaNotSupportException;
 import io.vertx.up.func.Fn;
-import io.vertx.up.log.Annal;
+import io.vertx.up.media.unit.Atomic;
+import io.vertx.up.media.unit.RailAtomic;
+import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import java.util.Set;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class MediaAnalyzer implements Analyzer {
 
-    private static final Annal LOGGER = Annal.get(MediaAnalyzer.class);
+    private final transient Atomic<Object> atomic =
+            Instance.singleton(RailAtomic.class);
 
     @Override
     public Object[] in(final RoutingContext context,
-                       final Event event) throws WebException {
+                       final Event event)
+            throws WebException {
         /** Consume mime type matching **/
-        final MediaType requestMedia = getMedia(context, HttpHeaders.CONTENT_TYPE);
-        this.checkConsume(event, requestMedia);
+        final MediaType requestMedia = MediaType.valueOf(
+                context.request().getHeader(HttpHeaders.CONTENT_TYPE));
+        MediaAtom.accept(event, requestMedia);
+
         /** Selector execute for Analyzer selection **/
-        
-        return new Object[0];
+        final Method method = event.getAction();
+
+        /** Extract definition from method **/
+        final List<Epsilon<Object>> epsilons =
+                this.in(context, method);
+
+        /** Extract value list **/
+        return epsilons.stream()
+                .map(Epsilon::getValue).toArray();
+    }
+
+    private List<Epsilon<Object>> in(final RoutingContext context,
+                                     final Method method)
+            throws WebException {
+        final Class<?>[] paramTypes = method.getParameterTypes();
+        final Annotation[][] annoTypes = method.getParameterAnnotations();
+        final List<Epsilon<Object>> args = new ArrayList<>();
+        for (int idx = 0; idx < paramTypes.length; idx++) {
+
+            /** For each field specification **/
+            final Epsilon<Object> epsilon = new Epsilon<>();
+            epsilon.setArgType(paramTypes[idx]);
+            epsilon.setAnnotations(annoTypes[idx]);
+
+            /** Epsilon income -> outcome **/
+            final Epsilon<Object> outcome =
+                    this.atomic.ingest(context, epsilon);
+            args.add(Fn.get(() -> outcome, outcome));
+        }
+        return args;
     }
 
     @Override
     public Envelop out(final Envelop envelop,
                        final Event event) throws WebException {
+        // TODO: Replier
         return null;
-    }
-
-    private MediaType getMedia(final RoutingContext context,
-                               final CharSequence headerKey) {
-        return MediaType.valueOf(context.request().getHeader(headerKey));
-    }
-
-    private void checkConsume(final Event event,
-                              final MediaType type) throws WebException {
-        final Set<MediaType> medias = event.getConsumes();
-        if (!medias.contains(MediaType.WILDCARD_TYPE)) {
-            /** 1. Start to parsing expected type **/
-            boolean match = medias.stream()
-                    .anyMatch(
-                            media -> MediaType.MEDIA_TYPE_WILDCARD.equals(media.getType()) ||
-                                    media.getType().equalsIgnoreCase(type.getType()));
-            /** 2. Type checking **/
-            Fn.flingUp(!match, LOGGER,
-                    _415MediaNotSupportException.class,
-                    getClass(), type, medias);
-            /** 3. Start to parsing expected sub type **/
-            match = medias.stream()
-                    .anyMatch(
-                            media -> MediaType.MEDIA_TYPE_WILDCARD.equals(media.getSubtype()) ||
-                                    media.getSubtype().equalsIgnoreCase(type.getSubtype())
-                    );
-            /** 4. Subtype checking **/
-            Fn.flingUp(!match, LOGGER,
-                    _415MediaNotSupportException.class,
-                    getClass(), type, medias);
-        }
     }
 }

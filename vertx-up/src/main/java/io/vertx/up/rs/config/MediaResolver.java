@@ -21,6 +21,12 @@ class MediaResolver {
 
     private static final Annal LOGGER = Annal.get(MediaResolver.class);
 
+    private static final Set<MediaType> DEFAULTS = new ConcurrentHashSet<MediaType>() {
+        {
+            add(MediaType.WILDCARD_TYPE);
+        }
+    };
+
     /**
      * Capture the consume media types
      *
@@ -47,7 +53,7 @@ class MediaResolver {
         return Fn.get(() -> {
             final Annotation anno = method.getAnnotation(mediaCls);
             return Fn.getSemi(null == anno, LOGGER,
-                    ConcurrentHashSet::new,
+                    () -> DEFAULTS,
                     () -> {
                         final String[] value = Instance.invoke(anno, "value");
                         final Set<MediaType> result = new ConcurrentHashSet<>();
@@ -60,11 +66,7 @@ class MediaResolver {
                                 }
                             }
                         }
-                        /** Ward Card for default **/
-                        if (result.isEmpty()) {
-                            result.add(MediaType.WILDCARD_TYPE);
-                        }
-                        return result;
+                        return result.isEmpty() ? DEFAULTS : result;
                     });
         }, method, mediaCls);
     }

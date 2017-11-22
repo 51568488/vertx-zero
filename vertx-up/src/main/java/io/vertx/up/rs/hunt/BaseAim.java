@@ -14,14 +14,11 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.media.Analyzer;
 import io.vertx.up.media.MediaAnalyzer;
-import io.vertx.up.rs.mirror.ParamFiller;
 import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Base class to provide template method
@@ -41,24 +38,11 @@ public abstract class BaseAim {
      * @param event
      * @return
      */
-    @Deprecated
     protected Object[] buildArgs(final RoutingContext context,
                                  final Event event) {
         Object[] cached = context.get(ID.PARAMS);
         if (null == cached) {
-            // 1. Call action
-            final Method method = event.getAction();
-            final List<Object> arguments = new ArrayList<>();
-
-            // 2. Extract definition from method
-            final Class<?>[] parameterTypes = method.getParameterTypes();
-            final Annotation[][] annotations = method.getParameterAnnotations();
-            for (int idx = 0; idx < parameterTypes.length; idx++) {
-                // 3. Process filler to build parameters.
-                arguments.add(ParamFiller.process(context,
-                        parameterTypes[idx], annotations[idx]));
-            }
-            cached = arguments.toArray();
+            cached = this.analyzer.in(context, event);
             context.put(ID.PARAMS, cached);
         }
         // Validation handler has been get the parameters.

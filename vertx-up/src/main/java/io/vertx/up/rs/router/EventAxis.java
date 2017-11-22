@@ -4,21 +4,32 @@ import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.up.atom.Depot;
 import io.vertx.up.atom.Event;
+import io.vertx.up.exception.AnnotationRepeatException;
 import io.vertx.up.exception.EventActionNoneException;
+import io.vertx.up.exception.ParamAnnotationException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.HttpZeroEndurer;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Axis;
+import io.vertx.up.rs.Filler;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.dispatcher.ModeSplitter;
 import io.vertx.up.rs.sentry.MimeAnalyzer;
 import io.vertx.up.rs.sentry.StandardVerifier;
 import io.vertx.up.web.ZeroAnno;
+import io.vertx.zero.tool.mirror.Anno;
 import io.vertx.zero.tool.mirror.Instance;
 
+import javax.ws.rs.BodyParam;
+import javax.ws.rs.StreamParam;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EventAxis implements Axis {
     private static final Annal LOGGER = Annal.get(EventAxis.class);
@@ -88,6 +99,31 @@ public class EventAxis implements Axis {
         final Method method = event.getAction();
         Fn.flingUp(null == method, LOGGER, EventActionNoneException.class,
                 getClass(), event);
+        /** Specification **/
+        verify(method, BodyParam.class);
+        verify(method, StreamParam.class);
+        /** Field Specification **/
+        for (final Parameter parameter : method.getParameters()) {
+            verify(parameter);
+        }
     }
 
+    private void verify(final Method method, final Class<? extends Annotation> annoCls) {
+        final Annotation[][] annotations = method.getParameterAnnotations();
+        final int occurs = Anno.occurs(annotations, annoCls);
+
+        Fn.flingUp(1 < occurs, LOGGER, AnnotationRepeatException.class,
+                getClass(), method.getName(), annoCls, occurs);
+    }
+
+    private void verify(final Parameter parameter) {
+        final Annotation[] annotations = parameter.getDeclaredAnnotations();
+        final List<Annotation> annotationList = Arrays.stream(annotations)
+                .filter(item -> Filler.PARAMS.keySet().contains(item))
+                .collect(Collectors.toList());
+
+        final int multi = annotationList.size();
+        Fn.flingUp(1 < multi, LOGGER, ParamAnnotationException.class,
+                getClass(), parameter.getName(), multi);
+    }
 }

@@ -9,6 +9,7 @@ import io.vertx.zero.exception.ZeroException;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * For collection
@@ -45,6 +46,22 @@ class Congregation {
             final V item = list.get(idx);
             if (null != item) {
                 fnEach.accept(item, idx);
+            }
+        }
+    }
+
+    /**
+     * @param matrix
+     * @param fnEach
+     * @param <V>
+     */
+    static <V> void exec(final V[][] matrix,
+                         final Consumer<V> fnEach) {
+        for (final V[] arr : matrix) {
+            for (final V item : arr) {
+                if (null != item) {
+                    fnEach.accept(item);
+                }
             }
         }
     }

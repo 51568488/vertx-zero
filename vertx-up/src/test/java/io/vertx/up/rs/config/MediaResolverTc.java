@@ -22,14 +22,16 @@ public class MediaResolverTc extends ZeroBase {
     public void testProduce1(final TestContext context) throws NoSuchMethodException {
         final Method method = Media.class.getDeclaredMethod("sayH");
         final Set<MediaType> types = MediaResolver.produces(method);
-        context.assertEquals(0, types.size());
+        context.assertEquals(1, types.size());
+        context.assertTrue(types.contains(MediaType.WILDCARD_TYPE));
     }
 
     @Test
     public void testConsumes(final TestContext context) throws NoSuchMethodException {
         final Method method = Media.class.getDeclaredMethod("sayHello");
         final Set<MediaType> types = MediaResolver.consumes(method);
-        context.assertEquals(0, types.size());
+        context.assertEquals(1, types.size());
+        context.assertTrue(types.contains(MediaType.WILDCARD_TYPE));
     }
 
     @Test

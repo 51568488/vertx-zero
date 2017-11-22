@@ -33,6 +33,9 @@ E40025: "All the implementation class \"{0}\" with @Named contains no value of \
 E40026: "You will initialize infix = \"{0}\", but the configuration missed \"{1}\" in lime node of vertx.xml"
 E40027: You are trying to find the unique implementation of interface \"{0}\", but now it''s missing
 E40028: Duplicated implementation of interface \"{0}\" found in the system, it''s invalid
+E40029: The annotation {1} occurs {2} times in the method {0}, it''s forbidden in zero system
+E40030: The {0} parameter annotation should select one category, but now zero system detect {1}
+E40031: The {0} parameter annotation is {1}, but the java type {2} is not supported here.
 # (Web) Exception for web
 E60000: (400) - Request validation failure, class = {0}, method = {1}, message = {2}
 E60001: (400) - The input content could not be converted into valid resource user {0}

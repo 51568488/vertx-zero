@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public final class Anno {
@@ -60,6 +61,24 @@ public final class Anno {
     public static boolean isMark(final Field field,
                                  final Set<Class<? extends Annotation>> annoCls) {
         return annoCls.stream().anyMatch(field::isAnnotationPresent);
+    }
+
+    /**
+     * Check whether the annotations contain annotation that refer to annoCls.
+     *
+     * @param annotations
+     * @param annoCls
+     * @return
+     */
+    public static int occurs(final Annotation[][] annotations,
+                             final Class<? extends Annotation> annoCls) {
+        final AtomicInteger integer = new AtomicInteger(0);
+        Fn.itMatrix(annotations, (annotation) -> {
+            if (annotation.annotationType() == annoCls) {
+                integer.incrementAndGet();
+            }
+        });
+        return integer.get();
     }
 
     /**

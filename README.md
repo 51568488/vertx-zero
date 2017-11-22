@@ -31,24 +31,26 @@ Once the Zero is up, you can see following logs in your console ( The default po
 1. [Getting Start](doc/zero-starter.md)
 2. Parameters
 	1. [Interface annotation ( Non Event )](doc/zero-interface.md)
-	1. [Restful Api, @Path usage](doc/zero-path.md)
-	2. [ ( JSR311 Extend ) @BodyParam usage](doc/zero-param.md)
-	3. [Set POJO as parameters](doc/zero-pojo.md)
-	4. [Parameter type supported](doc/zero-typed.md)
-3. Request Flow
+	2. [Restful Api, @Path usage](doc/zero-path.md)
+	3. [ ( JSR311 Extend ) @BodyParam usage](doc/zero-param.md)
+	4. [Set POJO as parameters](doc/zero-pojo.md)
+3. Mime Supported Matrix
+	1. [Parameter type supported](doc/zero-typed.md)
+	2. [Mime type Matrix](doc/zero-mime.md)
+4. Request Flow
 	1. [How to enable Event Bus](doc/zero-worker.md)
 	2. [Request Workflow Introduction](doc/zero-mode.md)
 	3. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
-4. Plugin
+5. Plugin
 	1. [How to use MongoClient in Zero](doc/zero-mongo.md)
 	2. [How to use MySqlClient in Zero](doc/zero-mysql.md)
-5. Dependency Injection
+6. Dependency Injection
 	1. [How to use Dependency Injection ( JSR330 )](doc/zero-di.md)
-6. Exception ( Error )
+7. Exception ( Error )
 	1. [How to define WebException](doc/zero-error.md)
 	2. [How to validate request ( JSR 303 with Hibernate-Validator )](doc/zero-validate.md)
 	3. [Advanced Validation ( Rule for @BodyParam )](doc/zero-verify.md)
-7. Function style ( Fn )
+8. Function style ( Fn )
 	1. [Function Programming: fling](doc/zero-fling.md)
 	2. [Function Programming: safe](doc/zero-safe.md)
 	3. [Function Programming: trans, shunt](doc/zero-trans-shunt.md)

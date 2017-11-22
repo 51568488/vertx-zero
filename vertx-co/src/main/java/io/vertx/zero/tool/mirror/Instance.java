@@ -105,6 +105,7 @@ public final class Instance {
             try {
                 result = access.invoke(instance, name, args);
             } catch (final Throwable ex) {
+                ex.printStackTrace();
                 // Could not call, re-find the method by index
                 // Search method by argument index because could not call directly
                 final int index;

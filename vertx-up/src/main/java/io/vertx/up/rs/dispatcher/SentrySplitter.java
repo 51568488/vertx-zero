@@ -11,7 +11,7 @@ import io.vertx.zero.tool.mirror.Instance;
  * 2. Extend Parameters: @BodyParam -> JsonObject, JsonArray
  * 3. POJO Parameters: @BodyParam -> POJO
  */
-public class VerifierSplitter {
+public class SentrySplitter {
 
     public Sentry distribute(final Depot depot) {
         // Annotation to different verifier workflow

@@ -48,6 +48,21 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- MIME4j -->
+        <dependency>
+            <groupId>org.apache.james</groupId>
+            <artifactId>apache-mime4j-james-utils</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.james</groupId>
+            <artifactId>apache-mime4j-examples</artifactId>
+        </dependency>
         <!-- Vert.x Api contract -->
         <dependency>
             <groupId>io.vertx</groupId>

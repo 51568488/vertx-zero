@@ -9,9 +9,9 @@ import io.vertx.up.atom.Receipt;
 import io.vertx.up.exception.AsyncSignatureException;
 import io.vertx.up.exception.WorkerArgumentException;
 import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.eon.Values;
-import io.vertx.up.log.Annal;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.reflect.Method;

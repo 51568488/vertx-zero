@@ -1,6 +1,7 @@
 package io.vertx.up.rs;
 
-import io.vertx.ext.web.api.validation.ValidationHandler;
+import io.vertx.core.Handler;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Depot;
 
 /**
@@ -11,5 +12,5 @@ public interface Sentry {
      * @param depot
      * @return
      */
-    ValidationHandler signal(final Depot depot);
+    Handler<RoutingContext> signal(final Depot depot);
 }

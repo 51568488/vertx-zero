@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  * 3. T -> String ( Generate resonse )
  * 4. Checking the data type to see where support serialization
  */
+@SuppressWarnings("unchecked")
 public class ZeroSerializer {
 
     private static final ConcurrentMap<Class<?>, Saber> SABERS =

@@ -1,0 +1,56 @@
+package io.vertx.up.media;
+
+import io.vertx.ext.web.RoutingContext;
+import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.Epsilon;
+import io.vertx.up.atom.Event;
+import io.vertx.up.exception.WebException;
+import io.vertx.up.media.parse.EpsilonIncome;
+import io.vertx.up.media.parse.Income;
+import io.vertx.zero.tool.StringUtil;
+import io.vertx.zero.tool.mirror.Instance;
+
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+
+@SuppressWarnings("unchecked")
+public class MediaAnalyzer implements Analyzer {
+
+    private final transient Income<List<Epsilon<Object>>> income =
+            Instance.singleton(EpsilonIncome.class);
+
+    @Override
+    public Object[] in(final RoutingContext context,
+                       final Event event)
+            throws WebException {
+        /** Consume mime type matching **/
+        final MediaType requestMedia = getMedia(context);
+        MediaAtom.accept(event, requestMedia);
+
+        /** Extract definition from method **/
+        final List<Epsilon<Object>> epsilons =
+                this.income.in(context, event);
+
+        /** Extract value list **/
+        return epsilons.stream()
+                .map(Epsilon::getValue).toArray();
+    }
+
+    @Override
+    public Envelop out(final Envelop envelop,
+                       final Event event) throws WebException {
+        // TODO: Replier
+        return null;
+    }
+
+    private MediaType getMedia(final RoutingContext context) {
+        final String header = context.request().getHeader(HttpHeaders.CONTENT_TYPE);
+        if (StringUtil.isNil(header)) {
+            return MediaType.WILDCARD_TYPE;
+        } else {
+            return MediaType.valueOf(header);
+        }
+    }
+
+}

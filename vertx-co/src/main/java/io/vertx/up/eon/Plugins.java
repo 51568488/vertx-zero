@@ -24,8 +24,11 @@ public interface Plugins {
      **/
     String FAILURE = "failure";
 
+    String RESOLVER = "resolver";
+
     String[] DATA = new String[]{
-            INJECT, ERROR, FAILURE, SERVER
+            INJECT, ERROR, FAILURE, SERVER,
+            RESOLVER, RESOLVER + "-internal"
     };
 
     // Default infix

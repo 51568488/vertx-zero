@@ -15,8 +15,23 @@ public abstract class JObjectBase implements Node<JsonObject> {
 
         Fn.flingUp(!config.containsKey(getKey()), getLogger(),
                 ConfigKeyMissingException.class, getClass(), getKey());
-        
+
         return config.getJsonObject(this.getKey());
+    }
+
+    protected JsonObject mergeIn(final String addtional) {
+        final JsonObject data = new JsonObject();
+        final Node<JsonObject> node = Instance.instance(ZeroPlugin.class, getKey());
+        final JsonObject source = node.read();
+        final Node<JsonObject> internal = Instance.instance(ZeroPlugin.class, addtional);
+        final JsonObject target = internal.read();
+        if (null != target) {
+            data.mergeIn(target, true);
+        }
+        if (null != source) {
+            data.mergeIn(source, true);
+        }
+        return data;
     }
 
     protected Annal getLogger() {

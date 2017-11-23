@@ -5,10 +5,10 @@ import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.zero.marshal.equip.HttpServerVisitor;
 import io.vertx.zero.marshal.equip.NodeVisitor;
-import io.vertx.zero.marshal.equip.ServerVisitor;
 import io.vertx.zero.marshal.equip.VertxVisitor;
+import io.vertx.zero.marshal.micro.HttpServerVisitor;
+import io.vertx.zero.marshal.micro.ServerVisitor;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.concurrent.ConcurrentHashMap;

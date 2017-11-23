@@ -32,8 +32,11 @@ public final class ZeroAmbient {
         // 2. The injections must be configured in lime node.
         Fn.safeZero(() -> {
             final JsonObject opt = OPTS.ingest(KEY);
-            Fn.itJObject(opt, (item, field) ->
-                    INJECTIONS.put(field, Instance.clazz(item.toString())));
+            Fn.itJObject(opt, (item, field) -> {
+                final String plugin = item.toString();
+                LOGGER.info(Info.PLUGIN_LOAD, KEY, field, plugin);
+                INJECTIONS.put(field, Instance.clazz(plugin));
+            });
         }, LOGGER);
     }
 

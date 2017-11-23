@@ -12,6 +12,7 @@ public class JsonResolver<T> implements Resolver<T> {
                               final Epsilon<T> income)
             throws WebException {
         // Json Resolver
+        System.out.println(income);
         return income;
     }
 }

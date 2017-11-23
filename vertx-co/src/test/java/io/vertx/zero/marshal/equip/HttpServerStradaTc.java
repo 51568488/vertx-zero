@@ -5,6 +5,7 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.quiz.ZeroBase;
 import io.vertx.zero.marshal.Transformer;
+import io.vertx.zero.marshal.micro.HttpServerStrada;
 import io.vertx.zero.tool.mirror.Instance;
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package io.vertx.zero.marshal.equip;
+package io.vertx.zero.marshal.micro;
 
 import io.vertx.zero.marshal.Visitor;
 

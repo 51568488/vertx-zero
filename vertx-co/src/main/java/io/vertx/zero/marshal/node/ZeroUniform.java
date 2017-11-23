@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-public class ZeroDynamic implements Node<JsonObject> {
+public class ZeroUniform implements Node<JsonObject> {
 
     private static final Node<ConcurrentMap<String, String>> node
             = Instance.singleton(ZeroLime.class);

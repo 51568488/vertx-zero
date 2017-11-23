@@ -3,12 +3,11 @@ package io.vertx.zero.marshal.options;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.zero.exception.DemonException;
+import io.vertx.zero.exception.EmptyStreamException;
 import io.vertx.zero.exception.LimeFileException;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.marshal.Node;
-import io.vertx.zero.marshal.node.ZeroLime;
-import io.vertx.zero.marshal.node.ZeroPlugin;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.zero.marshal.node.Node;
+import io.vertx.zero.marshal.node.ZeroTool;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -19,6 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <T>
  */
 public interface Opts<T> {
+
     /**
      * Read data from files
      *
@@ -71,10 +71,14 @@ class YamlOpts implements Opts<JsonObject> {
             throws ZeroException {
         final Node<JsonObject> node =
                 Fn.pool(EXTENSIONS, key,
-                        () -> Instance.instance(ZeroPlugin.class, key));
-        final JsonObject data = node.read();
-        if (null == data) {
-            throw new LimeFileException(ZeroLime.calculatePath(key));
+                        () -> Node.infix(key));
+        final JsonObject data = new JsonObject();
+        try {
+            data.mergeIn(node.read());
+        } catch (final EmptyStreamException ex) {
+            if (data.isEmpty()) {
+                throw new LimeFileException(ZeroTool.produce(key));
+            }
         }
         return data;
     }

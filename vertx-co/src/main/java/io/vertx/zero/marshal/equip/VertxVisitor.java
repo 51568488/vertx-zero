@@ -7,10 +7,11 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.zero.atom.Ruler;
+import io.vertx.zero.eon.Info;
 import io.vertx.zero.exception.ClusterConflictException;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.marshal.Node;
 import io.vertx.zero.marshal.Transformer;
+import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroVertx;
 import io.vertx.zero.tool.Ensurer;
 import io.vertx.zero.tool.mirror.Instance;
@@ -19,7 +20,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class VertxVisitor implements NodeVisitor {
-    private static final Annal LOGGER = Annal.get(HttpServerVisitor.class);
+    private static final Annal LOGGER = Annal.get(VertxVisitor.class);
+
+    private static final String KEY = "vertx";
 
     private transient final Node<JsonObject> NODE
             = Instance.singleton(ZeroVertx.class);
@@ -38,11 +41,9 @@ public class VertxVisitor implements NodeVisitor {
         // 2. Visit the node for vertx
         final JsonObject data = this.NODE.read();
         // 3. Vertx node validation.
-        final JsonObject vertxData = data.getJsonObject(Key.VERTX);
-        Fn.shuntZero(() -> {
-            LOGGER.info(Info.INF_B_VERIFY, Key.VERTX, vertxData);
-            Ruler.verify(Files.VERTX, vertxData);
-        }, vertxData);
+        final JsonObject vertxData = data.getJsonObject(KEY);
+        LOGGER.info(Info.INF_B_VERIFY, KEY, vertxData);
+        Fn.shuntZero(() -> Ruler.verify(KEY, vertxData), vertxData);
         // 4. Set cluster options
         this.clusterOptions = this.clusterTransformer.transform(data.getJsonObject(YKEY_CLUSTERED));
         // 5. Transfer Data

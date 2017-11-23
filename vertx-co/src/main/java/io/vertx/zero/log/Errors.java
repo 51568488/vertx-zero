@@ -3,7 +3,6 @@ package io.vertx.zero.log;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.func.Fn;
-import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Tpl;
 import io.vertx.zero.exception.ErrorMissingException;
 import io.vertx.zero.marshal.node.Node;
@@ -14,8 +13,6 @@ import java.text.MessageFormat;
  *
  */
 public final class Errors {
-
-    private static final Annal LOGGER = Annal.get(Errors.class);
 
     public static String normalize(final Class<?> clazz,
                                    final int code,

@@ -88,16 +88,19 @@ Once you have built the project, you can add following dependency into you `pom.
 ## 5. Code Structure
 
 ```
+| - quiz					# Testing Tool for Unit testing
 | - up
+     | - annotations		# * Engine: JSR311 Annotation extends
      | - atom				# Model definition
      | - eon				# Constant pool
      | - exception			# Exception definition
      | - func				# High order function
-     | - plugin				# * Engine: Plugin Sub System
-     | - rs				# * Engine: JSR311 implementation
-     | - test				# Testing tools
+     | - log				# * Engine: Zero Logging system
+     | - plugin				# * Engine: Plugin Sub System ( Mongo, MySQL )
+     | - rs					# * Engine: JSR311 implementation
+     | - media				# * MIME Parsing
+     | - micro				# Micro Service module of zero, now support HTTP
      | - web				# * Engine: Web container core system
-     | - annotations			# * Engine: JSR311 Annotation extends
 | - zero
      | - atom				# Model definition
      | - eon				# Constant pool
@@ -105,7 +108,6 @@ Once you have built the project, you can add following dependency into you `pom.
      | - func				# High order function
      | - log				# * Engine: Logger/Error Sub System
      | - marshal			# * Engine: Metadata/Config Sub System
-     | - test				# Testing tools
      | - tool				# * Engine: Basic Infrastructure ( Utility Tool )
 ```
 

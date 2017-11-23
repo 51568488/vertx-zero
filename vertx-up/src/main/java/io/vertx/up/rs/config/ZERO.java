@@ -13,7 +13,7 @@ interface Info {
 
     String ADDRESS_ITEM = "[ ZERO ]        Addr : {0}";
 
-    String VTC_OPT = "[ ZERO ] The deployment options has been captured: " +
+    String VTC_OPT = "[ ZERO ] ( Verticle ) The deployment options has been captured: " +
             "instances = {0}, group = {1}, ha = {2}, content = {3}";
 
     String METHOD_IGNORE = "[ ZERO ] Method name = {0} has not annotated with " +

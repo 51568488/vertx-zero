@@ -1,7 +1,6 @@
 package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.marshal.Node;
 import io.vertx.zero.tool.mirror.Instance;
 import org.junit.Test;
 
@@ -14,7 +13,7 @@ public class ZeroLimeTc {
 
     @Test
     public void testGen() {
-        final Node<JsonObject> dyanmic = Instance.singleton(ZeroDynamic.class);
+        final Node<JsonObject> dyanmic = Instance.singleton(ZeroUniform.class);
         final JsonObject data = dyanmic.read();
         System.out.println(data.encodePrettily());
     }

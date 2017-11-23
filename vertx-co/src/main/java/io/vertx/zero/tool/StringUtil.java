@@ -22,7 +22,7 @@ public class StringUtil {
     }
 
     public static Set<String> split(final String input, final String separator) {
-        return Fn.getJvm(() -> {
+        return Fn.get(new ConcurrentHashSet<>(), () -> {
             final String[] array = input.split(separator);
             final Set<String> result = new ConcurrentHashSet<>();
             for (final String item : array) {

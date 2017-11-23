@@ -28,7 +28,7 @@ public class EpsilonIncome implements Income<List<Epsilon<Object>>> {
     private static final Annal LOGGER = Annal.get(EpsilonIncome.class);
 
     private transient final Atomic<Object> atomic
-            = Instance.singleton(RailAtomic.class);
+            = Instance.singleton(MimeAtomic.class);
 
     @Override
     public List<Epsilon<Object>> in(final RoutingContext context,

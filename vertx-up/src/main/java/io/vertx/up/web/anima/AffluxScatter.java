@@ -11,9 +11,8 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.plugin.Infix;
 import io.vertx.up.web.ZeroAmbient;
 import io.vertx.up.web.ZeroAnno;
-import io.vertx.zero.marshal.Node;
-import io.vertx.zero.marshal.node.ZeroDynamic;
-import io.vertx.zero.marshal.node.ZeroLime;
+import io.vertx.zero.marshal.node.Node;
+import io.vertx.zero.marshal.node.ZeroUniform;
 import io.vertx.zero.tool.Runner;
 import io.vertx.zero.tool.mirror.Anno;
 import io.vertx.zero.tool.mirror.Instance;
@@ -32,8 +31,6 @@ public class AffluxScatter implements Scatter {
 
     private static final ConcurrentMap<Class<?>, ConcurrentMap<String, Class<?>>>
             PENDINGS = ZeroAnno.getPlugins();
-
-    private static final Node<JsonObject> LIME = Instance.singleton(ZeroLime.class);
 
     @Override
     public void connect(final Vertx vertx) {
@@ -111,7 +108,7 @@ public class AffluxScatter implements Scatter {
         if (null != infixCls) {
             if (Instance.isMatch(infixCls, Infix.class)) {
                 // Config checking
-                final Node<JsonObject> node = Instance.instance(ZeroDynamic.class);
+                final Node<JsonObject> node = Instance.instance(ZeroUniform.class);
                 final JsonObject options = node.read();
                 Fn.flingUp(!options.containsKey(pluginKey), LOGGER,
                         InjectionLimeKeyException.class,

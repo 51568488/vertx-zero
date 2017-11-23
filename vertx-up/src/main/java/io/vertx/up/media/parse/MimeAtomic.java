@@ -13,10 +13,10 @@ import io.vertx.zero.tool.mirror.Instance;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-public class RailAtomic<T> implements Atomic<T> {
+public class MimeAtomic<T> implements Atomic<T> {
 
     private static final Node<JsonObject> NODE = Node.infix("resolver");
-    private static final Annal LOGGER = Annal.get(RailAtomic.class);
+    private static final Annal LOGGER = Annal.get(MimeAtomic.class);
 
     @Override
     public Epsilon<T> ingest(final RoutingContext context,

@@ -6,7 +6,7 @@ import io.vertx.zero.eon.FileSuffix;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.tool.io.IO;
 
-public class ZeroUniform {
+public class ZeroTool {
 
     public static String produce(final String key) {
         if (null == key) {

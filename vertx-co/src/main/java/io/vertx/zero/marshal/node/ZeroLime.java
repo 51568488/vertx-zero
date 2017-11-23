@@ -2,13 +2,12 @@ package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
-import io.vertx.zero.eon.FileSuffix;
 import io.vertx.zero.eon.Strings;
-import io.vertx.zero.marshal.Node;
 import io.vertx.zero.tool.StringUtil;
 import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -19,13 +18,22 @@ public class ZeroLime implements Node<ConcurrentMap<String, String>> {
     private transient final Node<JsonObject> node
             = Instance.singleton(ZeroVertx.class);
 
+    private static final ConcurrentMap<String, String> INTERNALS
+            = new ConcurrentHashMap<String, String>() {
+        {
+            put("error", ZeroTool.produce("error"));
+            put("inject", ZeroTool.produce("inject"));
+            put("server", ZeroTool.produce("server"));
+            put("resolver", ZeroTool.produce("resolver"));
+        }
+    };
+
     @Override
     public ConcurrentMap<String, String> read() {
         // 1. Read all zero configuration: zero
         final JsonObject data = this.node.read();
         // 2. Read the string node "lime" for extensions
-        final String literal = data.getString(Key.LIME);
-        return build(literal);
+        return build(data.getString(Key.LIME));
     }
 
     private ConcurrentMap<String, String> build(final String literal) {
@@ -33,16 +41,11 @@ public class ZeroLime implements Node<ConcurrentMap<String, String>> {
         if (null != literal) {
             for (final String set : sets) {
                 if (!StringUtil.isNil(set)) {
-                    Fn.pool(Storage.DATA_LIME, set,
-                            () -> calculatePath(set));
+                    Fn.pool(INTERNALS, set,
+                            () -> ZeroTool.produce(set));
                 }
             }
         }
-        return Storage.DATA_LIME;
-    }
-
-    public static String calculatePath(final String key) {
-        return Limes.PREFIX + Strings.DASH + key +
-                Strings.DOT + FileSuffix.YML;
+        return INTERNALS;
     }
 }

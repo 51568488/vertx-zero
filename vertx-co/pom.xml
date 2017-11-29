@@ -67,11 +67,6 @@
             <groupId>com.esotericsoftware</groupId>
             <artifactId>reflectasm</artifactId>
         </dependency>
-        <!-- Jsr 311 Jws -->
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-common</artifactId>
-        </dependency>
         <!-- Jsr 330 -->
         <dependency>
             <groupId>javax.inject</groupId>

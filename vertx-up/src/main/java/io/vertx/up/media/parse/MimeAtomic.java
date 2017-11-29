@@ -12,6 +12,7 @@ import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import java.lang.annotation.Annotation;
 
 public class MimeAtomic<T> implements Atomic<T> {
 
@@ -33,24 +34,35 @@ public class MimeAtomic<T> implements Atomic<T> {
             epsilon = atomic.ingest(context, income);
         } else {
             /** Resolver **/
-            final Resolver<T> resolver = getResolver(context);
+            final Resolver<T> resolver = getResolver(context, income);
             epsilon = resolver.resolve(context, income);
         }
         return epsilon;
     }
 
-    private Resolver<T> getResolver(final RoutingContext context) {
-        final JsonObject content = NODE.read();
-        final String header = context.request().getHeader(HttpHeaders.CONTENT_TYPE);
-        final String resolver;
-        if (null == header) {
-            resolver = content.getString("default");
+    private Resolver<T> getResolver(final RoutingContext context,
+                                    final Epsilon<T> income) {
+        /** 1.Read the resolver first **/
+        final Annotation annotation = income.getAnnotation();
+        final Class<?> resolverCls = Instance.invoke(annotation, "resolver");
+        /** 2.Check configured in default **/
+        if (null == resolverCls) {
+            /** 3. Old path **/
+            final JsonObject content = NODE.read();
+            final String header = context.request().getHeader(HttpHeaders.CONTENT_TYPE);
+            final String resolver;
+            if (null == header) {
+                resolver = content.getString("default");
+            } else {
+                final MediaType type = MediaType.valueOf(header);
+                final JsonObject resolverMap = content.getJsonObject(type.getType());
+                resolver = resolverMap.getString(type.getSubtype());
+            }
+            LOGGER.info(Info.RESOLVER, resolver, header, context.request().absoluteURI());
+            return Instance.singleton(resolver);
         } else {
-            final MediaType type = MediaType.valueOf(header);
-            final JsonObject resolverMap = content.getJsonObject(type.getType());
-            resolver = resolverMap.getString(type.getSubtype());
+            LOGGER.info(Info.RESOLVER_CONFIG, resolverCls);
+            return Instance.singleton(resolverCls);
         }
-        LOGGER.info(Info.RESOLVER, resolver, header, context.request().absoluteURI());
-        return Instance.singleton(resolver);
     }
 }

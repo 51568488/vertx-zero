@@ -18,10 +18,11 @@ public class Net {
      * @return
      */
     public static boolean isReach(final String host, final int port) {
-        return Fn.getJvm(Boolean.FALSE, () -> {
+        final Boolean reach = Fn.getJvm(() -> {
             final Socket socket = new Socket();
             socket.connect(new InetSocketAddress(host, port));
-            return true;
-        }, LOGGER);
+            return Boolean.TRUE;
+        }, host, port);
+        return null == reach ? Boolean.FALSE : Boolean.TRUE;
     }
 }

@@ -94,7 +94,7 @@ HV000238: Temporal validation tolerance set to 0.
 ## 3. Curl Testing
 
 ```json
-curl http://localhost:8083/zero/user/login\?password\=12
+curl http://localhost:6083/zero/user/login\?password\=12
 Response ( Pure Parameters )
 {
     "brief": "Bad Request",

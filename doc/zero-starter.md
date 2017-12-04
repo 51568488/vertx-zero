@@ -41,7 +41,7 @@ Then you can run your api with the booter, for booter detail please refer to the
 ## 3. Curl Testing
 
 ```
-curl http://localhost:8083/up/example/first/zero
+curl http://localhost:6083/up/example/first/zero
 {"brief":"OK","status":200,"data":"Hello zero"}
 ```
 

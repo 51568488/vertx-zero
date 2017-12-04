@@ -37,7 +37,7 @@ public class ZeroExpApi {
 
 ```shell
 curl -H "Content-Type:application/json" -X POST --data '{"message": "lang Zero"}' \
-	http://localhost:8083/up/example/body/json
+	http://localhost:6083/up/example/body/json
 {"brief":"OK","status":200,"data":{"message":"lang Zero"}}
 ```
 

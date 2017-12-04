@@ -43,8 +43,8 @@ public class ZeroNoPathApi {
 ## 3. Curl Testing
 
 ```
-curl http://localhost:8083/up/example/non-path
+curl http://localhost:6083/up/example/non-path
 {"brief":"OK","status":200,"data":"No Path null"}                                                          
-curl http://localhost:8083/up/example/non-path\?name\=Lang
+curl http://localhost:6083/up/example/non-path\?name\=Lang
 {"brief":"OK","status":200,"data":"No Path Lang"}
 ```

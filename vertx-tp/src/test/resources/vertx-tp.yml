@@ -1,0 +1,5 @@
+tlk:
+  endpoint: http://localhost:6083
+  timeout:
+    connect: 1000
+    read: 4500

@@ -88,41 +88,7 @@ Once you have built the project, you can add following dependency into you `pom.
         </dependency>
 ```
 
-## 5. Code Structure
-
-```
-| - quiz					# Testing Tool for Unit testing
-| - up
-     | - annotations			# * Engine: JSR311 Annotation extends
-     | - atom				# Model definition
-     | - eon				# Constant pool
-     | - exception			# Exception definition
-     | - func				# High order function
-     | - log				# * Engine: Zero Logging system
-     | - plugin				# * Engine: Plugin Sub System ( Mongo, MySQL )
-     | - rs				# * Engine: JSR311 implementation
-     | - media				# * MIME Parsing
-     | - micro				# Micro Service module of zero, now support HTTP
-     | - web				# * Engine: Web container core system
-| - zero
-     | - atom				# Model definition
-     | - eon				# Constant pool
-     | - exception			# Exception definition
-     | - func				# High order function
-     | - log				# * Engine: Logger/Error Sub System
-     | - marshal			# * Engine: Metadata/Config Sub System
-     | - tool				# * Engine: Basic Infrastructure ( Utility Tool )
-```
-
-### Shared Package in each system.
-
-* `atom`: Model definition ( Internal Domain Definition )
-* `eon`: Constant pool 
-* `exception`: Exception definition
-* `func`: High order function
-* `test`: Testing tools.
-
-## 6. Function Interface Extend
+## 5. Function Interface Extend
 
 Zero system extend function interface system based on java8.
 
@@ -141,9 +107,11 @@ Extension by zero for specifical usage.
 * `io.vertx.up.func.ZeroSupplier<T>`：`T get() throws ZeroException`；
 * `io.vertx.up.func.ZeroBiConsumer<T,R>`: `void accept(T input, R second) throws ZeroException`
 
-## 7. Logging in Zero
+In Zero system, there defined a supper static class for function abstract to simply the coding, this class is `io.vertx.up.func.Fn`.
 
-In Zero system, there defined a supper static class for function abstract to simply the coding, this class is `io.vertx.up.func.Fn`, You also could use following function in your coding.
+## 6. Logging in Zero
+
+You also could use following function in your coding to get Logger component.
 
 ```java
 // Zero Logger initialized, connect to vert.x logging system directly but uniform managed by zero.
@@ -157,7 +125,7 @@ public final class Statute {
 }
 ```
  
-## 8. Dependency Library
+## 7. Dependency Library
 
 *Lombok is standalone library, you can ignore this library in your project and write pojo with pure java. But we recommend you to use this library to simplify the POJO writting.*
 

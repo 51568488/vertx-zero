@@ -9,6 +9,7 @@ import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.tool.mirror.Types;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
@@ -134,6 +135,11 @@ public final class Jackson {
     public static <T> T deserialize(final String value, final Class<T> type) {
         return Fn.get(null,
                 () -> Fn.getJvm(() -> MAPPER.readValue(value, type)), value);
+    }
+
+    public static <T> T deserialize(final InputStream in, final Class<T> type) {
+        return Fn.get(null,
+                () -> Fn.getJvm(() -> MAPPER.readValue(in, type)), in);
     }
 
     private Jackson() {

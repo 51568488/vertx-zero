@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>vertx-zero</artifactId>
-        <groupId>io.vertx.up</groupId>
+        <groupId>cn.vertxup</groupId>
         <version>0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,7 +12,7 @@
     <artifactId>vertx-tp</artifactId>
     <dependencies>
         <dependency>
-            <groupId>io.vertx.up</groupId>
+            <groupId>cn.vertxup</groupId>
             <artifactId>vertx-co</artifactId>
         </dependency>
         <!-- Feign client configuration -->

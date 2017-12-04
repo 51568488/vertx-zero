@@ -1,23 +1,21 @@
 package io.vertx.tp.atom;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.core.json.JsonObject;
 
 /**
  * Feign Run exception for errors.
  */
 public class FeignRunException extends Exception {
-    @JsonProperty("code")
-    private String code;
-    @JsonProperty("info")
+
+    private int code;
     private String info;
-    @JsonProperty("message")
     private String message;
 
-    public String getCode() {
+    public int getCode() {
         return this.code;
     }
 
-    public void setCode(final String code) {
+    public void setCode(final int code) {
         this.code = code;
     }
 
@@ -36,5 +34,13 @@ public class FeignRunException extends Exception {
 
     public void setMessage(final String message) {
         this.message = message;
+    }
+
+    public JsonObject getResponse() {
+        final JsonObject data = new JsonObject();
+        data.put("code", this.code);
+        data.put("info", this.info);
+        data.put("message", this.message);
+        return data;
     }
 }

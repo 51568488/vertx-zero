@@ -3,7 +3,7 @@ package io.vertx.tp.atom;
 import feign.Feign;
 import feign.Request;
 import feign.Retryer;
-import feign.codec.JsonErrorDecoder;
+import feign.codec.ErrorDecoder;
 import feign.codec.JsonObjectDecoder;
 import feign.codec.JsonObjectEncoder;
 import io.vertx.core.json.JsonObject;
@@ -49,13 +49,22 @@ public class FeignDepot implements Serializable {
     }
 
     /**
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public <T> T build(final Class<T> clazz) {
+        return build(clazz, null);
+    }
+
+    /**
      * Build client for key
      *
      * @param clazz
      * @param <T>
      * @return
      */
-    public <T> T build(final Class<T> clazz) {
+    public <T> T build(final Class<T> clazz, final ErrorDecoder decoder) {
         final Feign.Builder builder = Feign.builder();
         if (null != this.options) {
             builder.options(this.options);
@@ -65,7 +74,9 @@ public class FeignDepot implements Serializable {
         }
         builder.encoder(new JsonObjectEncoder());
         builder.decoder(new JsonObjectDecoder());
-        builder.errorDecoder(new JsonErrorDecoder());
+        if (null != decoder) {
+            builder.errorDecoder(decoder);
+        }
         return builder.target(clazz, this.endpoint);
     }
 

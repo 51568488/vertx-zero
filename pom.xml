@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.vertx.up</groupId>
     <artifactId>vertx-zero</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <name>vertx-zero: Vertx Up Zero Configuration</name>
     <modules>
         <module>vertx-up</module>

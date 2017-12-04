@@ -1,7 +1,10 @@
 package io.vertx.up.eon.em;
 
 public enum ServerType {
-    HTTP("http");
+    // Http Server
+    HTTP("http"),
+    // Web Socket Server
+    SOCK("sock");
 
     private transient final String literal;
 

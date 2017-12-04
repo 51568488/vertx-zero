@@ -11,6 +11,7 @@
         <module>vertx-up</module>
         <module>vertx-zeus</module>
         <module>vertx-co</module>
+        <module>vertx-tp</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
@@ -32,6 +33,7 @@
         <guice.version>4.1.0</guice.version>
         <hibernate.validator.version>6.0.5.Final</hibernate.validator.version>
         <scala.version>2.12.4</scala.version>
+        <feign.version>8.18.0</feign.version>
         <common.lang3.version>3.7</common.lang3.version>
         <javax.el.version>3.0.0</javax.el.version>
         <mime4j.version>0.8.1</mime4j.version>
@@ -223,6 +225,11 @@
             <dependency>
                 <groupId>io.vertx.up</groupId>
                 <artifactId>vertx-co</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx.up</groupId>
+                <artifactId>vertx-tp</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
@@ -441,6 +448,18 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.netflix.feign/feign-core -->
+            <dependency>
+                <groupId>com.netflix.feign</groupId>
+                <artifactId>feign-core</artifactId>
+                <version>${feign.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.netflix.feign/feign-jackson -->
+            <dependency>
+                <groupId>com.netflix.feign</groupId>
+                <artifactId>feign-jackson</artifactId>
+                <version>${feign.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

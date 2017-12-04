@@ -1,11 +1,11 @@
 server:
-- name: tlk-service
+- name: zero-ws
   type: http
   config:
-    port: 8083
+    port: 6083
     host: 0.0.0.0
-- name: tlk-rpc
-  type: rpc
+- name: zero-socket
+  type: sock
   config:
-    port: 8084
+    port: 6088
     host: 0.0.0.0

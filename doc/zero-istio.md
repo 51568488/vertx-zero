@@ -161,6 +161,40 @@ Demo example will be install istio to `~/Tool/Zero/`
 
 	![Istio](image/istio-system.png)
 	
+## 3. Fabric8 Environment
+
+Installing gofabric8 on your environment:
+
+[Reference](https://fabric8.io/guide/getStarted/gofabric8.html)
+
+1. Install gofabric8 on your machine ( MacOS/Linux )
+
+	```
+	curl -sS https://get.fabric8.io/download.txt | bash
+	```
+2. Add the path to your environment
+
+	```
+	export PATH=$PATH:$HOME/.fabric8/bin
+	```
+	
+3. Then execute command to start fabric8
+
+	```
+	>> gofabric8 start
+	minikube already running		# Check minikube first.
+	Switched to context "minikube".
+	```
+
+	First time, please wait for some time to be sure all the containers in k8s started.
+	
+
+4. Start the console and wait for fabric8 started.
+
+	```
+	gofabric8 console
+	```
+
 ## Summary
 
 Then the docker and istio environments have been both prepared.

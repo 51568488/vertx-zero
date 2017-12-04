@@ -32,8 +32,8 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
             transformer = Instance.singleton(HttpServerStrada.class);
 
     /**
-     * @return
-     * @throws ZeroException
+     * @return Server config to generate HttpServerOptions by port
+     * @throws ZeroException ServerConfigException
      */
     @Override
     public ConcurrentMap<Integer, HttpServerOptions> visit(final String... key)
@@ -57,7 +57,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
         final ConcurrentMap<Integer, HttpServerOptions> map =
                 new ConcurrentHashMap<>();
         Fn.itJArray(serverData, JsonObject.class, (item, index) -> {
-            if (ServerType.HTTP.match(item.getString(YKEY_TYPE))) {
+            if (isServer(item)) {
                 // 1. Extract port
                 final int port = extractPort(item.getJsonObject(YKEY_CONFIG));
                 // 2. Convert JsonObject to HttpServerOptions
@@ -69,6 +69,10 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
             }
         });
         return map;
+    }
+
+    private boolean isServer(final JsonObject item) {
+        return ServerType.HTTP.match(item.getString(YKEY_TYPE));
     }
 
     private static int extractPort(final JsonObject config) {

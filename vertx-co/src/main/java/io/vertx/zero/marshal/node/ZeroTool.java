@@ -40,6 +40,4 @@ public class ZeroTool {
                         new JsonObject(),
                         () -> IO.getYaml(filename), filename));
     }
-
-    static String VERTX = "vertx" + Strings.DOT + FileSuffix.YML;
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Depot to extract the method parameters
+ * FeignDepot to extract the method parameters
  */
 public class Depot implements Serializable {
 

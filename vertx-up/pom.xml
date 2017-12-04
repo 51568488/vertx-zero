@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>vertx-up</artifactId>
-    <name>vertx-up: Zero Up Container</name>
+    <name>vertx-up: Zero Up Web Container</name>
     <dependencies>
         <dependency>
             <groupId>io.vertx.up</groupId>
-            <artifactId>vertx-co</artifactId>
+            <artifactId>vertx-tp</artifactId>
         </dependency>
         <!-- Mongo Client -->
         <dependency>
@@ -35,7 +35,16 @@
                     <groupId>io.vertx</groupId>
                     <artifactId>vertx-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <!-- Scala Library -->
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
         </dependency>
         <!-- RabbitMQ Client -->
         <dependency>

@@ -19,11 +19,11 @@ public class Driver {
 }
 ```
 
-Once the Zero is up, you can see following logs in your console ( The default port is 8083 ):
+Once the Zero is up, you can see following logs in your console ( The default port is 6083 ):
 
 ```
 [ ZERO ] ZeroHttpAgent Http Server has been started successfully. \
-	Endpoint: http://0.0.0.0:8083/
+	Endpoint: http://0.0.0.0:6083/
 ```
 
 ## 2. Documentation

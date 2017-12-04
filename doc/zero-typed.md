@@ -55,6 +55,6 @@ public class ZeroExpApi {
 ## 3. Curl Testing
 
 ```
-curl http://localhost:8083/up/example/typed/request
+curl http://localhost:6083/up/example/typed/request
 {"brief":"OK","status":200,"data":"http://localhost:8083/up/example/typed/request"}
 ```

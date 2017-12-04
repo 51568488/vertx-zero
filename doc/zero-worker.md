@@ -69,7 +69,7 @@ Vert.x zero has found 3 incoming address from the system. Incoming address list 
 
 ```
 curl -H "Content-Type:application/json" -X POST --data '{"name":"Lang","email":"silentbalanceyh@126.com"}' \
-	http://localhost:8083/up/example/event
+	http://localhost:6083/up/example/event
 {"brief":"OK","status":200,"data":{"name":"Lang","email":"silentbalanceyh@126.com"}}
 ```
 

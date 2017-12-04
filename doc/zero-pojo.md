@@ -48,6 +48,6 @@ public class ZeroExpApi {
 
 ```
 curl -H "Content-Type:application/json" -X POST --data '{"name":"Lang","email":"silentbalanceyh@126.com"}' \
-	http://localhost:8083/up/example/body/pojo
+	http://localhost:6083/up/example/body/pojo
 {"brief":"OK","status":200,"data":{"name":"Lang","email":"silentbalanceyh@126.com"}}
 ```

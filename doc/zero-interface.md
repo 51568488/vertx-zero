@@ -53,7 +53,7 @@ public class UserActor implements UserApi {
 ## 3. Curl Testing
 
 ```
-curl http://localhost:8083/zero/user/login
+curl http://localhost:6083/zero/user/login
 {"brief":"OK","status":200,"data":"Hello"}
 ```
 

@@ -82,7 +82,7 @@ Once you have built the project, you can add following dependency into you `pom.
 
 ```xml
         <dependency>
-            <groupId>io.vertx.up</groupId>
+            <groupId>cn.vertxup</groupId>
             <artifactId>vertx-up</artifactId>
             <version>0.4-SNAPSHOT</version>
         </dependency>

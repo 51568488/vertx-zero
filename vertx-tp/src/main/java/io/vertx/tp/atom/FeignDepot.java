@@ -3,6 +3,7 @@ package io.vertx.tp.atom;
 import feign.Feign;
 import feign.Request;
 import feign.Retryer;
+import feign.codec.JsonErrorDecoder;
 import feign.codec.JsonObjectDecoder;
 import feign.codec.JsonObjectEncoder;
 import io.vertx.core.json.JsonObject;
@@ -64,6 +65,7 @@ public class FeignDepot implements Serializable {
         }
         builder.encoder(new JsonObjectEncoder());
         builder.decoder(new JsonObjectDecoder());
+        builder.errorDecoder(new JsonErrorDecoder());
         return builder.target(clazz, this.endpoint);
     }
 

@@ -4,8 +4,3 @@ server:
   config:
     port: 6083
     host: 0.0.0.0
-- name: zero-socket
-  type: sock
-  config:
-    port: 6088
-    host: 0.0.0.0

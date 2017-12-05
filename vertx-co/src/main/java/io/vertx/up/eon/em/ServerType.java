@@ -4,7 +4,9 @@ public enum ServerType {
     // Http Server
     HTTP("http"),
     // Web Socket Server
-    SOCK("sock");
+    SOCK("sock"),
+    // Rx Server
+    RX("rx");
 
     private transient final String literal;
 

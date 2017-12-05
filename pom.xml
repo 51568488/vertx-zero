@@ -100,7 +100,7 @@
         <maven.plugin.site>3.6</maven.plugin.site>
         <maven.plugin.enforcer>3.0.0-M1</maven.plugin.enforcer>
         <maven.plugin.lombok>1.16.18.1</maven.plugin.lombok>
-        <maven.plugin.processor>3.1.0</maven.plugin.processor>
+        <maven.plugin.processor>3.3.2</maven.plugin.processor>
         <maven.plugin.source>3.0.1</maven.plugin.source>
         <maven.plugin.javadoc>2.10.4</maven.plugin.javadoc>
         <maven.plugin.staging>1.6.8</maven.plugin.staging>
@@ -353,6 +353,13 @@
                 <artifactId>vertx-up</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${common.lang3.version}</version>
+            </dependency>
+            <!-- Demo Project -->
             <dependency>
                 <groupId>cn.vertxup</groupId>
                 <artifactId>vertx-zeus</artifactId>

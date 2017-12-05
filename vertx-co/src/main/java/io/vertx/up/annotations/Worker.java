@@ -7,8 +7,9 @@ import java.lang.annotation.*;
 
 /**
  * Worker will consume event bus data by address
- * Agent -> Endpoint -> ( Jsr311 ) -> Address Method ( To ) -> EventBus
- * EventBus -> Worker -> Method -> Address Method ( From )
+ * 1.Agent -- 2.Endpoint -- 3.( Jsr311 ) -- 4.Address Method ( To )
+ * Finally the data should be passed into EventBus
+ * 1.EventBus -- 2.Worker -- 3.Method -- 4.Address Method ( From )
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

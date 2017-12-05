@@ -10,9 +10,9 @@ import java.lang.annotation.*;
  * It's defined by our team, it means that any standard verticle should not
  * contain different typed server instances.
  * But one agent could contain more than one servers distinguished by port.
- * ( Correct ): Agent1 -> HTTP -> HttpServer1, HttpServer2;
- * ( Corrent ): Agent1 -> HTTP -> HttpServer1
- * ( Wrong ): Agent1 -> HTTP -> HttpServer1, RpcServer1;
+ * ( Correct ): 1.Agent1 -- 2.HTTP -- 3.HttpServer1, HttpServer2;
+ * ( Corrent ): 1.Agent1 -- 2.HTTP -- 3.HttpServer1
+ * ( Wrong ): 1.Agent1 -- 2.HTTP -- 3.HttpServer1, RpcServer1;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

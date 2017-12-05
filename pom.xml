@@ -7,6 +7,8 @@
     <artifactId>vertx-zero</artifactId>
     <version>0.4</version>
     <name>vertx-zero: Vertx Up Zero Configuration</name>
+    <description>Vertx Zero Framework is a tool for Service Mesh Micro Service.</description>
+    <url>https://github.com/silentbalanceyh/vertx-zero</url>
     <modules>
         <module>vertx-up</module>
         <module>vertx-zeus</module>
@@ -14,6 +16,44 @@
         <module>vertx-tp</module>
     </modules>
     <packaging>pom</packaging>
+    <!-- License -->
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <!-- Developers -->
+    <developers>
+        <developer>
+            <name>Lang</name>
+            <email>silentbalanceyh@126.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+    <!-- Scm Connection -->
+    <scm>
+        <connection>scm:git:https://github.com/silentbalanceyh/vertx-zero.git</connection>
+        <developerConnection>scm:git:https://github.com/silentbalanceyh/vertx-zero.git</developerConnection>
+        <url>https://github.com/silentbalanceyh/vertx-zero</url>
+        <tag>v${project.version}</tag>
+    </scm>
+    <!-- Distribution -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>oss</id>
+            <name>Maven Central Snapshots Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>oss</id>
+            <name>Maven Central Staging Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
@@ -62,7 +102,9 @@
         <maven.plugin.lombok>1.16.18.1</maven.plugin.lombok>
         <maven.plugin.processor>3.1.0</maven.plugin.processor>
         <maven.plugin.source>3.0.1</maven.plugin.source>
-        <maven.plugin.javadoc>3.0.0-M1</maven.plugin.javadoc>
+        <maven.plugin.javadoc>2.10.4</maven.plugin.javadoc>
+        <maven.plugin.staging>1.6.8</maven.plugin.staging>
+        <maven.plugin.pgp>1.6</maven.plugin.pgp>
     </properties>
     <prerequisites>
         <maven>3.5.0</maven>
@@ -127,6 +169,11 @@
                     <artifactId>lombok-maven-plugin</artifactId>
                     <version>${maven.plugin.lombok}</version>
                 </plugin>
+                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
+                <plugin>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven.plugin.pgp}</version>
+                </plugin>
                 <!-- Import from vertx.core -->
                 <plugin>
                     <groupId>org.bsc.maven</groupId>
@@ -151,9 +198,78 @@
                         </excludes>
                     </configuration>
                 </plugin>
+                <!-- https://mvnrepository.com/artifact/org.sonatype.plugins/nexus-staging-maven-plugin -->
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${maven.plugin.staging}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>vertx-zero</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
+            <!-- Source -->
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Java Doc -->
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Staging -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>oss</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <!-- pgp -->
+            <plugin>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven.plugin.pgp}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <executable>gpg</executable>
+                            <keyname>lang.yu</keyname>
+                            <passphrase>pl,okmijn123</passphrase>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Mojo -->
             <plugin>
                 <artifactId>maven-enforcer-plugin</artifactId>

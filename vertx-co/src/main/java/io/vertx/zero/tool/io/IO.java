@@ -40,8 +40,8 @@ public final class IO {
     /**
      * Read to JsonArray
      *
-     * @param filename
-     * @return
+     * @param filename The filename to describe source path
+     * @return Return to JsonArray object
      */
     public static JsonArray getJArray(final String filename) {
         return Fn.transRun(() -> new JsonArray(getString(filename)),
@@ -51,8 +51,8 @@ public final class IO {
     /**
      * Read to JsonObject
      *
-     * @param filename
-     * @return
+     * @param filename The filename to describe source path
+     * @return Return to JsonObject
      */
     public static JsonObject getJObject(final String filename) {
         final String content = getString(filename);

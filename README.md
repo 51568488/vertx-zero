@@ -1,8 +1,29 @@
-# vertx-zero
+# Vertx Zero Up Framework
 
 This project is based on Vert.x, the idea came from Spring-Boot framework. It could help developers focus on business requirements instead of more details of Vert.x. The project contains two parts "Up" and "Zero". "Up" means running up, "Zero" means no configuration provided, you could run your project with default configuration only. 
 
-## 1. Boot Up
+Micro Service architecture is a future focused method to design and build mature system and help more companies to implement project faster, based on this idea, Vertx Zero Up Framework came out. It's micro-service oriented framework and will be verified by real projects. Also it provide a tool set to help developers to do correct things. The last point is that because of Event Driven Model, it's high performance framework. 
+
+This framework contains four sub-projects ( The latest version is 0.4 )
+
+* `vertx-co`: Core Library of Zero Up Framework
+* `vertx-tp`: Third part integration components in Zero Up Framework
+* `vertx-up`: Zero Up Engine with nested vert.x web container
+* `vertx-zeus`: Zero Examples, it will be removed in real project implementation. 
+
+## 1. Envrionment
+
+If you want to use Zero framework, you can add following dependency into you `pom.xml` to use Zero:
+
+```xml
+        <dependency>
+            <groupId>cn.vertxup</groupId>
+            <artifactId>vertx-up</artifactId>
+            <version>0.4</version>
+        </dependency>
+```
+
+## 2. Boot Up
 
 In your project, you can provide main entry only as following to run Zero ( Annotated with `@Up` ) .
 
@@ -26,7 +47,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
 	Endpoint: http://0.0.0.0:6083/
 ```
 
-## 2. Documentation
+## 3. Documentation
 
 1. [Getting Start](doc/zero-starter.md)
 2. Environment
@@ -62,33 +83,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
 	6. [Function Programming: pool/packet/zipper](doc/zero-pool.md)
 	7. [Function Programming: nullFlow](doc/zero-flow.md)
 
-## 3. Source Code
-
-1. Pull code from github
-
-	```
-	git clone https://github.com/silentbalanceyh/vertx-zero.git
-	```
-
-2. Build the whole project to be sure all the testing case have been passed. ( Some testing will take 8080 port )
-
-	```
-	mvn clean package install
-	```
-
-## 4. Envrionment
-
-Once you have built the project, you can add following dependency into you `pom.xml` to use Zero:
-
-```xml
-        <dependency>
-            <groupId>cn.vertxup</groupId>
-            <artifactId>vertx-up</artifactId>
-            <version>0.4</version>
-        </dependency>
-```
-
-## 5. Function Interface Extend
+## 4. Function Interface Extend
 
 Zero system extend function interface system based on java8.
 
@@ -109,7 +104,7 @@ Extension by zero for specifical usage.
 
 In Zero system, there defined a supper static class for function abstract to simply the coding, this class is `io.vertx.up.func.Fn`.
 
-## 6. Logging in Zero
+## 5. Logging in Zero
 
 You also could use following function in your coding to get Logger component.
 
@@ -125,7 +120,7 @@ public final class Statute {
 }
 ```
  
-## 7. Dependency Library
+## 6. Dependency Library
 
 *Lombok is standalone library, you can ignore this library in your project and write pojo with pure java. But we recommend you to use this library to simplify the POJO writting.*
 
@@ -140,8 +135,8 @@ public final class Statute {
 	* web-api-contract
 * [ ( JSR311 ) Jws Rs (2.1)](http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api) 
 * [ ( JSR330 ) Inject (1) ](https://mvnrepository.com/artifact/javax.inject/javax.inject)
-* [ ( JSR303 ) Validation ( 2.0.0.Final ) ](https://mvnrepository.com/artifact/javax.validation/validation-api)
-* [Hibernate Validator ( 6.0.5.Final )](https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator)
+* [ ( JSR303 ) Validation (2.0.0.Final) ](https://mvnrepository.com/artifact/javax.validation/validation-api)
+* [Hibernate Validator (6.0.5.Final)](https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator)
 * [Jersey Common (2.26)](http://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common) ( For media type parsing )
 * Logback
 	* [logback-classic (1.2.3)](http://mvnrepository.com/artifact/ch.qos.logback/logback-classic)
@@ -152,3 +147,4 @@ public final class Statute {
 * [ReflectAsm (1.11.3)](http://www.mvnrepository.com/artifact/com.esotericsoftware/reflectasm/)
 * [Jackson-Yaml (2.9.2)](http://www.mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml)
 * [Lombok (1.16.18)](http://mvnrepository.com/artifact/org.projectlombok/lombok)
+* [Feign Client (8.18.0)](https://mvnrepository.com/artifact/com.netflix.feign/feign-core)

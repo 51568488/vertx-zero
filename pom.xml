@@ -263,7 +263,7 @@
                             <goal>sign</goal>
                         </goals>
                         <configuration>
-                            <executable>gpg</executable>
+                            <executable>gpg2</executable>
                             <keyname>lang.yu</keyname>
                             <passphrase>pl,okmijn123</passphrase>
                         </configuration>

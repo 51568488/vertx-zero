@@ -12,9 +12,9 @@ import io.vertx.up.rs.hunt.AsyncAim;
 import io.vertx.up.rs.hunt.BlockAim;
 import io.vertx.up.rs.hunt.OneWayAim;
 import io.vertx.up.rs.hunt.SyncAim;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.tool.mirror.Instance;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

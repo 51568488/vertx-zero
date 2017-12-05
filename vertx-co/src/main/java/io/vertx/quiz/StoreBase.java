@@ -7,7 +7,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.zero.tool.Store;
+import io.vertx.up.tool.Store;
 
 public abstract class StoreBase extends ZeroBase {
 

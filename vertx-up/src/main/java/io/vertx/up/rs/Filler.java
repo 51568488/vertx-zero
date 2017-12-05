@@ -3,7 +3,7 @@ package io.vertx.up.rs;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.rs.argument.*;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Instance;
 
 import javax.ws.rs.*;
 import java.lang.annotation.Annotation;

@@ -3,9 +3,9 @@ package io.vertx.zero.marshal.reliable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
+import io.vertx.up.tool.Jackson;
 import io.vertx.zero.exception.RequiredFieldException;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.tool.Jackson;
 
 /**
  * Required validation

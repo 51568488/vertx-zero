@@ -8,8 +8,8 @@ import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.EventExtractor;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroGrid;
-import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.List;
 import java.util.Set;

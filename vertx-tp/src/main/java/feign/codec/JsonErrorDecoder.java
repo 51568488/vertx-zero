@@ -3,7 +3,7 @@ package feign.codec;
 import feign.Response;
 import io.vertx.tp.atom.FeignRunException;
 import io.vertx.up.log.Annal;
-import io.vertx.zero.tool.Jackson;
+import io.vertx.up.tool.Jackson;
 
 import java.io.IOException;
 

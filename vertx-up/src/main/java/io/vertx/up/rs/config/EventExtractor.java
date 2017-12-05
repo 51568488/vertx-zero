@@ -11,9 +11,9 @@ import io.vertx.up.exception.NoArgConstructorException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
+import io.vertx.up.tool.StringUtil;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroHelper;
-import io.vertx.zero.tool.StringUtil;
-import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.Method;

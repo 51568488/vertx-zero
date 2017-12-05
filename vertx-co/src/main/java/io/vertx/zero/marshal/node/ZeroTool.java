@@ -2,9 +2,9 @@ package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
+import io.vertx.up.tool.io.IO;
 import io.vertx.zero.eon.FileSuffix;
 import io.vertx.zero.eon.Strings;
-import io.vertx.zero.tool.io.IO;
 
 public class ZeroTool {
 

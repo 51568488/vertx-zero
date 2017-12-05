@@ -3,8 +3,8 @@ package io.vertx.zero.marshal.equip;
 import io.vertx.core.VertxOptions;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.quiz.ZeroBase;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.tool.mirror.Instance;
 import org.junit.Test;
 
 import java.util.concurrent.ConcurrentMap;

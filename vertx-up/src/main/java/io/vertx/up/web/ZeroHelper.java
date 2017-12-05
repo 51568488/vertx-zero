@@ -5,8 +5,8 @@ import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.exception.AgentDuplicatedException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.Path;
 import java.lang.annotation.Annotation;

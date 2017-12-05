@@ -10,7 +10,7 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.eon.Info;
 import io.vertx.up.exception.VertxCallbackException;
 import io.vertx.up.log.Annal;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Instance;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

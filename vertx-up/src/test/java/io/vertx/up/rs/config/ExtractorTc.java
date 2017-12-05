@@ -8,7 +8,7 @@ import io.vertx.up.example.User;
 import io.vertx.up.exception.EventSourceException;
 import io.vertx.up.micro.ZeroHttpAgent;
 import io.vertx.up.rs.Extractor;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Instance;
 import org.junit.Test;
 
 public class ExtractorTc extends UpBase {

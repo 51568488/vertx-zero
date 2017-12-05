@@ -3,7 +3,7 @@ package io.vertx.up.rs.config;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Instance;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;

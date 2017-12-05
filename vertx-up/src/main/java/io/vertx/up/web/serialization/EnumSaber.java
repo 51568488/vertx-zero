@@ -1,7 +1,7 @@
 package io.vertx.up.web.serialization;
 
 import io.vertx.up.func.Fn;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Instance;
 
 /**
  * Enum

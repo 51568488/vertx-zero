@@ -5,7 +5,7 @@ import io.vertx.up.annotations.Worker;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Instance;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentHashMap;

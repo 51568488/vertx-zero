@@ -33,7 +33,7 @@ mysql:
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.annotations.EndPoint;
-import io.vertx.zero.tool.Jackson;
+import io.vertx.up.tool.Jackson;
 import org.tlk.api.User;
 
 import javax.inject.infix.MySql;

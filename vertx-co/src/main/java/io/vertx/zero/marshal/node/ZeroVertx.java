@@ -3,8 +3,8 @@ package io.vertx.zero.marshal.node;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.func.Fn;
+import io.vertx.up.tool.StringUtil;
 import io.vertx.zero.eon.Strings;
-import io.vertx.zero.tool.StringUtil;
 
 import java.util.Set;
 

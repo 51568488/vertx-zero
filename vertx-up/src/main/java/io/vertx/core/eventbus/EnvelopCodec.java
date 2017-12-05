@@ -2,8 +2,8 @@ package io.vertx.core.eventbus;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.up.atom.Envelop;
+import io.vertx.up.tool.io.Stream;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.tool.io.Stream;
 
 /**
  * Codec to transfer envelop

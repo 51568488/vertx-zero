@@ -22,8 +22,8 @@ When you enabled mongodb in Zero framework on MacOS, you may met following issue
 	>> cat /private/etc/hosts
 	......
 	127.0.0.1			localhost
-	255.255.255.255		broadcasthost
-	::1             	localhost
+	255.255.255.255			broadcasthost
+	::1             		localhost
 	```
 3. Capture the hostname of your machine
 
@@ -36,9 +36,9 @@ When you enabled mongodb in Zero framework on MacOS, you may met following issue
 	```
 	>> sudo vim /private/etc/hosts
 	......
-	127.0.0.1       localhost       LangdeMacBook-Pro.local
+	127.0.0.1       	localhost       LangdeMacBook-Pro.local
 	......
-	::1				localhost       LangdeMacBook-Pro.local
+	::1			localhost       LangdeMacBook-Pro.local
 	......
 	```
 	

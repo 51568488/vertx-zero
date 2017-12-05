@@ -78,7 +78,6 @@
         <javax.el.version>3.0.0</javax.el.version>
         <mime4j.version>0.8.1</mime4j.version>
         <guava.version>23.5-jre</guava.version>
-        <mongo.version>3.5.0</mongo.version>
         <!-- JSR -->
         <jsr311.version>1.1.1</jsr311.version>
         <jsr330.version>1</jsr330.version>
@@ -332,12 +331,6 @@
     </build>
     <dependencyManagement>
         <dependencies>
-            <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core -->
-            <dependency>
-                <groupId>org.mongodb</groupId>
-                <artifactId>mongodb-driver-core</artifactId>
-                <version>${mongo.version}</version>
-            </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-dependencies</artifactId>

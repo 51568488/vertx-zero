@@ -7,8 +7,8 @@ import io.vertx.up.atom.Event;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.media.parse.EpsilonIncome;
 import io.vertx.up.media.parse.Income;
-import io.vertx.zero.tool.StringUtil;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.StringUtil;
+import io.vertx.up.tool.mirror.Instance;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;

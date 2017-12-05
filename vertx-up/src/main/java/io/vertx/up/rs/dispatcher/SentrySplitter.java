@@ -3,7 +3,7 @@ package io.vertx.up.rs.dispatcher;
 import io.vertx.up.atom.Depot;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.sentry.StandardVerifier;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Instance;
 
 /**
  * Validation for request based on JSR303 Bean Validation

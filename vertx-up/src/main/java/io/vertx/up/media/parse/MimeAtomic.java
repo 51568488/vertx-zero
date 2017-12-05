@@ -7,8 +7,8 @@ import io.vertx.up.eon.em.MimeFlow;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.log.Annal;
 import io.vertx.up.media.Resolver;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.marshal.node.Node;
-import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;

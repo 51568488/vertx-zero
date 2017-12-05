@@ -43,7 +43,7 @@ import io.vertx.up.annotations.Address;
 import io.vertx.up.annotations.Queue;
 import javax.inject.infix.Mongo;
 import io.vertx.up.atom.Envelop;
-import io.vertx.zero.tool.Jackson;
+import io.vertx.up.tool.Jackson;
 
 @Queue
 public class UserWorker {

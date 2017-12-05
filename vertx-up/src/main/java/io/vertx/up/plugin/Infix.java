@@ -3,10 +3,10 @@ package io.vertx.up.plugin;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.exception.ConfigKeyMissingException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
-import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.function.Function;
 

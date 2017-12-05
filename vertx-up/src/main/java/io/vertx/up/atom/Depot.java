@@ -3,8 +3,8 @@ package io.vertx.up.atom;
 import io.vertx.up.eon.ID;
 import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Filler;
-import io.vertx.zero.tool.Statute;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.Statute;
+import io.vertx.up.tool.mirror.Instance;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;

@@ -6,10 +6,10 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.log.Log;
 import io.vertx.zero.marshal.reliable.Insurer;
-import io.vertx.zero.tool.mirror.Instance;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 

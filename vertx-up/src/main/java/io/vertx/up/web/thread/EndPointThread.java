@@ -4,7 +4,7 @@ import io.vertx.up.atom.Event;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.EventExtractor;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Instance;
 
 import java.util.HashSet;
 import java.util.Set;

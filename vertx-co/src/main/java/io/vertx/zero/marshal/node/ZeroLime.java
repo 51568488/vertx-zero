@@ -2,9 +2,9 @@ package io.vertx.zero.marshal.node;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
+import io.vertx.up.tool.StringUtil;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.eon.Strings;
-import io.vertx.zero.tool.StringUtil;
-import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;

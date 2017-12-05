@@ -3,10 +3,10 @@ package io.vertx.quiz;
 import io.vertx.ext.unit.junit.RunTestOnContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.up.atom.Event;
+import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.EventExtractor;
-import io.vertx.up.log.Annal;
-import io.vertx.zero.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Instance;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 

@@ -1,7 +1,7 @@
 package io.vertx.up.exception;
 
+import io.vertx.up.tool.StringUtil;
 import io.vertx.zero.exception.UpException;
-import io.vertx.zero.tool.StringUtil;
 
 import java.util.Set;
 

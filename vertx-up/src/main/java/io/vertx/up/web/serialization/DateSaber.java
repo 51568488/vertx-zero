@@ -1,8 +1,8 @@
 package io.vertx.up.web.serialization;
 
 import io.vertx.up.func.Fn;
-import io.vertx.zero.tool.Period;
-import io.vertx.zero.tool.mirror.Types;
+import io.vertx.up.tool.Period;
+import io.vertx.up.tool.mirror.Types;
 
 import java.util.Calendar;
 import java.util.Date;

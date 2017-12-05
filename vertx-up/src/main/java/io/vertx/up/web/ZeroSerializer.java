@@ -3,8 +3,8 @@ package io.vertx.up.web;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.serialization.*;
-import io.vertx.zero.tool.mirror.Instance;
 
 import java.math.BigDecimal;
 import java.util.*;

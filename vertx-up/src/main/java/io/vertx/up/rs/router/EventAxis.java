@@ -16,9 +16,9 @@ import io.vertx.up.rs.Filler;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.dispatcher.ModeSplitter;
 import io.vertx.up.rs.sentry.StandardVerifier;
+import io.vertx.up.tool.mirror.Anno;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
-import io.vertx.zero.tool.mirror.Anno;
-import io.vertx.zero.tool.mirror.Instance;
 
 import javax.ws.rs.BodyParam;
 import javax.ws.rs.StreamParam;

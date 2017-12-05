@@ -9,10 +9,10 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ZeroHttpAgent;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.AgentExtractor;
+import io.vertx.up.tool.Statute;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHelper;
-import io.vertx.zero.tool.Statute;
-import io.vertx.zero.tool.mirror.Instance;
 
 import java.util.ArrayList;
 import java.util.List;

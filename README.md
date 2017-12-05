@@ -49,6 +49,8 @@ Once the Zero is up, you can see following logs in your console ( The default po
 
 ## 3. Documentation
 
+### 3.1. Zero Documents
+
 1. [Getting Start](doc/zero-starter.md)
 2. Environment
 	1. [Docker Environment](doc/zero-docker.md)
@@ -82,6 +84,10 @@ Once the Zero is up, you can see following logs in your console ( The default po
 	5. [Function Programming: it](doc/zero-it.md)
 	6. [Function Programming: pool/packet/zipper](doc/zero-pool.md)
 	7. [Function Programming: nullFlow](doc/zero-flow.md)
+
+### 3.2. Useful Related Documents
+
+1. [Issue resolutions (1)](doc/issues/README.md)
 
 ## 4. Function Interface Extend
 

@@ -16,9 +16,9 @@ public final class Stream {
     /**
      * Codec usage
      *
-     * @param message
-     * @param <T>
-     * @return
+     * @param message The java object that will be converted from.
+     * @param <T>     Target java object that will be converted to.
+     * @return Target java object ( Generic Type )
      */
     public static <T> byte[] to(final T message) {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -33,10 +33,10 @@ public final class Stream {
     /**
      * Codec usage
      *
-     * @param pos
-     * @param buffer
-     * @param <T>
-     * @return
+     * @param pos    The position of reading
+     * @param buffer The buffer to hold the data from reading.
+     * @param <T>    The converted java object type, Generic Type
+     * @return Return to converted java object.
      */
     @SuppressWarnings("unchecked")
     public static <T> T from(final int pos, final Buffer buffer) {
@@ -54,8 +54,8 @@ public final class Stream {
             = LoggerFactory.getLogger(Stream.class);
 
     /**
-     * @param filename
-     * @return
+     * @param filename The filename to describe source path
+     * @return Return the InputStream object mount to source path.
      */
     public static InputStream read(final String filename) {
         return read(filename, null);
@@ -67,9 +67,9 @@ public final class Stream {
      * 2. clazz == null: Read from class loader
      * 3. clazz != null: Read from clazz's class loader
      *
-     * @param filename
-     * @param clazz
-     * @return
+     * @param filename The filename to describe source path
+     * @param clazz    The class loader related class
+     * @return Return the InputStream object mount to source path.
      */
     public static InputStream read(final String filename,
                                    final Class<?> clazz) {
@@ -89,8 +89,8 @@ public final class Stream {
      * Stream read from file object
      * new FileInputStream(file)
      *
-     * @param file
-     * @return
+     * @param file The file object to describe source path
+     * @return Return the InputStream object mount to source path.
      */
     public static InputStream in(final File file) {
         return Fn.getJvm(() -> (file.exists() && file.isFile())
@@ -101,9 +101,9 @@ public final class Stream {
      * Stream read from clazz
      * clazz.getResourceAsStream(filename)
      *
-     * @param filename
-     * @param clazz
-     * @return
+     * @param filename The filename to describe source path
+     * @param clazz    The class loader related class
+     * @return Return the InputStream object mount to source path.
      */
     public static InputStream in(final String filename,
                                  final Class<?> clazz) {
@@ -115,8 +115,8 @@ public final class Stream {
      * Stream read from Thread Class Loader
      * Thread.currentThread().getContextClassLoader()
      *
-     * @param filename
-     * @return
+     * @param filename The filename to describe source path
+     * @return Return the InputStream object mount to source path.
      */
     public static InputStream in(final String filename) {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();

@@ -463,12 +463,6 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${common.lang3.version}</version>
-            </dependency>
             <!-- Logging -->
             <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl -->
             <dependency>
@@ -534,30 +528,6 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
                 <version>${maven.plugin.lombok}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.james/apache-mime4j-core -->
-            <dependency>
-                <groupId>org.apache.james</groupId>
-                <artifactId>apache-mime4j-core</artifactId>
-                <version>${mime4j.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.james/apache-mime4j-dom -->
-            <dependency>
-                <groupId>org.apache.james</groupId>
-                <artifactId>apache-mime4j-dom</artifactId>
-                <version>${mime4j.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.james/apache-mime4j-james-utils -->
-            <dependency>
-                <groupId>org.apache.james</groupId>
-                <artifactId>apache-mime4j-james-utils</artifactId>
-                <version>${mime4j.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.james/apache-mime4j-examples -->
-            <dependency>
-                <groupId>org.apache.james</groupId>
-                <artifactId>apache-mime4j-examples</artifactId>
-                <version>${mime4j.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
             <dependency>

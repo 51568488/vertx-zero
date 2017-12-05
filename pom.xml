@@ -38,7 +38,7 @@
     <scm>
         <connection>scm:git:https://github.com/silentbalanceyh/vertx-zero.git</connection>
         <developerConnection>scm:git:https://github.com/silentbalanceyh/vertx-zero.git</developerConnection>
-        <url>https://github.com/silentbalanceyh/vertx-zero</url>
+        <url>https://silentbalanceyh.github.io/vertx-zero/</url>
         <tag>v${project.version}</tag>
     </scm>
     <!-- Distribution -->

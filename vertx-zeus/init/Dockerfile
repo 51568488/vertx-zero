@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:8u151-jdk
 
 MAINTAINER Lang <silentbalanceyh@126.com>
 

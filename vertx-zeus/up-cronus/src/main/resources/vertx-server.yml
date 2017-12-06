@@ -1,6 +1,6 @@
 server:
 - name: up-cronus
-  type: rx
+  type: http
   config:
-    port: 6801
+    port: 6083
     host: 0.0.0.0

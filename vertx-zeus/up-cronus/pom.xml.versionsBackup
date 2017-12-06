@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>vertx-zeus</artifactId>
+        <groupId>cn.vertxup</groupId>
+        <version>0.4.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <name>( Zero Mesh ) Cronus</name>
+    <artifactId>up-cronus</artifactId>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Zero Rest Docker Configuration -->
+                    <imageName>up-cronus</imageName>
+                    <dockerDirectory>${project.build.directory}/deck/docker</dockerDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

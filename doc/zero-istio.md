@@ -161,39 +161,72 @@ Demo example will be install istio to `~/Tool/Zero/`
 
 	![Istio](image/istio-system.png)
 	
-## 3. Fabric8 Environment
+## 3. Addon for Istio
 
-Installing gofabric8 on your environment:
+If you want to enable metrics collection, you can do as following:
 
-[Reference](https://fabric8.io/guide/getStarted/gofabric8.html)
+[Reference](https://istio-releases.github.io/v0.1/docs/tasks/installing-istio.html)
 
-1. Install gofabric8 on your machine ( MacOS/Linux )
+```
+kubectl apply -f install/kubernetes/addons/prometheus.yaml
+kubectl apply -f install/kubernetes/addons/grafana.yaml
+kubectl apply -f install/kubernetes/addons/servicegraph.yaml
+```
+
+It may take some time to process all the components installed.
+
+### 3.1. Install Grafana
+
+1. You can type following command to configure port-forwarding for `grafana`
 
 	```
-	curl -sS https://get.fabric8.io/download.txt | bash
+	kubectl -n istio-system port-forward \
+		$(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') \
+			3000:3000 &
 	```
-2. Add the path to your environment
+2. Then open uri `http://localhost:3000/dashboard/db/istio-dashboard` with your browser.
+3. You should see following page:
+
+	![grafana](image/istio-grafana.png)
+
+### 3.2. Service Graph
+
+1. You can type following command to configure port-forwarding for `servicegraph`
 
 	```
-	export PATH=$PATH:$HOME/.fabric8/bin
+	kubectl -n istio-system port-forward \
+		$(kubectl get pod -n istio-system -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') \
+			8088:8088 &
 	```
+2. Then open url `http://localhost:8088/dotviz` or `http://localhost:8088/graph` with your browser, if there exist the services, you should see JSON data or graph.
+
+### 3.3. Zipkin Dashboard
+
+1. You can type following command to configure port-forwarding for `zipkin`
+
+	```
+	kubectl -n istio-system port-forward \
+		$(kubectl get pod -n istio-system -l app=zipkin -o jsonpath='{.items[0].metadata.name}') \
+			9411:9411 &
+	```
+2. Then open uri `http://localhost:9411/zipkin/` with your browser:
+3. You should see following page:
+
+	![zipkin](image/istio-zipkin.png)
 	
-3. Then execute command to start fabric8
+### 3.4. Prometheus
+
+1. You can type following command to configure port-forwarding for `prometheus`
 
 	```
-	>> gofabric8 start
-	minikube already running		# Check minikube first.
-	Switched to context "minikube".
+	 kubectl -n istio-system port-forward \
+	 	$(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') \
+	 		9090:9090 &   
 	```
+2. Then open uri `http://localhost:9090/graph` with your browser:
+3. You should see following page:
 
-	First time, please wait for some time to be sure all the containers in k8s started.
-	
-
-4. Start the console and wait for fabric8 started.
-
-	```
-	gofabric8 console
-	```
+	![prome](image/istio-prome.png)
 
 ## Summary
 

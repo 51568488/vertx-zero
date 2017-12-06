@@ -4,12 +4,14 @@ This project is based on Vert.x, the idea came from Spring-Boot framework. It co
 
 Micro Service architecture is a future focused method to design and build mature system and help more companies to implement project faster, based on this idea, Vertx Zero Up Framework came out. It's micro-service oriented framework and will be verified by real projects. Also it provide a tool set to help developers to do correct things. The last point is that because of Event Driven Model, it's high performance framework. 
 
-This framework contains four sub-projects ( The latest version is 0.4.1 )
+This framework contains four sub-projects ( The latest version is 0.4.2 )
 
 * `vertx-co`: Core Library of Zero Up Framework
 * `vertx-tp`: Third part integration components in Zero Up Framework
 * `vertx-up`: Zero Up Engine with nested vert.x web container
 * `vertx-zeus`: Zero Examples, it will be removed in real project implementation. 
+
+The framework is in development and `0.4.2` is urgent version to fix issue of [ERR-60002 #53](https://github.com/silentbalanceyh/vertx-zero/issues/53)
 
 ## 1. Envrionment
 
@@ -19,7 +21,7 @@ If you want to use Zero framework, you can add following dependency into you `po
         <dependency>
             <groupId>cn.vertxup</groupId>
             <artifactId>vertx-up</artifactId>
-            <version>0.4.1</version>
+            <version>0.4.2</version>
         </dependency>
 ```
 

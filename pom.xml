@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.vertxup</groupId>
     <artifactId>vertx-zero</artifactId>
-    <version>0.4.2-SNAPSHOT</version>
+    <version>0.4.2</version>
     <name>vertx-zero: Vertx Up Zero Configuration</name>
     <description>Vertx Zero Framework is a tool for Service Mesh Micro Service.</description>
     <url>https://silentbalanceyh.github.io/vertx-zero/</url>

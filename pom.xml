@@ -286,7 +286,8 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-            <!-- pgp -->
+            <!-- Deploy Only -->
+            <!--
             <plugin>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>${maven.plugin.pgp}</version>
@@ -305,6 +306,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             <!-- Mojo -->
             <plugin>
                 <artifactId>maven-enforcer-plugin</artifactId>

@@ -1,5 +1,5 @@
 server:
-- name: zero-ws
+- name: up-cronus
   type: http
   config:
     port: 6083

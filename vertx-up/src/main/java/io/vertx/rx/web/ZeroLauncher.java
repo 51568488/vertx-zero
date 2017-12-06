@@ -1,8 +1,9 @@
-package io.vertx.up.web;
+package io.vertx.rx.web;
 
-import io.vertx.core.Vertx;
+import io.reactivex.Single;
 import io.vertx.core.spi.cluster.ClusterManager;
-import io.vertx.up.Launcher;
+import io.vertx.reactivex.core.Vertx;
+import io.vertx.rx.Launcher;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Boujour;
 
@@ -32,10 +33,11 @@ public class ZeroLauncher implements Launcher {
 
     private void startStandalone(final Consumer<Vertx> consumer) {
         Boujour.each((name, option) -> {
+
             final Vertx vertx = Vertx.vertx(option);
 
-            Boujour.codec(vertx.eventBus());
-
+            Boujour.codec(vertx.eventBus().getDelegate());
+            
             VERTX.putIfAbsent(name, vertx);
             consumer.accept(vertx);
         });
@@ -44,16 +46,14 @@ public class ZeroLauncher implements Launcher {
     private void startCluster(final ClusterManager manager,
                               final Consumer<Vertx> consumer) {
         Boujour.each((name, option) -> {
-            Vertx.clusteredVertx(option, clustered -> {
-                // 1. Async clustered vertx initialized
-                final Vertx vertx = clustered.result();
-                // 2. Codecs
-                Boujour.codec(vertx.eventBus());
-                // 3. Cluster connect
-                manager.setVertx(vertx);
+            // Set cluster manager
+            option.setClusterManager(manager);
+
+            final Single<Vertx> observable = Vertx.rxClusteredVertx(option);
+            observable.subscribe(vertx -> {
+                Boujour.codec(vertx.eventBus().getDelegate());
                 // Finalized
                 VERTX.putIfAbsent(name, vertx);
-
                 consumer.accept(vertx);
             });
         });

@@ -1,6 +1,6 @@
-package io.vertx.up.web.anima;
+package io.vertx.rx.web.anima;
 
-import io.vertx.core.Vertx;
+import io.vertx.reactivex.core.Vertx;
 
 /**
  * Child component works
@@ -9,7 +9,7 @@ public interface Scatter {
     /**
      * Connect to vert.x to execute start up works.
      *
-     * @param vertx common vertx.
+     * @param vertx reactivex vertx
      */
     void connect(Vertx vertx);
 }

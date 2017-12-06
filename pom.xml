@@ -108,6 +108,8 @@
         <maven.plugin.fabric8.vertx>1.0.13</maven.plugin.fabric8.vertx>
         <maven.plugin.fabric8>3.5.33</maven.plugin.fabric8>
         <maven.plugin.fabric8.docker>0.23.0</maven.plugin.fabric8.docker>
+        <maven.plugin.coveralls>4.3.0</maven.plugin.coveralls>
+        <maven.plugin.cobertura>2.7</maven.plugin.cobertura>
     </properties>
     <prerequisites>
         <maven>3.5.0</maven>
@@ -231,9 +233,38 @@
                         <autoReleaseAfterClose>true</autoReleaseAfterClose>
                     </configuration>
                 </plugin>
+                <!-- https://mvnrepository.com/artifact/org.eluder.coveralls/coveralls-maven-plugin -->
+                <plugin>
+                    <groupId>org.eluder.coveralls</groupId>
+                    <artifactId>coveralls-maven-plugin</artifactId>
+                    <version>${maven.plugin.coveralls}</version>
+                </plugin>
+                <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/cobertura-maven-plugin -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>${maven.plugin.cobertura}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
+            <!-- Testing -->
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <aggregate>true</aggregate>
+                    <formats>
+                        <format>xml</format>
+                        <format>html</format>
+                    </formats>
+                </configuration>
+            </plugin>
             <!-- Source -->
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>

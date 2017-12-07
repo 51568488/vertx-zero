@@ -1,7 +1,6 @@
 package io.vertx.up.tool.mirror;
 
-import io.vertx.core.impl.ConcurrentHashSet;
-
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -12,7 +11,7 @@ public class PackThread extends Thread {
 
     private final transient String pkg;
     private final transient Predicate<Class<?>> filter;
-    private final Set<Class<?>> classes = new ConcurrentHashSet<>();
+    private final Set<Class<?>> classes = new HashSet<>();
 
     public PackThread(final String pkg,
                       final Predicate<Class<?>> filter) {

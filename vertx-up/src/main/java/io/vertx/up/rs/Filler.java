@@ -1,12 +1,12 @@
 package io.vertx.up.rs;
 
-import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.rs.argument.*;
 import io.vertx.up.tool.mirror.Instance;
 
 import javax.ws.rs.*;
 import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -44,7 +44,7 @@ public interface Filler {
             };
 
     Set<Class<? extends Annotation>> NO_VALUE =
-            new ConcurrentHashSet<Class<? extends Annotation>>() {
+            new HashSet<Class<? extends Annotation>>() {
                 {
                     add(BodyParam.class);
                     add(StreamParam.class);

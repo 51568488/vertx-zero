@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * @Receipt
@@ -20,18 +19,23 @@ public class ReceiptInquirer implements Inquirer<Set<Receipt>> {
 
     @Override
     public Set<Receipt> scan(final Set<Class<?>> queues) {
-        final CountDownLatch counter = new CountDownLatch(queues.size());
         final List<QueueThread> threadReference = new ArrayList<>();
         /** 3.1. Build Metadata **/
         for (final Class<?> queue : queues) {
             final QueueThread thread =
-                    new QueueThread(queue, counter);
+                    new QueueThread(queue);
             threadReference.add(thread);
             thread.start();
         }
+        /** 3.2. Join **/
+        Fn.safeJvm(() -> {
+            for (final QueueThread item : threadReference) {
+                item.join();
+            }
+        }, LOGGER);
+        /** 3.3. Return **/
         final Set<Receipt> receipts = new HashSet<>();
         Fn.safeJvm(() -> {
-            counter.await();
             for (final QueueThread item : threadReference) {
                 receipts.addAll(item.getReceipts());
             }

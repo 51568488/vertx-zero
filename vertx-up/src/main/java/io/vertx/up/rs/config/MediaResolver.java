@@ -1,6 +1,5 @@
 package io.vertx.up.rs.config;
 
-import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
@@ -10,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -21,7 +21,7 @@ class MediaResolver {
 
     private static final Annal LOGGER = Annal.get(MediaResolver.class);
 
-    private static final Set<MediaType> DEFAULTS = new ConcurrentHashSet<MediaType>() {
+    private static final Set<MediaType> DEFAULTS = new HashSet<MediaType>() {
         {
             add(MediaType.WILDCARD_TYPE);
         }
@@ -56,7 +56,7 @@ class MediaResolver {
                     () -> DEFAULTS,
                     () -> {
                         final String[] value = Instance.invoke(anno, "value");
-                        final Set<MediaType> result = new ConcurrentHashSet<>();
+                        final Set<MediaType> result = new HashSet<>();
                         for (final String item : value) {
                             if (null != item) {
                                 // Resolve media type: Use jersey library to parse.

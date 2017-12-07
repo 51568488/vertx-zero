@@ -13,6 +13,8 @@ public final class Pack {
 
     private static final Annal LOGGER = Annal.get(Pack.class);
 
+    private static final Set<Class<?>> CLASSES = new HashSet<>();
+
     private static final Set<String> FORBIDDEN = new HashSet<String>() {
         {
             add("java");
@@ -49,24 +51,25 @@ public final class Pack {
 
     public static Set<Class<?>> getClasses(final Predicate<Class<?>> filter,
                                            final String... zeroScans) {
-        final Set<Class<?>> classes = new HashSet<>();
-        if (0 < zeroScans.length) {
-            classes.addAll(multiClasses(zeroScans, filter));
-        } else {
-            final Package[] packages = Package.getPackages();
-            final Set<String> packageDirs = new HashSet<>();
-            for (final Package pkg : packages) {
-                final String pending = pkg.getName();
-                final boolean skip = FORBIDDEN.stream().anyMatch(pending::startsWith);
-                if (!skip) {
-                    packageDirs.add(pending);
+        if (CLASSES.isEmpty()) {
+            if (0 < zeroScans.length) {
+                CLASSES.addAll(singleClasses(zeroScans, filter));
+            } else {
+                final Package[] packages = Package.getPackages();
+                final Set<String> packageDirs = new HashSet<>();
+                for (final Package pkg : packages) {
+                    final String pending = pkg.getName();
+                    final boolean skip = FORBIDDEN.stream().anyMatch(pending::startsWith);
+                    if (!skip) {
+                        packageDirs.add(pending);
+                    }
                 }
+                LOGGER.info(Info.PACKAGES, String.valueOf(packageDirs.size()),
+                        String.valueOf(packages.length));
+                CLASSES.addAll(singleClasses(packageDirs.toArray(new String[]{}), filter));
             }
-            LOGGER.info(Info.PACKAGES, String.valueOf(packageDirs.size()),
-                    String.valueOf(packages.length));
-            classes.addAll(multiClasses(packageDirs.toArray(new String[]{}), filter));
         }
-        return classes;
+        return CLASSES;
     }
 
     private static Set<Class<?>> singleClasses(
@@ -79,6 +82,7 @@ public final class Pack {
         return result;
     }
 
+    @SuppressWarnings("unused")
     private static Set<Class<?>> multiClasses(
             final String[] packageDir,
             final Predicate<Class<?>> filter) {

@@ -18,6 +18,7 @@ import io.vertx.up.web.ZeroHelper;
 import javax.ws.rs.Path;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -73,7 +74,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
     }
 
     private Set<Event> extract(final Class<?> clazz, final String root) {
-        final Set<Event> events = new ConcurrentHashSet<>();
+        final Set<Event> events = new HashSet<>();
         // 0.Preparing
         final Method[] methods = clazz.getDeclaredMethods();
         for (final Method method : methods) {

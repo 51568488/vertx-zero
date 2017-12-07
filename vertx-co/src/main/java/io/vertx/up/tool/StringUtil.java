@@ -1,6 +1,5 @@
 package io.vertx.up.tool;
 
-import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Strings;
@@ -22,9 +21,9 @@ public class StringUtil {
     }
 
     public static Set<String> split(final String input, final String separator) {
-        return Fn.get(new ConcurrentHashSet<>(), () -> {
+        return Fn.get(new HashSet<>(), () -> {
             final String[] array = input.split(separator);
-            final Set<String> result = new ConcurrentHashSet<>();
+            final Set<String> result = new HashSet<>();
             for (final String item : array) {
                 Fn.safeNull(() -> result.add(item.trim().intern()), item);
             }

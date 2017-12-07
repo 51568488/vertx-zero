@@ -15,7 +15,28 @@
             <groupId>cn.vertxup</groupId>
             <artifactId>vertx-tp</artifactId>
         </dependency>
-        <!-- Runtime required -->
+        <!-- Runtime Package Scanner -->
+        <dependency>
+            <groupId>ch.qos.cal10n</groupId>
+            <artifactId>cal10n-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!-- EL -->
         <dependency>
             <groupId>javax.el</groupId>

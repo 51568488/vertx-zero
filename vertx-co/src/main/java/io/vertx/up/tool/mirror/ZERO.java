@@ -18,5 +18,5 @@ interface Info {
 
     String PACKAGES = "[ ZERO ] Zero system scanned {0}/{1} packages.";
 
-    String CLASSES = "[ ZERO ] Zero system has scanned {0} classes in package {1}.";
+    String CLASSES = "[ ZERO ] ( {0} Hitted ) Zero system has scanned {0} classes in package {1}.";
 }

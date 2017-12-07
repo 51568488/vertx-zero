@@ -5,13 +5,14 @@
     <parent>
         <artifactId>vertx-zeus</artifactId>
         <groupId>cn.vertxup</groupId>
-        <version>0.4.2</version>
+        <version>0.4.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>( Zero Mesh ) Cronus</name>
     <artifactId>up-cronus</artifactId>
     <build>
         <plugins>
+            <!-- Fat Jar building -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
@@ -33,6 +34,32 @@
                             <mainClass>up.god.Runner</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+            <!-- Build Docker -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <imageName>silentbalanceyh/up-cronus</imageName>
+                    <baseImage>silentbalanceyh/vertxup</baseImage>
+                    <entryPoint>["java","-jar","${project.build.finalName}-jar-with-dependencies.jar"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}-jar-with-dependencies.jar</include>
+                        </resource>
+                    </resources>
                 </configuration>
             </plugin>
         </plugins>

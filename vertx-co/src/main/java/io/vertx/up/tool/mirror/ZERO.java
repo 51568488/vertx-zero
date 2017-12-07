@@ -13,3 +13,10 @@ interface Storage {
      */
     ConcurrentMap<String, Class<?>> CLASSES = new ConcurrentHashMap<>();
 }
+
+interface Info {
+
+    String PACKAGES = "[ ZERO ] Zero system scanned {0}/{1} packages.";
+
+    String CLASSES = "[ ZERO ] Zero system has scanned {0} classes in package {1}.";
+}

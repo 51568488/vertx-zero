@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.vertxup</groupId>
     <artifactId>vertx-zero</artifactId>
-    <version>0.4.2</version>
+    <version>0.4.3</version>
     <name>vertx-zero: Vertx Up Zero Configuration</name>
     <description>Vertx Zero Framework is a tool for Service Mesh Micro Service.</description>
     <url>https://silentbalanceyh.github.io/vertx-zero/</url>
@@ -78,6 +78,8 @@
         <javax.el.version>3.0.0</javax.el.version>
         <mime4j.version>0.8.1</mime4j.version>
         <guava.version>23.5-jre</guava.version>
+        <codehaus.janino.version>3.0.8</codehaus.janino.version>
+        <osgi.version>6.0.0</osgi.version>
         <!-- JSR -->
         <jsr311.version>1.1.1</jsr311.version>
         <jsr330.version>1</jsr330.version>
@@ -86,9 +88,13 @@
         <junit.version>4.12</junit.version>
         <!-- Logging -->
         <log4j2.version>2.10.0</log4j2.version>
-        <slf4j.version>1.7.25</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
         <logback.version>1.2.3</logback.version>
+        <logback.cal10n.version>0.8.1</logback.cal10n.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <common.logging.version>1.2</common.logging.version>
         <!-- Plugin -->
+        <maven.plugin.assembly>3.1.0</maven.plugin.assembly>
         <maven.plugin.compiler>3.7.0</maven.plugin.compiler>
         <maven.plugin.surefire>2.20.1</maven.plugin.surefire>
         <maven.plugin.clean>3.0.0</maven.plugin.clean>
@@ -105,11 +111,10 @@
         <maven.plugin.javadoc>2.10.4</maven.plugin.javadoc>
         <maven.plugin.staging>1.6.8</maven.plugin.staging>
         <maven.plugin.pgp>1.6</maven.plugin.pgp>
-        <maven.plugin.fabric8.vertx>1.0.13</maven.plugin.fabric8.vertx>
         <maven.plugin.fabric8>3.5.33</maven.plugin.fabric8>
-        <maven.plugin.fabric8.docker>0.23.0</maven.plugin.fabric8.docker>
         <maven.plugin.coveralls>4.3.0</maven.plugin.coveralls>
         <maven.plugin.cobertura>2.7</maven.plugin.cobertura>
+        <maven.plugin.spotify>1.0.0</maven.plugin.spotify>
     </properties>
     <prerequisites>
         <maven>3.5.0</maven>
@@ -117,23 +122,23 @@
     <build>
         <pluginManagement>
             <plugins>
-                <!-- https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin -->
+                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
                 <plugin>
-                    <groupId>io.fabric8</groupId>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven.plugin.assembly}</version>
+                </plugin>
+                <!-- https://mvnrepository.com/artifact/com.spotify/docker-maven-plugin -->
+                <plugin>
+                    <groupId>com.spotify</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
-                    <version>${maven.plugin.fabric8.docker}</version>
+                    <version>${maven.plugin.spotify}</version>
                 </plugin>
                 <!-- https://mvnrepository.com/artifact/io.fabric8/fabric8-maven-plugin -->
                 <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>fabric8-maven-plugin</artifactId>
                     <version>${maven.plugin.fabric8}</version>
-                </plugin>
-                <!-- https://mvnrepository.com/artifact/io.fabric8/vertx-maven-plugin -->
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>vertx-maven-plugin</artifactId>
-                    <version>${maven.plugin.fabric8.vertx}</version>
                 </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-enforcer-plugin/ -->
                 <plugin>
@@ -425,8 +430,25 @@
                 <artifactId>netty-tcnative-boringssl-static</artifactId>
                 <version>${netty.tcnative.version}</version>
             </dependency>
-
+            <!-- https://mvnrepository.com/artifact/log4j/log4j -->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
             <!-- java rs -->
+            <!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
+            <dependency>
+                <groupId>org.codehaus.janino</groupId>
+                <artifactId>janino</artifactId>
+                <version>${codehaus.janino.version}</version>
+            </dependency>
             <!-- http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
             <dependency>
                 <groupId>javax.ws.rs</groupId>
@@ -520,6 +542,20 @@
                 <artifactId>jul-to-slf4j</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${common.logging.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.core -->
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>${osgi.version}</version>
+                <scope>provided</scope>
+                <type>jar</type>
+            </dependency>
             <!-- http://mvnrepository.com/artifact/org.slf4j/slf4j-api/ -->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -542,12 +578,12 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                </exclusions>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/ch.qos.cal10n/cal10n-api -->
+            <dependency>
+                <groupId>ch.qos.cal10n</groupId>
+                <artifactId>cal10n-api</artifactId>
+                <version>${logback.cal10n.version}</version>
             </dependency>
             <!-- http://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
             <dependency>

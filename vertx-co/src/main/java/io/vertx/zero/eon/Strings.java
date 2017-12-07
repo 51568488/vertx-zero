@@ -18,4 +18,6 @@ public interface Strings {
     String LEFT_BRACES = "{";
 
     String RIGHT_BRACES = "}";
+
+    String DOLLER = "$";
 }

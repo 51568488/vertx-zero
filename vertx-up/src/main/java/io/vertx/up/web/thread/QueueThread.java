@@ -8,7 +8,6 @@ import io.vertx.up.tool.mirror.Instance;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 
 public class QueueThread extends Thread {
 
@@ -16,18 +15,14 @@ public class QueueThread extends Thread {
 
     private final Set<Receipt> receipts = new HashSet<>();
 
-    private final transient CountDownLatch countDownLatch;
-
     private final transient Extractor<Set<Receipt>> extractor =
             Instance.instance(ReceiptExtractor.class);
 
     private final transient Class<?> reference;
 
-    public QueueThread(final Class<?> clazz,
-                       final CountDownLatch countDownLatch) {
+    public QueueThread(final Class<?> clazz) {
         this.setName("zero-queue-scanner-" + this.getId());
         this.reference = clazz;
-        this.countDownLatch = countDownLatch;
     }
 
     @Override
@@ -36,7 +31,6 @@ public class QueueThread extends Thread {
             this.receipts.addAll(this.extractor.extract(this.reference));
             LOGGER.info(Info.SCANED_RECEIPTS, this.reference.getName(),
                     this.receipts.size());
-            this.countDownLatch.countDown();
         }
     }
 

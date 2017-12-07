@@ -61,10 +61,10 @@ public class PackScanner {
         }, zeroScan);
     }
 
-    static Set<Class<?>> getClasses(final String packageDir,
-                                    final String packName,
-                                    final URL url,
-                                    final boolean recursive) {
+    private static Set<Class<?>> getClasses(final String packageDir,
+                                            final String packName,
+                                            final URL url,
+                                            final boolean recursive) {
         final Set<Class<?>> classes = new LinkedHashSet<>();
         Fn.getJvm(() -> {
             String packageName = (packName.startsWith(Strings.DOT)) ?
@@ -95,7 +95,9 @@ public class PackScanner {
                             // Extract class Name
                             final String className = name.substring(packageName.length() + 1, name.length() - 6);
                             try {
-                                classes.add(Class.forName(packageName + Strings.DOT + className));
+                                classes.add(Thread
+                                        .currentThread().getContextClassLoader()
+                                        .loadClass(packageName + Strings.DOT + className));
                             } catch (final Throwable ex) {
                                 // LOGGER.info(ex.getMessage());
                             }
@@ -108,7 +110,7 @@ public class PackScanner {
         return classes;
     }
 
-    static void findAndAdd(
+    private static void findAndAdd(
             final String packName,
             final String packPath,
             final boolean recursive,

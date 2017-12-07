@@ -53,7 +53,7 @@ public final class Pack {
                                            final String... zeroScans) {
         if (CLASSES.isEmpty()) {
             if (0 < zeroScans.length) {
-                CLASSES.addAll(singleClasses(zeroScans, filter));
+                CLASSES.addAll(multiClasses(zeroScans, filter));
             } else {
                 final Package[] packages = Package.getPackages();
                 final Set<String> packageDirs = new HashSet<>();
@@ -66,12 +66,13 @@ public final class Pack {
                 }
                 LOGGER.info(Info.PACKAGES, String.valueOf(packageDirs.size()),
                         String.valueOf(packages.length));
-                CLASSES.addAll(singleClasses(packageDirs.toArray(new String[]{}), filter));
+                CLASSES.addAll(multiClasses(packageDirs.toArray(new String[]{}), filter));
             }
         }
         return CLASSES;
     }
 
+    @SuppressWarnings("unused")
     private static Set<Class<?>> singleClasses(
             final String[] packageDir,
             final Predicate<Class<?>> filter) {
@@ -82,7 +83,6 @@ public final class Pack {
         return result;
     }
 
-    @SuppressWarnings("unused")
     private static Set<Class<?>> multiClasses(
             final String[] packageDir,
             final Predicate<Class<?>> filter) {

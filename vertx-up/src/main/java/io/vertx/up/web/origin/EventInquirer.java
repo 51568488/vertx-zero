@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * @Event
@@ -20,18 +19,23 @@ public class EventInquirer implements Inquirer<Set<Event>> {
 
     @Override
     public Set<Event> scan(final Set<Class<?>> endpoints) {
-        final CountDownLatch counter = new CountDownLatch(endpoints.size());
         final List<EndPointThread> threadReference = new ArrayList<>();
         /** 2.1.Build Api metadata **/
         for (final Class<?> endpoint : endpoints) {
             final EndPointThread thread =
-                    new EndPointThread(endpoint, counter);
+                    new EndPointThread(endpoint);
             threadReference.add(thread);
             thread.start();
         }
+        /** 3.2. Join **/
+        Fn.safeJvm(() -> {
+            for (final EndPointThread item : threadReference) {
+                item.join();
+            }
+        }, LOGGER);
+        /** 3.3. Finally **/
         final Set<Event> events = new HashSet<>();
         Fn.safeJvm(() -> {
-            counter.await();
             for (final EndPointThread item : threadReference) {
                 events.addAll(item.getEvents());
             }

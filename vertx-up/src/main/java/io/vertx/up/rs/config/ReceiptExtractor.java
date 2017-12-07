@@ -1,7 +1,5 @@
 package io.vertx.up.rs.config;
 
-import com.google.common.collect.Sets;
-import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.exception.AccessProxyException;
@@ -18,6 +16,7 @@ import io.vertx.up.web.ZeroAnno;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -27,7 +26,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
 
     private static final Annal LOGGER = Annal.get(ReceiptExtractor.class);
 
-    private static final Set<String> ADDRESS = new ConcurrentHashSet<>();
+    private static final Set<String> ADDRESS = new HashSet<>();
 
     static {
         if (ADDRESS.isEmpty()) {
@@ -57,11 +56,11 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
 
     @Override
     public Set<Receipt> extract(final Class<?> clazz) {
-        return Fn.get(Sets.newConcurrentHashSet(), () -> {
+        return Fn.get(new HashSet<>(), () -> {
             // 1. Class verify
             verify(clazz);
             // 2. Scan method to find @Address
-            final Set<Receipt> receipts = new ConcurrentHashSet<>();
+            final Set<Receipt> receipts = new HashSet<>();
             final Method[] methods = clazz.getDeclaredMethods();
             for (final Method method : methods) {
                 // 3. Only focus on annotated with @Address

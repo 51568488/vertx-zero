@@ -8,7 +8,6 @@ import io.vertx.up.tool.mirror.Instance;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 
 public class EndPointThread extends Thread {
 
@@ -16,18 +15,14 @@ public class EndPointThread extends Thread {
 
     private final Set<Event> events = new HashSet<>();
 
-    private final transient CountDownLatch countDownLatch;
-
     private final transient Extractor<Set<Event>> extractor =
             Instance.instance(EventExtractor.class);
 
     private final transient Class<?> reference;
 
-    public EndPointThread(final Class<?> clazz,
-                          final CountDownLatch countDownLatch) {
+    public EndPointThread(final Class<?> clazz) {
         this.setName("zero-endpoint-scanner-" + this.getId());
         this.reference = clazz;
-        this.countDownLatch = countDownLatch;
     }
 
     @Override
@@ -36,7 +31,6 @@ public class EndPointThread extends Thread {
             this.events.addAll(this.extractor.extract(this.reference));
             LOGGER.info(Info.SCANED_EVENTS, this.reference.getName(),
                     this.events.size());
-            this.countDownLatch.countDown();
         }
     }
 

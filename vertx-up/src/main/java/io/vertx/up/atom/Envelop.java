@@ -5,13 +5,17 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
+import io.vertx.up.exception.IndexExceedException;
 import io.vertx.up.exception.WebException;
-import io.vertx.up.tool.Jackson;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.web.ZeroSerializer;
 
 import java.io.Serializable;
 
 public class Envelop implements Serializable {
+
+    private static final Annal LOGGER = Annal.get(Envelop.class);
 
     private HttpStatusCode status = HttpStatusCode.OK;
 
@@ -52,10 +56,48 @@ public class Envelop implements Serializable {
     public <T> T data(final Class<T> clazz) {
         T reference = null;
         if (this.data.containsKey(Key.DATA)) {
-            final Object content = this.data.getValue(Key.DATA);
-            if (null != content) {
-                reference = Jackson.deserialize(content.toString(), clazz);
+            reference = extract(this.data.getValue(Key.DATA), clazz);
+        }
+        return reference;
+    }
+
+    /**
+     * Extract data part to t ( Direct Mode )
+     *
+     * @param argIndex
+     * @param <T>
+     * @return
+     */
+    public <T> T data(final Integer argIndex, final Class<T> clazz) {
+        T reference = null;
+        Fn.flingUp(0 > argIndex, LOGGER,
+                IndexExceedException.class, getClass(), argIndex);
+        if (this.data.containsKey(Key.DATA)) {
+            final JsonObject raw = this.data.getJsonObject(Key.DATA);
+            if (null != raw) {
+                final String key = argIndex.toString();
+                if (raw.containsKey(key)) {
+                    reference = extract(raw.getValue(key), clazz);
+                }
             }
+        }
+        return reference;
+    }
+
+    /**
+     * Result
+     *
+     * @param value
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private <T> T extract(final Object value, final Class<T> clazz) {
+        T reference = null;
+        if (null != value) {
+            final Object result = ZeroSerializer.getValue(clazz, value.toString());
+            reference = Fn.get(() -> (T) result, result);
         }
         return reference;
     }
@@ -121,7 +163,6 @@ public class Envelop implements Serializable {
     }
 
     // ------------------ Failure resource model ------------------
-
 
     /**
      * Empty content success

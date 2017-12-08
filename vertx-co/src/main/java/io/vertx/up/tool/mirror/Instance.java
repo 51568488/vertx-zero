@@ -6,7 +6,6 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.DuplicatedImplException;
-import io.vertx.zero.exception.UniqueImplMissingException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -185,16 +184,12 @@ public final class Instance {
                             && item != interfaceCls)
                     .collect(Collectors.toList());
             final int size = filtered.size();
-            Fn.flingUp(Values.ONE > size, LOGGER,
-                    UniqueImplMissingException.class,
-                    Instance.class, interfaceCls);
-
             // Non-Unique throw error out.
             Fn.flingUp(Values.ONE < size, LOGGER,
                     DuplicatedImplException.class,
                     Instance.class, interfaceCls);
-
-            return filtered.get(Values.IDX);
+            // Null means direct interface only.
+            return Values.ONE == size ? filtered.get(Values.IDX) : null;
         }, interfaceCls);
     }
 

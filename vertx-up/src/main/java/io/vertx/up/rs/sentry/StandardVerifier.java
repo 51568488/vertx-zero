@@ -3,10 +3,7 @@ package io.vertx.up.rs.sentry;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.atom.Depot;
-import io.vertx.up.atom.Envelop;
-import io.vertx.up.atom.Event;
-import io.vertx.up.atom.Rule;
+import io.vertx.up.atom.*;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.hunt.Answer;
@@ -104,8 +101,14 @@ public class StandardVerifier extends BaseAim implements Sentry {
         final Method method = event.getAction();
         WebException error = null;
         try {
-            // Validation first
-            verifier().verifyMethod(proxy, method, args);
+            if (null != proxy) {
+                if (Virtual.is(proxy)) {
+                    // TODO: Extension for virtual proxy
+                } else {
+                    // Validation for proxy
+                    verifier().verifyMethod(proxy, method, args);
+                }
+            }
         } catch (final WebException ex) {
             // Basic validation failure
             error = ex;

@@ -5,6 +5,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.atom.Event;
+import io.vertx.up.atom.Virtual;
 import io.vertx.up.exception.AccessProxyException;
 import io.vertx.up.exception.EventSourceException;
 import io.vertx.up.exception.NoArgConstructorException;
@@ -52,13 +53,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
 
     private void verify(final Class<?> clazz) {
         // Check basic specification: No Arg Constructor
-        if (clazz.isInterface()) {
-            // Implementation class
-            final Class<?> implClass = Instance.uniqueChild(clazz);
-            Fn.flingUp(!Instance.noarg(implClass), LOGGER,
-                    NoArgConstructorException.class,
-                    getClass(), clazz);
-        } else {
+        if (!clazz.isInterface()) {
             // Class direct.
             Fn.flingUp(!Instance.noarg(clazz), LOGGER,
                     NoArgConstructorException.class,
@@ -113,8 +108,6 @@ public class EventExtractor implements Extractor<Set<Event>> {
                 if (!StringUtil.isNil(root)) {
                     // Use root directly.
                     event.setPath(root);
-                } else {
-                    // TODO: Impossible to getPlugin here.
                 }
             } else {
                 final String result = PathResolver.resolve(
@@ -132,7 +125,17 @@ public class EventExtractor implements Extractor<Set<Event>> {
         final Object proxy;
         if (clazz.isInterface()) {
             final Class<?> implClass = Instance.uniqueChild(clazz);
-            proxy = Instance.singleton(implClass);
+            if (null != implClass) {
+                proxy = Instance.singleton(implClass);
+            } else {
+                /**
+                 * SPEC5: Interface only, direct api, in this situation,
+                 * The proxy is null and the agent do nothing. The data will
+                 * send to event bus direct. It's not needed to set
+                 * implementation class.
+                 */
+                proxy = Virtual.create();
+            }
         } else {
             proxy = Instance.singleton(method.getDeclaringClass());
         }

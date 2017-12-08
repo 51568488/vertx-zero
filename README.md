@@ -69,6 +69,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
 	2. [Mime type Matrix](doc/zero-mime.md)
 5. Request Flow
 	1. [How to enable Event Bus](doc/zero-worker.md)
+	2. [Event Bus sample version](doc/zero-ebs.md)
 	2. [Request Workflow Introduction](doc/zero-mode.md)
 	3. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
 6. Plugin

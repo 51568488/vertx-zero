@@ -1,5 +1,6 @@
 package io.vertx.zero.exception;
 
+@Deprecated
 public class UniqueImplMissingException extends UpException {
 
     public UniqueImplMissingException(final Class<?> clazz,

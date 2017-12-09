@@ -150,10 +150,9 @@ public final class Jackson {
                 () -> Fn.getJvm(() -> MAPPER.readValue(in, type)), in);
     }
 
-    public static <T> List<T> convert(final List<JsonObject> result) {
+    public static <T> List<T> convert(final List<JsonObject> result, final Class<T> clazz) {
         final List<T> entities = new ArrayList<>();
-        result.forEach(item -> entities.add(Jackson.deserialize(item.encode(), new TypeReference<T>() {
-        })));
+        result.forEach(item -> entities.add(Jackson.deserialize(item.encode(), clazz)));
         return entities;
     }
 

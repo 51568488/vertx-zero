@@ -92,7 +92,7 @@ public final class Jackson {
                     }
                     return result;
                 },
-                () -> null);
+                Fn::nil);
     }
 
     public static JsonObject validJObject(final Supplier<JsonObject> supplier) {

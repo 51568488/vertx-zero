@@ -138,6 +138,19 @@ public class Fn {
     }
 
     /**
+     * @param condition
+     * @param logger
+     * @param tSupplier
+     */
+    public static void safeSemi(
+            final boolean condition,
+            final Annal logger,
+            final Actuator tSupplier
+    ) {
+        Semi.exec(condition, logger, tSupplier, null);
+    }
+
+    /**
      * @param supplier
      * @param runCls
      * @param args
@@ -485,5 +498,14 @@ public class Fn {
                                     final Function<F, T> tranFn,
                                     final Supplier<T> supplier) {
         return Zero.nullFlow(reference, tranFn, supplier);
+    }
+
+    /**
+     * Spec function
+     *
+     * @return
+     */
+    public static <T> T nil() {
+        return null;
     }
 }

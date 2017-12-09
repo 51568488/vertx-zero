@@ -10,7 +10,7 @@ public class HeaderFiller implements Filler {
     public Object apply(final String name,
                         final Class<?> paramType,
                         final RoutingContext context) {
-        // Extract data from header
+        // Extract request from header
         final HttpServerRequest request = context.request();
         return ZeroSerializer.getValue(paramType, request.getHeader(name));
     }

@@ -2,10 +2,12 @@ package io.vertx.up.kidd.outcome;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.up.atom.Envelop;
+import io.vertx.up.exception.WebException;
+import io.vertx.up.exception.web._404RecordNotFoundException;
 import io.vertx.up.func.Fn;
-import io.vertx.up.kidd.Readible;
 import io.vertx.up.kidd.Spy;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.mirror.Instance;
 
 /**
  * Response building to JsonObject
@@ -55,11 +57,17 @@ public class Obstain<T> {
         return this;
     }
 
+    public Obstain<T> unique() {
+        final WebException error404 = Instance.instance(
+                _404RecordNotFoundException.class, this.clazz);
+        return unique(error404);
+    }
+
     /**
-     * @param readible
+     * @param internal404
      * @return
      */
-    public Obstain<T> unique(final Readible readible, final Readible internal404) {
+    public Obstain<T> unique(final WebException internal404) {
         if (this.isReady()) {
             this.envelop = Fn.getSemi(this.handler.succeeded(), this.logger,
                     // 200. Handler executed successfully
@@ -70,7 +78,7 @@ public class Obstain<T> {
                                     // 200 with empty data
                                     Envelop::ok,
                                     // 404 Error returned.
-                                    Failure.build404Flow(this.clazz, internal404)),
+                                    Failure.build(internal404)),
 
                             // 200 -> Response
                             () -> Fn.getSemi(null == this.spy, this.logger,
@@ -78,19 +86,11 @@ public class Obstain<T> {
                                     () -> Envelop.success(this.handler.result()),
                                     // 200 -> Spy provided
                                     () -> Envelop.success(this.spy.out(this.handler.result())))),
-                    
+
                     // 500. Internal Error
-                    Failure.build500Flow(this.clazz, this.handler.cause(), readible));
+                    Failure.build500Flow(this.clazz, this.handler.cause()));
         }
         return this;
-    }
-
-    /**
-     * @param readible
-     * @return
-     */
-    public Obstain<T> unique(final Readible readible) {
-        return unique(readible, null);
     }
 
     /**

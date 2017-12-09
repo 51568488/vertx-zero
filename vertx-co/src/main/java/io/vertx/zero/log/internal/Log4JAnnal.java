@@ -26,6 +26,11 @@ public class Log4JAnnal implements Annal {
     }
 
     @Override
+    public void error(final String key, final Object... args) {
+        Log.error(this.logger, key, args);
+    }
+
+    @Override
     public void vertx(final VertxException ex) {
         Log.vertx(this.logger, ex);
     }

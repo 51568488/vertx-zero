@@ -15,7 +15,7 @@ public class Rapider {
      * @return
      */
     public static JsonObject body(final Message<Envelop> message) {
-        return Heart.In.idiom().request(message);
+        return Heart.idiom().request(message);
     }
 
     /**
@@ -25,6 +25,6 @@ public class Rapider {
      * @return
      */
     public static JsonObject params(final Message<Envelop> message) {
-        return Heart.In.idiom().request(message, 0);
+        return Heart.idiom().request(message, 0);
     }
 }

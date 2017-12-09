@@ -138,6 +138,19 @@ public class Fn {
     }
 
     /**
+     * @param condition
+     * @param logger
+     * @param tSupplier
+     */
+    public static void safeSemi(
+            final boolean condition,
+            final Annal logger,
+            final Actuator tSupplier
+    ) {
+        Semi.exec(condition, logger, tSupplier, null);
+    }
+
+    /**
      * @param supplier
      * @param runCls
      * @param args

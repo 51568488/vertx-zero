@@ -1,6 +1,5 @@
 package io.vertx.up.kidd;
 
-import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
 
 /**
@@ -13,5 +12,5 @@ public interface Readible {
      * @param error
      * @return
      */
-    Envelop interpret(WebException error);
+    void interpret(WebException error);
 }

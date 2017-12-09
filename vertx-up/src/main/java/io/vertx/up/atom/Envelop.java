@@ -1,7 +1,6 @@
 package io.vertx.up.atom;
 
 import io.vertx.core.MultiMap;
-import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
@@ -37,7 +36,7 @@ public class Envelop implements Serializable {
     }
 
     /**
-     * Extract data part
+     * Extract request part
      *
      * @return
      */
@@ -47,7 +46,7 @@ public class Envelop implements Serializable {
     }
 
     /**
-     * Extract data part to t
+     * Extract request part to t
      *
      * @param clazz
      * @param <T>
@@ -62,7 +61,7 @@ public class Envelop implements Serializable {
     }
 
     /**
-     * Extract data part to t ( Direct Mode )
+     * Extract request part to t ( Direct Mode )
      *
      * @param argIndex
      * @param <T>
@@ -185,24 +184,6 @@ public class Envelop implements Serializable {
      */
     public static Envelop failure(final WebException error) {
         return new Envelop(error);
-    }
-
-    /**
-     * Extract message part to t
-     *
-     * @param message
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    public static <T> T data(final Message<Envelop> message,
-                             final Class<T> clazz) {
-        final Envelop body = message.body();
-        if (null != body) {
-            return body.data(clazz);
-        } else {
-            return null;
-        }
     }
 
     private Envelop(final WebException error) {

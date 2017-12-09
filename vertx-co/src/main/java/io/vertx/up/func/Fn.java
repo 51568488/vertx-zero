@@ -486,4 +486,13 @@ public class Fn {
                                     final Supplier<T> supplier) {
         return Zero.nullFlow(reference, tranFn, supplier);
     }
+
+    /**
+     * Spec function
+     *
+     * @return
+     */
+    public static <T> T nil() {
+        return null;
+    }
 }

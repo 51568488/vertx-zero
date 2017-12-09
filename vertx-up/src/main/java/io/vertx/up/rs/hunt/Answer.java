@@ -7,7 +7,7 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
 
 /**
- * Response process to normalize the response data.
+ * Response process to normalize the response request.
  * 1. Media definition
  * 2. Operation based on event, envelop, context
  */

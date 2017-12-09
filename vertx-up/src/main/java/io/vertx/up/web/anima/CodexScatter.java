@@ -21,7 +21,7 @@ public class CodexScatter implements Scatter {
         // 1. Load rules
         final List<String> rules = Folder.listFiles("codex", FileSuffix.YML);
         LOGGER.info(Info.SCANED_RULE, rules.size());
-        // 2. Load data from rules
+        // 2. Load request from rules
         for (final String rule : rules) {
             try {
                 final String filename = "codex/" + rule;

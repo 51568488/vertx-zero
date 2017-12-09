@@ -130,7 +130,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
             } else {
                 /**
                  * SPEC5: Interface only, direct api, in this situation,
-                 * The proxy is null and the agent do nothing. The data will
+                 * The proxy is null and the agent do nothing. The request will
                  * send to event bus direct. It's not needed to set
                  * implementation class.
                  */

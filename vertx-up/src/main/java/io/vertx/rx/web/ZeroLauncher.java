@@ -4,8 +4,8 @@ import io.reactivex.Single;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.rx.Launcher;
+import io.vertx.up.kidd.Motor;
 import io.vertx.up.log.Annal;
-import io.vertx.up.tool.Boujour;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -19,7 +19,7 @@ public class ZeroLauncher implements Launcher {
 
     @Override
     public void start(final Consumer<Vertx> callback) {
-        Boujour.start(getClass(),
+        Motor.start(getClass(),
                 callback,
                 this::startStandalone,
                 this::startCluster,
@@ -32,12 +32,12 @@ public class ZeroLauncher implements Launcher {
     }
 
     private void startStandalone(final Consumer<Vertx> consumer) {
-        Boujour.each((name, option) -> {
+        Motor.each((name, option) -> {
 
             final Vertx vertx = Vertx.vertx(option);
 
-            Boujour.codec(vertx.eventBus().getDelegate());
-            
+            Motor.codec(vertx.eventBus().getDelegate());
+
             VERTX.putIfAbsent(name, vertx);
             consumer.accept(vertx);
         });
@@ -45,13 +45,13 @@ public class ZeroLauncher implements Launcher {
 
     private void startCluster(final ClusterManager manager,
                               final Consumer<Vertx> consumer) {
-        Boujour.each((name, option) -> {
+        Motor.each((name, option) -> {
             // Set cluster manager
             option.setClusterManager(manager);
 
             final Single<Vertx> observable = Vertx.rxClusteredVertx(option);
             observable.subscribe(vertx -> {
-                Boujour.codec(vertx.eventBus().getDelegate());
+                Motor.codec(vertx.eventBus().getDelegate());
                 // Finalized
                 VERTX.putIfAbsent(name, vertx);
                 consumer.accept(vertx);

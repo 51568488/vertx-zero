@@ -3,8 +3,8 @@ package io.vertx.up.web;
 import io.vertx.core.Vertx;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.up.Launcher;
+import io.vertx.up.kidd.Motor;
 import io.vertx.up.log.Annal;
-import io.vertx.up.tool.Boujour;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -18,7 +18,7 @@ public class ZeroLauncher implements Launcher {
 
     @Override
     public void start(final Consumer<Vertx> callback) {
-        Boujour.start(getClass(),
+        Motor.start(getClass(),
                 callback,
                 this::startStandalone,
                 this::startCluster,
@@ -31,10 +31,10 @@ public class ZeroLauncher implements Launcher {
     }
 
     private void startStandalone(final Consumer<Vertx> consumer) {
-        Boujour.each((name, option) -> {
+        Motor.each((name, option) -> {
             final Vertx vertx = Vertx.vertx(option);
 
-            Boujour.codec(vertx.eventBus());
+            Motor.codec(vertx.eventBus());
 
             VERTX.putIfAbsent(name, vertx);
             consumer.accept(vertx);
@@ -43,12 +43,12 @@ public class ZeroLauncher implements Launcher {
 
     private void startCluster(final ClusterManager manager,
                               final Consumer<Vertx> consumer) {
-        Boujour.each((name, option) -> {
+        Motor.each((name, option) -> {
             Vertx.clusteredVertx(option, clustered -> {
                 // 1. Async clustered vertx initialized
                 final Vertx vertx = clustered.result();
                 // 2. Codecs
-                Boujour.codec(vertx.eventBus());
+                Motor.codec(vertx.eventBus());
                 // 3. Cluster connect
                 manager.setVertx(vertx);
                 // Finalized

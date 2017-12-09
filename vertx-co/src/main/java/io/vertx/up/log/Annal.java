@@ -22,6 +22,8 @@ public interface Annal {
 
     void warn(String key, Object... args);
 
+    void error(String key, Object... args);
+
     void info(String key, Object... args);
 
     void debug(String key, Object... args);
@@ -51,6 +53,11 @@ class CommonAnnal implements Annal {
     @Override
     public void warn(final String key, final Object... args) {
         this.logger.warn(key, args);
+    }
+
+    @Override
+    public void error(final String key, final Object... args) {
+        this.logger.error(key, args);
     }
 
     @Override

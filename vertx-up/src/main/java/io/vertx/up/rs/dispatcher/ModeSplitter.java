@@ -5,6 +5,7 @@ import io.vertx.up.annotations.Address;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.exception.ReturnTypeException;
+import io.vertx.up.exception.WorkerMissingException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Aim;
@@ -18,7 +19,6 @@ import io.vertx.zero.eon.Values;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -119,17 +119,17 @@ public class ModeSplitter {
         final Annotation annotation = event.getAction().getDeclaredAnnotation(Address.class);
         final String address = Instance.invoke(annotation, "value");
         // Here address mustn't be null or empty
-        final Optional<Receipt> found = RECEIPTS.stream()
+        final Receipt found = RECEIPTS.stream()
                 .filter(item -> address.equals(item.getAddress()))
-                .findFirst();
+                .findFirst().orElse(null);
         final Method method;
-
-        Fn.flingUp(!found.isPresent(), LOGGER, ReturnTypeException.class,
+        // Get null found throw exception.
+        Fn.flingUp(null == found, LOGGER, WorkerMissingException.class,
                 getClass(), address);
 
-        method = found.get().getMethod();
+        method = found.getMethod();
 
-        Fn.flingUp(null == method, LOGGER, ReturnTypeException.class,
+        Fn.flingUp(null == method, LOGGER, WorkerMissingException.class,
                 getClass(), address);
         return method;
     }

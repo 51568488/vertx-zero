@@ -1,4 +1,4 @@
-package io.vertx.up.tool;
+package io.vertx.up.kidd;
 
 import io.vertx.core.ClusterOptions;
 import io.vertx.core.VertxOptions;
@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * Start up tools shared in
  * Web Application & Rx Application
  */
-public final class Boujour {
+public final class Motor {
 
     public static <T> void start(
             final Class<?> clazz,

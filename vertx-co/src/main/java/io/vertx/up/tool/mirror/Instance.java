@@ -9,13 +9,15 @@ import io.vertx.zero.exception.DuplicatedImplException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked"})
 public final class Instance {
 
     private static final Annal LOGGER = Annal.get(Instance.class);
@@ -38,6 +40,23 @@ public final class Instance {
         final Object created = Fn.getJvm(
                 () -> construct(clazz, params), clazz);
         return Fn.getJvm(() -> (T) created, created);
+    }
+
+    /**
+     * Generic type
+     *
+     * @param target
+     * @return
+     */
+    public static Class<?> genericT(final Class<?> target) {
+        return Fn.getJvm(() -> {
+            System.out.println(target);
+            System.out.println(target.getGenericSuperclass());
+            final Type type = target.getGenericSuperclass();
+            final Type[] params = ((ParameterizedType) type).getActualTypeArguments();
+            return Fn.getSemi(0 < params.length, LOGGER,
+                    () -> (Class<?>) params[0]);
+        }, target);
     }
 
     /**

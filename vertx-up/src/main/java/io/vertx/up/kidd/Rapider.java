@@ -10,6 +10,7 @@ import io.vertx.up.tool.mirror.Instance;
 /**
  * Fast tool to extract params
  */
+@SuppressWarnings("unchecked")
 public class Rapider {
     /**
      * Body params
@@ -17,7 +18,7 @@ public class Rapider {
      * @param message
      * @return
      */
-    public static JsonObject body(final Message<Envelop> message) {
+    public static JsonObject getBody(final Message<Envelop> message) {
         return Heart.idiom().request(message);
     }
 
@@ -27,8 +28,16 @@ public class Rapider {
      * @param message
      * @return
      */
-    public static JsonObject params(final Message<Envelop> message) {
+    public static JsonObject getJson(final Message<Envelop> message) {
         return Heart.idiom().request(message, 0);
+    }
+
+    /**
+     * @param message
+     * @return
+     */
+    public static String getString(final Message<Envelop> message, final int index) {
+        return Heart.iambic().request(message, index);
     }
 
     public static Obstain<JsonObject> getReact(final Class<?> clazz) {

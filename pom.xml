@@ -62,7 +62,7 @@
         <vertx.version>3.5.0</vertx.version>
         <stack.version>3.5.0</stack.version>
         <!-- Third part -->
-        <jackson.version>2.9.2</jackson.version>
+        <jackson.version>2.9.3</jackson.version>
         <reflect.asm.version>1.11.3</reflect.asm.version>
         <jws.version>2.1</jws.version>
         <jersey.version>2.26</jersey.version>

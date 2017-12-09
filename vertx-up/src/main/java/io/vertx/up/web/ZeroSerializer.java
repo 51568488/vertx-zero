@@ -12,11 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * ZeroSerializer the data by different type.
+ * ZeroSerializer the request by different type.
  * 1. String -> T
- * 2. T -> JsonObject ( Envelop data )
+ * 2. T -> JsonObject ( Envelop request )
  * 3. T -> String ( Generate resonse )
- * 4. Checking the data type to see where support serialization
+ * 4. Checking the request type to see where support serialization
  */
 @SuppressWarnings("unchecked")
 public class ZeroSerializer {

@@ -1,6 +1,7 @@
 package io.vertx.up.kidd.outcome;
 
 import io.vertx.core.AsyncResult;
+import io.vertx.core.json.JsonArray;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._400DuplicatedRecordException;
@@ -33,7 +34,16 @@ public class ListObstain<T> extends Obstain<List<T>> {
         return unique(error404, error400);
     }
 
-    public <E> ListObstain<T> result(final Function<List<T>, List<E>> convert) {
+    public <E> ListObstain<T> result() {
+        /**
+         * Convert function for each item of JsonObject
+         * Fix issue: map, empty for List<JsonObject> type serialization
+         */
+        final Function<List<T>, JsonArray> convert = (from) -> {
+            final JsonArray array = new JsonArray();
+            from.forEach(array::add);
+            return array;
+        };
         if (this.isReady()) {
             this.envelop = Fn.getSemi(this.handler.succeeded(), this.logger,
                     // 200. Handler executed successfully

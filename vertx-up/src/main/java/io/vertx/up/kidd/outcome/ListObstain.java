@@ -1,5 +1,6 @@
 package io.vertx.up.kidd.outcome;
 
+import io.vertx.core.AsyncResult;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._400DuplicatedRecordException;
@@ -11,6 +12,7 @@ import io.vertx.zero.eon.Values;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class ListObstain<T> extends Obstain<List<T>> {
 
@@ -29,6 +31,25 @@ public class ListObstain<T> extends Obstain<List<T>> {
         final WebException error400 = Instance.instance(
                 _400DuplicatedRecordException.class, this.clazz);
         return unique(error404, error400);
+    }
+
+    public <E> ListObstain<T> result(final Function<List<T>, List<E>> convert) {
+        if (this.isReady()) {
+            this.envelop = Fn.getSemi(this.handler.succeeded(), this.logger,
+                    // 200. Handler executed successfully
+                    () -> Fn.getSemi(null == this.handler.result(), this.logger,
+                            // 200. Result
+                            () -> Envelop.success(new ArrayList<>()),
+                            // 200. Result
+                            () -> Fn.getSemi(null == this.spy, this.logger,
+                                    // 200 -> No spy provided
+                                    () -> Envelop.success(convert.apply(this.handler.result())),
+                                    // 200 -> Spy provided
+                                    () -> Envelop.success(convert.apply(this.spy.out(this.handler.result()))))),
+                    // 500. Internal Error
+                    Failure.build500Flow(this.clazz, this.handler.cause()));
+        }
+        return this;
     }
 
     public ListObstain<T> unique(final WebException internal404,
@@ -71,6 +92,20 @@ public class ListObstain<T> extends Obstain<List<T>> {
     @Override
     public ListObstain<T> connect(final Spy<List<T>> spy) {
         this.spy = spy;
+        return this;
+    }
+
+    @Override
+    /**
+     * Connect to message handler
+     *
+     * @param handler
+     * @return
+     */
+    public ListObstain<T> connect(final AsyncResult<List<T>> handler) {
+        Fn.safeSemi(null == handler, this.logger,
+                () -> this.logger.error(Info.ERROR_HANDLER, handler, this.clazz));
+        this.handler = handler;
         return this;
     }
 }

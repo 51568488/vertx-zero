@@ -11,7 +11,9 @@ import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.Values;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -146,6 +148,13 @@ public final class Jackson {
     public static <T> T deserialize(final InputStream in, final Class<T> type) {
         return Fn.get(null,
                 () -> Fn.getJvm(() -> MAPPER.readValue(in, type)), in);
+    }
+
+    public static <T> List<T> convert(final List<JsonObject> result) {
+        final List<T> entities = new ArrayList<>();
+        result.forEach(item -> entities.add(Jackson.deserialize(item.encode(), new TypeReference<T>() {
+        })));
+        return entities;
     }
 
     private Jackson() {

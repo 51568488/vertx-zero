@@ -5,6 +5,7 @@ import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._400DuplicatedRecordException;
 import io.vertx.up.exception.web._404RecordNotFoundException;
 import io.vertx.up.func.Fn;
+import io.vertx.up.kidd.Spy;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.eon.Values;
 
@@ -64,6 +65,12 @@ public class ListObstain<T> extends Obstain<List<T>> {
                     // 500. Internal Error
                     Failure.build500Flow(this.clazz, this.handler.cause()));
         }
+        return this;
+    }
+
+    @Override
+    public ListObstain<T> connect(final Spy<List<T>> spy) {
+        this.spy = spy;
         return this;
     }
 }

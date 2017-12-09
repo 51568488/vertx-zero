@@ -3,20 +3,20 @@ package io.vertx.up.kidd.income;
 import io.vertx.core.eventbus.Message;
 import io.vertx.up.atom.Envelop;
 
-public class StringImitate extends BaseImitate<String> {
+public class IntImitate extends BaseImitate<Integer> {
 
     @Override
-    public String request(
+    public Integer request(
             final Message<Envelop> message
     ) {
-        return request(message, String.class);
+        return request(message, Integer.class);
     }
 
     @Override
-    public String request(
+    public Integer request(
             final Message<Envelop> message,
             final int index
     ) {
-        return request(message, index, String.class);
+        return request(message, index, Integer.class);
     }
 }

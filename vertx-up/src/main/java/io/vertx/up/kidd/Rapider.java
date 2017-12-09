@@ -3,8 +3,9 @@ package io.vertx.up.kidd;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.atom.Envelop;
-import io.vertx.up.kidd.id.ReactSpy;
-import io.vertx.up.kidd.outcome.Obstain;
+import io.vertx.up.kidd.income.IntImitate;
+import io.vertx.up.kidd.income.JObjectImitate;
+import io.vertx.up.kidd.income.StringImitate;
 import io.vertx.up.tool.mirror.Instance;
 
 /**
@@ -12,37 +13,24 @@ import io.vertx.up.tool.mirror.Instance;
  */
 @SuppressWarnings("unchecked")
 public class Rapider {
-    /**
-     * Body params
-     *
-     * @param message
-     * @return
-     */
+
     public static JsonObject getBody(final Message<Envelop> message) {
-        return Heart.idiom().request(message);
+        final Imitate<JsonObject> imitate = Instance.singleton(JObjectImitate.class);
+        return imitate.request(message);
     }
 
-    /**
-     * Interface only params
-     *
-     * @param message
-     * @return
-     */
     public static JsonObject getJson(final Message<Envelop> message) {
-        return Heart.idiom().request(message, 0);
+        final Imitate<JsonObject> imitate = Instance.singleton(JObjectImitate.class);
+        return imitate.request(message, 0);
     }
 
-    /**
-     * @param message
-     * @return
-     */
     public static String getString(final Message<Envelop> message, final int index) {
-        return Heart.iambic().request(message, index);
+        final Imitate<String> imitate = Instance.singleton(StringImitate.class);
+        return imitate.request(message, index);
     }
 
-    public static Obstain<JsonObject> getReact(final Class<?> clazz) {
-        final Spy<JsonObject> spy = Instance.singleton(ReactSpy.class);
-        return Obstain.<JsonObject>start(clazz)
-                .connect(spy);
+    public static Integer getInt(final Message<Envelop> message, final int index) {
+        final Imitate<Integer> imitate = Instance.singleton(IntImitate.class);
+        return imitate.request(message, index);
     }
 }

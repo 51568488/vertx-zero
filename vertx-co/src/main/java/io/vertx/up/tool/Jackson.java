@@ -1,5 +1,6 @@
 package io.vertx.up.tool;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
@@ -133,6 +134,11 @@ public final class Jackson {
     }
 
     public static <T> T deserialize(final String value, final Class<T> type) {
+        return Fn.get(null,
+                () -> Fn.getJvm(() -> MAPPER.readValue(value, type)), value);
+    }
+
+    public static <T> T deserialize(final String value, final TypeReference<T> type) {
         return Fn.get(null,
                 () -> Fn.getJvm(() -> MAPPER.readValue(value, type)), value);
     }

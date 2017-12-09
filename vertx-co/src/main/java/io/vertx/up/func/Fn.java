@@ -231,6 +231,15 @@ public class Fn {
                 tSupplier::get, fSupplier::get), logger);
     }
 
+    public static <T> T getSemi(
+            final boolean condition,
+            final Annal logger,
+            final Supplier<T> tSupplier
+    ) {
+        return Defend.zeroReturn(() -> Semi.execZero(condition,
+                tSupplier::get, null), logger);
+    }
+
     /**
      * @param condition
      * @param tSupplier

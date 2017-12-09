@@ -4,6 +4,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.kidd.income.JArrayImitate;
 import io.vertx.up.kidd.income.JObjectImitate;
+import io.vertx.up.kidd.income.StringImitate;
 import io.vertx.up.tool.mirror.Instance;
 
 /**
@@ -26,5 +27,14 @@ final class Heart {
      */
     static Imitate<JsonArray> imbibe() {
         return Instance.singleton(JArrayImitate.class);
+    }
+
+    /**
+     * Basic Type for iambic
+     *
+     * @return
+     */
+    static Imitate<String> iambic() {
+        return Instance.singleton(StringImitate.class);
     }
 }

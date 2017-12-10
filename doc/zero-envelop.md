@@ -35,14 +35,12 @@ final Envelop error = Envelop.failure(exception);
 
 ```
 
-## 3. Data Format
+## 4. Data Format
 
 Success:
 
 ```json
 {
-    "brief": "OK",
-    "status": 200,
     "data": "Different data format for this field"
 }
 
@@ -53,8 +51,6 @@ Failure
 
 ```json
 {
-    "brief": "OK",
-    "status": 200,
     "message": "Error message description",
     "code": -40013
 }

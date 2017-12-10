@@ -13,6 +13,7 @@ This framework contains four sub-projects
 * `vertx-co`: Core Library of Zero Up Framework
 * `vertx-tp`: Third part integration components in Zero Up Framework
 * `vertx-up`: Zero Up Engine with nested vert.x web container
+* `vertx-rx`: Zero Up Engine with nested rxjava web container instead of web container
 * `vertx-zeus`: Zero Examples, it will be removed in real project implementation. 
 
 ## 1. Envrionment
@@ -23,7 +24,7 @@ If you want to use Zero framework, you can add following dependency into you `po
         <dependency>
             <groupId>cn.vertxup</groupId>
             <artifactId>vertx-up</artifactId>
-            <version>0.4.3</version>
+            <version>0.4.4</version>
         </dependency>
 ```
 
@@ -69,9 +70,10 @@ Once the Zero is up, you can see following logs in your console ( The default po
 	2. [Mime type Matrix](doc/zero-mime.md)
 5. Request Flow
 	1. [How to enable Event Bus](doc/zero-worker.md)
-	2. [Event Bus sample version](doc/zero-ebs.md)
+	2. [(Recommend) Event Bus sample version](doc/zero-ebs.md)
 	2. [Request Workflow Introduction](doc/zero-mode.md)
 	3. [How to use Envelop ( Uniform Resource Model )](doc/zero-envelop.md)
+	4. [(Recommend) **Example 1**：Advanced usage for Envelop](doc/zero-uniform.md)
 6. Plugin
 	1. [How to use MongoClient in Zero](doc/zero-mongo.md)
 	2. [How to use MySqlClient in Zero](doc/zero-mysql.md)

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>vertx-zero</artifactId>
         <groupId>cn.vertxup</groupId>
-        <version>0.4.4</version>
+        <version>0.4.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>vertx-up</artifactId>
@@ -70,45 +70,6 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-common</artifactId>
-        </dependency>
-        <!-- Vert.x Api contract -->
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-web-api-contract</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.vertx</groupId>
-                    <artifactId>vertx-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.vertx</groupId>
-                    <artifactId>vertx-web</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.validation</groupId>
-                    <artifactId>validation-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-databind</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.dataformat</groupId>
-                    <artifactId>jackson-dataformat-yaml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 </project>

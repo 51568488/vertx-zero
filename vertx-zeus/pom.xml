@@ -5,7 +5,7 @@
     <parent>
         <artifactId>vertx-zero</artifactId>
         <groupId>cn.vertxup</groupId>
-        <version>0.4.4-SNAPSHOT</version>
+        <version>0.4.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
@@ -35,9 +35,15 @@
     <artifactId>vertx-zeus</artifactId>
     <name>vertx-zeus: Zero Service Mesh</name>
     <dependencies>
+        <!-- Web -->
         <dependency>
             <groupId>cn.vertxup</groupId>
             <artifactId>vertx-up</artifactId>
+        </dependency>
+        <!-- Rx -->
+        <dependency>
+            <groupId>cn.vertxup</groupId>
+            <artifactId>vertx-rx</artifactId>
         </dependency>
         <!-- Lombok -->
         <dependency>

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>vertx-zero</artifactId>
         <groupId>cn.vertxup</groupId>
-        <version>0.4.4-SNAPSHOT</version>
+        <version>0.4.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>vertx-up</artifactId>
@@ -70,17 +70,6 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-common</artifactId>
-        </dependency>
-        <!-- RxJava -->
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-rx-java2</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.vertx</groupId>
-                    <artifactId>vertx-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!-- Vert.x Api contract -->
         <dependency>

@@ -156,11 +156,6 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${maven.plugin.resource}</version>
                 </plugin>
-                <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin/ -->
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${maven.plugin.jar}</version>
-                </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-deploy-plugin -->
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>

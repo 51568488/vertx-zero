@@ -9,5 +9,5 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>( Zero Mesh ) Athena - Configuration</name>
-    <artifactId>vertx-athena</artifactId>
+    <artifactId>up-athena</artifactId>
 </project>

@@ -1,6 +1,5 @@
 package io.vertx.up.rs.config;
 
-import com.google.common.collect.Sets;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.up.annotations.EndPoint;
@@ -31,7 +30,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
 
     @Override
     public Set<Event> extract(final Class<?> clazz) {
-        return Fn.get(Sets.newConcurrentHashSet(), () -> {
+        return Fn.get(new ConcurrentHashSet<>(), () -> {
             // 1. Class verify
             verify(clazz);
             // 2. Check whether clazz annotated with @PATH

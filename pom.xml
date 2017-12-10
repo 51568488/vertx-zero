@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.vertxup</groupId>
     <artifactId>vertx-zero</artifactId>
-    <version>0.4.4</version>
+    <version>0.4.5-SNAPSHOT</version>
     <name>vertx-zero: Vertx Up Zero Configuration</name>
     <description>Vertx Zero Framework is a tool for Service Mesh Micro Service.</description>
     <url>https://silentbalanceyh.github.io/vertx-zero/</url>
@@ -155,11 +155,6 @@
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${maven.plugin.resource}</version>
-                </plugin>
-                <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin/ -->
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${maven.plugin.jar}</version>
                 </plugin>
                 <!-- http://www.mvnrepository.com/artifact/org.apache.maven.plugins/maven-deploy-plugin -->
                 <plugin>
@@ -384,34 +379,34 @@
             <dependency>
                 <groupId>cn.vertxup</groupId>
                 <artifactId>vertx-co</artifactId>
-                <version>${project.parent.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.vertxup</groupId>
                 <artifactId>vertx-tp</artifactId>
-                <version>${project.parent.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.vertxup</groupId>
                 <artifactId>vertx-rx</artifactId>
-                <version>${project.parent.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.vertxup</groupId>
                 <artifactId>vertx-up</artifactId>
-                <version>${project.parent.version}</version>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- Demo Project -->
+            <dependency>
+                <groupId>cn.vertxup</groupId>
+                <artifactId>vertx-zeus</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${common.lang3.version}</version>
-            </dependency>
-            <!-- Demo Project -->
-            <dependency>
-                <groupId>cn.vertxup</groupId>
-                <artifactId>vertx-zeus</artifactId>
-                <version>${project.parent.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.hazelcast/hazelcast -->
             <dependency>

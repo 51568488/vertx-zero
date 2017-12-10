@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.vertxup</groupId>
     <artifactId>vertx-zero</artifactId>
-    <version>0.4.4-SNAPSHOT</version>
+    <version>0.4.4</version>
     <name>vertx-zero: Vertx Up Zero Configuration</name>
     <description>Vertx Zero Framework is a tool for Service Mesh Micro Service.</description>
     <url>https://silentbalanceyh.github.io/vertx-zero/</url>
@@ -14,6 +14,7 @@
         <module>vertx-zeus</module>
         <module>vertx-co</module>
         <module>vertx-tp</module>
+        <module>vertx-rx</module>
     </modules>
     <packaging>pom</packaging>
     <!-- License -->
@@ -292,6 +293,7 @@
                 </configuration>
             </plugin>
             <!-- Deploy Only -->
+            <!--
             <plugin>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>${maven.plugin.pgp}</version>
@@ -310,6 +312,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             <!-- Mojo -->
             <plugin>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -386,6 +389,11 @@
             <dependency>
                 <groupId>cn.vertxup</groupId>
                 <artifactId>vertx-tp</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.vertxup</groupId>
+                <artifactId>vertx-rx</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>

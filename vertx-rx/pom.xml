@@ -8,25 +8,21 @@
         <version>0.4.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <name>vertx-tp: Zero Integration Plugins</name>
-    <artifactId>vertx-tp</artifactId>
+    <name>vertx-rx: Zero Up RxJava Container</name>
+    <artifactId>vertx-rx</artifactId>
     <dependencies>
         <dependency>
             <groupId>cn.vertxup</groupId>
-            <artifactId>vertx-co</artifactId>
+            <artifactId>vertx-up</artifactId>
         </dependency>
-        <!-- Feign client configuration -->
+        <!-- RxJava -->
         <dependency>
-            <groupId>com.netflix.feign</groupId>
-            <artifactId>feign-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.netflix.feign</groupId>
-            <artifactId>feign-jackson</artifactId>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-rx-java2</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-databind</artifactId>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-core</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

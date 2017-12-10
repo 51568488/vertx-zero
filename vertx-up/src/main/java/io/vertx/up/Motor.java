@@ -1,4 +1,4 @@
-package io.vertx.up.kidd;
+package io.vertx.up;
 
 import io.vertx.core.ClusterOptions;
 import io.vertx.core.VertxOptions;

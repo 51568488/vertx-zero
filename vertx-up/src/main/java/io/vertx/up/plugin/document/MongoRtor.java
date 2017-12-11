@@ -77,20 +77,22 @@ public class MongoRtor {
                     Fn.itJArray(dataArray, JsonObject.class, (item, index) -> {
                         // Get item value by verticalKey
                         final Object value = item.getValue(verticalKey);
-                        Runner.run(() -> {
-                            // Direct set filter
-                            final JsonObject filter = new JsonObject().put(refKey, value);
-                            this.client.findWithOptions(this.collection, filter, this.options, res -> {
-                                // Build response model
-                                final Envelop envelop = Heart.getReacts(this.hitted)
-                                        .connect(res).result().to();
-                                final JsonArray data = envelop.data();
-                                if (null != data) {
-                                    result.put((T) value, data);
-                                }
-                                counter.countDown();
-                            });
-                        }, "concurrent-secondary-" + value);
+                        Fn.safeNull(() -> {
+                            Runner.run(() -> {
+                                // Direct set filter
+                                final JsonObject filter = new JsonObject().put(refKey, value);
+                                this.client.findWithOptions(this.collection, filter, this.options, res -> {
+                                    // Build response model
+                                    final Envelop envelop = Heart.getReacts(this.hitted)
+                                            .connect(res).result().to();
+                                    final JsonArray data = envelop.data();
+                                    if (null != data) {
+                                        result.put((T) value, data);
+                                    }
+                                    counter.countDown();
+                                });
+                            }, "concurrent-secondary-" + value);
+                        }, value);
                     });
                     // Await
                     try {

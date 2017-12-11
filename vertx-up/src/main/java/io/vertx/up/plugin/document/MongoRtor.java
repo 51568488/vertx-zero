@@ -10,8 +10,6 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.kidd.Heart;
 import io.vertx.up.log.Annal;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -61,38 +59,36 @@ public class MongoRtor {
      * @param dataArray
      * @param refKey
      * @param verticalKey
-     * @param <T>
+     * @param mountField
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <T> ConcurrentMap<T, JsonArray> minorBy(
+    public JsonArray minorBy(
             final JsonArray dataArray,
             final String refKey,
-            final String verticalKey
+            final String verticalKey,
+            final String mountField
     ) {
-        final ConcurrentMap<T, JsonArray> result = new ConcurrentHashMap<>();
-        return Fn.getJvm(result, () -> {
+        return Fn.getJvm(new JsonArray(), () -> {
                     // Build counter.
                     final CountDownLatch counter = new CountDownLatch(dataArray.size());
                     Fn.itJArray(dataArray, JsonObject.class, (item, index) -> {
                         // Get item value by verticalKey
                         final Object value = item.getValue(verticalKey);
-                        Fn.safeNull(() -> {
-                            Runner.run(() -> {
-                                // Direct set filter
-                                final JsonObject filter = new JsonObject().put(refKey, value);
-                                this.client.findWithOptions(this.collection, filter, this.options, res -> {
-                                    // Build response model
-                                    final Envelop envelop = Heart.getReacts(this.hitted)
-                                            .connect(res).result().to();
-                                    final JsonArray data = envelop.data();
-                                    if (null != data) {
-                                        result.put((T) value, data);
-                                    }
-                                    counter.countDown();
-                                });
-                            }, "concurrent-secondary-" + value);
-                        }, value);
+                        Fn.safeNull(() -> Runner.run(() -> {
+                            // Direct set filter
+                            final JsonObject filter = new JsonObject().put(refKey, value);
+                            this.client.findWithOptions(this.collection, filter, this.options, res -> {
+                                // Build response model
+                                final Envelop envelop = Heart.getReacts(this.hitted)
+                                        .connect(res).result().to();
+                                final JsonArray data = envelop.data();
+                                if (null != data) {
+                                    item.put(mountField, data);
+                                }
+                                counter.countDown();
+                            });
+                        }, "concurrent-secondary-" + value), value);
                     });
                     // Await
                     try {
@@ -100,7 +96,8 @@ public class MongoRtor {
                     } catch (final InterruptedException ex) {
                         LOGGER.jvm(ex);
                     }
-                    return result;
+                    // Convert to target mountKey
+                    return dataArray;
                 }, dataArray, verticalKey, refKey,
                 this.hitted, this.collection);
     }

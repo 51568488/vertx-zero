@@ -17,6 +17,8 @@ import io.vertx.zero.eon.Values;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -85,12 +87,15 @@ public class ZeroHttpAgent extends AbstractVerticle {
             LOGGER.info(Info.HTTP_SERVERS, this.NAME, deploymentID(),
                     portLiteral);
             final List<Route> routes = router.getRoutes();
+            final Map<String, Route> routeMap = new TreeMap<>();
             for (final Route route : routes) {
                 // 2.Route
                 final String path = null == route.getPath() ? "/*" : route.getPath();
-                LOGGER.info(Info.MAPPED_ROUTE, this.NAME, path,
-                        route.toString());
+                routeMap.put(path, route);
             }
+            routeMap.forEach((path, route) ->
+                    LOGGER.info(Info.MAPPED_ROUTE, this.NAME, path,
+                            route.toString()));
             // 3. Endpoint Publish
             final String address =
                     MessageFormat.format("http://{0}:{1}/",

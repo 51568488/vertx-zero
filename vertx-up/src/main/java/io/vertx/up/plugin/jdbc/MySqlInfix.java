@@ -7,7 +7,7 @@ import io.vertx.up.annotations.Plugin;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.func.Fn;
 import io.vertx.up.plugin.Infix;
-import io.vertx.up.plugin.document.MongoInfix;
+import io.vertx.up.plugin.mongo.MongoInfix;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Scanned @Queue clazz to build Receipt metadata
@@ -26,7 +27,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
 
     private static final Annal LOGGER = Annal.get(ReceiptExtractor.class);
 
-    private static final Set<String> ADDRESS = new HashSet<>();
+    private static final Set<String> ADDRESS = new TreeSet<>();
 
     static {
         if (ADDRESS.isEmpty()) {

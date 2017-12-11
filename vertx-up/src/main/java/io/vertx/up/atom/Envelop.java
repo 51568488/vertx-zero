@@ -36,13 +36,21 @@ public class Envelop implements Serializable {
     }
 
     /**
-     * Extract request part
-     *
+     * Extract data port to T
      * @return
      */
-    public JsonObject data() {
-        return (null != this.data && this.data.containsKey(Key.DATA)) ?
-                this.data.getJsonObject(Key.DATA) : this.data;
+    @SuppressWarnings("unchecked")
+    public <T> T data() {
+        if(null != this.data && this.data.containsKey(Key.DATA)){
+            final Object value = this.data.getValue(Key.DATA);
+            if(null != value){
+                return (T)value;
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
     }
 
     /**

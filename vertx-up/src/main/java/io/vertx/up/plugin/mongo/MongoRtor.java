@@ -1,4 +1,4 @@
-package io.vertx.up.plugin.document;
+package io.vertx.up.plugin.mongo;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;

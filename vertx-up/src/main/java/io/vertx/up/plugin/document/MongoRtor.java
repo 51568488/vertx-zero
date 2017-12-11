@@ -54,7 +54,9 @@ public class MongoRtor {
      * For example
      * Topic = [{...},{...},{...}]
      * Then query Videos belong to Topic for each element.
-     * Call this method to send query to mongodb and create thread
+     * 1. Extract filter condition with refKey = item.get(verticalKey);
+     * 2. Put options, filter to query result to JsonArray
+     * 3. Mount the jsonArray to item.put(mountField,jsonArray)
      *
      * @param dataArray
      * @param refKey

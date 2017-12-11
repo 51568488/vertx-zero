@@ -13,7 +13,7 @@ public class ReactSpy implements Spy<JsonObject> {
 
     @Override
     public JsonObject out(final JsonObject response) {
-        return process(response, "_id", "_key");
+        return process(response, "_id", "key");
     }
 
     private JsonObject process(final JsonObject source,

@@ -5,7 +5,7 @@ import io.vertx.up.exception.UpClassArgsException;
 import io.vertx.up.exception.UpClassInvalidException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.tool.Runner;
+import io.vertx.up.concurrent.Runner;
 import io.vertx.up.tool.mirror.Anno;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroLauncher;

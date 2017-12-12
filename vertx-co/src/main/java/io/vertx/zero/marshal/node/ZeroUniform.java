@@ -22,20 +22,18 @@ public class ZeroUniform implements Node<JsonObject> {
     @Override
     public JsonObject read() {
         final JsonObject data = new JsonObject();
-        if (data.isEmpty()) {
-            final ConcurrentMap<String, String> keys = node.read();
-            final Set<String> skipped = Arrays
-                    .stream(Plugins.DATA).collect(Collectors.toSet());
-            // RxJava2 version
-            Observable.fromIterable(skipped)
-                    .filter(skipped::contains)
-                    .map(key -> Fn.pool(Storage.CONFIG, keys.get(key),
-                            () -> Fn.getJvm(new JsonObject(),
-                                    () -> IO.getYaml(keys.get(key)),
-                                    keys.get(key))))
-                    .filter(Objects::nonNull)
-                    .subscribe(item -> data.mergeIn(item, true));
-        }
+        final ConcurrentMap<String, String> keys = node.read();
+        final Set<String> skipped = Arrays
+                .stream(Plugins.DATA).collect(Collectors.toSet());
+        // RxJava2 version
+        Observable.fromIterable(keys.keySet())
+                .filter(item -> !skipped.contains(item))
+                .map(key -> Fn.pool(Storage.CONFIG, keys.get(key),
+                        () -> Fn.getJvm(new JsonObject(),
+                                () -> IO.getYaml(keys.get(key)),
+                                keys.get(key))))
+                .filter(Objects::nonNull)
+                .subscribe(item -> data.mergeIn(item, true));
         return data;
     }
 }

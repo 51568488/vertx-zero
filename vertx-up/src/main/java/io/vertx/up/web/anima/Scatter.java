@@ -1,11 +1,9 @@
 package io.vertx.up.web.anima;
 
-import io.vertx.core.Vertx;
-
 /**
  * Child component works
  */
-public interface Scatter {
+public interface Scatter<Vertx> {
     /**
      * Connect to vert.x to execute start up works.
      *

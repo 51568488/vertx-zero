@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Agent scatter to deploy agents
  */
-public class AgentScatter implements Scatter {
+public class AgentScatter implements Scatter<Vertx> {
 
     private static final Annal LOGGER = Annal.get(AgentScatter.class);
 

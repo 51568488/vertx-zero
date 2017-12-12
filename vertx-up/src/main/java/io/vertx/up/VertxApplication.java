@@ -1,11 +1,12 @@
 package io.vertx.up;
 
+import io.vertx.core.Vertx;
 import io.vertx.up.annotations.Up;
+import io.vertx.up.concurrent.Runner;
 import io.vertx.up.exception.UpClassArgsException;
 import io.vertx.up.exception.UpClassInvalidException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.concurrent.Runner;
 import io.vertx.up.tool.mirror.Anno;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroLauncher;
@@ -50,24 +51,24 @@ public class VertxApplication {
 
     private void run(final Object... args) {
 
-        final Launcher launcher = Instance.singleton(ZeroLauncher.class);
+        final Launcher<Vertx> launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
             /** 1.Find Agent for deploy **/
             Runner.run(() -> {
-                final Scatter scatter = Instance.singleton(AgentScatter.class);
+                final Scatter<Vertx> scatter = Instance.singleton(AgentScatter.class);
                 scatter.connect(vertx);
             }, "agent-runner");
 
             /** 2.Find Worker for deploy **/
             Runner.run(() -> {
-                final Scatter scatter = Instance.singleton(WorkerScatter.class);
+                final Scatter<Vertx> scatter = Instance.singleton(WorkerScatter.class);
                 scatter.connect(vertx);
             }, "worker-runner");
 
             /** 3.Initialize Infix **/
             Runner.run(() -> {
                 // Infix
-                Scatter scatter = Instance.singleton(InfixScatter.class);
+                Scatter<Vertx> scatter = Instance.singleton(InfixScatter.class);
                 scatter.connect(vertx);
                 // Injection
                 scatter = Instance.singleton(AffluxScatter.class);
@@ -76,7 +77,7 @@ public class VertxApplication {
 
             /** 4.Rule started **/
             Runner.run(() -> {
-                final Scatter scatter = Instance.singleton(CodexScatter.class);
+                final Scatter<Vertx> scatter = Instance.singleton(CodexScatter.class);
                 scatter.connect(vertx);
             }, "codex-engine-runner");
         });

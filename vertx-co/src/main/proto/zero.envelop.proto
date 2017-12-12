@@ -22,6 +22,8 @@ message IpcEnvelop {
     string body = 2;
     // Stream content
     bytes stream = 3;
+    // Service name for method calling, connect to method
+    string name = 4;
 }
 
 message IpcRequest {

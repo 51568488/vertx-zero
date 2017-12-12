@@ -50,4 +50,22 @@ public interface IpcEnvelopOrBuilder extends
    * <code>bytes stream = 3;</code>
    */
   com.google.protobuf.ByteString getStream();
+
+  /**
+   * <pre>
+   * Service name for method calling, connect to method
+   * </pre>
+   *
+   * <code>string name = 4;</code>
+   */
+  java.lang.String getName();
+  /**
+   * <pre>
+   * Service name for method calling, connect to method
+   * </pre>
+   *
+   * <code>string name = 4;</code>
+   */
+  com.google.protobuf.ByteString
+      getNameBytes();
 }

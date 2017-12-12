@@ -19,6 +19,7 @@ private static final long serialVersionUID = 0L;
     type_ = 0;
     body_ = "";
     stream_ = com.google.protobuf.ByteString.EMPTY;
+    name_ = "";
   }
 
   @java.lang.Override
@@ -67,6 +68,12 @@ private static final long serialVersionUID = 0L;
           case 26: {
 
             stream_ = input.readBytes();
+            break;
+          }
+          case 34: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            name_ = s;
             break;
           }
         }
@@ -172,6 +179,48 @@ private static final long serialVersionUID = 0L;
     return stream_;
   }
 
+  public static final int NAME_FIELD_NUMBER = 4;
+  private volatile java.lang.Object name_;
+  /**
+   * <pre>
+   * Service name for method calling, connect to method
+   * </pre>
+   *
+   * <code>string name = 4;</code>
+   */
+  public java.lang.String getName() {
+    java.lang.Object ref = name_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      name_ = s;
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * Service name for method calling, connect to method
+   * </pre>
+   *
+   * <code>string name = 4;</code>
+   */
+  public com.google.protobuf.ByteString
+      getNameBytes() {
+    java.lang.Object ref = name_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      name_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
@@ -193,6 +242,9 @@ private static final long serialVersionUID = 0L;
     if (!stream_.isEmpty()) {
       output.writeBytes(3, stream_);
     }
+    if (!getNameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, name_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -211,6 +263,9 @@ private static final long serialVersionUID = 0L;
     if (!stream_.isEmpty()) {
       size += com.google.protobuf.CodedOutputStream
         .computeBytesSize(3, stream_);
+    }
+    if (!getNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, name_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -233,6 +288,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getBody());
     result = result && getStream()
         .equals(other.getStream());
+    result = result && getName()
+        .equals(other.getName());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -250,6 +307,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getBody().hashCode();
     hash = (37 * hash) + STREAM_FIELD_NUMBER;
     hash = (53 * hash) + getStream().hashCode();
+    hash = (37 * hash) + NAME_FIELD_NUMBER;
+    hash = (53 * hash) + getName().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -385,6 +444,8 @@ private static final long serialVersionUID = 0L;
 
       stream_ = com.google.protobuf.ByteString.EMPTY;
 
+      name_ = "";
+
       return this;
     }
 
@@ -410,6 +471,7 @@ private static final long serialVersionUID = 0L;
       result.type_ = type_;
       result.body_ = body_;
       result.stream_ = stream_;
+      result.name_ = name_;
       onBuilt();
       return result;
     }
@@ -460,6 +522,10 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getStream() != com.google.protobuf.ByteString.EMPTY) {
         setStream(other.getStream());
+      }
+      if (!other.getName().isEmpty()) {
+        name_ = other.name_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -678,6 +744,95 @@ private static final long serialVersionUID = 0L;
     public Builder clearStream() {
       
       stream_ = getDefaultInstance().getStream();
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object name_ = "";
+    /**
+     * <pre>
+     * Service name for method calling, connect to method
+     * </pre>
+     *
+     * <code>string name = 4;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Service name for method calling, connect to method
+     * </pre>
+     *
+     * <code>string name = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Service name for method calling, connect to method
+     * </pre>
+     *
+     * <code>string name = 4;</code>
+     */
+    public Builder setName(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      name_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Service name for method calling, connect to method
+     * </pre>
+     *
+     * <code>string name = 4;</code>
+     */
+    public Builder clearName() {
+      
+      name_ = getDefaultInstance().getName();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Service name for method calling, connect to method
+     * </pre>
+     *
+     * <code>string name = 4;</code>
+     */
+    public Builder setNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      name_ = value;
       onChanged();
       return this;
     }

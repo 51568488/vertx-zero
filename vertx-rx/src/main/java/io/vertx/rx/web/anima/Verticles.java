@@ -16,13 +16,9 @@ class Verticles {
         final String flag = options.isWorker() ? "Rx-Worker" : "Rx-Agent";
         final Single<String> observable
                 = vertx.rxDeployVerticle(clazz.getName(), options);
-        observable.subscribe((item, cause) -> {
-            if (null == cause) {
-                logger.info(Info.VTC_END, name, options.getInstances(), item, flag);
-            } else {
-                logger.info(Info.VTC_FAIL, name, options.getInstances(),
-                        null == cause.getCause() ? null : cause.getCause().getMessage(), flag);
-            }
-        });
+        observable.subscribe(
+                (item) -> logger.info(Info.VTC_END, name, options.getInstances(), item, flag),
+                (cause) -> logger.info(Info.VTC_FAIL, name, options.getInstances(),
+                        null == cause.getCause() ? null : cause.getCause().getMessage(), flag));
     }
 }

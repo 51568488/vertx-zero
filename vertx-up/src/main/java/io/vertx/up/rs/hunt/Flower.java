@@ -1,13 +1,9 @@
-package io.vertx.up.rs.sentry;
+package io.vertx.up.rs.hunt;
 
-import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.*;
 import io.vertx.up.exception.WebException;
-import io.vertx.up.rs.Sentry;
-import io.vertx.up.rs.hunt.Answer;
-import io.vertx.up.rs.hunt.BaseAim;
 import io.vertx.up.rs.regular.Ruler;
 import io.vertx.zero.eon.Values;
 
@@ -15,45 +11,39 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Major execution to verify the result.
- */
-public class StandardVerifier extends BaseAim implements Sentry {
+class Flower {
 
-    @Override
-    public Handler<RoutingContext> signal(final Depot depot) {
-        // continue to verify JsonObject/JsonArray type
-        final Map<String, List<Rule>> rulers
-                = verifier().buildRulers(depot);
-        return (context) -> {
-            final Object[] args = buildArgs(context, depot.getEvent());
-            // Extract major object
-            WebException error = verifyPureArguments(depot, args);
-            // 1.Basic validation passed.
+    static void executeRequest(final RoutingContext context,
+                               final Map<String, List<Rule>> rulers,
+                               final Depot depot,
+                               final Object[] args,
+                               final Validator verifier) {
+        // Extract major object
+        WebException error = verifyPureArguments(verifier, depot, args);
+        // 1.Basic validation passed.
+        if (null == error) {
+            // 2. Body validation for jsonobject
+            error = verifyBody(rulers, args);
             if (null == error) {
-                // 2. Body validation for jsonobject
-                error = verifyBody(rulers, args);
-                if (null == error) {
-                    context.next();
-                } else {
-                    // Body validation of rulers failure
-                    replyError(context, error, depot.getEvent());
-                }
+                context.next();
             } else {
-                // Hibernate validate failure
+                // Body validation of rulers failure
                 replyError(context, error, depot.getEvent());
             }
-        };
+        } else {
+            // Hibernate validate failure
+            replyError(context, error, depot.getEvent());
+        }
     }
 
-    private void replyError(final RoutingContext context,
-                            final WebException error,
-                            final Event event) {
+    private static void replyError(final RoutingContext context,
+                                   final WebException error,
+                                   final Event event) {
         final Envelop envelop = Envelop.failure(error);
         Answer.reply(context, envelop, event);
     }
 
-    private WebException verifyBody(
+    private static WebException verifyBody(
             final Map<String, List<Rule>> rulers,
             final Object[] args) {
         WebException error = null;
@@ -69,7 +59,7 @@ public class StandardVerifier extends BaseAim implements Sentry {
         return error;
     }
 
-    private WebException verifyBody(
+    private static WebException verifyBody(
             final Map<String, List<Rule>> rulers,
             final JsonObject data) {
         WebException error = null;
@@ -93,7 +83,8 @@ public class StandardVerifier extends BaseAim implements Sentry {
         return error;
     }
 
-    private WebException verifyPureArguments(
+    private static WebException verifyPureArguments(
+            final Validator verifier,
             final Depot depot,
             final Object[] args) {
         final Event event = depot.getEvent();
@@ -106,7 +97,7 @@ public class StandardVerifier extends BaseAim implements Sentry {
                     // TODO: Extension for virtual proxy
                 } else {
                     // Validation for proxy
-                    verifier().verifyMethod(proxy, method, args);
+                    verifier.verifyMethod(proxy, method, args);
                 }
             }
         } catch (final WebException ex) {

@@ -2,6 +2,9 @@ package io.vertx.rx.rs.router;
 
 import io.vertx.reactivex.ext.web.Route;
 import io.vertx.reactivex.ext.web.Router;
+import io.vertx.reactivex.ext.web.RoutingContext;
+import io.vertx.rx.micro.ZeroRxEndurer;
+import io.vertx.rx.rs.dispatch.StandardVerifier;
 import io.vertx.up.atom.Depot;
 import io.vertx.up.atom.Event;
 import io.vertx.up.func.Fn;
@@ -9,10 +12,9 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.Sentry;
-import io.vertx.up.rs.dispatcher.ModeSplitter;
+import io.vertx.up.rs.dispatch.ModeSplitter;
 import io.vertx.up.rs.router.Hub;
 import io.vertx.up.rs.router.Verifier;
-import io.vertx.up.rs.sentry.StandardVerifier;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
 
@@ -34,7 +36,7 @@ public class EventAxis implements Axis<Router> {
     /**
      * Sentry
      */
-    private transient final Sentry verifier =
+    private transient final Sentry<RoutingContext> verifier =
             Fn.poolThread(Pool.VERIFIERS,
                     () -> Instance.instance(StandardVerifier.class));
 
@@ -63,10 +65,8 @@ public class EventAxis implements Axis<Router> {
                         final Depot depot = Depot.create(event);
                         // 5. Request workflow executor: handler
                         final Aim aim = this.splitter.distribute(event);
-                        route.handler(context -> {
-                            System.out.println("Hello");
-                            context.next();
-                        });
+                        route.handler(this.verifier.signal(depot))
+                                .failureHandler(ZeroRxEndurer.create());
                     });
         });
     }

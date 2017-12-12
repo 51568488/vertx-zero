@@ -70,7 +70,7 @@ public class ZeroRxAgent extends AbstractVerticle {
                     server.requestHandler(router::accept).rxListen();
             /** 3.4. Log output **/
             {
-                result.doOnSuccess((rxServer) -> {
+                result.subscribe((rxServer) -> {
                     recordServer(option, router);
                 });
             }

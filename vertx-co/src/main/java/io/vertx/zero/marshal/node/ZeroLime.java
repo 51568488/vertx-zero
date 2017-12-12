@@ -1,11 +1,13 @@
 package io.vertx.zero.marshal.node;
 
+import io.reactivex.Observable;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.eon.Strings;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -39,12 +41,11 @@ public class ZeroLime implements Node<ConcurrentMap<String, String>> {
     private ConcurrentMap<String, String> build(final String literal) {
         final Set<String> sets = StringUtil.split(literal, Strings.COMMA);
         if (null != literal) {
-            for (final String set : sets) {
-                if (!StringUtil.isNil(set)) {
-                    Fn.pool(INTERNALS, set,
-                            () -> ZeroTool.produce(set));
-                }
-            }
+            // RxJava2
+            Observable.fromIterable(sets)
+                    .filter(Objects::nonNull)
+                    .subscribe(item -> Fn.pool(INTERNALS, item,
+                            () -> ZeroTool.produce(item)));
         }
         return INTERNALS;
     }

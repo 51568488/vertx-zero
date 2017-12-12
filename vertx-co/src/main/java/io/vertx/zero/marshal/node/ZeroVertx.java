@@ -1,5 +1,6 @@
 package io.vertx.zero.marshal.node;
 
+import io.reactivex.Observable;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.func.Fn;
@@ -42,13 +43,12 @@ public class ZeroVertx implements Node<JsonObject> {
             final String limeStr = data.getString(Key.LIME);
             final Set<String> sets = StringUtil.split(limeStr, Strings.COMMA);
             /**
-             * server, inject, error
+             * server, inject, error, resolver
+             * RxJava2
              */
-            for (final String item : Plugins.DATA) {
-                if (!StringUtil.isNil(item)) {
-                    sets.add(item);
-                }
-            }
+            Observable.fromArray(Plugins.DATA)
+                    .map(item -> item)
+                    .subscribe(sets::add);
             data.put(Key.LIME, StringUtil.join(sets));
         }, data);
     }

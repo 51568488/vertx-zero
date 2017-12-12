@@ -1,5 +1,6 @@
 package io.vertx.up.rs.config;
 
+import io.reactivex.Observable;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.atom.Receipt;
 import io.vertx.up.exception.AccessProxyException;
@@ -8,7 +9,6 @@ import io.vertx.up.exception.NoArgConstructorException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
-import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Anno;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
@@ -17,6 +17,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -35,24 +36,18 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
             final Set<Class<?>> endpoints = ZeroAnno.getEndpoints();
 
             /** 2. Scan for @Address to matching **/
-            for (final Class<?> endpoint : endpoints) {
-                // 3. Scan
-                final Annotation[] annotations
-                        = Anno.query(endpoint, Address.class);
-                // 4. Extract address
-                for (final Annotation addressAnno : annotations) {
-                    final String address = Instance.invoke(addressAnno, "value");
-                    if (!StringUtil.isNil(address)) {
-                        ADDRESS.add(address);
-                    }
-                }
-            }
+            Observable.fromIterable(endpoints)
+                    .map(endpoint -> Anno.query(endpoint, Address.class))
+                    // 3. Scan annotations
+                    .subscribe(annotations -> Observable.fromArray(annotations)
+                            .map(addressAnno -> Instance.invoke(addressAnno, "value"))
+                            .filter(Objects::nonNull)
+                            // 4. Hit address
+                            .subscribe(address -> ADDRESS.add(address.toString())));
         }
         /** 5.Log out address report **/
         LOGGER.info(Info.ADDRESS_IN, ADDRESS.size());
-        ADDRESS.forEach(item -> {
-            LOGGER.info(Info.ADDRESS_ITEM, item);
-        });
+        ADDRESS.forEach(item -> LOGGER.info(Info.ADDRESS_ITEM, item));
     }
 
     @Override
@@ -63,15 +58,11 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
             // 2. Scan method to find @Address
             final Set<Receipt> receipts = new HashSet<>();
             final Method[] methods = clazz.getDeclaredMethods();
-            for (final Method method : methods) {
-                // 3. Only focus on annotated with @Address
-                if (method.isAnnotationPresent(Address.class)) {
-                    final Receipt receipt = extract(method);
-                    if (null != receipt) {
-                        receipts.add(receipt);
-                    }
-                }
-            }
+            Observable.fromArray(methods)
+                    .filter(method -> method.isAnnotationPresent(Address.class))
+                    .map(this::extract)
+                    .filter(Objects::nonNull)
+                    .subscribe(receipts::add);
             return receipts;
         }, clazz);
     }
@@ -90,6 +81,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
         final Receipt receipt = new Receipt();
         receipt.setMethod(method);
         receipt.setAddress(address);
+        
         // Fix: Instance class for proxy
         final Object proxy = Instance.singleton(clazz);
         receipt.setProxy(proxy);

@@ -1,0 +1,6 @@
+server:
+- name: up-crius
+  type: rx
+  config:
+    port: 6083
+    host: 0.0.0.0

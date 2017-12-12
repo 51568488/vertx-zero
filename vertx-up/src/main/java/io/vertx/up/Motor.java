@@ -89,7 +89,7 @@ public final class Motor {
         // 1. If defined, use default
         Fn.itMap(agents, (type, list) -> {
             // 2. Defined -> You have defined
-            Fn.getSemi(defines.containsKey(type) && defines.get(type), LOGGER,
+            Fn.safeSemi(defines.containsKey(type) && defines.get(type), LOGGER,
                     () -> {
                         // Use user-defined Agent instead.
                         final Class<?> found = Statute.findUnique(list,
@@ -97,7 +97,6 @@ public final class Motor {
                         if (null != found) {
                             ret.put(type, found);
                         }
-                        return null;
                     }, () -> {
                         // Use internal defined ( system defaults )
                         final Class<?> found = Statute.findUnique(list,
@@ -105,7 +104,6 @@ public final class Motor {
                         if (null != found) {
                             ret.put(type, found);
                         }
-                        return null;
                     });
         });
         return ret;

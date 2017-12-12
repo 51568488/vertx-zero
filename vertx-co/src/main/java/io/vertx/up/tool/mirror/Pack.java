@@ -1,5 +1,6 @@
 package io.vertx.up.tool.mirror;
 
+import io.reactivex.Observable;
 import io.vertx.up.log.Annal;
 
 import java.util.HashSet;
@@ -77,9 +78,9 @@ public final class Pack {
             final String[] packageDir,
             final Predicate<Class<?>> filter) {
         final Set<Class<?>> result = new HashSet<>();
-        for (final String pkgName : packageDir) {
-            result.addAll(PackScanner.getClasses(filter, pkgName));
-        }
+        Observable.fromArray(packageDir)
+                .map(pkgName -> PackScanner.getClasses(filter, pkgName))
+                .subscribe(result::addAll);
         return result;
     }
 

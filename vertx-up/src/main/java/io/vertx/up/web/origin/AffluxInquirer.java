@@ -19,8 +19,7 @@ public class AffluxInquirer implements
     private static final Annal LOGGER = Annal.get(AffluxInquirer.class);
 
     @Override
-    public ConcurrentMap<Class<?>, ConcurrentMap<String, Class<?>>>
-    scan(final Set<Class<?>> classes) {
+    public ConcurrentMap<Class<?>, ConcurrentMap<String, Class<?>>> scan(final Set<Class<?>> classes) {
         // Find condition ok
         final Set<Class<?>> enabled = classes.stream()
                 .filter(item -> Anno.isMark(item, Plugins.INJECT_ANNOTATIONS))

@@ -1,5 +1,6 @@
 package io.vertx.up.rs.config;
 
+import io.reactivex.Observable;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
@@ -10,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -57,15 +59,12 @@ class MediaResolver {
                     () -> {
                         final String[] value = Instance.invoke(anno, "value");
                         final Set<MediaType> result = new HashSet<>();
-                        for (final String item : value) {
-                            if (null != item) {
-                                // Resolve media type: Use jersey library to parse.
-                                final MediaType type = MediaType.valueOf(item);
-                                if (null != type) {
-                                    result.add(type);
-                                }
-                            }
-                        }
+                        // RxJava 2
+                        Observable.fromArray(value)
+                                .filter(Objects::nonNull)
+                                .map(MediaType::valueOf)
+                                .filter(Objects::nonNull)
+                                .subscribe(result::add);
                         return result.isEmpty() ? DEFAULTS : result;
                     });
         }, method, mediaCls);

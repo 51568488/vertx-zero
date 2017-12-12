@@ -1,13 +1,18 @@
 package io.vertx.rx;
 
+import io.vertx.reactivex.core.Vertx;
 import io.vertx.rx.web.ZeroLauncher;
+import io.vertx.rx.web.anima.AgentScatter;
+import io.vertx.up.Launcher;
 import io.vertx.up.annotations.Up;
+import io.vertx.up.concurrent.Runner;
 import io.vertx.up.exception.UpClassArgsException;
 import io.vertx.up.exception.UpClassInvalidException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Anno;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.up.web.anima.Scatter;
 
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,10 +52,13 @@ public class RxApplication {
     }
 
     private void run(final Object... args) {
-
-        final Launcher launcher = Instance.singleton(ZeroLauncher.class);
+        final Launcher<Vertx> launcher = Instance.singleton(ZeroLauncher.class);
         launcher.start(vertx -> {
-            
+            /** 1.Find Agent for deploy **/
+            Runner.run(() -> {
+                final Scatter<Vertx> scatter = Instance.singleton(AgentScatter.class);
+                scatter.connect(vertx);
+            }, "rx-agent-runner");
         });
     }
 }

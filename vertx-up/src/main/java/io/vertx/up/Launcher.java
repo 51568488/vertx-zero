@@ -1,7 +1,5 @@
 package io.vertx.up;
 
-import io.vertx.core.Vertx;
-
 import java.util.function.Consumer;
 
 /**
@@ -11,7 +9,7 @@ import java.util.function.Consumer;
  * 3. Verticle Deployment
  * 4. Router Deployment
  */
-public interface Launcher {
+public interface Launcher<Vertx> {
     /**
      * Start
      */

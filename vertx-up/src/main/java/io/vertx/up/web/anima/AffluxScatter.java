@@ -4,12 +4,12 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
+import io.vertx.up.concurrent.Runner;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.exception.InjectionLimeKeyException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.plugin.Infix;
-import io.vertx.up.concurrent.Runner;
 import io.vertx.up.tool.mirror.Anno;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAmbient;
@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Injection system
  */
-public class AffluxScatter implements Scatter {
+public class AffluxScatter implements Scatter<Vertx> {
 
     private static final Annal LOGGER = Annal.get(AffluxScatter.class);
 

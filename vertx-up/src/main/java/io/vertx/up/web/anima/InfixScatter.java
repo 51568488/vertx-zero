@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * Infix initialization
  */
-public class InfixScatter implements Scatter {
+public class InfixScatter implements Scatter<Vertx> {
 
     private static final Annal LOGGER = Annal.get(InfixScatter.class);
 

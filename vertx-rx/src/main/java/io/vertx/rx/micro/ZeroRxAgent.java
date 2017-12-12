@@ -1,16 +1,18 @@
-package io.vertx.up.micro;
+package io.vertx.rx.micro;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.http.HttpServer;
+import io.reactivex.Single;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.ext.web.Route;
-import io.vertx.ext.web.Router;
+import io.vertx.reactivex.core.AbstractVerticle;
+import io.vertx.reactivex.core.http.HttpServer;
+import io.vertx.reactivex.ext.web.Route;
+import io.vertx.reactivex.ext.web.Router;
+import io.vertx.rx.rs.router.EventAxis;
+import io.vertx.rx.rs.router.RouterAxis;
 import io.vertx.up.annotations.Agent;
+import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Axis;
-import io.vertx.up.rs.router.EventAxis;
-import io.vertx.up.rs.router.RouterAxis;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroGrid;
 import io.vertx.zero.eon.Values;
@@ -24,19 +26,17 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Default Http Server agent for router handlers.
- * Once you have defined another Agent, the default agent will be replaced.
- * Recommend: Do not modify any agent that vertx zero provided.
+ * Rx Agent
  */
-@Agent
-public class ZeroHttpAgent extends AbstractVerticle {
+@Agent(type = ServerType.RX)
+public class ZeroRxAgent extends AbstractVerticle {
 
-    private static final Annal LOGGER = Annal.get(ZeroHttpAgent.class);
+    private static final Annal LOGGER = Annal.get(ZeroRxAgent.class);
     /**
      * Extract all http server options.
      */
     private static final ConcurrentMap<Integer, HttpServerOptions>
-            SERVERS = ZeroGrid.getServerOptions();
+            SERVERS = ZeroGrid.getRxOptions();
     private static final ConcurrentMap<Integer, AtomicInteger>
             LOGS = new ConcurrentHashMap<Integer, AtomicInteger>() {
         {
@@ -45,8 +45,6 @@ public class ZeroHttpAgent extends AbstractVerticle {
             });
         }
     };
-
-    private transient final String NAME = getClass().getSimpleName();
 
     @Override
     public void start() {
@@ -61,21 +59,25 @@ public class ZeroHttpAgent extends AbstractVerticle {
         SERVERS.forEach((port, option) -> {
             /** 3.1.Single server processing **/
             final HttpServer server = this.vertx.createHttpServer(option);
-
             /** 3.2. Build router with current option **/
             final Router router = Router.router(this.vertx);
 
             routerAxiser.mount(router);
             axiser.mount(router);
 
-            /** 3.3.Listen for router on the server **/
-            server.requestHandler(router::accept).listen();
+            /** 3.3. Listen for router on the server **/
+            final Single<HttpServer> result =
+                    server.requestHandler(router::accept).rxListen();
+            /** 3.4. Log output **/
             {
-                // 3.4. Log output
-                recordServer(option, router);
+                result.subscribe((rxServer) -> {
+                    recordServer(option, router);
+                });
             }
         });
     }
+
+    private transient final String NAME = getClass().getSimpleName();
 
     private void recordServer(final HttpServerOptions options,
                               final Router router) {
@@ -84,7 +86,7 @@ public class ZeroHttpAgent extends AbstractVerticle {
         if (Values.ZERO == out.getAndIncrement()) {
             // 1. Build logs for current server;
             final String portLiteral = String.valueOf(port);
-            LOGGER.info(Info.HTTP_SERVERS, this.NAME, deploymentID(),
+            LOGGER.info(Info.RX_SERVERS, this.NAME, deploymentID(),
                     portLiteral);
             final List<Route> routes = router.getRoutes();
             final Map<String, Route> routeMap = new TreeMap<>();
@@ -100,7 +102,7 @@ public class ZeroHttpAgent extends AbstractVerticle {
             final String address =
                     MessageFormat.format("http://{0}:{1}/",
                             options.getHost(), portLiteral);
-            LOGGER.info(Info.HTTP_LISTEN, this.NAME, address);
+            LOGGER.info(Info.RX_LISTEN, this.NAME, address);
         }
     }
 }

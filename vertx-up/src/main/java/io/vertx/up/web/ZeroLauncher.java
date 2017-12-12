@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 
-public class ZeroLauncher implements Launcher {
+public class ZeroLauncher implements Launcher<Vertx> {
 
     private static final Annal LOGGER = Annal.get(ZeroLauncher.class);
 

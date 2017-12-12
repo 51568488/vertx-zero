@@ -4,8 +4,10 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.eventbus.Message;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.annotations.Address;
+import io.vertx.up.atom.Depot;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Event;
+import io.vertx.up.atom.Rule;
 import io.vertx.up.eon.ID;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._500DeliveryErrorException;
@@ -19,14 +21,16 @@ import io.vertx.up.tool.mirror.Instance;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base class to provide template method
  */
 public abstract class BaseAim {
 
-    private transient final Verifier verifier =
-            Verifier.create();
+    private transient final Validator verifier =
+            Validator.create();
 
     private transient final Analyzer analyzer =
             Instance.singleton(MediaAnalyzer.class);
@@ -100,15 +104,19 @@ public abstract class BaseAim {
         return envelop;
     }
 
-    protected Verifier verifier() {
+    protected Validator verifier() {
         return this.verifier;
-    }
-
-    protected Analyzer analyzer() {
-        return this.analyzer;
     }
 
     protected Annal getLogger() {
         return Annal.get(getClass());
+    }
+
+    protected void executeRequest(final RoutingContext context,
+                                  final Map<String, List<Rule>> rulers,
+                                  final Depot depot) {
+        final Object[] args = buildArgs(context, depot.getEvent());
+        // Execute web flow and uniform call.
+        Flower.executeRequest(context, rulers, depot, args, verifier());
     }
 }

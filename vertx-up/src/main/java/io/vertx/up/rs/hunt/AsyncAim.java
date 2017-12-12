@@ -12,7 +12,7 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.web.ZeroResponser;
 
-public class AsyncAim extends BaseAim implements Aim {
+public class AsyncAim extends BaseAim implements Aim<RoutingContext> {
 
     @Override
     public Handler<RoutingContext> attack(final Event event) {

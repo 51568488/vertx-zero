@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Worker scatter to deploy workers
  */
-public class WorkerScatter implements Scatter {
+public class WorkerScatter implements Scatter<Vertx> {
 
     private static final Annal LOGGER = Annal.get(WorkerScatter.class);
 

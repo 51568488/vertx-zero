@@ -1,13 +1,9 @@
-package io.vertx.up.rs.router;
+package io.vertx.rx.rs.router;
 
-import io.vertx.ext.web.Route;
+import io.vertx.reactivex.ext.web.Route;
 import io.vertx.up.atom.Event;
+import io.vertx.up.rs.router.Hub;
 
-/**
- * Hub for Uri basic
- * path, method, order
- * register to route to generate media support
- */
 public class UriHub implements Hub<Route> {
 
     @Override

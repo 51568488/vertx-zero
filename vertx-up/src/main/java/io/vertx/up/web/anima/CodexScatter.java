@@ -12,7 +12,7 @@ import io.vertx.zero.exception.EmptyStreamException;
 
 import java.util.List;
 
-public class CodexScatter implements Scatter {
+public class CodexScatter implements Scatter<Vertx> {
 
     private static final Annal LOGGER = Annal.get(CodexScatter.class);
 

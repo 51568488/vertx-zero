@@ -1,8 +1,8 @@
-package io.vertx.up.rs.dispatcher;
+package io.vertx.up.rs.dispatch;
 
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Depot;
 import io.vertx.up.rs.Sentry;
-import io.vertx.up.rs.sentry.StandardVerifier;
 import io.vertx.up.tool.mirror.Instance;
 
 /**
@@ -13,7 +13,7 @@ import io.vertx.up.tool.mirror.Instance;
  */
 public class SentrySplitter {
 
-    public Sentry distribute(final Depot depot) {
+    public Sentry<RoutingContext> distribute(final Depot depot) {
         // Annotation to different verifier workflow
         // In current situation, there is only one implementation to build StandardVerifier
         // In future we could extend this implementation

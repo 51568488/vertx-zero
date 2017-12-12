@@ -72,7 +72,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
     }
 
     private boolean isServer(final JsonObject item) {
-        return ServerType.HTTP.match(item.getString(YKEY_TYPE));
+        return getType().match(item.getString(YKEY_TYPE));
     }
 
     private static int extractPort(final JsonObject config) {
@@ -80,5 +80,9 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
             return config.getInteger("port", HttpServerOptions.DEFAULT_PORT);
         }
         return HttpServerOptions.DEFAULT_PORT;
+    }
+
+    protected ServerType getType() {
+        return ServerType.HTTP;
     }
 }

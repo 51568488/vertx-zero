@@ -11,7 +11,7 @@ import io.vertx.up.web.ZeroResponser;
 /**
  * BlockAim: Non-Event Bus: One-Way
  */
-public class BlockAim extends BaseAim implements Aim {
+public class BlockAim extends BaseAim implements Aim<RoutingContext> {
 
     @Override
     public Handler<RoutingContext> attack(final Event event) {

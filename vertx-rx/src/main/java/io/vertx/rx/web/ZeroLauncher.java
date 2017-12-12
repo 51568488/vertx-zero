@@ -3,7 +3,7 @@ package io.vertx.rx.web;
 import io.reactivex.Single;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.reactivex.core.Vertx;
-import io.vertx.rx.Launcher;
+import io.vertx.up.Launcher;
 import io.vertx.up.Motor;
 import io.vertx.up.log.Annal;
 
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 
-public class ZeroLauncher implements Launcher {
+public class ZeroLauncher implements Launcher<Vertx> {
 
     private static final Annal LOGGER = Annal.get(ZeroLauncher.class);
 

@@ -1,5 +1,6 @@
 package io.vertx.up.rs.router;
 
+import io.reactivex.Observable;
 import io.vertx.ext.web.Route;
 import io.vertx.up.atom.Event;
 import io.vertx.zero.eon.Strings;
@@ -19,15 +20,13 @@ public class MediaHub implements Hub<Route> {
                       final Event event) {
         // produces
         final Set<MediaType> produces = event.getProduces();
-        for (final MediaType type : produces) {
-            final String item = type.getType() + Strings.SLASH + type.getSubtype();
-            route.produces(item);
-        }
+        Observable.fromIterable(produces)
+                .map(type -> type.getType() + Strings.SLASH + type.getSubtype())
+                .subscribe(route::produces);
         // consumes
         final Set<MediaType> consumes = event.getProduces();
-        for (final MediaType type : consumes) {
-            final String item = type.getType() + Strings.SLASH + type.getSubtype();
-            route.consumes(item);
-        }
+        Observable.fromIterable(consumes)
+                .map(type -> type.getType() + Strings.SLASH + type.getSubtype())
+                .subscribe(route::consumes);
     }
 }

@@ -1,5 +1,6 @@
 package io.vertx.up.web.thread;
 
+import io.reactivex.Observable;
 import io.vertx.up.annotations.Qualifier;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.exception.MultiAnnotatedException;
@@ -132,13 +133,12 @@ public class AffluxThread extends Thread {
         final Annotation[] annotations = field.getDeclaredAnnotations();
         // Annotation counter
         final Set<String> set = new HashSet<>();
-        Annotation hitted = null;
-        for (final Annotation annotation : annotations) {
-            if (defineds.contains(annotation.annotationType())) {
-                hitted = annotation;
-                set.add(annotation.annotationType().getName());
-            }
-        }
+        final Annotation hitted = Observable.fromArray(annotations)
+                .filter(annotation -> defineds.contains(annotation.annotationType()))
+                .map(annotation -> {
+                    set.add(annotation.annotationType().getName());
+                    return annotation;
+                }).firstElement().blockingGet();
         // Duplicated annotated
         Fn.flingUp(Values.ONE < set.size(), LOGGER,
                 MultiAnnotatedException.class, getClass(),

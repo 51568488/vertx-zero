@@ -5,6 +5,8 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Epsilon;
 import io.vertx.up.atom.Event;
 import io.vertx.up.exception.WebException;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 import io.vertx.up.media.parse.EpsilonIncome;
 import io.vertx.up.media.parse.Income;
 import io.vertx.up.tool.StringUtil;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @SuppressWarnings("unchecked")
 public class MediaAnalyzer implements Analyzer {
+
+    private static final Annal LOGGER = Annal.get(MediaAnalyzer.class);
 
     private final transient Income<List<Epsilon<Object>>> income =
             Instance.singleton(EpsilonIncome.class);
@@ -46,11 +50,9 @@ public class MediaAnalyzer implements Analyzer {
 
     private MediaType getMedia(final RoutingContext context) {
         final String header = context.request().getHeader(HttpHeaders.CONTENT_TYPE);
-        if (StringUtil.isNil(header)) {
-            return MediaType.WILDCARD_TYPE;
-        } else {
-            return MediaType.valueOf(header);
-        }
+        return Fn.getSemi(StringUtil.isNil(header), LOGGER,
+                () -> MediaType.WILDCARD_TYPE,
+                () -> MediaType.valueOf(header));
     }
 
 }

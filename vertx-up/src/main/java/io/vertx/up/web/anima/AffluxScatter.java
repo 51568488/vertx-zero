@@ -36,18 +36,14 @@ public class AffluxScatter implements Scatter<Vertx> {
     public void connect(final Vertx vertx) {
         // Extract all events.
         final Set<Event> events = ZeroAnno.getEvents();
-        Fn.itSet(events, (item, index) -> {
-            Runner.run(() -> {
-                inject(item.getProxy());
-            }, "event-afflux-" + index);
-        });
+        Fn.itSet(events, (item, index) ->
+                Runner.run(() -> inject(item.getProxy())
+                        , "event-afflux-" + index));
         // Extract all receipts.
         final Set<Receipt> receipts = ZeroAnno.getReceipts();
-        Fn.itSet(receipts, (item, index) -> {
-            Runner.run(() -> {
-                inject(item.getProxy());
-            }, "receipt-afflux-" + index);
-        });
+        Fn.itSet(receipts, (item, index) ->
+                Runner.run(() -> inject(item.getProxy())
+                        , "receipt-afflux-" + index));
     }
 
     private void inject(final Object proxy) {
@@ -110,6 +106,7 @@ public class AffluxScatter implements Scatter<Vertx> {
                 // Config checking
                 final Node<JsonObject> node = Instance.instance(ZeroUniform.class);
                 final JsonObject options = node.read();
+                
                 Fn.flingUp(!options.containsKey(pluginKey), LOGGER,
                         InjectionLimeKeyException.class,
                         getClass(), infixCls, pluginKey);

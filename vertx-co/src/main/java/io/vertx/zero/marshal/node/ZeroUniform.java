@@ -1,5 +1,6 @@
 package io.vertx.zero.marshal.node;
 
+import io.reactivex.Observable;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.func.Fn;
@@ -7,6 +8,7 @@ import io.vertx.up.tool.io.IO;
 import io.vertx.up.tool.mirror.Instance;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -24,21 +26,15 @@ public class ZeroUniform implements Node<JsonObject> {
             final ConcurrentMap<String, String> keys = node.read();
             final Set<String> skipped = Arrays
                     .stream(Plugins.DATA).collect(Collectors.toSet());
-            for (final String key : keys.keySet()) {
-                // Skip some internal keys.
-                if (skipped.contains(key)) {
-                    continue;
-                }
-                final String filename = keys.get(key);
-                final JsonObject each = Fn.pool(Storage.CONFIG, filename,
-                        () -> Fn.getJvm(
-                                new JsonObject(),
-                                () -> IO.getYaml(filename),
-                                filename));
-                if (null != each) {
-                    data.mergeIn(each, true);
-                }
-            }
+            // RxJava2 version
+            Observable.fromIterable(skipped)
+                    .filter(skipped::contains)
+                    .map(key -> Fn.pool(Storage.CONFIG, keys.get(key),
+                            () -> Fn.getJvm(new JsonObject(),
+                                    () -> IO.getYaml(keys.get(key)),
+                                    keys.get(key))))
+                    .filter(Objects::nonNull)
+                    .subscribe(item -> data.mergeIn(item, true));
         }
         return data;
     }

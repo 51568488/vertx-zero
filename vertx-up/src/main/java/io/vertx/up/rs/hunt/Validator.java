@@ -1,5 +1,6 @@
 package io.vertx.up.rs.hunt;
 
+import io.reactivex.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.atom.Depot;
@@ -69,16 +70,15 @@ public class Validator {
                 = new LinkedHashMap<>();
         final ConcurrentMap<String, Class<? extends Annotation>>
                 annotions = depot.getAnnotations();
-        if (annotions.containsKey(ID.DIRECT)) {
-            // 1. Check whether contains @BodyParam
-            final boolean match = annotions.values().stream()
-                    .anyMatch(item -> BodyParam.class == item);
-            // 2. Build rulers
-            if (match) {
-                final String key = buildKey(depot.getEvent());
-                rulers.putAll(buildRulers(key));
-            }
-        }
+        Observable.fromIterable(annotions.keySet())
+                .filter(ID.DIRECT::equals)
+                .map(annotions::get)
+                // 1. Check whether contains @BodyParam
+                .any(item -> BodyParam.class == item)
+                // 2. Build rulers
+                .map(item -> buildKey(depot.getEvent()))
+                .map(this::buildRulers)
+                .subscribe(rulers::putAll);
         return rulers;
     }
 

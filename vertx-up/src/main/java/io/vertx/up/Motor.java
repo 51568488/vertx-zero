@@ -7,11 +7,19 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.eon.Info;
+import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.exception.VertxCallbackException;
+import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.Statute;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroGrid;
+import io.vertx.up.web.ZeroHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -21,6 +29,8 @@ import java.util.function.Consumer;
  * Web Application & Rx Application
  */
 public final class Motor {
+
+    private static final Annal LOGGER = Annal.get(Motor.class);
 
     public static <T> void start(
             final Class<?> clazz,
@@ -55,5 +65,61 @@ public final class Motor {
     public static void codec(final EventBus eventBus) {
         eventBus.registerDefaultCodec(Envelop.class,
                 Instance.singleton(EnvelopCodec.class));
+    }
+
+    /**
+     * Agent calculation
+     *
+     * @param defaultAgents
+     * @param internals
+     * @return
+     */
+    public static ConcurrentMap<ServerType, Class<?>> agents(
+            final ServerType category,
+            final Class<?>[] defaultAgents,
+            final ConcurrentMap<ServerType, Class<?>> internals
+    ) {
+        final ConcurrentMap<ServerType, List<Class<?>>> agents =
+                getMergedAgents(category, internals);
+        final ConcurrentMap<ServerType, Boolean> defines =
+                ZeroHelper.isAgentDefined(agents, defaultAgents);
+        final ConcurrentMap<ServerType, Class<?>> ret =
+                new ConcurrentHashMap<>();
+        // Fix Boot
+        // 1. If defined, use default
+        Fn.itMap(agents, (type, list) -> {
+            // 2. Defined -> You have defined
+            Fn.getSemi(defines.containsKey(type) && defines.get(type), LOGGER,
+                    () -> {
+                        // Use user-defined Agent instead.
+                        final Class<?> found = Statute.findUnique(list,
+                                (item) -> internals.get(type) != item);
+                        if (null != found) {
+                            ret.put(type, found);
+                        }
+                        return null;
+                    }, () -> {
+                        // Use internal defined ( system defaults )
+                        final Class<?> found = Statute.findUnique(list,
+                                (item) -> internals.get(type) == item);
+                        if (null != found) {
+                            ret.put(type, found);
+                        }
+                        return null;
+                    });
+        });
+        return ret;
+    }
+
+    private static ConcurrentMap<ServerType, List<Class<?>>> getMergedAgents(
+            final ServerType category,
+            final ConcurrentMap<ServerType, Class<?>> internals
+    ) {
+        final ConcurrentMap<ServerType, List<Class<?>>> agents = ZeroAnno.getAgents();
+        if (agents.isEmpty()) {
+            // Inject ServerType by category input.
+            agents.put(category, new ArrayList<>(internals.values()));
+        }
+        return agents;
     }
 }

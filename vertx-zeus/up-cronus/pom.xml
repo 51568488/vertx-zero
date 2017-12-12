@@ -31,7 +31,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>up.god.Runner</mainClass>
+                            <mainClass>up.god.Anchor</mainClass>
                         </manifest>
                     </archive>
                     <!-- Do not upload when deploy to maven -->

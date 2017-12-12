@@ -138,7 +138,7 @@ public class AffluxThread extends Thread {
                 .map(annotation -> {
                     set.add(annotation.annotationType().getName());
                     return annotation;
-                }).firstElement().blockingGet();
+                }).blockingFirst();
         // Duplicated annotated
         Fn.flingUp(Values.ONE < set.size(), LOGGER,
                 MultiAnnotatedException.class, getClass(),

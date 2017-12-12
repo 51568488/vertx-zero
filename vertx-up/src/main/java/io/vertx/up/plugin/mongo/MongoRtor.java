@@ -9,6 +9,7 @@ import io.vertx.up.concurrent.Runner;
 import io.vertx.up.func.Fn;
 import io.vertx.up.kidd.Heart;
 import io.vertx.up.log.Annal;
+import io.vertx.zero.eon.Values;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -47,6 +48,24 @@ public class MongoRtor {
     public MongoRtor connect(final FindOptions options) {
         this.options = options;
         return this;
+    }
+
+    /**
+     * 单个子查询处理
+     *
+     * @param dataObject
+     * @param refKey
+     * @param verticalKey
+     * @param mountField
+     * @return
+     */
+    public JsonObject minorBy(final JsonObject dataObject,
+                              final String refKey,
+                              final String verticalKey,
+                              final String mountField) {
+        final JsonArray dataArray = new JsonArray().add(dataObject);
+        final JsonArray result = this.minorBy(dataArray, refKey, verticalKey, mountField);
+        return result.getJsonObject(Values.IDX);
     }
 
     /**

@@ -1,5 +1,6 @@
 package io.vertx.up.micro;
 
+import io.vertx.ext.web.Router;
 import io.vertx.up.rs.Axis;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +17,7 @@ interface Info {
 
 interface Pool {
 
-    ConcurrentMap<String, Axis> ROUTERS = new ConcurrentHashMap<>();
+    ConcurrentMap<String, Axis<Router>> ROUTERS = new ConcurrentHashMap<>();
 
-    ConcurrentMap<String, Axis> EVENTS = new ConcurrentHashMap<>();
+    ConcurrentMap<String, Axis<Router>> EVENTS = new ConcurrentHashMap<>();
 }

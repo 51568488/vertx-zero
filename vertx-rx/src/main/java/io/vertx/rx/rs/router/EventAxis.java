@@ -1,16 +1,17 @@
-package io.vertx.up.rs.router;
+package io.vertx.rx.rs.router;
 
-import io.vertx.ext.web.Route;
-import io.vertx.ext.web.Router;
+import io.vertx.reactivex.ext.web.Route;
+import io.vertx.reactivex.ext.web.Router;
 import io.vertx.up.atom.Depot;
 import io.vertx.up.atom.Event;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.micro.ZeroHttpEndurer;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.dispatcher.ModeSplitter;
+import io.vertx.up.rs.router.Hub;
+import io.vertx.up.rs.router.Verifier;
 import io.vertx.up.rs.sentry.StandardVerifier;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
@@ -62,17 +63,10 @@ public class EventAxis implements Axis<Router> {
                         final Depot depot = Depot.create(event);
                         // 5. Request workflow executor: handler
                         final Aim aim = this.splitter.distribute(event);
-
-                        /**
-                         * 6. Handler chain
-                         * 1) Mime Analyzer ( Build arguments )
-                         * 2) Validation
-                         * 3) Execute handler ( Code Logical )
-                         * 4) Uniform failure handler
-                         */
-                        route.handler(this.verifier.signal(depot))
-                                .handler(aim.attack(event))
-                                .failureHandler(ZeroHttpEndurer.create());
+                        route.handler(context -> {
+                            System.out.println("Hello");
+                            context.next();
+                        });
                     });
         });
     }

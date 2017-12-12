@@ -1,12 +1,11 @@
 package io.vertx.up.rs.router;
 
-import io.vertx.ext.web.Route;
 import io.vertx.up.atom.Event;
 
 /**
  * Hub management for route
  */
-public interface Hub {
+public interface Hub<Route> {
     /**
      * Route mount
      *

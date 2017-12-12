@@ -2,6 +2,7 @@ package io.vertx.up.rs.router;
 
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Depot;
 import io.vertx.up.atom.Event;
 import io.vertx.up.func.Fn;
@@ -10,8 +11,8 @@ import io.vertx.up.micro.ZeroHttpEndurer;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.Sentry;
-import io.vertx.up.rs.dispatcher.ModeSplitter;
-import io.vertx.up.rs.sentry.StandardVerifier;
+import io.vertx.up.rs.dispatch.ModeSplitter;
+import io.vertx.up.rs.dispatch.StandardVerifier;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
 
@@ -33,7 +34,7 @@ public class EventAxis implements Axis<Router> {
     /**
      * Sentry
      */
-    private transient final Sentry verifier =
+    private transient final Sentry<RoutingContext> verifier =
             Fn.poolThread(Pool.VERIFIERS,
                     () -> Instance.instance(StandardVerifier.class));
 

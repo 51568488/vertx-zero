@@ -11,7 +11,7 @@ import io.vertx.up.web.ZeroResponser;
 /**
  * SyncAim: Non-Event Bus: Request-Response
  */
-public class SyncAim extends BaseAim implements Aim {
+public class SyncAim extends BaseAim implements Aim<RoutingContext> {
     @Override
     public Handler<RoutingContext> attack(final Event event) {
         return Fn.get(() -> (context) -> ZeroResponser.exec(() -> {

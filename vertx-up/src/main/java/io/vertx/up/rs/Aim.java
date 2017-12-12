@@ -1,16 +1,15 @@
 package io.vertx.up.rs;
 
 import io.vertx.core.Handler;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Event;
 
 /**
  * Hunt to aim and select the objective
  */
-public interface Aim {
+public interface Aim<Context> {
     /**
      * @param event
      * @return
      */
-    Handler<RoutingContext> attack(final Event event);
+    Handler<Context> attack(final Event event);
 }

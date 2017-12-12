@@ -13,7 +13,7 @@ import io.vertx.up.web.ZeroResponser;
 /**
  * OneWayAim: Event Bus: One-Way
  */
-public class OneWayAim extends BaseAim implements Aim {
+public class OneWayAim extends BaseAim implements Aim<RoutingContext> {
 
     @Override
     public Handler<RoutingContext> attack(final Event event) {

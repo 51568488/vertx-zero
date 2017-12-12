@@ -1,6 +1,7 @@
-package io.vertx.up.rs.dispatcher;
+package io.vertx.up.rs.dispatch;
 
 import io.vertx.core.eventbus.Message;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.atom.Event;
 import io.vertx.up.atom.Receipt;
@@ -43,14 +44,14 @@ public class ModeSplitter {
 
     private static final Set<Receipt> RECEIPTS = ZeroAnno.getReceipts();
 
-    public Aim distribute(final Event event) {
+    public Aim<RoutingContext> distribute(final Event event) {
         return Fn.get(() -> {
             // 1. Scan method to check @Address
             final boolean annotated = event.getAction().isAnnotationPresent(Address.class);
             final Method method = event.getAction();
             final Class<?> returnType = method.getReturnType();
             // 2. Split request flow
-            Aim aim = null;
+            Aim<RoutingContext> aim = null;
             if (annotated) {
                 // Event Bus
                 if (Void.class == returnType || void.class == returnType) {

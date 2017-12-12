@@ -14,7 +14,6 @@ import io.vertx.zero.eon.Strings;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.validation.executable.ExecutableValidator;
 import javax.ws.rs.BodyParam;
 import java.lang.annotation.Annotation;
@@ -23,21 +22,21 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class Verifier {
+public class Validator {
 
-    private static final Validator VALIDATOR
+    private static final javax.validation.Validator VALIDATOR
             = Validation.buildDefaultValidatorFactory().getValidator();
 
     private static final ConcurrentMap<String, Map<String, List<Rule>>>
             RULERS = new ConcurrentHashMap<>();
 
-    private static Verifier INSTANCE;
+    private static Validator INSTANCE;
 
-    public static Verifier create() {
+    public static Validator create() {
         if (null == INSTANCE) {
-            synchronized (Verifier.class) {
+            synchronized (Validator.class) {
                 if (null == INSTANCE) {
-                    INSTANCE = new Verifier();
+                    INSTANCE = new Validator();
                 }
             }
         }

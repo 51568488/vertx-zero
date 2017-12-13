@@ -44,6 +44,14 @@ public class Validator {
         return INSTANCE;
     }
 
+    /**
+     * Validate the method parameters based on javax.validation: Hibernate Validator.
+     *
+     * @param proxy  The checked target object.
+     * @param method The checked target method.
+     * @param args   The checked target method's parameters.
+     * @param <T>    The target object type: Generic types.
+     */
     public <T> void verifyMethod(
             final T proxy,
             final Method method,
@@ -54,16 +62,25 @@ public class Validator {
         // 2. Create new params that wait for validation
         final Set<ConstraintViolation<T>> constraints
                 = validatorParam.validateParameters(proxy, method, args);
-        // 3. System.out.println
-        for (final ConstraintViolation<T> item : constraints) {
-            final WebException error
-                    = new _400ValidationException(getClass(),
-                    proxy.getClass(), method, item.getMessage());
-            error.setReadible(item.getMessage());
-            throw error;
+        // 3. Throw out exception
+        if (!constraints.isEmpty()) {
+            final ConstraintViolation<T> item = constraints.iterator().next();
+            if (null != item) {
+                final WebException error
+                        = new _400ValidationException(getClass(),
+                        proxy.getClass(), method, item.getMessage());
+                error.setReadible(item.getMessage());
+                throw error;
+            }
         }
     }
 
+    /**
+     * Advanced ruler building for Body content validation based on yml configuration.
+     *
+     * @param depot The container to contains event, configuration, ruler.
+     * @return The configured rulers.
+     */
     public Map<String, List<Rule>> buildRulers(
             final Depot depot) {
         final Map<String, List<Rule>> rulers

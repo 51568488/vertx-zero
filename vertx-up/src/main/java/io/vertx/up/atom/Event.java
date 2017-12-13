@@ -2,6 +2,7 @@ package io.vertx.up.atom;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.up.eon.Orders;
+import io.vertx.zero.eon.Strings;
 
 import javax.ws.rs.core.MediaType;
 import java.io.Serializable;
@@ -47,7 +48,16 @@ public class Event implements Serializable {
     }
 
     public void setPath(final String path) {
-        this.path = path;
+        if (null != path) {
+            final String literal = path.trim();
+            if (literal.endsWith(Strings.SLASH)) {
+                this.path = literal.substring(0, literal.length() - 1);
+            } else {
+                this.path = literal;
+            }
+        } else {
+            this.path = path;
+        }
     }
 
     public int getOrder() {

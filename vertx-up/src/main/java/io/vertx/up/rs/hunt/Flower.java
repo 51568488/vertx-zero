@@ -92,13 +92,14 @@ class Flower {
         final Method method = event.getAction();
         WebException error = null;
         try {
-            if (null != proxy) {
-                if (Virtual.is(proxy)) {
-                    // TODO: Extension for virtual proxy
-                } else {
-                    // Validation for proxy
-                    verifier.verifyMethod(proxy, method, args);
-                }
+            if (Virtual.is(proxy)) {
+                // TODO: Wait for proxy generation
+                // Validation for dynamic proxy
+                // final Object delegate = Instance.getProxy(method);
+                // verifier.verifyMethod(delegate, method, args);
+            } else {
+                // Validation for proxy
+                verifier.verifyMethod(proxy, method, args);
             }
         } catch (final WebException ex) {
             // Basic validation failure

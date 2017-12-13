@@ -1,0 +1,3 @@
+name:
+- type: required
+  message: "姓名不可为空！"

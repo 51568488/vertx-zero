@@ -1,17 +1,12 @@
 package io.vertx.up.tool.mirror;
 
 import com.esotericsoftware.reflectasm.ConstructorAccess;
-import com.esotericsoftware.reflectasm.MethodAccess;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.DuplicatedImplException;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -104,53 +99,34 @@ public final class Instance {
                 .anyMatch(item -> item.equals(interfaceCls));
     }
 
-    /**
-     * Method reflection call
-     *
-     * @param instance
-     * @param name
-     * @param <T>
-     * @return
-     */
     public static <T> T invoke(final Object instance,
                                final String name,
                                final Object... args) {
-        return Fn.get(() -> {
-            final MethodAccess access = MethodAccess.get(instance.getClass());
-            // Direct invoke, multi overwrite for unbox/box issue still existing.
-            // TODO: Unbox/Box type issue
-            Object result;
-            try {
-                result = access.invoke(instance, name, args);
-            } catch (final Throwable ex) {
-                ex.printStackTrace();
-                // Could not call, re-find the method by index
-                // Search method by argument index because could not call directly
-                final int index;
-                final List<Class<?>> types = new ArrayList<>();
-                for (final Object arg : args) {
-                    types.add(Types.toPrimary(arg.getClass()));
-                }
-                index = access.getIndex(name, types.toArray(new Class<?>[]{}));
-                result = access.invoke(instance, index, args);
-            }
-            final Object ret = result;
-            return Fn.get(() -> (T) ret, ret);
-        }, instance, name);
+        return Fantam.invokeObject(instance, name, args);
+    }
+
+    public static <T> T invoke(final Class<?> interfaceCls,
+                               final String name,
+                               final Object... args) {
+        return Fantam.invokeInterface(interfaceCls, name, args);
+    }
+
+    public static <T> T getProxy(
+            final Method method) {
+        final Class<?> interfaceCls = method.getDeclaringClass();
+        return Fantam.getProxy(interfaceCls);
     }
 
     public static <T> void set(final Object instance,
                                final String name,
                                final T value) {
-        Fn.safeNull(() -> {
-            Fn.safeJvm(() -> {
-                final Field field = instance.getClass().getDeclaredField(name);
-                if (!field.isAccessible()) {
-                    field.setAccessible(true);
-                }
-                field.set(instance, value);
-            }, LOGGER);
-        }, instance, name, value);
+        Fn.safeNull(() -> Fn.safeJvm(() -> {
+            final Field field = instance.getClass().getDeclaredField(name);
+            if (!field.isAccessible()) {
+                field.setAccessible(true);
+            }
+            field.set(instance, value);
+        }, LOGGER), instance, name, value);
     }
 
     public static <T> T get(final Object instance,

@@ -7,12 +7,6 @@ import org.junit.Test;
 public class InstanceTc extends ZeroBase {
 
     @Test
-    public void testInteger() {
-        final User user = new User();
-        Instance.invoke(user, "invoke", 22);
-    }
-
-    @Test
     public void testString() {
         final User user = new User();
         Instance.invoke(user, "invoke", "String");

@@ -77,7 +77,7 @@ public class MongoReadOpts {
             options.setLimit(pager.getEnd());
             options.setSkip(pager.getStart());
         }, pager);
-        Fn.safeNull(() -> options.setSort(sorter.getSort((mode) -> mode ? 1 : -1)), sorter);
+        Fn.safeNull(() -> options.setSort(sorter.toJson((mode) -> mode ? 1 : -1)), sorter);
         return options;
     }
 }

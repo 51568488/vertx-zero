@@ -29,7 +29,7 @@ public class Sorter implements Serializable {
         this.asc.add(asc);
     }
 
-    public <T> JsonObject getSort(final Function<Boolean, T> function) {
+    public <T> JsonObject toJson(final Function<Boolean, T> function) {
         final JsonObject sort = new JsonObject();
         Fn.itList(this.field, (item, index) -> {
             // Extract value from asc

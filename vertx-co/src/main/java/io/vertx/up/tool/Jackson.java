@@ -131,7 +131,7 @@ public final class Jackson {
         return result;
     }
 
-    public static <T, R extends Iterable> R jsonSerialize(final T t) {
+    public static <T, R extends Iterable> R serializeJson(final T t) {
         final String content = serialize(t);
         return Fn.getJvm(null,
                 () -> Fn.getSemi(content.trim().startsWith(Strings.LEFT_BRACES), LOGGER,

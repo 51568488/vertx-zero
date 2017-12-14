@@ -13,8 +13,13 @@ import io.vertx.up.tool.mirror.Instance;
  */
 @SuppressWarnings("unchecked")
 public class Rapider {
-
-    public static JsonObject getBody(final Message<Envelop> message) {
+    /**
+     * Get data from event bus directly or body request.
+     *
+     * @param message
+     * @return
+     */
+    public static JsonObject getData(final Message<Envelop> message) {
         final Imitate<JsonObject> imitate = Instance.singleton(JObjectImitate.class);
         return imitate.request(message);
     }

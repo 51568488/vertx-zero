@@ -8,6 +8,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Types;
+import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 
 import java.io.InputStream;
@@ -128,6 +129,14 @@ public final class Jackson {
             }
         }, value);
         return result;
+    }
+
+    public static <T, R extends Iterable> R jsonSerialize(final T t) {
+        final String content = serialize(t);
+        return Fn.getJvm(null,
+                () -> Fn.getSemi(content.trim().startsWith(Strings.LEFT_BRACES), LOGGER,
+                        () -> (R) new JsonObject(content),
+                        () -> (R) new JsonArray(content)), content);
     }
 
     public static <T> String serialize(final T t) {

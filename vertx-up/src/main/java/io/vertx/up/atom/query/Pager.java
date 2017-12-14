@@ -58,6 +58,13 @@ public class Pager implements Serializable {
         }, page, size);
     }
 
+    public JsonObject toJson() {
+        final JsonObject data = new JsonObject();
+        data.put(ID.Page.PAGE, this.page);
+        data.put(ID.Page.SIZE, this.size);
+        return data;
+    }
+
     public int getPage() {
         return this.page;
     }

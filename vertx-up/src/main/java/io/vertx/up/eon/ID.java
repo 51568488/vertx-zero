@@ -14,4 +14,11 @@ public interface ID {
 
         String SIZE = "size";
     }
+
+    interface Header {
+
+        String USER = "X-User";
+
+        String ROLE = "X-Role";
+    }
 }

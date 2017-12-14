@@ -4,11 +4,13 @@ import io.vertx.core.MultiMap;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
+import io.vertx.up.eon.ID;
 import io.vertx.up.exception.IndexExceedException;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.web.ZeroSerializer;
+import io.vertx.zero.eon.Strings;
 
 import java.io.Serializable;
 
@@ -37,18 +39,19 @@ public class Envelop implements Serializable {
 
     /**
      * Extract data port to T
+     *
      * @return
      */
     @SuppressWarnings("unchecked")
     public <T> T data() {
-        if(null != this.data && this.data.containsKey(Key.DATA)){
+        if (null != this.data && this.data.containsKey(Key.DATA)) {
             final Object value = this.data.getValue(Key.DATA);
-            if(null != value){
-                return (T)value;
-            }else{
+            if (null != value) {
+                return (T) value;
+            } else {
                 return null;
             }
-        }else{
+        } else {
             return null;
         }
     }
@@ -140,6 +143,20 @@ public class Envelop implements Serializable {
      */
     public User user() {
         return this.user;
+    }
+
+    /**
+     * Read user's identifier
+     *
+     * @return
+     */
+    public String identifier() {
+        return Fn.getJvm(Strings.EMPTY, () -> {
+            final JsonObject credential = this.user.principal();
+            return Fn.getSemi(null != credential && credential.containsKey(ID.Header.USER),
+                    () -> credential.getString(ID.Header.USER),
+                    () -> Strings.EMPTY);
+        }, this.user);
     }
 
     public MultiMap headers() {

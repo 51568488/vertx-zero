@@ -136,8 +136,8 @@ public abstract class BaseAim {
             @Override
             public JsonObject principal() {
                 final JsonObject data = new JsonObject();
-                data.put("X-User", context.request().getHeader("X-User"));
-                data.put("X-Role", context.request().getHeader("X-Role"));
+                data.put(ID.Header.USER, context.request().getHeader(ID.Header.USER));
+                data.put(ID.Header.ROLE, context.request().getHeader(ID.Header.ROLE));
                 return data;
             }
 

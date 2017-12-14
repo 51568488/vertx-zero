@@ -7,4 +7,11 @@ public interface ID {
     String DIRECT = "$$DIRECT$$";
 
     String IGNORE = "$$IGNORE$$";
+
+    interface Page {
+
+        String PAGE = "page";
+
+        String SIZE = "size";
+    }
 }

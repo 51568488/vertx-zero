@@ -62,7 +62,7 @@ public class EventAxis implements Axis<Router> {
                         // 4. Request validation
                         final Depot depot = Depot.create(event);
                         // 5. Request workflow executor: handler
-                        final Aim aim = this.splitter.distribute(event);
+                        final Aim<RoutingContext> aim = this.splitter.distribute(event);
 
                         /**
                          * 6. Handler chain

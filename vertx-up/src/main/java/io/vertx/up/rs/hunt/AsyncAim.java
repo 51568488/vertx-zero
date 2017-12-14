@@ -56,6 +56,9 @@ public class AsyncAim extends BaseAim implements Aim<RoutingContext> {
             final Object returnValue = invoke(event, arguments);
             invoked = Envelop.success(returnValue);
         }
+        // 3. Envelop injection for User/Headers
+        invoked.setHeaders(context.request().headers());
+        invoked.setUser(context.user());
         return invoked;
     }
 }

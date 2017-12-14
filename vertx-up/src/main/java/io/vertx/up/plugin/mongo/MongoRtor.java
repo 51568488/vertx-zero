@@ -1,5 +1,6 @@
 package io.vertx.up.plugin.mongo;
 
+import io.reactivex.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
@@ -9,8 +10,10 @@ import io.vertx.up.concurrent.Runner;
 import io.vertx.up.func.Fn;
 import io.vertx.up.kidd.Heart;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.Jackson;
 import io.vertx.zero.eon.Values;
 
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -66,6 +69,58 @@ public class MongoRtor {
         final JsonArray dataArray = new JsonArray().add(dataObject);
         final JsonArray result = this.minorBy(dataArray, refKey, verticalKey, mountField);
         return result.getJsonObject(Values.IDX);
+    }
+
+    /**
+     * Secondary query method to enable concurrent query
+     * This operation will not mount to field, but merge instead.
+     *
+     * @param dataArray
+     * @param refKey
+     * @param verticalKey
+     * @return
+     */
+    public JsonArray minorBy(
+            final JsonArray dataArray,
+            final String refKey,
+            final String verticalKey
+    ) {
+        return Fn.getJvm(new JsonArray(), () -> {
+                    final JsonArray ids = new JsonArray();
+                    // Collect data
+                    Observable.fromIterable(dataArray)
+                            .filter(Objects::nonNull)
+                            .map(item -> (JsonObject) item)
+                            .filter(item -> item.containsKey(verticalKey))
+                            .map(item -> item.getValue(verticalKey))
+                            .subscribe(ids::add);
+                    final CountDownLatch counter = new CountDownLatch(1);
+                    final JsonArray result = new JsonArray();
+                    Runner.run(() -> {
+                        // Set filter
+                        final JsonObject filter = new JsonObject().put(refKey,
+                                new JsonObject().put("$in", ids));
+                        this.client.findWithOptions(this.collection, filter, this.options, res -> {
+                            // Build response model
+                            final Envelop envelop = Heart.getReacts(this.hitted)
+                                    .connect(res).result().to();
+                            final JsonArray data = envelop.data();
+                            // Zip Join for two JsonArray
+                            Jackson.mergeZip(dataArray, data, verticalKey, refKey);
+                            result.addAll(dataArray);
+                            counter.countDown();
+                        });
+                    }, "concurrent-secondary-flip");
+                    // Await
+                    try {
+                        counter.await();
+                    } catch (final InterruptedException ex) {
+                        LOGGER.jvm(ex);
+                    }
+                    // Convert to target mountKey
+                    return result;
+                }, dataArray, verticalKey, refKey,
+                this.hitted, this.collection);
     }
 
     /**

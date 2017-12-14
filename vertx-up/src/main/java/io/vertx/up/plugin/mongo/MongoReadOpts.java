@@ -20,7 +20,7 @@ public class MongoReadOpts {
             final String sortField,
             final int limit
     ) {
-        return toFull(Pager.create(null, limit), Sorter.create(sortField, false));
+        return toFull(Pager.create(1, limit), Sorter.create(sortField, false));
     }
 
     /**
@@ -34,7 +34,7 @@ public class MongoReadOpts {
             final String sortField,
             final int limit
     ) {
-        return toFull(Pager.create(null, limit), Sorter.create(sortField, true));
+        return toFull(Pager.create(1, limit), Sorter.create(sortField, true));
     }
 
     /**

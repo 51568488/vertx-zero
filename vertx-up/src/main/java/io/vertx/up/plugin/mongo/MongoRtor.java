@@ -1,5 +1,6 @@
 package io.vertx.up.plugin.mongo;
 
+import io.reactivex.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
@@ -7,10 +8,12 @@ import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.concurrent.Runner;
 import io.vertx.up.func.Fn;
-import io.vertx.up.kidd.Heart;
+import io.vertx.up.kidd.outcome.ListObstain;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.Jackson;
 import io.vertx.zero.eon.Values;
 
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -70,6 +73,60 @@ public class MongoRtor {
 
     /**
      * Secondary query method to enable concurrent query
+     * This operation will not mount to field, but merge instead.
+     *
+     * @param dataArray
+     * @param refKey
+     * @param verticalKey
+     * @return
+     */
+    public JsonArray minorBy(
+            final JsonArray dataArray,
+            final String refKey,
+            final String verticalKey
+    ) {
+        return Fn.getJvm(new JsonArray(), () -> {
+                    final JsonArray ids = new JsonArray();
+                    // Collect data
+                    Observable.fromIterable(dataArray)
+                            .filter(Objects::nonNull)
+                            .map(item -> (JsonObject) item)
+                            .filter(item -> item.containsKey(verticalKey))
+                            .map(item -> item.getValue(verticalKey))
+                            .subscribe(ids::add);
+                    final CountDownLatch counter = new CountDownLatch(1);
+                    final JsonArray result = new JsonArray();
+                    Runner.run(() -> {
+                        // Set filter
+                        final JsonObject filter = new JsonObject().put(refKey,
+                                new JsonObject().put("$in", ids));
+                        LOGGER.info(Info.FILTER_INFO, this.collection, filter);
+                        this.client.findWithOptions(this.collection, filter, this.options, res -> {
+                            // Build response model
+                            final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
+                                    .connect(res).result().to();
+                            final JsonArray data = envelop.data();
+                            // Zip Join for two JsonArray
+                            LOGGER.info(Info.MERGE_INFO, dataArray, data, verticalKey, refKey);
+                            final JsonArray merged = Jackson.mergeZip(dataArray, data, verticalKey, refKey);
+                            result.addAll(merged);
+                            counter.countDown();
+                        });
+                    }, "concurrent-secondary-flip");
+                    // Await
+                    try {
+                        counter.await();
+                    } catch (final InterruptedException ex) {
+                        LOGGER.jvm(ex);
+                    }
+                    // Convert to target mountKey
+                    return result;
+                }, dataArray, verticalKey, refKey,
+                this.hitted, this.collection);
+    }
+
+    /**
+     * Secondary query method to enable concurrent query
      * For example
      * Topic = [{...},{...},{...}]
      * Then query Videos belong to Topic for each element.
@@ -101,7 +158,7 @@ public class MongoRtor {
                             final JsonObject filter = new JsonObject().put(refKey, value);
                             this.client.findWithOptions(this.collection, filter, this.options, res -> {
                                 // Build response model
-                                final Envelop envelop = Heart.getReacts(this.hitted)
+                                final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
                                         .connect(res).result().to();
                                 final JsonArray data = envelop.data();
                                 if (null != data) {

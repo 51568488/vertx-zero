@@ -5,6 +5,7 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._404RecordNotFoundException;
 import io.vertx.up.func.Fn;
+import io.vertx.up.kidd.Spy;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
 
@@ -19,6 +20,7 @@ public class Obstain<T> {
     protected final transient Annal logger;
     protected transient AsyncResult<T> handler;
     protected transient Envelop envelop;
+    protected transient Spy spy;
 
     public static <T> Obstain<T> start(final Class<?> clazz) {
         return new Obstain<>(clazz);
@@ -41,6 +43,11 @@ public class Obstain<T> {
         Fn.safeSemi(null == handler, this.LOGGER,
                 () -> this.LOGGER.error(Info.ERROR_HANDLER, handler, this.clazz));
         this.handler = handler;
+        return this;
+    }
+
+    public Obstain<T> connect(final Spy spy) {
+        this.spy = spy;
         return this;
     }
 
@@ -83,7 +90,9 @@ public class Obstain<T> {
     public Envelop to() {
         Fn.safeSemi(null == this.envelop, this.LOGGER,
                 () -> this.LOGGER.error(Info.ERROR_ENVELOP, this.clazz));
-        return this.envelop;
+        return Fn.getSemi(null == this.spy, this.LOGGER,
+                () -> this.envelop,
+                () -> this.spy.to(this.envelop));
     }
 
     protected boolean isReady() {

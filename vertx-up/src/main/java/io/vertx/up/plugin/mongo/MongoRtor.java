@@ -106,8 +106,9 @@ public class MongoRtor {
                                     .connect(res).result().to();
                             final JsonArray data = envelop.data();
                             // Zip Join for two JsonArray
-                            Jackson.mergeZip(dataArray, data, verticalKey, refKey);
-                            result.addAll(dataArray);
+                            LOGGER.info(Info.MERGE_INFO, dataArray, data, verticalKey, refKey);
+                            final JsonArray merged = Jackson.mergeZip(dataArray, data, verticalKey, refKey);
+                            result.addAll(merged);
                             counter.countDown();
                         });
                     }, "concurrent-secondary-flip");

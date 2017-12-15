@@ -5,7 +5,6 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._404RecordNotFoundException;
 import io.vertx.up.func.Fn;
-import io.vertx.up.kidd.Spy;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
 
@@ -19,7 +18,6 @@ public class Obstain<T> {
     protected final transient Class<?> clazz;
     protected final transient Annal logger;
     protected transient AsyncResult<T> handler;
-    protected transient Spy<T> spy;
     protected transient Envelop envelop;
 
     public static <T> Obstain<T> start(final Class<?> clazz) {
@@ -43,17 +41,6 @@ public class Obstain<T> {
         Fn.safeSemi(null == handler, this.LOGGER,
                 () -> this.LOGGER.error(Info.ERROR_HANDLER, handler, this.clazz));
         this.handler = handler;
-        return this;
-    }
-
-    /**
-     * Connect to spy to process id
-     *
-     * @param spy
-     * @return
-     */
-    public Obstain<T> connect(final Spy<T> spy) {
-        this.spy = spy;
         return this;
     }
 
@@ -81,12 +68,7 @@ public class Obstain<T> {
                                     Failure.build(internal404)),
 
                             // 200 -> Response
-                            () -> Fn.getSemi(null == this.spy, this.logger,
-                                    // 200 -> No spy provided
-                                    () -> Envelop.success(this.handler.result()),
-                                    // 200 -> Spy provided
-                                    () -> Envelop.success(this.spy.out(this.handler.result())))),
-
+                            () -> Envelop.success(this.handler.result())),
                     // 500. Internal Error
                     Failure.build500Flow(this.clazz, this.handler.cause()));
         }

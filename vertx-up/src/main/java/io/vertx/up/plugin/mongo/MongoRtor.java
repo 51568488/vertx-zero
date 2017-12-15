@@ -8,7 +8,7 @@ import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.concurrent.Runner;
 import io.vertx.up.func.Fn;
-import io.vertx.up.kidd.Heart;
+import io.vertx.up.kidd.outcome.ListObstain;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Jackson;
 import io.vertx.zero.eon.Values;
@@ -100,9 +100,10 @@ public class MongoRtor {
                         // Set filter
                         final JsonObject filter = new JsonObject().put(refKey,
                                 new JsonObject().put("$in", ids));
+                        LOGGER.info(Info.FILTER_INFO, this.collection, filter);
                         this.client.findWithOptions(this.collection, filter, this.options, res -> {
                             // Build response model
-                            final Envelop envelop = Heart.getReacts(this.hitted)
+                            final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
                                     .connect(res).result().to();
                             final JsonArray data = envelop.data();
                             // Zip Join for two JsonArray
@@ -157,7 +158,7 @@ public class MongoRtor {
                             final JsonObject filter = new JsonObject().put(refKey, value);
                             this.client.findWithOptions(this.collection, filter, this.options, res -> {
                                 // Build response model
-                                final Envelop envelop = Heart.getReacts(this.hitted)
+                                final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
                                         .connect(res).result().to();
                                 final JsonArray data = envelop.data();
                                 if (null != data) {

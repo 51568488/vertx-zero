@@ -7,7 +7,6 @@ import io.vertx.up.exception.WebException;
 import io.vertx.up.exception.web._400DuplicatedRecordException;
 import io.vertx.up.exception.web._404RecordNotFoundException;
 import io.vertx.up.func.Fn;
-import io.vertx.up.kidd.Spy;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.eon.Values;
 
@@ -51,11 +50,7 @@ public class ListObstain<T> extends Obstain<List<T>> {
                             // 200. Result
                             () -> Envelop.success(new ArrayList<>()),
                             // 200. Result
-                            () -> Fn.getSemi(null == this.spy, this.logger,
-                                    // 200 -> No spy provided
-                                    () -> Envelop.success(convert.apply(this.handler.result())),
-                                    // 200 -> Spy provided
-                                    () -> Envelop.success(convert.apply(this.spy.out(this.handler.result()))))),
+                            () -> Envelop.success(convert.apply(this.handler.result()))),
                     // 500. Internal Error
                     Failure.build500Flow(this.clazz, this.handler.cause()));
         }
@@ -81,11 +76,7 @@ public class ListObstain<T> extends Obstain<List<T>> {
                             () -> Fn.getSemi(Values.ONE == this.handler.result().size(), this.logger,
 
                                     // 200 -> Successfully
-                                    () -> Fn.getSemi(null == this.spy, this.logger,
-                                            // 200 -> No spy provided
-                                            () -> Envelop.success(this.handler.result()),
-                                            // 200 -> Spy provided
-                                            () -> Envelop.success(this.spy.out(this.handler.result()))),
+                                    () -> Envelop.success(this.handler.result()),
 
                                     // 400 -> Duplicated
                                     () -> Fn.getSemi(null == duplicated, this.logger,
@@ -96,12 +87,6 @@ public class ListObstain<T> extends Obstain<List<T>> {
                     // 500. Internal Error
                     Failure.build500Flow(this.clazz, this.handler.cause()));
         }
-        return this;
-    }
-
-    @Override
-    public ListObstain<T> connect(final Spy<List<T>> spy) {
-        this.spy = spy;
         return this;
     }
 

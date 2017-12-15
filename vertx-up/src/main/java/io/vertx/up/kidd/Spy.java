@@ -1,22 +1,16 @@
 package io.vertx.up.kidd;
 
+import io.vertx.up.atom.Envelop;
+
 /**
  * Id implementation for identifier to front
  */
-public interface Spy<T> {
+public interface Spy {
     /**
-     * Request processing
+     * Envelop Processing
      *
      * @param request
      * @return
      */
-    T in(T request);
-
-    /**
-     * Response processing
-     *
-     * @param response
-     * @return
-     */
-    T out(T response);
+    Envelop to(Envelop request);
 }

@@ -2,6 +2,7 @@ package io.vertx.up.tool;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.reactivex.Observable;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -97,6 +99,28 @@ public final class Jackson {
                     return result;
                 },
                 Fn::nil);
+    }
+
+    public static JsonArray mergeZip(final JsonArray source, final JsonArray target,
+                                     final String sourceKey, final String targetKey) {
+        final JsonArray result = new JsonArray();
+        Fn.safeJvm(() -> Observable.fromIterable(source)
+                .filter(Objects::nonNull)
+                .map(item -> (JsonObject) item)
+                .map(item -> item.mergeIn(findByKey(target, targetKey, item.getValue(sourceKey))))
+                .subscribe(result::add), LOGGER);
+        return result;
+    }
+
+    private static JsonObject findByKey(final JsonArray source,
+                                        final String key,
+                                        final Object value) {
+        return Fn.getJvm(() -> Observable.fromIterable(source)
+                .filter(Objects::nonNull)
+                .map(item -> (JsonObject) item)
+                .filter(item -> null != item.getValue(key))
+                .filter(item -> value == item.getValue(key) || item.getValue(key).equals(value))
+                .first(new JsonObject()).blockingGet(), source, key);
     }
 
     public static JsonObject validJObject(final Supplier<JsonObject> supplier) {

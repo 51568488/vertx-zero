@@ -19,8 +19,8 @@ public class Obstain<T> {
     protected final transient Class<?> clazz;
     protected final transient Annal logger;
     protected transient AsyncResult<T> handler;
-    protected transient Spy<T> spy;
     protected transient Envelop envelop;
+    protected transient Spy spy;
 
     public static <T> Obstain<T> start(final Class<?> clazz) {
         return new Obstain<>(clazz);
@@ -46,13 +46,7 @@ public class Obstain<T> {
         return this;
     }
 
-    /**
-     * Connect to spy to process id
-     *
-     * @param spy
-     * @return
-     */
-    public Obstain<T> connect(final Spy<T> spy) {
+    public Obstain<T> connect(final Spy spy) {
         this.spy = spy;
         return this;
     }
@@ -81,12 +75,7 @@ public class Obstain<T> {
                                     Failure.build(internal404)),
 
                             // 200 -> Response
-                            () -> Fn.getSemi(null == this.spy, this.logger,
-                                    // 200 -> No spy provided
-                                    () -> Envelop.success(this.handler.result()),
-                                    // 200 -> Spy provided
-                                    () -> Envelop.success(this.spy.out(this.handler.result())))),
-
+                            () -> Envelop.success(this.handler.result())),
                     // 500. Internal Error
                     Failure.build500Flow(this.clazz, this.handler.cause()));
         }
@@ -101,7 +90,9 @@ public class Obstain<T> {
     public Envelop to() {
         Fn.safeSemi(null == this.envelop, this.LOGGER,
                 () -> this.LOGGER.error(Info.ERROR_ENVELOP, this.clazz));
-        return this.envelop;
+        return Fn.getSemi(null == this.spy, this.LOGGER,
+                () -> this.envelop,
+                () -> this.spy.to(this.envelop));
     }
 
     protected boolean isReady() {

@@ -29,7 +29,7 @@ public class MongoRtor {
 
     private transient Class<?> hitted;
     private transient String collection;
-    private transient FindOptions options;
+    private transient FindOptions options = new FindOptions();
     private transient Function aggregate = (item) -> item;
     private final transient JsonObject filter = new JsonObject();
 

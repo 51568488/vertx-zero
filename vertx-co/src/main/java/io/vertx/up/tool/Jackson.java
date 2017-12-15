@@ -118,6 +118,7 @@ public final class Jackson {
         return Fn.getJvm(() -> Observable.fromIterable(source)
                 .filter(Objects::nonNull)
                 .map(item -> (JsonObject) item)
+                .filter(item -> null != item.getValue(key))
                 .filter(item -> value == item.getValue(key) || item.getValue(key).equals(value))
                 .first(new JsonObject()).blockingGet(), source, key);
     }

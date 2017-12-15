@@ -15,6 +15,7 @@ import io.vertx.zero.eon.Values;
 
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Function;
 
 /**
  * Tool for mongodb, simply the query with MongoClient
@@ -29,6 +30,8 @@ public class MongoRtor {
     private transient Class<?> hitted;
     private transient String collection;
     private transient FindOptions options;
+    private transient Function aggregate = (item) -> item;
+    private final transient JsonObject filter = new JsonObject();
 
     public static MongoRtor init(final MongoClient client) {
         return new MongoRtor(client);
@@ -50,6 +53,20 @@ public class MongoRtor {
 
     public MongoRtor connect(final FindOptions options) {
         this.options = options;
+        return this;
+    }
+
+    public MongoRtor connect(final JsonObject filter) {
+        if (null != filter) {
+            this.filter.mergeIn(filter);
+        }
+        return this;
+    }
+
+    public <T, R> MongoRtor connect(final Function<T, R> aggregate) {
+        if (null != aggregate) {
+            this.aggregate = aggregate;
+        }
         return this;
     }
 
@@ -100,6 +117,7 @@ public class MongoRtor {
                         // Set filter
                         final JsonObject filter = new JsonObject().put(refKey,
                                 new JsonObject().put("$in", ids));
+                        filter.mergeIn(this.filter);
                         LOGGER.info(Info.FILTER_INFO, this.collection, filter);
                         this.client.findWithOptions(this.collection, filter, this.options, res -> {
                             // Build response model
@@ -156,13 +174,14 @@ public class MongoRtor {
                         Fn.safeNull(() -> Runner.run(() -> {
                             // Direct set filter
                             final JsonObject filter = new JsonObject().put(refKey, value);
+                            filter.mergeIn(this.filter);
                             this.client.findWithOptions(this.collection, filter, this.options, res -> {
                                 // Build response model
                                 final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
                                         .connect(res).result().to();
                                 final JsonArray data = envelop.data();
                                 if (null != data) {
-                                    item.put(mountField, data);
+                                    item.put(mountField, this.aggregate.apply(data));
                                 }
                                 counter.countDown();
                             });

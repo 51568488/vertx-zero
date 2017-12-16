@@ -29,7 +29,7 @@ public class MongoRtor {
 
     private transient Class<?> hitted;
     private transient String collection;
-    private transient FindOptions options;
+    private transient FindOptions options = new FindOptions();
     private transient Function aggregate = (item) -> item;
     private final transient JsonObject filter = new JsonObject();
 
@@ -175,6 +175,7 @@ public class MongoRtor {
                             // Direct set filter
                             final JsonObject filter = new JsonObject().put(refKey, value);
                             filter.mergeIn(this.filter);
+                            LOGGER.info(Info.FILTER_INFO, this.collection, filter);
                             this.client.findWithOptions(this.collection, filter, this.options, res -> {
                                 // Build response model
                                 final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)

@@ -175,6 +175,7 @@ public class MongoRtor {
                             // Direct set filter
                             final JsonObject filter = new JsonObject().put(refKey, value);
                             filter.mergeIn(this.filter);
+                            LOGGER.info(Info.FILTER_INFO, this.collection, filter);
                             this.client.findWithOptions(this.collection, filter, this.options, res -> {
                                 // Build response model
                                 final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)

@@ -71,7 +71,22 @@ public class MongoRtor {
     }
 
     /**
-     * 单个子查询处理
+     * Single query default to unique
+     *
+     * @param dataObject
+     * @param refKey
+     * @param verticalKey
+     * @param mountField
+     */
+    public JsonObject minorBy(final JsonObject dataObject,
+                              final String refKey,
+                              final String verticalKey,
+                              final String mountField) {
+        return minorBy(dataObject, refKey, verticalKey, mountField, true);
+    }
+
+    /**
+     * Single query
      *
      * @param dataObject
      * @param refKey
@@ -82,10 +97,11 @@ public class MongoRtor {
     public JsonObject minorBy(final JsonObject dataObject,
                               final String refKey,
                               final String verticalKey,
-                              final String mountField) {
+                              final String mountField,
+                              final boolean unique) {
         final JsonArray dataArray = new JsonArray().add(dataObject);
-        final JsonArray result = this.minorBy(dataArray, refKey, verticalKey, mountField);
-        return result.getJsonObject(Values.IDX);
+        this.minorBy(dataArray, refKey, verticalKey, mountField, unique);
+        return dataArray.getJsonObject(Values.IDX);
     }
 
     /**
@@ -103,44 +119,60 @@ public class MongoRtor {
             final String verticalKey
     ) {
         return Fn.getJvm(new JsonArray(), () -> {
-                    final JsonArray ids = new JsonArray();
-                    // Collect data
-                    Observable.fromIterable(dataArray)
-                            .filter(Objects::nonNull)
-                            .map(item -> (JsonObject) item)
-                            .filter(item -> item.containsKey(verticalKey))
-                            .map(item -> item.getValue(verticalKey))
-                            .subscribe(ids::add);
-                    final CountDownLatch counter = new CountDownLatch(1);
-                    final JsonArray result = new JsonArray();
-                    Runner.run(() -> {
-                        // Set filter
-                        final JsonObject filter = new JsonObject().put(refKey,
-                                new JsonObject().put("$in", ids));
-                        filter.mergeIn(this.filter);
-                        LOGGER.info(Info.FILTER_INFO, this.collection, filter);
-                        this.client.findWithOptions(this.collection, filter, this.options, res -> {
-                            // Build response model
-                            final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
-                                    .connect(res).result().to();
-                            final JsonArray data = envelop.data();
-                            // Zip Join for two JsonArray
-                            LOGGER.info(Info.MERGE_INFO, dataArray, data, verticalKey, refKey);
-                            final JsonArray merged = Jackson.mergeZip(dataArray, data, verticalKey, refKey);
-                            result.addAll(merged);
-                            counter.countDown();
-                        });
-                    }, "concurrent-secondary-flip");
-                    // Await
-                    try {
-                        counter.await();
-                    } catch (final InterruptedException ex) {
-                        LOGGER.jvm(ex);
-                    }
-                    // Convert to target mountKey
-                    return result;
-                }, dataArray, verticalKey, refKey,
-                this.hitted, this.collection);
+            final JsonArray ids = new JsonArray();
+            // Collect data
+            Observable.fromIterable(dataArray)
+                    .filter(Objects::nonNull)
+                    .map(item -> (JsonObject) item)
+                    .filter(item -> item.containsKey(verticalKey))
+                    .map(item -> item.getValue(verticalKey))
+                    .subscribe(ids::add);
+            final CountDownLatch counter = new CountDownLatch(1);
+            final JsonArray result = new JsonArray();
+            Runner.run(() -> {
+                // Set filter
+                final JsonObject filter = new JsonObject().put(refKey,
+                        new JsonObject().put("$in", ids));
+                filter.mergeIn(this.filter);
+                LOGGER.info(Info.FILTER_INFO, this.collection, filter);
+                this.client.findWithOptions(this.collection, filter, this.options, res -> {
+                    // Build response model
+                    final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
+                            .connect(res).result().to();
+                    final JsonArray data = envelop.data();
+                    // Zip Join for two JsonArray
+                    LOGGER.info(Info.MERGE_INFO, dataArray, data, verticalKey, refKey);
+                    final JsonArray merged = Jackson.mergeZip(dataArray, data, verticalKey, refKey);
+                    result.addAll(merged);
+                    counter.countDown();
+                });
+            }, "concurrent-secondary-flip");
+            // Await
+            try {
+                counter.await();
+            } catch (final InterruptedException ex) {
+                LOGGER.jvm(ex);
+            }
+            // Convert to target mountKey
+            return result;
+        }, this.client, this.collection, this.hitted, refKey, verticalKey);
+    }
+
+    /**
+     * Multi minor, default to false
+     *
+     * @param dataArray
+     * @param refKey
+     * @param verticalKey
+     * @param mountField
+     */
+    public JsonArray minorBy(
+            final JsonArray dataArray,
+            final String refKey,
+            final String verticalKey,
+            final String mountField
+    ) {
+        return minorBy(dataArray, refKey, verticalKey, mountField, false);
     }
 
     /**
@@ -163,40 +195,45 @@ public class MongoRtor {
             final JsonArray dataArray,
             final String refKey,
             final String verticalKey,
-            final String mountField
+            final String mountField,
+            final boolean unique
     ) {
         return Fn.getJvm(new JsonArray(), () -> {
-                    // Build counter.
-                    final CountDownLatch counter = new CountDownLatch(dataArray.size());
-                    Fn.itJArray(dataArray, JsonObject.class, (item, index) -> {
-                        // Get item value by verticalKey
-                        final Object value = item.getValue(verticalKey);
-                        Fn.safeNull(() -> Runner.run(() -> {
-                            // Direct set filter
-                            final JsonObject filter = new JsonObject().put(refKey, value);
-                            filter.mergeIn(this.filter);
-                            LOGGER.info(Info.FILTER_INFO, this.collection, filter);
-                            this.client.findWithOptions(this.collection, filter, this.options, res -> {
-                                // Build response model
-                                final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
-                                        .connect(res).result().to();
-                                final JsonArray data = envelop.data();
-                                if (null != data) {
-                                    item.put(mountField, this.aggregate.apply(data));
-                                }
-                                counter.countDown();
-                            });
-                        }, "concurrent-secondary-" + value), value);
+            // Build counter.
+            final CountDownLatch counter = new CountDownLatch(dataArray.size());
+            Fn.itJArray(dataArray, JsonObject.class, (item, index) -> {
+                // Get item value by verticalKey
+                final Object value = item.getValue(verticalKey);
+                Fn.safeNull(() -> Runner.run(() -> {
+                    // Direct set filter
+                    final JsonObject filter = new JsonObject().put(refKey, value);
+                    filter.mergeIn(this.filter);
+                    LOGGER.info(Info.FILTER_INFO, this.collection, filter);
+                    this.client.findWithOptions(this.collection, filter, this.options, res -> {
+                        // Build response model
+                        final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
+                                .connect(res).result().to();
+                        final JsonArray data = envelop.data();
+                        if (null != data) {
+                            if (unique) {
+                                final JsonObject replaced = data.getJsonObject(Values.IDX);
+                                item.put(mountField, this.aggregate.apply(replaced));
+                            } else {
+                                item.put(mountField, this.aggregate.apply(data));
+                            }
+                        }
+                        counter.countDown();
                     });
-                    // Await
-                    try {
-                        counter.await();
-                    } catch (final InterruptedException ex) {
-                        LOGGER.jvm(ex);
-                    }
-                    // Convert to target mountKey
-                    return dataArray;
-                }, dataArray, verticalKey, refKey,
-                this.hitted, this.collection);
+                }, "concurrent-secondary-" + value), value);
+            });
+            // Await
+            try {
+                counter.await();
+            } catch (final InterruptedException ex) {
+                LOGGER.jvm(ex);
+            }
+            // Convert to target mountKey
+            return dataArray;
+        }, this.client, this.collection, this.hitted, refKey, verticalKey, mountField);
     }
 }

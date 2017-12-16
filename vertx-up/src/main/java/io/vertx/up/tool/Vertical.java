@@ -6,6 +6,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.kidd.unseen.Apeak;
 import io.vertx.up.tool.mirror.Types;
+import io.vertx.zero.eon.Strings;
 
 import java.util.Map;
 import java.util.Objects;
@@ -57,19 +58,21 @@ public class Vertical {
             data.put(item.getValue(), value);
             data.remove(item.getKey());
             if (recursion) {
-                Observable.fromIterable(data)
+                Observable.fromIterable(data.fieldNames())
                         .filter(Objects::nonNull)
-                        .map(Map.Entry::getValue)
-                        .filter(Objects::nonNull)
-                        .filter(each -> JsonObject.class == each.getClass()
-                                || JsonArray.class == each.getClass())
-                        .map(each -> {
-                            if (JsonObject.class == each.getClass()) {
-                                each = to((JsonObject) each, apeak);
+                        .map(field -> {
+                            Object reference = data.getValue(field);
+                            if (null == reference) {
+                                // Fix RxJava2 null pointer issue.
+                                reference = Strings.EMPTY;
                             } else {
-                                each = to((JsonArray) each, apeak);
+                                if (Types.isJObject(reference)) {
+                                    reference = to((JsonObject) reference, apeak);
+                                } else if (Types.isJArray(reference)) {
+                                    reference = to((JsonArray) reference, apeak);
+                                }
                             }
-                            return each;
+                            return reference;
                         }).subscribe();
             }
         }, item, item.getKey(), item.getValue());

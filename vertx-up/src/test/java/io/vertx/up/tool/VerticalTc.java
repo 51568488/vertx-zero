@@ -25,4 +25,12 @@ public class VerticalTc extends StoreBase {
         System.out.println(processed.encode());
         context.assertNotNull(processed);
     }
+
+    @Test
+    public void testNull(final TestContext context) {
+        final JsonObject data = IO.getJObject(getFile("topic.json"));
+        final JsonObject processed = Vertical.to(data, Apeak.create("_id", "key"));
+        System.out.println(processed.encode());
+        context.assertNotNull(processed);
+    }
 }

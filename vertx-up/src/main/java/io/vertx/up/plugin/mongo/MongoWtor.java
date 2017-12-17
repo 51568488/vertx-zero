@@ -10,6 +10,7 @@ import io.vertx.up.exception.XtorNotReadyException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.StringUtil;
+import io.vertx.zero.eon.Strings;
 
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CountDownLatch;
@@ -97,7 +98,9 @@ public class MongoWtor {
             final JsonObject data = new JsonObject();
             Runner.run(() -> {
                 // If itemFuns is empty, it means directly update to latest by condition
+                this.logger.info(Info.UPDATE_INFO, this.collection, condition, latest);
                 if (itemFuns.isEmpty()) {
+                    this.logger.info(Info.UPDATE_FLOW, "( Pure Update )", condition, latest);
                     this.client.findOneAndUpdate(this.collection, condition, latest, res -> {
                         if (res.succeeded()) {
                             // Result: Update directly successfully
@@ -105,7 +108,7 @@ public class MongoWtor {
                         } else {
                             Fn.flingUp(true, LOGGER,
                                     XtorExecuteException.class,
-                                    getClass(), res.cause().getMessage());
+                                    getClass(), cause(res.cause()));
                         }
                         counter.countDown();
                     });
@@ -114,6 +117,7 @@ public class MongoWtor {
                         if (res.succeeded()) {
                             // Old data
                             final JsonObject oldData = res.result();
+                            this.logger.info(Info.UPDATE_QUERY, this.collection, condition, oldData);
                             final JsonObject newData = new JsonObject();
                             for (final String field : oldData.fieldNames()) {
                                 // iterator
@@ -130,23 +134,24 @@ public class MongoWtor {
                                     }
                                 }
                                 newData.put(field, value);
-                                // Update with latest
-                                this.client.updateCollection(this.collection, condition, newData, inner -> {
-                                    if (inner.succeeded()) {
-                                        // Result: Update successfully
-                                        data.mergeIn(inner.result().toJson());
-                                    } else {
-                                        Fn.flingUp(true, LOGGER,
-                                                XtorExecuteException.class,
-                                                getClass(), res.cause().getMessage());
-                                    }
-                                    counter.countDown();
-                                });
                             }
+                            this.logger.info(Info.UPDATE_FLOW, "( Complex Update )", condition, latest);
+                            // Update with latest
+                            this.client.updateCollection(this.collection, condition, newData, inner -> {
+                                if (inner.succeeded()) {
+                                    // Result: Update successfully
+                                    data.mergeIn(inner.result().toJson());
+                                } else {
+                                    Fn.flingUp(true, LOGGER,
+                                            XtorExecuteException.class,
+                                            getClass(), cause(res.cause()));
+                                }
+                                counter.countDown();
+                            });
                         } else {
                             Fn.flingUp(true, LOGGER,
                                     XtorExecuteException.class,
-                                    getClass(), res.cause().getMessage());
+                                    getClass(), cause(res.cause()));
                             counter.countDown();
                         }
                     });
@@ -154,6 +159,10 @@ public class MongoWtor {
             }, "concurrent-update");
             return data;
         }, itemFuns, condition, latest);
+    }
+
+    private String cause(final Throwable error) {
+        return null != error ? error.getMessage() : Strings.EMPTY;
     }
 
     private void ensure() {

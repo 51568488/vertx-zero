@@ -117,12 +117,17 @@ public class MongoWtor {
                             final JsonObject newData = new JsonObject();
                             for (final String field : oldData.fieldNames()) {
                                 // iterator
-                                Object value = latest.getValue(field);
+                                Object value = oldData.getValue(field);
                                 if (itemFuns.containsKey(field)) {
                                     // Function existing
                                     final BiFunction<Object, Object, Object> fun = itemFuns.get(field);
                                     final Object oldValue = oldData.getValue(field);
                                     value = fun.apply(oldValue, value);
+                                } else {
+                                    // New -> Old
+                                    if (latest.containsKey(field)) {
+                                        value = latest.getValue(field);
+                                    }
                                 }
                                 newData.put(field, value);
                                 // Update with latest

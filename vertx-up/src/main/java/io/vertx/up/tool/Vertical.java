@@ -43,7 +43,7 @@ public class Vertical {
     ) {
         Observable.fromIterable(apeak)
                 .filter(Objects::nonNull)
-                .filter(item -> Objects.nonNull(item.getKey()))
+                .filter(item -> Objects.nonNull(item.getKey()) && Objects.nonNull(item.getValue()))
                 .subscribe(item -> execute(data, apeak, item, recursion));
         return data;
     }
@@ -75,7 +75,7 @@ public class Vertical {
                             return reference;
                         }).subscribe();
             }
-        }, item, item.getKey(), item.getValue());
+        }, data, item, item.getKey(), item.getValue());
     }
 
     public static JsonArray to(

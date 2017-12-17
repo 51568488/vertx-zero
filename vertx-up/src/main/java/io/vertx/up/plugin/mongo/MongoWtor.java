@@ -119,35 +119,40 @@ public class MongoWtor {
                             final JsonObject oldData = res.result();
                             this.logger.debug(Info.UPDATE_QUERY, this.collection, condition, oldData);
                             final JsonObject newData = new JsonObject();
-                            for (final String field : oldData.fieldNames()) {
-                                // iterator
-                                Object value = oldData.getValue(field);
-                                if (itemFuns.containsKey(field)) {
-                                    // Function existing
-                                    final BiFunction<Object, Object, Object> fun = itemFuns.get(field);
-                                    final Object oldValue = oldData.getValue(field);
-                                    value = fun.apply(oldValue, value);
-                                } else {
-                                    // New -> Old
-                                    if (latest.containsKey(field)) {
-                                        value = latest.getValue(field);
+                            if (null != oldData) {
+                                for (final String field : oldData.fieldNames()) {
+                                    // iterator
+                                    Object value = oldData.getValue(field);
+                                    if (itemFuns.containsKey(field)) {
+                                        // Function existing
+                                        final BiFunction<Object, Object, Object> fun = itemFuns.get(field);
+                                        final Object oldValue = oldData.getValue(field);
+                                        value = fun.apply(oldValue, value);
+                                    } else {
+                                        // New -> Old
+                                        if (latest.containsKey(field)) {
+                                            value = latest.getValue(field);
+                                        }
                                     }
+                                    newData.put(field, value);
                                 }
-                                newData.put(field, value);
-                            }
-                            this.logger.info(Info.UPDATE_FLOW, "( Complex Update )", condition, newData);
-                            // Update with latest
-                            this.client.findOneAndReplace(this.collection, condition, newData, inner -> {
-                                if (inner.succeeded()) {
-                                    // Result: Update successfully
-                                    data.mergeIn(inner.result());
-                                } else {
-                                    Fn.flingUp(true, LOGGER,
-                                            XtorExecuteException.class,
-                                            getClass(), cause(res.cause()));
-                                }
+                                this.logger.info(Info.UPDATE_FLOW, "( Complex Update )", condition, newData);
+                                // Update with latest
+                                this.client.findOneAndReplace(this.collection, condition, newData, inner -> {
+                                    if (inner.succeeded()) {
+                                        // Result: Update successfully
+                                        data.mergeIn(inner.result());
+                                    } else {
+                                        Fn.flingUp(true, LOGGER,
+                                                XtorExecuteException.class,
+                                                getClass(), cause(res.cause()));
+                                    }
+                                    counter.countDown();
+                                });
+                            } else {
+                                // No old data, it means that nothing happened.
                                 counter.countDown();
-                            });
+                            }
                         } else {
                             Fn.flingUp(true, LOGGER,
                                     XtorExecuteException.class,

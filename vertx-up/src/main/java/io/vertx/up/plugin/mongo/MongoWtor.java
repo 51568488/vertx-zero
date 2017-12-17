@@ -98,7 +98,7 @@ public class MongoWtor {
             final JsonObject data = new JsonObject();
             Runner.run(() -> {
                 // If itemFuns is empty, it means directly update to latest by condition
-                this.logger.info(Info.UPDATE_INFO, this.collection, condition, latest);
+                this.logger.debug(Info.UPDATE_INFO, this.collection, condition, latest);
                 if (itemFuns.isEmpty()) {
                     this.logger.info(Info.UPDATE_FLOW, "( Pure Update )", condition, latest);
                     this.client.findOneAndUpdate(this.collection, condition, latest, res -> {
@@ -117,7 +117,7 @@ public class MongoWtor {
                         if (res.succeeded()) {
                             // Old data
                             final JsonObject oldData = res.result();
-                            this.logger.info(Info.UPDATE_QUERY, this.collection, condition, oldData);
+                            this.logger.debug(Info.UPDATE_QUERY, this.collection, condition, oldData);
                             final JsonObject newData = new JsonObject();
                             for (final String field : oldData.fieldNames()) {
                                 // iterator

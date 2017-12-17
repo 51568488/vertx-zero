@@ -15,6 +15,7 @@ import io.vertx.up.kidd.outcome.ListObstain;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Jackson;
 import io.vertx.up.tool.StringUtil;
+import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 
 import java.util.Objects;
@@ -171,7 +172,7 @@ public class MongoRtor {
                     } else {
                         Fn.flingUp(true, LOGGER,
                                 XtorExecuteException.class,
-                                getClass(), res.cause().getMessage());
+                                getClass(), cause(res.cause()));
                     }
                     counter.countDown();
                 });
@@ -256,7 +257,7 @@ public class MongoRtor {
                         } else {
                             Fn.flingUp(true, LOGGER,
                                     XtorExecuteException.class,
-                                    getClass(), res.cause().getMessage());
+                                    getClass(), cause(res.cause()));
                         }
                         counter.countDown();
                     });
@@ -271,6 +272,10 @@ public class MongoRtor {
             // Convert to target mountKey
             return dataArray;
         }, refKey, verticalKey, mountField);
+    }
+
+    private String cause(final Throwable error) {
+        return null != error ? error.getMessage() : Strings.EMPTY;
     }
 
     private void ensure() {

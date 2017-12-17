@@ -7,10 +7,14 @@ import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.concurrent.Runner;
+import io.vertx.up.exception.XtorConnectException;
+import io.vertx.up.exception.XtorExecuteException;
+import io.vertx.up.exception.XtorNotReadyException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.kidd.outcome.ListObstain;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Jackson;
+import io.vertx.up.tool.StringUtil;
 import io.vertx.zero.eon.Values;
 
 import java.util.Objects;
@@ -28,6 +32,8 @@ public class MongoRtor {
     private transient final MongoClient client;
 
     private transient Class<?> hitted;
+    private transient Annal logger;
+
     private transient String collection;
     private transient FindOptions options = new FindOptions();
     private transient Function aggregate = (item) -> item;
@@ -38,21 +44,37 @@ public class MongoRtor {
     }
 
     private MongoRtor(final MongoClient client) {
+        // Invalid constructor
+        Fn.flingUp(null == client, LOGGER,
+                XtorConnectException.class, getClass(),
+                "client = " + client, "constructor(MongoClient)");
         this.client = client;
     }
 
     public MongoRtor connect(final Class<?> clazz) {
+        // Invalid connect
+        Fn.flingUp(null == clazz, LOGGER,
+                XtorConnectException.class, getClass(),
+                "hitted = " + clazz, "connect(Class)");
         this.hitted = clazz;
+        this.logger = (null == clazz) ? Annal.get(MongoWtor.class) : Annal.get(clazz);
         return this;
     }
 
     public MongoRtor connect(final String collection) {
+        // Invalid connect
+        Fn.flingUp(StringUtil.isNil(collection), LOGGER,
+                XtorConnectException.class, getClass(),
+                "collection = " + collection, "connect(String)");
         this.collection = collection;
         return this;
     }
 
     public MongoRtor connect(final FindOptions options) {
-        this.options = options;
+        // FindOptions could be null
+        if (null != options) {
+            this.options = options;
+        }
         return this;
     }
 
@@ -118,6 +140,7 @@ public class MongoRtor {
             final String refKey,
             final String verticalKey
     ) {
+        this.ensure();
         return Fn.getJvm(new JsonArray(), () -> {
             final JsonArray ids = new JsonArray();
             // Collect data
@@ -134,16 +157,22 @@ public class MongoRtor {
                 final JsonObject filter = new JsonObject().put(refKey,
                         new JsonObject().put("$in", ids));
                 filter.mergeIn(this.filter);
-                LOGGER.info(Info.FILTER_INFO, this.collection, filter);
+                this.logger.info(Info.FILTER_INFO, this.collection, filter);
                 this.client.findWithOptions(this.collection, filter, this.options, res -> {
-                    // Build response model
-                    final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
-                            .connect(res).result().to();
-                    final JsonArray data = envelop.data();
-                    // Zip Join for two JsonArray
-                    LOGGER.info(Info.MERGE_INFO, dataArray, data, verticalKey, refKey);
-                    final JsonArray merged = Jackson.mergeZip(dataArray, data, verticalKey, refKey);
-                    result.addAll(merged);
+                    if (res.succeeded()) {
+                        // Build response model
+                        final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
+                                .connect(res).result().to();
+                        final JsonArray data = envelop.data();
+                        // Zip Join for two JsonArray
+                        this.logger.info(Info.MERGE_INFO, dataArray, data, verticalKey, refKey);
+                        final JsonArray merged = Jackson.mergeZip(dataArray, data, verticalKey, refKey);
+                        result.addAll(merged);
+                    } else {
+                        Fn.flingUp(true, LOGGER,
+                                XtorExecuteException.class,
+                                getClass(), res.cause().getMessage());
+                    }
                     counter.countDown();
                 });
             }, "concurrent-secondary-flip");
@@ -151,11 +180,11 @@ public class MongoRtor {
             try {
                 counter.await();
             } catch (final InterruptedException ex) {
-                LOGGER.jvm(ex);
+                this.logger.jvm(ex);
             }
             // Convert to target mountKey
             return result;
-        }, this.client, this.collection, this.hitted, refKey, verticalKey);
+        }, refKey, verticalKey);
     }
 
     /**
@@ -198,6 +227,7 @@ public class MongoRtor {
             final String mountField,
             final boolean unique
     ) {
+        this.ensure();
         return Fn.getJvm(new JsonArray(), () -> {
             // Build counter.
             final CountDownLatch counter = new CountDownLatch(dataArray.size());
@@ -208,19 +238,25 @@ public class MongoRtor {
                     // Direct set filter
                     final JsonObject filter = new JsonObject().put(refKey, value);
                     filter.mergeIn(this.filter);
-                    LOGGER.info(Info.FILTER_INFO, this.collection, filter);
+                    this.logger.info(Info.FILTER_INFO, this.collection, filter);
                     this.client.findWithOptions(this.collection, filter, this.options, res -> {
-                        // Build response model
-                        final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
-                                .connect(res).result().to();
-                        final JsonArray data = envelop.data();
-                        if (null != data) {
-                            if (unique) {
-                                final JsonObject replaced = data.getJsonObject(Values.IDX);
-                                item.put(mountField, this.aggregate.apply(replaced));
-                            } else {
-                                item.put(mountField, this.aggregate.apply(data));
+                        if (res.succeeded()) {
+                            // Build response model
+                            final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)
+                                    .connect(res).result().to();
+                            final JsonArray data = envelop.data();
+                            if (null != data) {
+                                if (unique) {
+                                    final JsonObject replaced = data.getJsonObject(Values.IDX);
+                                    item.put(mountField, this.aggregate.apply(replaced));
+                                } else {
+                                    item.put(mountField, this.aggregate.apply(data));
+                                }
                             }
+                        } else {
+                            Fn.flingUp(true, LOGGER,
+                                    XtorExecuteException.class,
+                                    getClass(), res.cause().getMessage());
                         }
                         counter.countDown();
                     });
@@ -230,10 +266,16 @@ public class MongoRtor {
             try {
                 counter.await();
             } catch (final InterruptedException ex) {
-                LOGGER.jvm(ex);
+                this.logger.jvm(ex);
             }
             // Convert to target mountKey
             return dataArray;
-        }, this.client, this.collection, this.hitted, refKey, verticalKey, mountField);
+        }, refKey, verticalKey, mountField);
+    }
+
+    private void ensure() {
+        Fn.flingUp(null == this.client || null == this.collection ||
+                        null == this.hitted || null == this.logger, LOGGER,
+                XtorNotReadyException.class, getClass());
     }
 }

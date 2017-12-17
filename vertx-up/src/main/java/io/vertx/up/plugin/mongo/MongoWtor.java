@@ -135,12 +135,12 @@ public class MongoWtor {
                                 }
                                 newData.put(field, value);
                             }
-                            this.logger.info(Info.UPDATE_FLOW, "( Complex Update )", condition, latest);
+                            this.logger.info(Info.UPDATE_FLOW, "( Complex Update )", condition, newData);
                             // Update with latest
-                            this.client.updateCollection(this.collection, condition, newData, inner -> {
+                            this.client.findOneAndReplace(this.collection, condition, newData, inner -> {
                                 if (inner.succeeded()) {
                                     // Result: Update successfully
-                                    data.mergeIn(inner.result().toJson());
+                                    data.mergeIn(inner.result());
                                 } else {
                                     Fn.flingUp(true, LOGGER,
                                             XtorExecuteException.class,

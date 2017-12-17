@@ -171,10 +171,10 @@ public class Envelop implements Serializable {
         this.headers = headers;
     }
 
-    private <T> Envelop(final T data) {
+    private <T> Envelop(final T data, final HttpStatusCode status) {
         this.data = build(ZeroSerializer.toSupport(data));
         this.error = null;
-        this.status = HttpStatusCode.OK;
+        this.status = status;
     }
 
 
@@ -198,7 +198,11 @@ public class Envelop implements Serializable {
     }
 
     public static <T> Envelop success(final T entity) {
-        return new Envelop(entity);
+        return new Envelop(entity, HttpStatusCode.OK);
+    }
+
+    public static <T> Envelop success(final T entity, final HttpStatusCode status) {
+        return new Envelop(entity, status);
     }
 
     /**

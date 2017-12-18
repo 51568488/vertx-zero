@@ -39,7 +39,6 @@ public class InfixScatter implements Scatter<Vertx> {
         /** Scan all Infix **/
         final ConcurrentMap<Class<? extends Annotation>, Class<?>> injections =
                 Statute.reduce(Plugins.INFIX_MAP, enabled);
-
         injections.values().stream().forEach(item -> {
             if (null != item && item.isAnnotationPresent(Plugin.class)) {
                 final Method method = findInit(item);

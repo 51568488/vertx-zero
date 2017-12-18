@@ -24,7 +24,6 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
 
-    private static final Annal LOGGER = Annal.get(HttpServerVisitor.class);
     private static final String KEY = "server";
 
     private transient final Node<JsonObject> NODE = Node.infix(Plugins.SERVER);
@@ -43,7 +42,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
         // 2. Visit the node for server, http
         final JsonObject data = this.NODE.read();
 
-        Fn.flingZero(null == data || !data.containsKey(KEY), LOGGER,
+        Fn.flingZero(null == data || !data.containsKey(KEY), getLogger(),
                 ServerConfigException.class,
                 getClass(), null == data ? null : data.encode());
 
@@ -52,7 +51,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
 
     private ConcurrentMap<Integer, HttpServerOptions> visit(final JsonArray serverData)
             throws ZeroException {
-        LOGGER.info(Info.INF_B_VERIFY, KEY, serverData.encode());
+        getLogger().info(Info.INF_B_VERIFY, KEY, getType(), serverData.encode());
         Ruler.verify(KEY, serverData);
         final ConcurrentMap<Integer, HttpServerOptions> map =
                 new ConcurrentHashMap<>();
@@ -68,6 +67,7 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
                 }, port, options);
             }
         });
+        getLogger().info(Info.INF_A_VERIFY, KEY, getType(), map.keySet());
         return map;
     }
 
@@ -84,5 +84,9 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
 
     protected ServerType getType() {
         return ServerType.HTTP;
+    }
+
+    protected Annal getLogger() {
+        return Annal.get(getClass());
     }
 }

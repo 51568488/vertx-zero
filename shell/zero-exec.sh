@@ -13,3 +13,5 @@ docker $1 8bc9d9c9c3e2
 docker $1 9db80d9b9e5e
 # Neo4j
 docker $1 49f224c70fd5
+# Etcd
+docker $1 67226aee03c0

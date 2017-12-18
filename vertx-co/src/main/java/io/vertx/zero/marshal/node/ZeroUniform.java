@@ -3,8 +3,7 @@ package io.vertx.zero.marshal.node;
 import io.reactivex.Observable;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.Plugins;
-import io.vertx.up.func.Fn;
-import io.vertx.up.tool.io.IO;
+import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
 
 import java.util.Arrays;
@@ -15,9 +14,10 @@ import java.util.stream.Collectors;
 
 public class ZeroUniform implements Node<JsonObject> {
 
+    private static final Annal LOGGER = Annal.get(ZeroUniform.class);
+
     private static final Node<ConcurrentMap<String, String>> node
             = Instance.singleton(ZeroLime.class);
-
 
     @Override
     public JsonObject read() {
@@ -25,15 +25,17 @@ public class ZeroUniform implements Node<JsonObject> {
         final ConcurrentMap<String, String> keys = node.read();
         final Set<String> skipped = Arrays
                 .stream(Plugins.DATA).collect(Collectors.toSet());
+        LOGGER.info(Info.UNIFORM, keys.keySet(), skipped);
         // RxJava2 version
         Observable.fromIterable(keys.keySet())
                 .filter(item -> !skipped.contains(item))
-                .map(key -> Fn.pool(Storage.CONFIG, keys.get(key),
-                        () -> Fn.getJvm(new JsonObject(),
-                                () -> IO.getYaml(keys.get(key)),
-                                keys.get(key))))
+                .map(key -> ZeroTool.read(key, true))
                 .filter(Objects::nonNull)
-                .subscribe(item -> data.mergeIn(item, true));
+                .subscribe(item -> {
+                    System.out.println(item);
+                    // data.mergeIn(item, true);
+                });
+        System.out.println(data);
         return data;
     }
 }

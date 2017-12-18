@@ -80,6 +80,12 @@ public class VertxApplication {
                 final Scatter<Vertx> scatter = Instance.singleton(CodexScatter.class);
                 scatter.connect(vertx);
             }, "codex-engine-runner");
+
+            /** 5.Ipc channel started **/
+            Runner.run(() -> {
+                final Scatter<Vertx> scatter = Instance.singleton(IpcScatter.class);
+                scatter.connect(vertx);
+            }, "ipc-engine-runner");
         });
     }
 }

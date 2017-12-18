@@ -39,10 +39,10 @@
                 </configuration>
             </plugin>
             <!-- Build Docker -->
+            <!--
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <!--
                 <executions>
                     <execution>
                         <id>build-image</id>
@@ -52,7 +52,6 @@
                         </goals>
                     </execution>
                 </executions>
-                -->
                 <configuration>
                     <imageName>silentbalanceyh/up-cronus</imageName>
                     <baseImage>silentbalanceyh/vertxup</baseImage>
@@ -66,6 +65,7 @@
                     </resources>
                 </configuration>
             </plugin>
+            -->
         </plugins>
     </build>
 </project>

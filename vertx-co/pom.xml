@@ -146,6 +146,11 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mousio/etcd4j -->
+        <dependency>
+            <groupId>org.mousio</groupId>
+            <artifactId>etcd4j</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <extensions>

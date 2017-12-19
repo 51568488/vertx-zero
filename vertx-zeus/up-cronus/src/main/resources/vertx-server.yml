@@ -9,6 +9,6 @@ server:
   config:
     service: ipc-cronus
     jks: "ipc/ssl/rpc-server-keystore.jks"
-    password: "pl,okm123"
+    password: "wibble"
     port: 6884
     host: 0.0.0.0

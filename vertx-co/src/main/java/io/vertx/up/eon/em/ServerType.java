@@ -6,7 +6,9 @@ public enum ServerType {
     // Web Socket Server
     SOCK("sock"),
     // Rx Server
-    RX("rx");
+    RX("rx"),
+    // Rpc Server
+    IPC("ipc");
 
     private transient final String literal;
 

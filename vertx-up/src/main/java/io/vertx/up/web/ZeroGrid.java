@@ -1,6 +1,7 @@
 package io.vertx.up.web;
 
 import io.vertx.core.ClusterOptions;
+import io.vertx.core.ServidorOptions;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.up.func.Fn;
@@ -9,6 +10,7 @@ import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.marshal.equip.NodeVisitor;
 import io.vertx.zero.marshal.equip.VertxVisitor;
 import io.vertx.zero.marshal.micro.HttpServerVisitor;
+import io.vertx.zero.marshal.micro.RpcServerVisitor;
 import io.vertx.zero.marshal.micro.RxServerVisitor;
 import io.vertx.zero.marshal.micro.ServerVisitor;
 
@@ -24,6 +26,8 @@ public class ZeroGrid {
     private static final ConcurrentMap<String, VertxOptions> VX_OPTS =
             new ConcurrentHashMap<>();
     private static final ConcurrentMap<Integer, HttpServerOptions> SERVER_OPTS =
+            new ConcurrentHashMap<>();
+    private static final ConcurrentMap<Integer, ServidorOptions> RPC_OPTS =
             new ConcurrentHashMap<>();
     private static final ConcurrentMap<Integer, HttpServerOptions> RX_OPTS =
             new ConcurrentHashMap<>();
@@ -52,6 +56,12 @@ public class ZeroGrid {
                         Instance.singleton(RxServerVisitor.class);
                 RX_OPTS.putAll(visitor.visit());
             }
+            // Init for RpxServerOptions
+            if (RPC_OPTS.isEmpty()) {
+                final ServerVisitor<ServidorOptions> visitor =
+                        Instance.singleton(RpcServerVisitor.class);
+                RPC_OPTS.putAll(visitor.visit());
+            }
             // Init for all plugin options.
             ZeroAmbient.init();
         }, LOGGER);
@@ -67,6 +77,10 @@ public class ZeroGrid {
 
     public static ConcurrentMap<Integer, HttpServerOptions> getRxOptions() {
         return RX_OPTS;
+    }
+
+    public static ConcurrentMap<Integer, ServidorOptions> getRpcOptions() {
+        return RPC_OPTS;
     }
 
     public static ClusterOptions getClusterOption() {

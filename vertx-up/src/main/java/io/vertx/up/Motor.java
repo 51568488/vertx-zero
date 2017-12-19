@@ -102,11 +102,24 @@ public final class Motor {
                         final Class<?> found = Statute.findUnique(list,
                                 (item) -> internals.get(type) == item);
                         if (null != found) {
+                            LOGGER.info(Info.AGENT_DEFINED, found, type);
                             ret.put(type, found);
                         }
                     });
         });
-        return ret;
+        // 2.Filter
+        return filterAgents(ret);
+    }
+
+    private static ConcurrentMap<ServerType, Class<?>> filterAgents(
+            final ConcurrentMap<ServerType, Class<?>> agents) {
+        // Check Rpc Enabled
+        if (ZeroGrid.getRpcOptions().isEmpty()) {
+            agents.remove(ServerType.IPC);
+        } else {
+            LOGGER.info(Info.RPC_ENABLED);
+        }
+        return agents;
     }
 
     private static ConcurrentMap<ServerType, List<Class<?>>> getMergedAgents(

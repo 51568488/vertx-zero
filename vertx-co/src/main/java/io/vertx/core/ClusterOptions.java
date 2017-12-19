@@ -4,7 +4,9 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.spi.cluster.hazelcast.HazelcastClusterManager;
 
-public class ClusterOptions {
+import java.io.Serializable;
+
+public class ClusterOptions implements Serializable {
     private static final boolean ENABLED = false;
     /**
      * Default -> HazelcastClusterManager

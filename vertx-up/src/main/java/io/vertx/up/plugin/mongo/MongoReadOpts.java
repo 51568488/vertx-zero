@@ -74,7 +74,7 @@ public class MongoReadOpts {
     ) {
         final FindOptions options = new FindOptions();
         Fn.safeNull(() -> {
-            options.setLimit(pager.getEnd());
+            options.setLimit(pager.getSize());
             options.setSkip(pager.getStart());
         }, pager);
         Fn.safeNull(() -> options.setSort(sorter.toJson((mode) -> mode ? 1 : -1)), sorter);

@@ -159,7 +159,8 @@ public class MongoRtor {
                         new JsonObject().put("$in", ids));
                 filter.mergeIn(this.filter);
                 this.logger.info(Info.FILTER_INFO, this.collection, filter);
-                this.client.findWithOptions(this.collection, filter, this.options, res -> {
+                // Fix bug for page two
+                this.client.findWithOptions(this.collection, filter, new FindOptions(), res -> {
                     if (res.succeeded()) {
                         // Build response model
                         final Envelop envelop = ListObstain.<JsonObject>startList(this.hitted)

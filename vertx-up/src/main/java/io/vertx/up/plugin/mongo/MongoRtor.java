@@ -101,11 +101,11 @@ public class MongoRtor {
      * @param verticalKey
      * @param mountField
      */
-    public JsonObject minorBy(final JsonObject dataObject,
-                              final String refKey,
-                              final String verticalKey,
-                              final String mountField) {
-        return minorBy(dataObject, refKey, verticalKey, mountField, true);
+    public JsonObject read(final JsonObject dataObject,
+                           final String refKey,
+                           final String verticalKey,
+                           final String mountField) {
+        return read(dataObject, refKey, verticalKey, mountField, true);
     }
 
     /**
@@ -117,13 +117,13 @@ public class MongoRtor {
      * @param mountField
      * @return
      */
-    public JsonObject minorBy(final JsonObject dataObject,
-                              final String refKey,
-                              final String verticalKey,
-                              final String mountField,
-                              final boolean unique) {
+    public JsonObject read(final JsonObject dataObject,
+                           final String refKey,
+                           final String verticalKey,
+                           final String mountField,
+                           final boolean unique) {
         final JsonArray dataArray = new JsonArray().add(dataObject);
-        this.minorBy(dataArray, refKey, verticalKey, mountField, unique);
+        this.read(dataArray, refKey, verticalKey, mountField, unique);
         return dataArray.getJsonObject(Values.IDX);
     }
 
@@ -136,7 +136,7 @@ public class MongoRtor {
      * @param verticalKey
      * @return
      */
-    public JsonArray minorBy(
+    public JsonArray read(
             final JsonArray dataArray,
             final String refKey,
             final String verticalKey
@@ -196,13 +196,13 @@ public class MongoRtor {
      * @param verticalKey
      * @param mountField
      */
-    public JsonArray minorBy(
+    public JsonArray read(
             final JsonArray dataArray,
             final String refKey,
             final String verticalKey,
             final String mountField
     ) {
-        return minorBy(dataArray, refKey, verticalKey, mountField, false);
+        return read(dataArray, refKey, verticalKey, mountField, false);
     }
 
     /**
@@ -221,7 +221,7 @@ public class MongoRtor {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public JsonArray minorBy(
+    public JsonArray read(
             final JsonArray dataArray,
             final String refKey,
             final String verticalKey,

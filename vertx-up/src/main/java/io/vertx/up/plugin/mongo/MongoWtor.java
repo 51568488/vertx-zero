@@ -12,6 +12,7 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.tool.StringUtil;
 import io.vertx.zero.eon.Strings;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.BiFunction;
@@ -76,6 +77,43 @@ public class MongoWtor {
     }
 
     /**
+     * Decreased/Increase Operation
+     *
+     * @param condition
+     * @param field
+     * @return
+     */
+    public JsonObject decreaseBy(
+            final JsonObject condition,
+            final String field,
+            final int step
+    ) {
+        return this.execute(condition, field, this.decrease(step));
+    }
+
+    public JsonObject decreaseBy(
+            final JsonObject condition,
+            final String field
+    ) {
+        return this.execute(condition, field, this.decrease(1));
+    }
+
+    public JsonObject increaseBy(
+            final JsonObject condition,
+            final String field,
+            final int step
+    ) {
+        return this.execute(condition, field, this.increase(step));
+    }
+
+    public JsonObject increaseBy(
+            final JsonObject condition,
+            final String field
+    ) {
+        return this.execute(condition, field, this.increase(1));
+    }
+
+    /**
      * 1. Query data by condition.
      * 2. Update the data with condition.
      * 3. If there exist itemFuns, process each field by function.
@@ -83,10 +121,9 @@ public class MongoWtor {
      * @param condition
      * @param latest
      * @param itemFuns
-     * @param <T>
      * @return
      */
-    public <T> JsonObject manorBy(
+    public JsonObject write(
             final JsonObject condition,
             final JsonObject latest,
             final ConcurrentMap<String, BiFunction<Object, Object, Object>> itemFuns
@@ -174,5 +211,29 @@ public class MongoWtor {
         Fn.flingUp(null == this.client || null == this.collection ||
                         null == this.hitted || null == this.logger, LOGGER,
                 XtorNotReadyException.class, getClass());
+    }
+
+    private JsonObject execute(
+            final JsonObject condition,
+            final String field,
+            final BiFunction<Object, Object, Object> func
+    ) {
+        final ConcurrentMap<String, BiFunction<Object, Object, Object>> funcMap =
+                new ConcurrentHashMap<String, BiFunction<Object, Object, Object>>() {
+                    {
+                        put(field, func);
+                    }
+                };
+        return write(condition, new JsonObject(), funcMap);
+    }
+
+    private BiFunction<Object, Object, Object> increase(final int step) {
+        return (oldVal, newVale) -> Fn.getJvm(0,
+                () -> Integer.parseInt(oldVal.toString()) + step, oldVal);
+    }
+
+    private BiFunction<Object, Object, Object> decrease(final int step) {
+        return (oldVal, newValue) -> Fn.getJvm(0,
+                () -> Integer.parseInt(oldVal.toString()) - 1, oldVal);
     }
 }

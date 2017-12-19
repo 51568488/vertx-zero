@@ -1,3 +1,6 @@
+etcd:
+  host: 127.0.0.1
+  port:
 ipc:
 - type: unity
   port: 8084

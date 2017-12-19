@@ -10,4 +10,5 @@ interface Info {
 
     String SCANED_RULE = "[ ZERO ] ( {0} Rules ) Zero system scanned the folder /codex/ " +
             "to pickup {0} rule definition files.";
+
 }

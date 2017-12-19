@@ -21,4 +21,6 @@ public interface Info {
             "manager = {0} on node {1} with status = {2}.";
 
     String INFIX_INJECT = "[ ZERO ] ( Plugin ) Infix {0} has been set to {1} field \"{2}\".";
+
+    String RPC_ENABLED = "[ ZERO ] ( Micro -> Rpc ) Zero system detected the rpc server is Enabled. ";
 }

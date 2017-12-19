@@ -42,6 +42,7 @@ E40032: You are in mode "Direct", the input index must be greatter and equal to 
 E40033: "(Database) You are trying to initialize \"Xtor\" component, but found invalid component {0} in method {1}"
 E40034: "(Database) Your \"Xtor\" component is not ready, (client, clazz, logger, collection) could not be null"
 E40035: "(Database) You are executing the operations in \"Xtor\" component, but met error: {0}"
+E40036: (Rpc) Zero rpc require SSL with Alpn enabled (jks,password), please check your configuration of port = {0}, options = {1}
 # (Web) Exception for web
 E60000: (400) - Request validation failure, class = {0}, method = {1}, message = {2}
 E60001: (400) - The input content could not be converted into valid resource user {0}

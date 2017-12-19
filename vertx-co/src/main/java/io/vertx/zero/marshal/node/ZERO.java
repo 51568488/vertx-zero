@@ -23,3 +23,8 @@ interface Key {
      */
     String LIME = "lime";
 }
+
+interface Info {
+
+    String UNIFORM = "[ ZERO ] Uniform resources hitted to {0}, skipped keys {1}.";
+}

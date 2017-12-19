@@ -18,7 +18,6 @@ public class ZeroUniform implements Node<JsonObject> {
     private static final Node<ConcurrentMap<String, String>> node
             = Instance.singleton(ZeroLime.class);
 
-
     @Override
     public JsonObject read() {
         final JsonObject data = new JsonObject();

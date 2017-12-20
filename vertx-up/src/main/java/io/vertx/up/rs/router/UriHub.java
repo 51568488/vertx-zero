@@ -1,7 +1,7 @@
 package io.vertx.up.rs.router;
 
 import io.vertx.ext.web.Route;
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.agent.Event;
 
 /**
  * Hub for Uri basic

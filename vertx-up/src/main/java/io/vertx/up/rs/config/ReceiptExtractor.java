@@ -2,7 +2,7 @@ package io.vertx.up.rs.config;
 
 import io.reactivex.Observable;
 import io.vertx.up.annotations.Address;
-import io.vertx.up.atom.Receipt;
+import io.vertx.up.atom.worker.Receipt;
 import io.vertx.up.exception.AccessProxyException;
 import io.vertx.up.exception.AddressWrongException;
 import io.vertx.up.exception.NoArgConstructorException;
@@ -81,7 +81,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
         final Receipt receipt = new Receipt();
         receipt.setMethod(method);
         receipt.setAddress(address);
-        
+
         // Fix: Instance class for proxy
         final Object proxy = Instance.singleton(clazz);
         receipt.setProxy(proxy);

@@ -27,6 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ZeroRpcAgent extends AbstractVerticle {
 
     private static final Annal LOGGER = Annal.get(ZeroRpcAgent.class);
+    private static final String KEY_JKS = "jks";
+    private static final String KEY_PWD = "password";
     /** **/
     private static final ConcurrentMap<Integer, ServidorOptions> SERVERS =
             ZeroGrid.getRpcOptions();
@@ -52,13 +54,13 @@ public class ZeroRpcAgent extends AbstractVerticle {
              * **/
             final JsonObject options = config.getOptions();
 
-            Fn.flingUp(!options.containsKey("jks") || !options.containsKey("password"), LOGGER,
+            Fn.flingUp(!options.containsKey(KEY_JKS) || !options.containsKey(KEY_PWD), LOGGER,
                     RpcSslAlpnException.class, getClass(), port, options);
             /**
              * 4.Must enabled ssl in agent to enable rpc.
              */
-            final String jks = options.getString("jks");
-            final String password = options.getString("password");
+            final String jks = options.getString(KEY_JKS);
+            final String password = options.getString(KEY_PWD);
             builder.useSsl(option -> option
                     .setSsl(true)
                     .setUseAlpn(true)
@@ -75,12 +77,18 @@ public class ZeroRpcAgent extends AbstractVerticle {
              * 6.Server added.
              */
             final VertxServer server = builder.build();
-            server.start(handler -> recordServer(handler, config));
+            server.start(handler -> registryServer(handler, config));
         });
     }
 
-    private void recordServer(final AsyncResult<Void> handler,
-                              final ServidorOptions options) {
+    /**
+     * Registry the data into etcd
+     *
+     * @param handler
+     * @param options
+     */
+    private void registryServer(final AsyncResult<Void> handler,
+                                final ServidorOptions options) {
         final Integer port = options.getPort();
         final AtomicInteger out = LOGS.get(port);
         if (Values.ZERO == out.getAndIncrement()) {

@@ -1,7 +1,7 @@
 package io.vertx.up.rs;
 
 import io.vertx.core.Handler;
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.agent.Event;
 
 /**
  * Hunt to aim and select the objective

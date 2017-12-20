@@ -1,4 +1,4 @@
-package io.vertx.up.atom;
+package io.vertx.up.atom.agent;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.up.eon.Orders;

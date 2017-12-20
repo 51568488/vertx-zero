@@ -2,7 +2,7 @@ package io.vertx.up.rs.router;
 
 import io.reactivex.Observable;
 import io.vertx.ext.web.Route;
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.agent.Event;
 import io.vertx.zero.eon.Strings;
 
 import javax.ws.rs.core.MediaType;

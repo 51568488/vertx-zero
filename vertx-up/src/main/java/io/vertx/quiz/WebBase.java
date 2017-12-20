@@ -2,7 +2,7 @@ package io.vertx.quiz;
 
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.quiz.ext.web.WebTestBase;
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.agent.Event;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.EventExtractor;

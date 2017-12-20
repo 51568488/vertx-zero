@@ -1,7 +1,7 @@
 package io.vertx.up.rs.dispatch;
 
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.up.atom.Depot;
+import io.vertx.up.atom.agent.Depot;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.tool.mirror.Instance;
 

@@ -5,7 +5,7 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.up.annotations.Worker;
 import io.vertx.up.atom.Envelop;
-import io.vertx.up.atom.Receipt;
+import io.vertx.up.atom.worker.Receipt;
 import io.vertx.up.exception.AsyncSignatureException;
 import io.vertx.up.exception.WorkerArgumentException;
 import io.vertx.up.func.Fn;

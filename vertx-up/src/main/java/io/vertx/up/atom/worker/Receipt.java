@@ -1,4 +1,4 @@
-package io.vertx.up.atom;
+package io.vertx.up.atom.worker;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;

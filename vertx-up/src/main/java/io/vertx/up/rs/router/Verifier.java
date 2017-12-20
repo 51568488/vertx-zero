@@ -1,6 +1,6 @@
 package io.vertx.up.rs.router;
 
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.agent.Event;
 import io.vertx.up.exception.AnnotationRepeatException;
 import io.vertx.up.exception.EventActionNoneException;
 import io.vertx.up.exception.ParamAnnotationException;

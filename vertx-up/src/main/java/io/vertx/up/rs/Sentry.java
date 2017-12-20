@@ -1,7 +1,7 @@
 package io.vertx.up.rs;
 
 import io.vertx.core.Handler;
-import io.vertx.up.atom.Depot;
+import io.vertx.up.atom.agent.Depot;
 
 /**
  * JSR330 signal

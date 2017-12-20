@@ -1,7 +1,7 @@
 package io.vertx.up.web;
 
-import io.vertx.up.atom.Event;
-import io.vertx.up.atom.Receipt;
+import io.vertx.up.atom.agent.Event;
+import io.vertx.up.atom.worker.Receipt;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;

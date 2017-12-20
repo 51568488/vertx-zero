@@ -1,6 +1,6 @@
 package io.vertx.up.web.origin;
 
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.agent.Event;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.web.thread.EndPointThread;

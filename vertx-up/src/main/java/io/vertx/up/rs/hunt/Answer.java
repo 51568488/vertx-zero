@@ -4,7 +4,7 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Envelop;
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.agent.Event;
 
 /**
  * Response process to normalize the response request.

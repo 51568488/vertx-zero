@@ -1,4 +1,4 @@
-package io.vertx.up.atom;
+package io.vertx.up.atom.agent;
 
 import io.vertx.up.eon.ID;
 import io.vertx.up.func.Fn;

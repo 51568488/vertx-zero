@@ -2,7 +2,7 @@ package io.vertx.up.media.parse;
 
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Epsilon;
-import io.vertx.up.atom.Event;
+import io.vertx.up.atom.agent.Event;
 import io.vertx.up.eon.ID;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.func.Fn;

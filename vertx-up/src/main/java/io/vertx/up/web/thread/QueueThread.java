@@ -1,6 +1,6 @@
 package io.vertx.up.web.thread;
 
-import io.vertx.up.atom.Receipt;
+import io.vertx.up.atom.worker.Receipt;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.ReceiptExtractor;

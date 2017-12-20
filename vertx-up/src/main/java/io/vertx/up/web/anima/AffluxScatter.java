@@ -2,8 +2,8 @@ package io.vertx.up.web.anima;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.atom.Event;
-import io.vertx.up.atom.Receipt;
+import io.vertx.up.atom.agent.Event;
+import io.vertx.up.atom.worker.Receipt;
 import io.vertx.up.concurrent.Runner;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.exception.InjectionLimeKeyException;
@@ -106,7 +106,7 @@ public class AffluxScatter implements Scatter<Vertx> {
                 // Config checking
                 final Node<JsonObject> node = Instance.instance(ZeroUniform.class);
                 final JsonObject options = node.read();
-                
+
                 Fn.flingUp(!options.containsKey(pluginKey), LOGGER,
                         InjectionLimeKeyException.class,
                         getClass(), infixCls, pluginKey);

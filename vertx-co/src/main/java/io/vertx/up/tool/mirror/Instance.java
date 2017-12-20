@@ -45,8 +45,6 @@ public final class Instance {
      */
     public static Class<?> genericT(final Class<?> target) {
         return Fn.getJvm(() -> {
-            System.out.println(target);
-            System.out.println(target.getGenericSuperclass());
             final Type type = target.getGenericSuperclass();
             final Type[] params = ((ParameterizedType) type).getActualTypeArguments();
             return Fn.getSemi(0 < params.length, LOGGER,

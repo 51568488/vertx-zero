@@ -4,11 +4,3 @@ server:
   config:
     port: 6083
     host: 0.0.0.0
-- name: up-cronus
-  type: ipc
-  config:
-    service: ipc-cronus
-    jks: "ipc/ssl/rpc-server-keystore.jks"
-    password: "wibble"
-    port: 6884
-    host: 0.0.0.0

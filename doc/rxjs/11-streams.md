@@ -22,5 +22,5 @@ ajax('/data',
 beginUiRendering();                // Called immediately after Ajax
 ```
 
-![](/doc/rxjs/image/RX1-1-002)
+![](/doc/rxjs/image/RX1-1-002.png)
 

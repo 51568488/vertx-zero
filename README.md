@@ -96,6 +96,10 @@ Once the Zero is up, you can see following logs in your console ( The default po
 
 1. [Issue resolutions (1)](doc/issues/README.md)
 
+### 3.3. Some Notes
+
+1. [RxJs](doc/rx/README.md)
+
 ## 4. Function Interface Extend
 
 Zero system extend function interface system based on java8.

@@ -35,5 +35,5 @@
 
 ## Some Notes
 
-* 1 - RxJs
+* [1 - RxJs](doc/rxjs/README.md)
 

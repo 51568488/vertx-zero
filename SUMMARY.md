@@ -37,4 +37,5 @@
 
 * [1 - RxJs](doc/rxjs/README.md)
   * [1.1 - Basic Programming](doc/rxjs/11-streams.md)
+  * [1.2 - Time & Space](doc/rxjs/12-time-and-space.md)
 

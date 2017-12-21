@@ -35,9 +35,17 @@ public class ZeroTool {
     }
 
     private static JsonObject readDirect(final String filename) {
-        return Fn.pool(Storage.CONFIG, filename, () ->
-                Fn.getJvm(
-                        new JsonObject(),
-                        () -> IO.getYaml(filename), filename));
+        // Fix Docker issue
+        if (Storage.CONFIG.containsKey(filename)) {
+            return Storage.CONFIG.get(filename);
+        } else {
+            final JsonObject data = Fn.getJvm(
+                    null,
+                    () -> IO.getYaml(filename), filename);
+            if (null != data && !data.isEmpty()) {
+                Storage.CONFIG.put(filename, data);
+            }
+            return data;
+        }
     }
 }

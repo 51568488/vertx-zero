@@ -36,4 +36,5 @@
 ## Some Notes
 
 * [1 - RxJs](doc/rxjs/README.md)
+  * [1.1 - Streams](doc/rxjs/11-streams.md)
 

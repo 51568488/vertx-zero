@@ -6,7 +6,7 @@ import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.log.Annal;
 import mousio.etcd4j.EtcdClient;
 import mousio.etcd4j.promises.EtcdResponsePromise;
-import mousio.etcd4j.requests.EtcdKeyPostRequest;
+import mousio.etcd4j.requests.EtcdKeyPutRequest;
 import mousio.etcd4j.responses.EtcdKeysResponse;
 
 public class JObjectEnrol implements Enrol<JsonObject> {
@@ -19,7 +19,8 @@ public class JObjectEnrol implements Enrol<JsonObject> {
     public boolean write(final String path,
                          final JsonObject entity) {
         final String data = new String(entity.toBuffer().getBytes());
-        final EtcdKeyPostRequest request = this.etcd.post(path, data);
+        final EtcdKeyPutRequest request = this.etcd.put(path, data);
+        request.ttl(12);
         try {
             final EtcdResponsePromise<EtcdKeysResponse> response = request.send();
             System.out.println(response.get().getNode());

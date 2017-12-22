@@ -104,28 +104,7 @@ Once the Zero is up, you can see following logs in your console ( The default po
 
 1. [RxJs](doc/rx/README.md)
 
-## 4. Function Interface Extend
-
-Zero system extend function interface system based on java8.
-
-* `java.util.function.Consumer<T>`：`void accept(T t)`；
-* `java.util.function.BiConsumer<T, U>`：`void accept(T t, U u)`；
-* `java.util.function.Predicate<T>`：`boolean test(T t)`;
-* `java.util.function.Supplier<T>`：`T get()`；
-* `java.util.function.Function<T, R>`：`R apply(T t)`；
-
-Extension by zero for specifical usage.
-
-* `io.vertx.up.func.Actuator`：`void execute()`；
-* `io.vertx.up.func.JvmSupplier<T>`：`T get() throws Exception`；
-* `io.vertx.up.func.JvmActuator`：`void execute() throws Exception`；
-* `io.vertx.up.func.ZeroActuator`：`void execute() throws ZeroException`；
-* `io.vertx.up.func.ZeroSupplier<T>`：`T get() throws ZeroException`；
-* `io.vertx.up.func.ZeroBiConsumer<T,R>`: `void accept(T input, R second) throws ZeroException`
-
-In Zero system, there defined a supper static class for function abstract to simply the coding, this class is `io.vertx.up.func.Fn`.
-
-## 5. Logging in Zero
+## 4. Logging in Zero
 
 You also could use following function in your coding to get Logger component.
 
@@ -141,7 +120,7 @@ public final class Statute {
 }
 ```
  
-## 6. Dependency Library
+## 5. Dependency Library
 
 *Lombok is standalone library, you can ignore this library in your project and write pojo with pure java. But we recommend you to use this library to simplify the POJO writting.*
 
@@ -149,6 +128,7 @@ public final class Statute {
 	* core
 	* web
 	* config
+	* grpc
 	* config-yml
 	* unit,
 	* zookeeper

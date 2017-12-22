@@ -33,7 +33,7 @@
         <module>up-metis</module>
     </modules>
     <artifactId>vertx-zeus</artifactId>
-    <name>vertx-zeus: Zero Service Mesh</name>
+    <name>( Zero Mesh Example ) Zeus Framework</name>
     <dependencies>
         <!-- Rx -->
         <dependency>

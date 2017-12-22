@@ -1,9 +1,0 @@
-zero:
-  lime: db, mongo, redis, ribbit, mq, etcd
-  vertx:
-    clustered:
-      enabled: false
-      manager:
-
-    instance:
-    - name: vx-test-tlk

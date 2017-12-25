@@ -21,6 +21,7 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class EtcdData {
     private static final Annal LOGGER = Annal.get(EtcdData.class);
@@ -30,6 +31,8 @@ public class EtcdData {
     private static final String KEY = "etcd";
     private static final String PORT = "port";
     private static final String HOST = "host";
+    private static final String TIMEOUT = "timeout";
+    private static final String NODES = "nodes";
     /**
      * Etcd Client
      */
@@ -37,6 +40,7 @@ public class EtcdData {
     private final transient EtcdClient client;
     private final transient Class<?> clazz;
     private final transient Annal logger;
+    private transient long timeout = -1;
 
     public static EtcdData create(final Class<?> clazz) {
         return Fn.get(null, () -> new EtcdData(clazz), clazz);
@@ -49,7 +53,16 @@ public class EtcdData {
         final Node<JsonObject> node = Instance.singleton(ZeroUniform.class);
         final JsonObject config = node.read();
         if (config.containsKey(KEY)) {
-            this.config.addAll(config.getJsonArray(KEY));
+            final JsonObject root = config.getJsonObject(KEY);
+            if (root.containsKey(TIMEOUT)) {
+                this.timeout = root.getLong(TIMEOUT);
+                LOGGER.info("[ ZERO ] Etcd Client timeout = {0}s", this.timeout);
+            }
+            // Nodes
+            if (root.containsKey(NODES)) {
+                this.config.addAll(root.getJsonArray(NODES));
+            }
+
         }
         Fn.flingUp(this.config.isEmpty(), this.logger,
                 EtcdConfigEmptyException.class, this.clazz);
@@ -72,6 +85,10 @@ public class EtcdData {
     public String read(final String path) {
         return Fn.getJvm(null, () -> {
             final EtcdKeyGetRequest request = this.client.get(path);
+            /** Timeout **/
+            if (-1 != this.timeout) {
+                request.timeout(this.timeout, TimeUnit.SECONDS);
+            }
             final EtcdResponsePromise<EtcdKeysResponse> promise = request.send();
             final EtcdKeysResponse response = promise.get();
             final EtcdKeysResponse.EtcdNode node = response.getNode();
@@ -88,6 +105,10 @@ public class EtcdData {
                             data::toString));
             if (Values.ZERO != ttl) {
                 request.ttl(ttl);
+            }
+            /** Timeout **/
+            if (-1 != this.timeout) {
+                request.timeout(this.timeout, TimeUnit.SECONDS);
             }
             final EtcdResponsePromise<EtcdKeysResponse> promise = request.send();
             final EtcdKeysResponse response = promise.get();

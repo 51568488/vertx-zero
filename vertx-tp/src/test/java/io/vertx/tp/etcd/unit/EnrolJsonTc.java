@@ -9,8 +9,15 @@ import org.junit.Test;
 public class EnrolJsonTc extends TestBase {
 
     @Test
-    public void testEnrol() {
+    public void testWrite() {
         final Enrol<JsonObject> enrol = Instance.singleton(JObjectEnrol.class);
         enrol.write("/zero/ipc/192.168.0.100:8080/", getJson("Store.json"));
+    }
+
+    @Test
+    public void testRead() {
+        final Enrol<JsonObject> enrol = Instance.singleton(JObjectEnrol.class);
+        final JsonObject data = enrol.read("/zero/ipc/192.168.0.100:8080/");
+        System.out.println(data);
     }
 }

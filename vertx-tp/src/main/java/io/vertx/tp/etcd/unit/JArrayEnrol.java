@@ -1,20 +1,21 @@
 package io.vertx.tp.etcd.unit;
 
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.tp.etcd.Enrol;
 import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 
-public class JObjectEnrol implements Enrol<JsonObject> {
+public class JArrayEnrol implements Enrol<JsonArray> {
 
-    private static final Annal LOGGER = Annal.get(JObjectEnrol.class);
+    private static final Annal LOGGER = Annal.get(JArrayEnrol.class);
 
     private transient final EtcdData etcd = EtcdData.create(getClass());
 
     @Override
     public JsonObject write(final String path,
-                            final JsonObject entity) {
+                            final JsonArray entity) {
         final JsonObject data = this.etcd.write(path, entity, 0);
         return Fn.get(() -> {
             LOGGER.info(Info.ETCD_WRITE, data, path);
@@ -23,10 +24,10 @@ public class JObjectEnrol implements Enrol<JsonObject> {
     }
 
     @Override
-    public JsonObject read(final String path) {
+    public JsonArray read(final String path) {
         return Fn.get(() -> {
             final String content = this.etcd.read(path);
-            final JsonObject data = new JsonObject(content);
+            final JsonArray data = new JsonArray(content);
             LOGGER.info(Info.ETCD_READ, data, path);
             return data;
         }, path);

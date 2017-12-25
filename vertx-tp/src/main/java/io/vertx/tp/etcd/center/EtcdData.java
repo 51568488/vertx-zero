@@ -5,11 +5,17 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.Jackson;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.EtcdConfigEmptyException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 import mousio.etcd4j.EtcdClient;
+import mousio.etcd4j.promises.EtcdResponsePromise;
+import mousio.etcd4j.requests.EtcdKeyGetRequest;
+import mousio.etcd4j.requests.EtcdKeyPutRequest;
+import mousio.etcd4j.responses.EtcdKeysResponse;
 
 import java.net.URI;
 import java.util.HashSet;
@@ -17,7 +23,6 @@ import java.util.Objects;
 import java.util.Set;
 
 public class EtcdData {
-
     private static final Annal LOGGER = Annal.get(EtcdData.class);
     /**
      * Config data
@@ -62,5 +67,31 @@ public class EtcdData {
 
     public EtcdClient getClient() {
         return this.client;
+    }
+
+    public String read(final String path) {
+        return Fn.getJvm(null, () -> {
+            final EtcdKeyGetRequest request = this.client.get(path);
+            final EtcdResponsePromise<EtcdKeysResponse> promise = request.send();
+            final EtcdKeysResponse response = promise.get();
+            final EtcdKeysResponse.EtcdNode node = response.getNode();
+            return node.getValue();
+        }, path);
+    }
+
+    public <T> JsonObject write(final String path, final T data, final int ttl) {
+        return Fn.getJvm(null, () -> {
+            final EtcdKeyPutRequest request = this.client.put(path,
+                    Fn.getSemi(data instanceof JsonObject || data instanceof JsonArray,
+                            LOGGER,
+                            () -> Instance.invoke(data, "encode"),
+                            data::toString));
+            if (Values.ZERO != ttl) {
+                request.ttl(ttl);
+            }
+            final EtcdResponsePromise<EtcdKeysResponse> promise = request.send();
+            final EtcdKeysResponse response = promise.get();
+            return Jackson.serializeJson(response.getNode());
+        }, path, data);
     }
 }

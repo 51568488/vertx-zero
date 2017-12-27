@@ -13,6 +13,7 @@ import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 import mousio.etcd4j.EtcdClient;
 import mousio.etcd4j.promises.EtcdResponsePromise;
+import mousio.etcd4j.requests.EtcdKeyDeleteRequest;
 import mousio.etcd4j.requests.EtcdKeyGetRequest;
 import mousio.etcd4j.requests.EtcdKeyPutRequest;
 import mousio.etcd4j.responses.EtcdKeysResponse;
@@ -113,6 +114,15 @@ public class EtcdData {
             final EtcdKeysResponse response = promise.get();
             final EtcdKeysResponse.EtcdNode node = response.getNode();
             return node.getValue();
+        }, path);
+    }
+
+    public boolean delete(final String path) {
+        return Fn.getJvm(Boolean.FALSE, () -> {
+            final EtcdKeyDeleteRequest request = this.client.delete(path);
+            final EtcdResponsePromise<EtcdKeysResponse> promise = request.send();
+            final EtcdKeysResponse response = promise.get();
+            return null != response.getNode();
         }, path);
     }
 

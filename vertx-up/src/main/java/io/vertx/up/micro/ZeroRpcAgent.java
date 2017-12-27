@@ -8,11 +8,13 @@ import io.vertx.core.net.JksOptions;
 import io.vertx.grpc.VertxServer;
 import io.vertx.grpc.VertxServerBuilder;
 import io.vertx.up.annotations.Agent;
+import io.vertx.up.eon.em.Etat;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.exception.RpcSslAlpnException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.web.ZeroGrid;
+import io.vertx.up.web.center.ZeroRegistry;
 import io.vertx.zero.eon.Values;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,6 +42,18 @@ public class ZeroRpcAgent extends AbstractVerticle {
             });
         }
     };
+
+    private static final ConcurrentMap<Integer, AtomicInteger>
+            STOP_LOGS = new ConcurrentHashMap<Integer, AtomicInteger>() {
+        {
+            SERVERS.forEach((port, option) -> {
+                put(port, new AtomicInteger(0));
+            });
+        }
+    };
+
+    private final transient ZeroRegistry registry
+            = ZeroRegistry.create(getClass());
 
     @Override
     public void start() {
@@ -81,6 +95,19 @@ public class ZeroRpcAgent extends AbstractVerticle {
         });
     }
 
+    @Override
+    public void stop() {
+        Fn.itMap(SERVERS, (port, config) -> {
+            final AtomicInteger out = STOP_LOGS.get(port);
+            if (Values.ONE == out.getAndIncrement()) {
+                // Status registry
+                this.registry.registryStatus(config, Etat.STOPPED);
+                // Data registry
+                this.registry.unregistryData(config);
+            }
+        });
+    }
+
     /**
      * Registry the data into etcd
      *
@@ -91,9 +118,15 @@ public class ZeroRpcAgent extends AbstractVerticle {
                                 final ServidorOptions options) {
         final Integer port = options.getPort();
         final AtomicInteger out = LOGS.get(port);
-        if (Values.ZERO == out.getAndIncrement()) {
+        if (Values.ONE == out.getAndIncrement()) {
             if (handler.succeeded()) {
                 LOGGER.info(Info.RPC_LISTEN, options.getHost(), String.valueOf(options.getPort()));
+                // Started to write data in etcd center.
+                LOGGER.info(Info.ETCD_SUCCESS, this.registry.getConfig());
+                // Status registry
+                this.registry.registryStatus(options, Etat.RUNNING);
+                // Data registry
+                this.registry.registryData(options);
             } else {
                 LOGGER.info(Info.RPC_FAILURE, null == handler.cause() ? "None" : handler.cause().getMessage());
             }

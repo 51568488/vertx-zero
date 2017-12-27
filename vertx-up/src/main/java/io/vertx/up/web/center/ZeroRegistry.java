@@ -6,6 +6,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.Net;
 import io.vertx.zero.eon.Values;
 
 import java.text.MessageFormat;
@@ -24,7 +25,6 @@ public class ZeroRegistry {
 
     private static final String PATH_DISCOVERY = "/zero/ipc/services/{0}/{1}/{2}";
 
-    private final transient Class<?> useCls;
     private final transient Annal logger;
     private final transient EtcdData etcd;
 
@@ -33,7 +33,6 @@ public class ZeroRegistry {
     }
 
     private ZeroRegistry(final Class<?> useCls) {
-        this.useCls = useCls;
         this.etcd = EtcdData.create(useCls);
         this.logger = Annal.get(useCls);
     }
@@ -56,7 +55,11 @@ public class ZeroRegistry {
 
     public void registryData(final ServidorOptions options) {
         final String path = pathData(options);
-        final JsonObject data = options.getOptions();
+        final JsonObject data = new JsonObject();
+        data.put("name", options.getName());
+        // Get ip v4 address from host name.
+        data.put("host", Net.getIPv4());
+        data.put("port", options.getPort());
         this.logger.info(Info.ETCD_DATA, options.getName(), data, path);
         this.etcd.write(path, data, Values.ZERO);
     }

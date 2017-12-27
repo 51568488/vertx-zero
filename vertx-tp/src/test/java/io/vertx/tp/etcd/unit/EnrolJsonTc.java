@@ -23,6 +23,6 @@ public class EnrolJsonTc extends TestBase {
     @Test
     public void testDelete() {
         final EtcdData etcdData = EtcdData.create(getClass());
-        etcdData.delete("/zero/ipc/192.168.0.100/8080/");
+        etcdData.delete("zero/ipc/services/ipc-cronus/0.0.0.0/6884");
     }
 }

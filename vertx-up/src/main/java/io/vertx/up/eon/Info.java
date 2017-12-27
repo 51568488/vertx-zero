@@ -5,6 +5,10 @@ public interface Info {
             "{1} instances successfully. id = {2}.";
     String VTC_FAIL = "[ ZERO ] ( {3} ) The verticle {0} has been deployed " +
             "{1} instances failed. id = {2}, cause = {3}.";
+
+    String VTC_STOPPED = "[ ZERO ] ( {2} ) The verticle {0} has been undeployed " +
+            " successfully, id = {1}.";
+
     String AGENT_DEFINED = "[ ZERO ] User defined agent {0} of type = {1}, " +
             "the default will be overwritten.";
 

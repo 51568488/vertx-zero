@@ -48,14 +48,27 @@ public class AgentScatter implements Scatter<Vertx> {
             Fn.flingUp(!EtcdData.enabled(),
                     LOGGER, RpcPreparingException.class, getClass());
         }
+        final ConcurrentMap<Class<?>, DeploymentOptions> options =
+                new ConcurrentHashMap<>();
         Fn.itMap(agents, (type, clazz) -> {
             // Agent for non-rx ( Reactive Java 2 will be another mode )
             if (type != ServerType.RX) {
                 // 3.1 Agent deployment options
                 final DeploymentOptions option = extractor.extract(clazz);
+                options.put(clazz, option);
                 // 3.2 Agent deployment
                 Verticles.deploy(vertx, clazz, option, LOGGER);
             }
         });
+        // Runtime hooker
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Fn.itMap(agents, (type, clazz) -> {
+                if (type != ServerType.RX) {
+                    // 4. Undeploy Agent.
+                    final DeploymentOptions opt = options.get(clazz);
+                    Verticles.undeploy(vertx, clazz, opt, LOGGER);
+                }
+            });
+        }));
     }
 }

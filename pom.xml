@@ -81,6 +81,7 @@
         <cglib.version>3.2.5</cglib.version>
         <ignite.version>2.3.0</ignite.version>
         <etcd.version>2.14.0</etcd.version>
+        <mongodb.async.version>3.6.1</mongodb.async.version>
         <!-- Vert.x Addition -->
         <protobuf.version>3.5.1</protobuf.version>
         <vertx.grpc.version>1.6.1</vertx.grpc.version>
@@ -242,12 +243,6 @@
                 <groupId>com.hazelcast</groupId>
                 <artifactId>hazelcast</artifactId>
                 <version>${hazelcast.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/io.netty/netty-transport -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-transport-native-kqueue</artifactId>
-                <version>${netty.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/io.netty/netty-tcnative-boringssl-static -->
             <dependency>
@@ -491,6 +486,12 @@
                 <groupId>org.mousio</groupId>
                 <artifactId>etcd4j</artifactId>
                 <version>${etcd.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-async -->
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongodb-driver-async</artifactId>
+                <version>${mongodb.async.version}</version>
             </dependency>
             <!-- Netty -->
             <dependency>

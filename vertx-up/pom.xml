@@ -33,6 +33,10 @@
                     <groupId>io.vertx</groupId>
                     <artifactId>vertx-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.mongodb</groupId>
+                    <artifactId>mongodb-driver-async</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <!-- MySql Client -->

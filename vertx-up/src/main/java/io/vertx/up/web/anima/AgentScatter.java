@@ -2,8 +2,10 @@ package io.vertx.up.web.anima;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
+import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.Motor;
 import io.vertx.up.eon.em.ServerType;
+import io.vertx.up.exception.RpcPreparingException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ZeroHttpAgent;
@@ -41,14 +43,32 @@ public class AgentScatter implements Scatter<Vertx> {
                 = Motor.agents(ServerType.HTTP, DEFAULT_AGENTS, INTERNALS);
         final Extractor<DeploymentOptions> extractor =
                 Instance.instance(AgentExtractor.class);
+        if (agents.containsKey(ServerType.IPC)) {
+            // 2. Check etcd server status
+            Fn.flingUp(!EtcdData.enabled(),
+                    LOGGER, RpcPreparingException.class, getClass());
+        }
+        final ConcurrentMap<Class<?>, DeploymentOptions> options =
+                new ConcurrentHashMap<>();
         Fn.itMap(agents, (type, clazz) -> {
             // Agent for non-rx ( Reactive Java 2 will be another mode )
             if (type != ServerType.RX) {
-                // 2.1 Agent deployment options
+                // 3.1 Agent deployment options
                 final DeploymentOptions option = extractor.extract(clazz);
-                // 2.2 Agent deployment
+                options.put(clazz, option);
+                // 3.2 Agent deployment
                 Verticles.deploy(vertx, clazz, option, LOGGER);
             }
         });
+        // Runtime hooker
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Fn.itMap(agents, (type, clazz) -> {
+                if (type != ServerType.RX) {
+                    // 4. Undeploy Agent.
+                    final DeploymentOptions opt = options.get(clazz);
+                    Verticles.undeploy(vertx, clazz, opt, LOGGER);
+                }
+            });
+        }));
     }
 }

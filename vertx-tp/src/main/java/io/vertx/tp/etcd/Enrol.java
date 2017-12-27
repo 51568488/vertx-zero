@@ -1,5 +1,7 @@
 package io.vertx.tp.etcd;
 
+import io.vertx.core.json.JsonObject;
+
 /**
  * Register Center to connect to etcd
  */
@@ -12,7 +14,7 @@ public interface Enrol<T> {
      * @param entity
      * @return
      */
-    boolean write(final String path, final T entity);
+    JsonObject write(final String path, final T entity);
 
     /**
      * Read data from path;

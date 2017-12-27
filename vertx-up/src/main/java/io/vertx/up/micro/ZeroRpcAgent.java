@@ -13,6 +13,7 @@ import io.vertx.up.exception.RpcSslAlpnException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.web.ZeroGrid;
+import io.vertx.up.web.ZeroRegistry;
 import io.vertx.zero.eon.Values;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,6 +41,9 @@ public class ZeroRpcAgent extends AbstractVerticle {
             });
         }
     };
+
+    private final transient ZeroRegistry registry
+            = ZeroRegistry.create(getClass());
 
     @Override
     public void start() {
@@ -91,9 +95,10 @@ public class ZeroRpcAgent extends AbstractVerticle {
                                 final ServidorOptions options) {
         final Integer port = options.getPort();
         final AtomicInteger out = LOGS.get(port);
-        if (Values.ZERO == out.getAndIncrement()) {
+        if (Values.ONE == out.getAndIncrement()) {
             if (handler.succeeded()) {
                 LOGGER.info(Info.RPC_LISTEN, options.getHost(), String.valueOf(options.getPort()));
+                LOGGER.info(Info.ETCD_SUCCESS, this.registry.getConfig());
             } else {
                 LOGGER.info(Info.RPC_FAILURE, null == handler.cause() ? "None" : handler.cause().getMessage());
             }

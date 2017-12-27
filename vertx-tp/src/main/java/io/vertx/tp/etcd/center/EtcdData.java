@@ -21,10 +21,15 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 public class EtcdData {
     private static final Annal LOGGER = Annal.get(EtcdData.class);
+    private static final Node<JsonObject> NODE = Instance.singleton(ZeroUniform.class);
+    private static final ConcurrentMap<Class<?>, EtcdData> POOL
+            = new ConcurrentHashMap<>();
     /**
      * Config data
      */
@@ -43,26 +48,37 @@ public class EtcdData {
     private transient long timeout = -1;
 
     public static EtcdData create(final Class<?> clazz) {
-        return Fn.get(null, () -> new EtcdData(clazz), clazz);
+        return Fn.pool(POOL, clazz, () ->
+                Fn.get(null, () -> new EtcdData(clazz), clazz));
+    }
+
+
+    /**
+     * Whether Etcd Enabled.
+     *
+     * @return
+     */
+    public static boolean enabled() {
+        final JsonObject config = NODE.read();
+        return null != config && config.containsKey("etcd");
     }
 
     private EtcdData(final Class<?> clazz) {
         this.clazz = clazz;
         this.logger = Annal.get(clazz);
         // Read configuration
-        final Node<JsonObject> node = Instance.singleton(ZeroUniform.class);
-        final JsonObject config = node.read();
+        final JsonObject config = NODE.read();
         if (config.containsKey(KEY)) {
             final JsonObject root = config.getJsonObject(KEY);
             if (root.containsKey(TIMEOUT)) {
                 this.timeout = root.getLong(TIMEOUT);
-                LOGGER.info("[ ZERO ] Etcd Client timeout = {0}s", this.timeout);
             }
             // Nodes
             if (root.containsKey(NODES)) {
                 this.config.addAll(root.getJsonArray(NODES));
             }
-
+            LOGGER.info("[ ZERO ] Etcd Client timeout = {0}s with nodes = {1}",
+                    this.timeout, this.config.size());
         }
         Fn.flingUp(this.config.isEmpty(), this.logger,
                 EtcdConfigEmptyException.class, this.clazz);
@@ -80,6 +96,10 @@ public class EtcdData {
 
     public EtcdClient getClient() {
         return this.client;
+    }
+
+    public JsonArray getConfig() {
+        return this.config;
     }
 
     public String read(final String path) {

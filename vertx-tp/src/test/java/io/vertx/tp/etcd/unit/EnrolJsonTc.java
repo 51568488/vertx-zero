@@ -5,7 +5,6 @@ import io.vertx.quiz.TestBase;
 import io.vertx.tp.etcd.Enrol;
 import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.tool.mirror.Instance;
-import org.junit.Test;
 
 public class EnrolJsonTc extends TestBase {
 
@@ -20,7 +19,6 @@ public class EnrolJsonTc extends TestBase {
         System.out.println(data);
     }
 
-    @Test
     public void testDelete() {
         final EtcdData etcdData = EtcdData.create(getClass());
         etcdData.delete("zero/ipc/services/ipc-cronus/0.0.0.0/6884");

@@ -22,9 +22,9 @@ import java.util.concurrent.ConcurrentMap;
  * @author lang
  * Http options for dynamic extension.
  */
-public class DynamicVistor extends HttpServerVisitor {
+public class DynamicVisitor extends HttpServerVisitor {
 
-    private static final Annal LOGGER = Annal.get(DynamicVistor.class);
+    private static final Annal LOGGER = Annal.get(DynamicVisitor.class);
 
     private transient final Node<JsonObject> NODE = Node.infix(Plugins.SERVER);
 
@@ -42,20 +42,18 @@ public class DynamicVistor extends HttpServerVisitor {
                 ServerConfigException.class,
                 getClass(), null == data ? null : data.encode());
         // 3. Convert input parameters.
-        final ServerType type = ServerType.valueOf(key[Values.IDX]);
-        this.type = type;
-        return visit(data.getJsonArray(KEY), type);
+        this.type = ServerType.valueOf(key[Values.IDX]);
+        return visit(data.getJsonArray(KEY));
     }
 
-    private ConcurrentMap<Integer, HttpServerOptions> visit(final JsonArray serverData,
-                                                            final ServerType type)
+    private ConcurrentMap<Integer, HttpServerOptions> visit(final JsonArray serverData)
             throws ZeroException {
-        getLogger().info(Info.INF_B_VERIFY, KEY, type, serverData.encode());
+        getLogger().info(Info.INF_B_VERIFY, KEY, this.type, serverData.encode());
         Ruler.verify(KEY, serverData);
         final ConcurrentMap<Integer, HttpServerOptions> map =
                 new ConcurrentHashMap<>();
         this.extract(serverData, map);
-        getLogger().info(Info.INF_A_VERIFY, KEY, type, map.keySet());
+        getLogger().info(Info.INF_A_VERIFY, KEY, this.type, map.keySet());
         return map;
     }
 

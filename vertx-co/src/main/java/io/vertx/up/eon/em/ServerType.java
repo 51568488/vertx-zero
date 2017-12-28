@@ -8,7 +8,9 @@ public enum ServerType {
     // Rx Server
     RX("rx"),
     // Rpc Server
-    IPC("ipc");
+    IPC("ipc"),
+    // Api Gateway
+    API("api");
 
     private transient final String literal;
 

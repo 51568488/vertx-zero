@@ -23,4 +23,9 @@ public class EnrolJsonTc extends TestBase {
         final EtcdData etcdData = EtcdData.create(getClass());
         etcdData.delete("zero/ipc/services/ipc-cronus/0.0.0.0/6884");
     }
+
+    public void testReadDir() {
+        final EtcdData etcdData = EtcdData.create(getClass());
+        etcdData.read("zero/endpoint/services");
+    }
 }

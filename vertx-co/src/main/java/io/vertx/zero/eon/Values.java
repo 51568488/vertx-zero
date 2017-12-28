@@ -23,6 +23,8 @@ public interface Values {
     /** **/
     int ONE = 1;
     /** **/
+    int TWO = 2;
+    /** **/
     String TRUE = "true";
     /** **/
     String FALSE = "false";

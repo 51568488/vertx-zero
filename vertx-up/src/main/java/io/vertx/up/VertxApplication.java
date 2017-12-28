@@ -25,7 +25,7 @@ public class VertxApplication {
 
     private transient final Class<?> clazz;
 
-    private ConcurrentMap<String, Annotation> annotationMap = new ConcurrentHashMap<>();
+    private transient ConcurrentMap<String, Annotation> annotationMap = new ConcurrentHashMap<>();
 
     private VertxApplication(final Class<?> clazz) {
         // Must not null

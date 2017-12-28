@@ -13,12 +13,9 @@ import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.exception.RpcSslAlpnException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.web.ZeroGrid;
 import io.vertx.up.web.center.ZeroRegistry;
 import io.vertx.zero.eon.Values;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -31,26 +28,6 @@ public class ZeroRpcAgent extends AbstractVerticle {
     private static final Annal LOGGER = Annal.get(ZeroRpcAgent.class);
     private static final String KEY_JKS = "jks";
     private static final String KEY_PWD = "password";
-    /** **/
-    private static final ConcurrentMap<Integer, ServidorOptions> SERVERS =
-            ZeroGrid.getRpcOptions();
-    private static final ConcurrentMap<Integer, AtomicInteger>
-            LOGS = new ConcurrentHashMap<Integer, AtomicInteger>() {
-        {
-            SERVERS.forEach((port, option) -> {
-                put(port, new AtomicInteger(0));
-            });
-        }
-    };
-
-    private static final ConcurrentMap<Integer, AtomicInteger>
-            STOP_LOGS = new ConcurrentHashMap<Integer, AtomicInteger>() {
-        {
-            SERVERS.forEach((port, option) -> {
-                put(port, new AtomicInteger(0));
-            });
-        }
-    };
 
     private final transient ZeroRegistry registry
             = ZeroRegistry.create(getClass());
@@ -58,7 +35,7 @@ public class ZeroRpcAgent extends AbstractVerticle {
     @Override
     public void start() {
         /** 1. Iterate all the configuration **/
-        Fn.itMap(SERVERS, (port, config) -> {
+        Fn.itMap(ZeroAtomic.RPC_OPTS, (port, config) -> {
             /** 2.Rcp server builder initialized **/
             final VertxServerBuilder builder = VertxServerBuilder
                     .forAddress(this.vertx, config.getHost(), config.getPort());
@@ -85,7 +62,7 @@ public class ZeroRpcAgent extends AbstractVerticle {
              * 5.Service added.
              */
             {
-
+                // TODO: Wait for service implementation of Rpc Backend.
             }
             /**
              * 6.Server added.
@@ -97,13 +74,11 @@ public class ZeroRpcAgent extends AbstractVerticle {
 
     @Override
     public void stop() {
-        Fn.itMap(SERVERS, (port, config) -> {
-            final AtomicInteger out = STOP_LOGS.get(port);
+        Fn.itMap(ZeroAtomic.RPC_OPTS, (port, config) -> {
+            final AtomicInteger out = ZeroAtomic.RPC_STOP_LOGS.get(port);
             if (Values.ONE == out.getAndIncrement()) {
                 // Status registry
-                this.registry.registryStatus(config, Etat.STOPPED);
-                // Data registry
-                this.registry.unregistryData(config);
+                this.registry.registryRpc(config, Etat.STOPPED);
             }
         });
     }
@@ -117,16 +92,14 @@ public class ZeroRpcAgent extends AbstractVerticle {
     private void registryServer(final AsyncResult<Void> handler,
                                 final ServidorOptions options) {
         final Integer port = options.getPort();
-        final AtomicInteger out = LOGS.get(port);
+        final AtomicInteger out = ZeroAtomic.RPC_START_LOGS.get(port);
         if (Values.ONE == out.getAndIncrement()) {
             if (handler.succeeded()) {
                 LOGGER.info(Info.RPC_LISTEN, options.getHost(), String.valueOf(options.getPort()));
                 // Started to write data in etcd center.
                 LOGGER.info(Info.ETCD_SUCCESS, this.registry.getConfig());
                 // Status registry
-                this.registry.registryStatus(options, Etat.RUNNING);
-                // Data registry
-                this.registry.registryData(options);
+                this.registry.registryRpc(options, Etat.RUNNING);
             } else {
                 LOGGER.info(Info.RPC_FAILURE, null == handler.cause() ? "None" : handler.cause().getMessage());
             }

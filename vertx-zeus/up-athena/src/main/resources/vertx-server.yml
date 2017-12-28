@@ -1,0 +1,6 @@
+server:
+- name: gateway-cronus
+  type: api
+  config:
+    port: 6099
+    host: 0.0.0.0

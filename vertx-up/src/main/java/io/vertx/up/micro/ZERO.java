@@ -25,6 +25,10 @@ interface Info {
             "has been registeried in Zero system.";
 
     String REG_FAILURE = "[ ZERO ] ( Discovery ) Action: {1}, Service Registration has met error: {0}.";
+
+    String API_GATEWAY = "[ ZERO ] ( Api Gateway ) {0} (id = {1}) has deployed on {2}.";
+
+    String API_LISTEN = "[ ZERO ] ( Api Gateway ) {0} has been started successfully. Endpoint: {1}.";
 }
 
 interface Pool {

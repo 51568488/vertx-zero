@@ -1,4 +1,4 @@
-package io.vertx.zero.marshal.micro;
+package io.vertx.zero.marshal.equip;
 
 import io.vertx.core.ServidorOptions;
 import io.vertx.core.json.JsonArray;
@@ -26,7 +26,7 @@ public class RpcServerVisitor implements ServerVisitor<ServidorOptions> {
 
     private static final Annal LOGGER = Annal.get(RpcServerVisitor.class);
 
-    private transient final Node<JsonObject> NODE = Node.infix(Plugins.SERVER);
+    private transient final Node<JsonObject> node = Node.infix(Plugins.SERVER);
     private transient final Transformer<ServidorOptions>
             transformer = Instance.singleton(RpcServerStrada.class);
 
@@ -36,7 +36,7 @@ public class RpcServerVisitor implements ServerVisitor<ServidorOptions> {
         // 1. Must be the first line, fixed position.
         Ensurer.eqLength(getClass(), 0, (Object[]) key);
         // 2. Visit the node for server, http
-        final JsonObject data = this.NODE.read();
+        final JsonObject data = this.node.read();
 
         Fn.flingZero(null == data || !data.containsKey(KEY), LOGGER,
                 ServerConfigException.class,

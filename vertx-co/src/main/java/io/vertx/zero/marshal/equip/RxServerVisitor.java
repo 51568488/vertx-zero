@@ -1,4 +1,4 @@
-package io.vertx.zero.marshal.micro;
+package io.vertx.zero.marshal.equip;
 
 import io.vertx.up.eon.em.ServerType;
 

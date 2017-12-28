@@ -6,7 +6,6 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.quiz.ZeroBase;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.marshal.Transformer;
-import io.vertx.zero.marshal.micro.HttpServerStrada;
 import org.junit.Assert;
 import org.junit.Test;
 

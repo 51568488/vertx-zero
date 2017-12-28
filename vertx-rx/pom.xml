@@ -24,6 +24,14 @@
                     <groupId>io.vertx</groupId>
                     <artifactId>vertx-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.reactivestreams</groupId>
+                    <artifactId>reactive-streams</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.reactivex.rxjava2</groupId>
+                    <artifactId>rxjava</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
     </dependencies>

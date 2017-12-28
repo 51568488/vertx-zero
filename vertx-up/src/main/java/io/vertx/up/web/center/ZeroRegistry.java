@@ -53,6 +53,7 @@ public class ZeroRegistry {
         this.etcd.write(path, etat, Values.ZERO);
     }
 
+    
     public void registryData(final ServidorOptions options) {
         final String path = pathData(options);
         final JsonObject data = new JsonObject();

@@ -15,12 +15,5 @@ public interface Orgin {
      *
      * @return
      */
-    Set<JsonObject> getBackEnd();
-
-    /**
-     * Get frontend
-     *
-     * @return
-     */
-    Set<JsonObject> getFrontEnd();
+    Set<JsonObject> getRegistryData();
 }

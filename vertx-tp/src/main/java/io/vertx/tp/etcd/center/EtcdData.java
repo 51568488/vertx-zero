@@ -20,6 +20,7 @@ import mousio.etcd4j.responses.EtcdKeysResponse;
 
 import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -104,7 +105,22 @@ public class EtcdData {
         return this.config;
     }
 
-    public String read(final String path) {
+    public ConcurrentMap<String, String> readDir(final String path) {
+        return Fn.getJvm(new ConcurrentHashMap<>(), () -> {
+            final EtcdKeysResponse.EtcdNode node = readNode(path);
+            return Fn.getJvm(new ConcurrentHashMap<>(), () -> {
+                final ConcurrentMap<String, String> result = new ConcurrentHashMap<>();
+                /** Nodes **/
+                final List<EtcdKeysResponse.EtcdNode> nodes = node.getNodes();
+                for (final EtcdKeysResponse.EtcdNode nodeItem : nodes) {
+                    result.put(nodeItem.getKey(), nodeItem.getValue());
+                }
+                return result;
+            }, node);
+        }, path);
+    }
+
+    private EtcdKeysResponse.EtcdNode readNode(final String path) {
         return Fn.getJvm(null, () -> {
             final EtcdKeyGetRequest request = this.client.get(path);
             /** Timeout **/
@@ -113,9 +129,13 @@ public class EtcdData {
             }
             final EtcdResponsePromise<EtcdKeysResponse> promise = request.send();
             final EtcdKeysResponse response = promise.get();
-            final EtcdKeysResponse.EtcdNode node = response.getNode();
-            return node.getValue();
+            return response.getNode();
         }, path);
+    }
+
+    public String read(final String path) {
+        final EtcdKeysResponse.EtcdNode node = readNode(path);
+        return null == node ? null : node.getValue();
     }
 
     public boolean delete(final String path) {

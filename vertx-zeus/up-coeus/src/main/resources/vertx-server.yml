@@ -1,13 +1,13 @@
 server:
-- name: up-cronus
+- name: up-coeus
   type: http
   config:
-    port: 6083
+    port: 6084
     host: 0.0.0.0
-- name: ipc-cronus
+- name: ipc-coeus
   type: ipc
   config:
     jks: "ipc/ssl/rpc-server-keystore.jks"
     password: "wibble"
-    port: 6883
+    port: 6884
     host: 0.0.0.0

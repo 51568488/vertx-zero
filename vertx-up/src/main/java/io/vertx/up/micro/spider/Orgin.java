@@ -1,6 +1,6 @@
 package io.vertx.up.micro.spider;
 
-import io.vertx.core.json.JsonObject;
+import io.vertx.servicediscovery.Record;
 
 import java.util.Set;
 
@@ -15,5 +15,10 @@ public interface Orgin {
      *
      * @return
      */
-    Set<JsonObject> getRegistryData();
+    Set<Record> getRegistryData();
+
+    String HOST = "host";
+    String NAME = "name";
+    String PORT = "port";
+    String ID = "id";
 }

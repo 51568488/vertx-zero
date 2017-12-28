@@ -29,4 +29,41 @@ public class Codec {
             return new String(middleStr);
         }, input);
     }
+
+    /**
+     * SHA-256
+     *
+     * @param input
+     * @return
+     */
+    public static String sha256(final String input) {
+        return sha(input, "SHA-256");
+    }
+
+    /**
+     * SHA-512
+     *
+     * @param input
+     * @return
+     */
+    public static String sha512(final String input) {
+        return sha(input, "SHA-512");
+    }
+
+    private static String sha(final String strText, final String strType) {
+        return Fn.getJvm(() -> {
+            final MessageDigest messageDigest = MessageDigest.getInstance(strType);
+            messageDigest.update(strText.getBytes());
+            final byte[] byteBuffer = messageDigest.digest();
+            final StringBuilder strHexString = new StringBuilder();
+            for (int i = 0; i < byteBuffer.length; i++) {
+                final String hex = Integer.toHexString(0xff & byteBuffer[i]);
+                if (hex.length() == 1) {
+                    strHexString.append('0');
+                }
+                strHexString.append(hex);
+            }
+            return strHexString.toString();
+        }, strText, strType);
+    }
 }

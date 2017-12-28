@@ -60,7 +60,7 @@ public class ZeroRegistry {
                                     final BiFunction<String, String, JsonObject> convert) {
         final String path = MessageFormat.format(PATH_CATALOG, etcdPath.toString().toLowerCase());
         this.logger.info(Info.ETCD_READ, path);
-        final ConcurrentMap<String, String> nodes = this.etcd.readDir(path);
+        final ConcurrentMap<String, String> nodes = this.etcd.readDir(path, true);
         final Set<JsonObject> sets = new HashSet<>();
 
         Observable.fromIterable(nodes.entrySet())

@@ -19,6 +19,12 @@ interface Info {
     String RPC_FAILURE = "[ ZERO ] ( Rpc Server ) Rpc Server met failure: details = {0}.";
 
     String ETCD_SUCCESS = "[ ZERO ] ( Etcd Center ) Zero system detected configuration {0}, start to initialize Etcd Center.";
+
+    String REG_SUCCESS = "[ ZERO ] ( Discovery ) Status: {5}, Action : {6} --> The Service Record " +
+            "( key = {0}, id = {1}, name = {2}, location = {3}, type = {4} )" +
+            "has been registeried in Zero system.";
+
+    String REG_FAILURE = "[ ZERO ] ( Discovery ) Action: {1}, Service Registration has met error: {0}.";
 }
 
 interface Pool {

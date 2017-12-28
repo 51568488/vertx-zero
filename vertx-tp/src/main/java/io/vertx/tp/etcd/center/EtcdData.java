@@ -61,6 +61,7 @@ public class EtcdData {
      */
     public static boolean enabled() {
         final JsonObject config = NODE.read();
+        LOGGER.info(Info.ETCD_ENABLE);
         return null != config && config.containsKey("etcd");
     }
 
@@ -78,7 +79,7 @@ public class EtcdData {
             if (root.containsKey(NODES)) {
                 this.config.addAll(root.getJsonArray(NODES));
             }
-            LOGGER.info("[ ZERO ] Etcd Client timeout = {0}s with nodes = {1}",
+            LOGGER.info(Info.ETCD_TIMEOUT,
                     this.timeout, this.config.size());
         }
         Fn.flingUp(this.config.isEmpty(), this.logger,

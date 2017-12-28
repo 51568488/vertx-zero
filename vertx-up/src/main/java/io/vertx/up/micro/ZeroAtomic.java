@@ -43,6 +43,17 @@ public interface ZeroAtomic {
             });
         }
     };
+    ConcurrentMap<Integer, AtomicInteger>
+            HTTP_STOP_LOGS = new ConcurrentHashMap<Integer, AtomicInteger>() {
+        {
+            HTTP_OPTS.forEach((port, option) -> {
+                put(port, new AtomicInteger(0));
+            });
+        }
+    };
+    /**
+     * Rx constants
+     */
     ConcurrentMap<Integer, HttpServerOptions>
             RX_OPTS = ZeroGrid.getRxOptions();
     ConcurrentMap<Integer, AtomicInteger>

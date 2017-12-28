@@ -78,9 +78,7 @@ public class ZeroRpcAgent extends AbstractVerticle {
             final AtomicInteger out = ZeroAtomic.RPC_STOP_LOGS.get(port);
             if (Values.ONE == out.getAndIncrement()) {
                 // Status registry
-                this.registry.registryStatus(config, Etat.STOPPED);
-                // Data registry
-                this.registry.unregistryData(config);
+                this.registry.registryRpc(config, Etat.STOPPED);
             }
         });
     }
@@ -101,9 +99,7 @@ public class ZeroRpcAgent extends AbstractVerticle {
                 // Started to write data in etcd center.
                 LOGGER.info(Info.ETCD_SUCCESS, this.registry.getConfig());
                 // Status registry
-                this.registry.registryStatus(options, Etat.RUNNING);
-                // Data registry
-                this.registry.registryData(options);
+                this.registry.registryRpc(options, Etat.RUNNING);
             } else {
                 LOGGER.info(Info.RPC_FAILURE, null == handler.cause() ? "None" : handler.cause().getMessage());
             }

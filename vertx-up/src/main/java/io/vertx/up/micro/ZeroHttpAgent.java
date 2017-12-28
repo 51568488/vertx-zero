@@ -7,24 +7,20 @@ import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.em.Etat;
-import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
-import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.up.web.ZeroGrid;
 import io.vertx.up.web.center.ZeroRegistry;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.marshal.micro.NamesVisitor;
-import io.vertx.zero.marshal.micro.ServerVisitor;
 
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -38,19 +34,8 @@ public class ZeroHttpAgent extends AbstractVerticle {
 
     private static final Annal LOGGER = Annal.get(ZeroHttpAgent.class);
 
-    private static final ServerVisitor<String> VISITOR =
-            Instance.singleton(NamesVisitor.class);
-
     private static final ConcurrentMap<Integer, String> SERVICES =
-            new ConcurrentHashMap<>();
-
-    static {
-        Fn.safeZero(() -> {
-            if (SERVICES.isEmpty()) {
-                SERVICES.putAll(VISITOR.visit(ServerType.HTTP.toString()));
-            }
-        }, LOGGER);
-    }
+            ZeroGrid.getServerNames();
 
     private final transient ZeroRegistry registry
             = ZeroRegistry.create(getClass());
@@ -90,10 +75,7 @@ public class ZeroHttpAgent extends AbstractVerticle {
             final AtomicInteger out = ZeroAtomic.HTTP_STOP_LOGS.get(port);
             if (Values.ONE == out.getAndIncrement()) {
                 // Status registry
-                final String name = SERVICES.get(port);
-                if (!StringUtil.isNil(name)) {
-                    this.registry.registryHttp(name, config, Etat.STOPPED);
-                }
+                this.registry.registryHttp(SERVICES.get(port), config, Etat.STOPPED);
             }
         });
     }
@@ -123,10 +105,7 @@ public class ZeroHttpAgent extends AbstractVerticle {
                             options.getHost(), portLiteral);
             LOGGER.info(Info.HTTP_LISTEN, getClass().getSimpleName(), address);
             // 4. Etcd Registry
-            final String name = SERVICES.get(port);
-            if (!StringUtil.isNil(name)) {
-                this.registry.registryHttp(name, options, Etat.RUNNING);
-            }
+            this.registry.registryHttp(SERVICES.get(port), options, Etat.RUNNING);
         }
     }
 }

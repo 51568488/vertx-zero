@@ -4,15 +4,13 @@ import io.vertx.core.ClusterOptions;
 import io.vertx.core.ServidorOptions;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.marshal.equip.NodeVisitor;
 import io.vertx.zero.marshal.equip.VertxVisitor;
-import io.vertx.zero.marshal.micro.HttpServerVisitor;
-import io.vertx.zero.marshal.micro.RpcServerVisitor;
-import io.vertx.zero.marshal.micro.RxServerVisitor;
-import io.vertx.zero.marshal.micro.ServerVisitor;
+import io.vertx.zero.marshal.micro.*;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -26,6 +24,8 @@ public class ZeroGrid {
     private static final ConcurrentMap<String, VertxOptions> VX_OPTS =
             new ConcurrentHashMap<>();
     private static final ConcurrentMap<Integer, HttpServerOptions> SERVER_OPTS =
+            new ConcurrentHashMap<>();
+    private static final ConcurrentMap<Integer, String> SERVER_NAMES =
             new ConcurrentHashMap<>();
     private static final ConcurrentMap<Integer, ServidorOptions> RPC_OPTS =
             new ConcurrentHashMap<>();
@@ -49,6 +49,12 @@ public class ZeroGrid {
                 final ServerVisitor<HttpServerOptions> visitor =
                         Instance.singleton(HttpServerVisitor.class);
                 SERVER_OPTS.putAll(visitor.visit());
+                // Secondary
+                if (SERVER_NAMES.isEmpty()) {
+                    final ServerVisitor<String> VISITOR =
+                            Instance.singleton(NamesVisitor.class);
+                    SERVER_NAMES.putAll(VISITOR.visit(ServerType.HTTP.toString()));
+                }
             }
             // Init for RxServerOptions
             if (RX_OPTS.isEmpty()) {
@@ -73,6 +79,10 @@ public class ZeroGrid {
 
     public static ConcurrentMap<Integer, HttpServerOptions> getServerOptions() {
         return SERVER_OPTS;
+    }
+
+    public static ConcurrentMap<Integer, String> getServerNames() {
+        return SERVER_NAMES;
     }
 
     public static ConcurrentMap<Integer, HttpServerOptions> getRxOptions() {

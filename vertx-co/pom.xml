@@ -54,6 +54,22 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- Micro Service -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-service-discovery</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Circuit Breaker -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-circuit-breaker</artifactId>
+        </dependency>
         <!-- Hazelcast -->
         <dependency>
             <groupId>io.vertx</groupId>

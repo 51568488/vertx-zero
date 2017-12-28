@@ -9,8 +9,8 @@ import io.vertx.up.annotations.Worker;
 import io.vertx.up.concurrent.Runner;
 import io.vertx.up.eon.em.MessageModel;
 import io.vertx.up.log.Annal;
-import io.vertx.up.micro.spider.EndPointOrgin;
-import io.vertx.up.micro.spider.Orgin;
+import io.vertx.up.micro.discovery.EndPointOrgin;
+import io.vertx.up.micro.discovery.Orgin;
 import io.vertx.up.tool.mirror.Instance;
 
 import java.util.HashSet;

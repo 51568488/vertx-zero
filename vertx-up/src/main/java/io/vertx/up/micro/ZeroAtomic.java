@@ -64,4 +64,9 @@ public interface ZeroAtomic {
             });
         }
     };
+    /**
+     * Api Gateay
+     */
+    ConcurrentMap<Integer, HttpServerOptions> API_OPTS =
+            new ConcurrentHashMap<>();
 }

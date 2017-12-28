@@ -1,4 +1,4 @@
-package io.vertx.up.micro.spider;
+package io.vertx.up.micro.discovery;
 
 import io.reactivex.Observable;
 import io.vertx.core.json.JsonObject;

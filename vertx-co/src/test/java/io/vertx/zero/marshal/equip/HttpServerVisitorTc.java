@@ -5,8 +5,6 @@ import io.vertx.quiz.ZeroBase;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.exception.ArgumentException;
 import io.vertx.zero.exception.ZeroException;
-import io.vertx.zero.marshal.micro.HttpServerVisitor;
-import io.vertx.zero.marshal.micro.ServerVisitor;
 import org.junit.Assert;
 import org.junit.Test;
 

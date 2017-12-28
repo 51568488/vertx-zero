@@ -8,9 +8,7 @@ import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
-import io.vertx.zero.marshal.equip.NodeVisitor;
-import io.vertx.zero.marshal.equip.VertxVisitor;
-import io.vertx.zero.marshal.micro.*;
+import io.vertx.zero.marshal.equip.*;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

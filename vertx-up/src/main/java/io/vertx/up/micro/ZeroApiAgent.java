@@ -7,6 +7,7 @@ import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.up.web.center.ZeroRegistry;
 import io.vertx.zero.marshal.micro.DynamicVistor;
 import io.vertx.zero.marshal.micro.ServerVisitor;
 
@@ -20,8 +21,12 @@ public class ZeroApiAgent extends AbstractVerticle {
 
     private static final ServerVisitor<HttpServerOptions> VISITOR =
             Instance.singleton(DynamicVistor.class);
+
     private static final ConcurrentMap<Integer, HttpServerOptions> API_OPTS =
             new ConcurrentHashMap<>();
+
+    private final transient ZeroRegistry registry
+            = ZeroRegistry.create(getClass());
 
     static {
         Fn.safeZero(() -> {
@@ -34,6 +39,5 @@ public class ZeroApiAgent extends AbstractVerticle {
     @Override
     public void start() {
         System.out.println("Api");
-        System.out.println(API_OPTS);
     }
 }

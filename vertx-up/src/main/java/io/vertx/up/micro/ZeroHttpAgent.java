@@ -12,15 +12,12 @@ import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
 import io.vertx.up.tool.mirror.Instance;
-import io.vertx.up.web.ZeroGrid;
 import io.vertx.zero.eon.Values;
 
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -32,19 +29,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ZeroHttpAgent extends AbstractVerticle {
 
     private static final Annal LOGGER = Annal.get(ZeroHttpAgent.class);
-    /**
-     * Extract all http server options.
-     */
-    private static final ConcurrentMap<Integer, HttpServerOptions>
-            SERVERS = ZeroGrid.getServerOptions();
-    private static final ConcurrentMap<Integer, AtomicInteger>
-            LOGS = new ConcurrentHashMap<Integer, AtomicInteger>() {
-        {
-            SERVERS.forEach((port, option) -> {
-                put(port, new AtomicInteger(0));
-            });
-        }
-    };
 
     private transient final String NAME = getClass().getSimpleName();
 
@@ -58,7 +42,7 @@ public class ZeroHttpAgent extends AbstractVerticle {
                 () -> Instance.instance(EventAxis.class));
 
         /** 3.Get the default HttpServer Options **/
-        SERVERS.forEach((port, option) -> {
+        ZeroAtomic.HTTP_OPTS.forEach((port, option) -> {
             /** 3.1.Single server processing **/
             final HttpServer server = this.vertx.createHttpServer(option);
 
@@ -80,7 +64,7 @@ public class ZeroHttpAgent extends AbstractVerticle {
     private void recordServer(final HttpServerOptions options,
                               final Router router) {
         final Integer port = options.getPort();
-        final AtomicInteger out = LOGS.get(port);
+        final AtomicInteger out = ZeroAtomic.HTTP_START_LOGS.get(port);
         if (Values.ZERO == out.getAndIncrement()) {
             // 1. Build logs for current server;
             final String portLiteral = String.valueOf(port);

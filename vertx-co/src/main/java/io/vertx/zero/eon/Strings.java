@@ -20,4 +20,6 @@ public interface Strings {
     String RIGHT_BRACES = "}";
 
     String DOLLER = "$";
+
+    String COLON = ":";
 }

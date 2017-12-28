@@ -86,12 +86,13 @@
         <protobuf.version>3.5.1</protobuf.version>
         <vertx.grpc.version>1.6.1</vertx.grpc.version>
         <grpc.version>1.8.0</grpc.version>
-        <rxjava2.version>2.1.7</rxjava2.version>
+        <rxjava2.version>2.1.8</rxjava2.version>
         <netty.tcnative.version>2.0.7.Final</netty.tcnative.version>
         <netty.version>4.1.19.Final</netty.version>
         <hazelcast.version>3.9.1</hazelcast.version>
         <swagger.version>1.5.0</swagger.version>
         <error.prone.version>2.1.3</error.prone.version>
+        <reactive.streams>1.0.2</reactive.streams>
         <!-- JSR -->
         <jsr311.version>1.1.1</jsr311.version>
         <jsr330.version>1</jsr330.version>
@@ -493,6 +494,12 @@
                 <artifactId>mongodb-driver-async</artifactId>
                 <version>${mongodb.async.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.reactivestreams/reactive-streams -->
+            <dependency>
+                <groupId>org.reactivestreams</groupId>
+                <artifactId>reactive-streams</artifactId>
+                <version>${reactive.streams}</version>
+            </dependency>
             <!-- Netty -->
             <dependency>
                 <groupId>io.netty</groupId>
@@ -547,6 +554,16 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-transport</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport-native-epoll</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport-native-kqueue</artifactId>
                 <version>${netty.version}</version>
             </dependency>
         </dependencies>

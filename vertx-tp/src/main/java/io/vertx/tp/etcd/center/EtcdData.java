@@ -7,6 +7,7 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Jackson;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.EtcdConfigEmptyException;
 import io.vertx.zero.marshal.node.Node;
@@ -20,11 +21,13 @@ import mousio.etcd4j.responses.EtcdKeysResponse;
 
 import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 public class EtcdData {
     private static final Annal LOGGER = Annal.get(EtcdData.class);
@@ -61,6 +64,7 @@ public class EtcdData {
      */
     public static boolean enabled() {
         final JsonObject config = NODE.read();
+        LOGGER.info(Info.ETCD_ENABLE);
         return null != config && config.containsKey("etcd");
     }
 
@@ -78,7 +82,7 @@ public class EtcdData {
             if (root.containsKey(NODES)) {
                 this.config.addAll(root.getJsonArray(NODES));
             }
-            LOGGER.info("[ ZERO ] Etcd Client timeout = {0}s with nodes = {1}",
+            LOGGER.info(Info.ETCD_TIMEOUT,
                     this.timeout, this.config.size());
         }
         Fn.flingUp(this.config.isEmpty(), this.logger,
@@ -103,18 +107,45 @@ public class EtcdData {
         return this.config;
     }
 
-    public String read(final String path) {
+    public ConcurrentMap<String, String> readDir(
+            final String path,
+            final boolean shiftted) {
+        return Fn.getJvm(new ConcurrentHashMap<>(), () -> {
+            final EtcdKeysResponse.EtcdNode node = readNode(path, this.client::getDir);
+            return Fn.getJvm(new ConcurrentHashMap<>(), () -> {
+                final ConcurrentMap<String, String> result = new ConcurrentHashMap<>();
+                /** Nodes **/
+                final List<EtcdKeysResponse.EtcdNode> nodes = node.getNodes();
+                for (final EtcdKeysResponse.EtcdNode nodeItem : nodes) {
+                    String key = nodeItem.getKey();
+                    if (shiftted) {
+                        key = key.substring(key.lastIndexOf(Strings.SLASH) + Values.ONE);
+                    }
+                    result.put(key, nodeItem.getValue());
+                }
+                return result;
+            }, node);
+        }, path);
+    }
+
+    private EtcdKeysResponse.EtcdNode readNode(
+            final String path,
+            final Function<String, EtcdKeyGetRequest> executor) {
         return Fn.getJvm(null, () -> {
-            final EtcdKeyGetRequest request = this.client.get(path);
+            final EtcdKeyGetRequest request = executor.apply(path);
             /** Timeout **/
             if (-1 != this.timeout) {
                 request.timeout(this.timeout, TimeUnit.SECONDS);
             }
             final EtcdResponsePromise<EtcdKeysResponse> promise = request.send();
             final EtcdKeysResponse response = promise.get();
-            final EtcdKeysResponse.EtcdNode node = response.getNode();
-            return node.getValue();
+            return response.getNode();
         }, path);
+    }
+
+    public String read(final String path) {
+        final EtcdKeysResponse.EtcdNode node = readNode(path, this.client::get);
+        return null == node ? null : node.getValue();
     }
 
     public boolean delete(final String path) {

@@ -14,4 +14,8 @@ public interface ServerVisitor<T>
     String YKEY_TYPE = "type";
 
     String YKEY_CONFIG = "config";
+
+    String YKEY_NAME = "name";
+
+    String KEY = "server";
 }

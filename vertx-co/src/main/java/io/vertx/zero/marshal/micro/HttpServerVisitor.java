@@ -25,10 +25,8 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
 
-    private static final String KEY = "server";
-
     private transient final Node<JsonObject> NODE = Node.infix(Plugins.SERVER);
-    private transient final Transformer<HttpServerOptions>
+    protected transient final Transformer<HttpServerOptions>
             transformer = Instance.singleton(HttpServerStrada.class);
 
     /**
@@ -56,6 +54,12 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
         Ruler.verify(KEY, serverData);
         final ConcurrentMap<Integer, HttpServerOptions> map =
                 new ConcurrentHashMap<>();
+        this.extract(serverData, map);
+        getLogger().info(Info.INF_A_VERIFY, KEY, getType(), map.keySet());
+        return map;
+    }
+
+    protected void extract(final JsonArray serverData, final ConcurrentMap<Integer, HttpServerOptions> map) {
         Fn.itJArray(serverData, JsonObject.class, (item, index) -> {
             if (isServer(item)) {
                 // 1. Extract port
@@ -68,15 +72,13 @@ public class HttpServerVisitor implements ServerVisitor<HttpServerOptions> {
                 }, port, options);
             }
         });
-        getLogger().info(Info.INF_A_VERIFY, KEY, getType(), map.keySet());
-        return map;
     }
 
-    private boolean isServer(final JsonObject item) {
+    protected boolean isServer(final JsonObject item) {
         return getType().match(item.getString(YKEY_TYPE));
     }
 
-    private int extractPort(final JsonObject config) {
+    protected int extractPort(final JsonObject config) {
         if (null != config) {
             return config.getInteger("port", HttpServerOptions.DEFAULT_PORT);
         }

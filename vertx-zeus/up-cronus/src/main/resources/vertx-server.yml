@@ -9,5 +9,5 @@ server:
   config:
     jks: "ipc/ssl/rpc-server-keystore.jks"
     password: "wibble"
-    port: 6884
+    port: 6883
     host: 0.0.0.0

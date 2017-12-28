@@ -26,8 +26,6 @@ public class RpcServerVisitor implements ServerVisitor<ServidorOptions> {
 
     private static final Annal LOGGER = Annal.get(RpcServerVisitor.class);
 
-    private static final String KEY = "server";
-
     private transient final Node<JsonObject> NODE = Node.infix(Plugins.SERVER);
     private transient final Transformer<ServidorOptions>
             transformer = Instance.singleton(RpcServerStrada.class);

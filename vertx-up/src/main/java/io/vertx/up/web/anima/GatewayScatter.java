@@ -8,20 +8,17 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.rs.config.AgentExtractor;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.up.web.limit.ApiFactor;
 import io.vertx.up.web.limit.Factor;
-import io.vertx.up.web.limit.HttpFactor;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-/**
- * Agent scatter to deploy agents
- */
-public class AgentScatter implements Scatter<Vertx> {
+public class GatewayScatter implements Scatter<Vertx> {
 
-    private static final Annal LOGGER = Annal.get(AgentScatter.class);
+    private static final Annal LOGGER = Annal.get(GatewayScatter.class);
 
-    private transient final Factor factor = Instance.singleton(HttpFactor.class);
+    private transient final Factor factor = Instance.singleton(ApiFactor.class);
 
     @Override
     public void connect(final Vertx vertx) {
@@ -39,13 +36,5 @@ public class AgentScatter implements Scatter<Vertx> {
             // 3.2 Agent deployment
             Verticles.deploy(vertx, clazz, option, LOGGER);
         });
-        // Runtime hooker
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            Fn.itMap(agents, (type, clazz) -> {
-                // 4. Undeploy Agent.
-                final DeploymentOptions opt = options.get(clazz);
-                Verticles.undeploy(vertx, clazz, opt, LOGGER);
-            });
-        }));
     }
 }

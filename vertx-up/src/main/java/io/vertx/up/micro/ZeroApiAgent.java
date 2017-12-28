@@ -2,6 +2,7 @@ package io.vertx.up.micro;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
@@ -14,6 +15,9 @@ import io.vertx.zero.marshal.micro.ServerVisitor;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * Api Gateway for micro service architecture
+ */
 @Agent(type = ServerType.API)
 public class ZeroApiAgent extends AbstractVerticle {
 
@@ -24,9 +28,6 @@ public class ZeroApiAgent extends AbstractVerticle {
 
     private static final ConcurrentMap<Integer, HttpServerOptions> API_OPTS =
             new ConcurrentHashMap<>();
-
-    private final transient ZeroRegistry registry
-            = ZeroRegistry.create(getClass());
 
     static {
         Fn.safeZero(() -> {

@@ -1,10 +1,7 @@
 package io.vertx.up.web.limit;
 
-import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.Motor;
 import io.vertx.up.eon.em.ServerType;
-import io.vertx.up.exception.RpcPreparingException;
-import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ZeroApiAgent;
 
@@ -38,10 +35,7 @@ public class ApiFactor implements Factor {
         /** 1.Find Agent for deploy **/
         final ConcurrentMap<ServerType, Class<?>> agents
                 = Motor.agents(ServerType.HTTP, DEFAULT_AGENTS, INTERNALS);
-        // 2. Check etcd server status, IPC Only
-        Fn.flingUp(!EtcdData.enabled(),
-                LOGGER, RpcPreparingException.class, getClass());
-        // 3. Filter invalid agents.
+        /** 2. Filter invalid agents. **/
         final Set<ServerType> scanned = new HashSet<>(agents.keySet());
         final Set<ServerType> keeped = INTERNALS.keySet();
         scanned.removeAll(keeped);

@@ -1,8 +1,10 @@
 package io.vertx.up;
 
 import io.vertx.core.Vertx;
+import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.concurrent.Runner;
+import io.vertx.up.exception.RpcPreparingException;
 import io.vertx.up.exception.UpClassArgsException;
 import io.vertx.up.exception.UpClassInvalidException;
 import io.vertx.up.func.Fn;
@@ -10,7 +12,8 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Anno;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroLauncher;
-import io.vertx.up.web.anima.GatewayScatter;
+import io.vertx.up.web.anima.DetectScatter;
+import io.vertx.up.web.anima.PointScatter;
 import io.vertx.up.web.anima.Scatter;
 
 import java.lang.annotation.Annotation;
@@ -52,13 +55,24 @@ public class DansApplication {
     }
 
     private void run(final Object... args) {
+        // Check etcd server status, IPC Only
+        Fn.flingUp(!EtcdData.enabled(),
+                LOGGER, RpcPreparingException.class, getClass());
+
         final Launcher<Vertx> launcher = Instance.singleton(ZeroLauncher.class);
+
         launcher.start(vertx -> {
             /** 1.Find Agent for deploy **/
             Runner.run(() -> {
-                final Scatter<Vertx> scatter = Instance.singleton(GatewayScatter.class);
+                final Scatter<Vertx> scatter = Instance.singleton(PointScatter.class);
                 scatter.connect(vertx);
             }, "gateway-runner");
+            /** 2.Find Worker for deploy **/
+            Runner.run(() -> {
+                final Scatter<Vertx> scatter = Instance.singleton(DetectScatter.class);
+                scatter.connect(vertx);
+            }, "detect-runner");
+
         });
     }
 }

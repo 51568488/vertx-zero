@@ -53,7 +53,7 @@ public class ZeroRegistry {
         this.etcd.write(path, etat, Values.ZERO);
     }
 
-    
+
     public void registryData(final ServidorOptions options) {
         final String path = pathData(options);
         final JsonObject data = new JsonObject();
@@ -73,11 +73,11 @@ public class ZeroRegistry {
 
     private String pathStatus(final ServidorOptions options) {
         return MessageFormat.format(PATH_STATUS,
-                options.getName(), options.getHost(), String.valueOf(options.getPort()));
+                options.getName(), Net.getIPv4(), String.valueOf(options.getPort()));
     }
 
     private String pathData(final ServidorOptions options) {
         return MessageFormat.format(PATH_DISCOVERY,
-                options.getName(), options.getHost(), String.valueOf(options.getPort()));
+                options.getName(), Net.getIPv4(), String.valueOf(options.getPort()));
     }
 }

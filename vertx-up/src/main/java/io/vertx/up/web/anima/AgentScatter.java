@@ -40,12 +40,10 @@ public class AgentScatter implements Scatter<Vertx> {
             Verticles.deploy(vertx, clazz, option, LOGGER);
         });
         // Runtime hooker
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            Fn.itMap(agents, (type, clazz) -> {
-                // 4. Undeploy Agent.
-                final DeploymentOptions opt = options.get(clazz);
-                Verticles.undeploy(vertx, clazz, opt, LOGGER);
-            });
-        }));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> Fn.itMap(agents, (type, clazz) -> {
+            // 4. Undeploy Agent.
+            final DeploymentOptions opt = options.get(clazz);
+            Verticles.undeploy(vertx, clazz, opt, LOGGER);
+        })));
     }
 }

@@ -1,6 +1,7 @@
 package io.vertx.up.plugin.mongo;
 
 import io.reactivex.Observable;
+import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.FindOptions;
@@ -52,6 +53,7 @@ public class MongoRtor {
         this.client = client;
     }
 
+    @Fluent
     public MongoRtor connect(final Class<?> clazz) {
         // Invalid connect
         Fn.flingUp(null == clazz, LOGGER,
@@ -62,6 +64,7 @@ public class MongoRtor {
         return this;
     }
 
+    @Fluent
     public MongoRtor connect(final String collection) {
         // Invalid connect
         Fn.flingUp(StringUtil.isNil(collection), LOGGER,
@@ -71,6 +74,7 @@ public class MongoRtor {
         return this;
     }
 
+    @Fluent
     public MongoRtor connect(final FindOptions options) {
         // FindOptions could be null
         if (null != options) {
@@ -79,6 +83,7 @@ public class MongoRtor {
         return this;
     }
 
+    @Fluent
     public MongoRtor connect(final JsonObject filter) {
         if (null != filter) {
             this.filter.mergeIn(filter);
@@ -86,6 +91,7 @@ public class MongoRtor {
         return this;
     }
 
+    @Fluent
     public <T, R> MongoRtor connect(final Function<T, R> aggregate) {
         if (null != aggregate) {
             this.aggregate = aggregate;

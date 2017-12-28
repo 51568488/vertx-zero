@@ -1,5 +1,6 @@
 package io.vertx.up.plugin.mongo;
 
+import io.vertx.codegen.annotations.Fluent;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.mongo.UpdateOptions;
@@ -45,6 +46,7 @@ public class MongoWtor {
         this.client = client;
     }
 
+    @Fluent
     public MongoWtor connect(final Class<?> clazz) {
         // Invalid connect
         Fn.flingUp(null == clazz, LOGGER,
@@ -55,6 +57,7 @@ public class MongoWtor {
         return this;
     }
 
+    @Fluent
     public MongoWtor connect(final String collection) {
         // Invalid connect
         Fn.flingUp(StringUtil.isNil(collection), LOGGER,
@@ -64,11 +67,13 @@ public class MongoWtor {
         return this;
     }
 
+    @Fluent
     public MongoWtor connect(final UpdateOptions option) {
         this.option = option;
         return this;
     }
 
+    @Fluent
     public <T, R> MongoWtor connect(final Function<T, R> aggregate) {
         if (null != aggregate) {
             this.aggregate = aggregate;

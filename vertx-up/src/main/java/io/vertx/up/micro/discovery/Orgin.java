@@ -22,4 +22,5 @@ public interface Orgin {
     String PORT = "port";
     String META = "metadata";
     String ID = "id";
+    String PATH = "path";
 }

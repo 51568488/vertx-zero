@@ -9,6 +9,7 @@ import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.eon.em.EtcdPath;
 import io.vertx.up.log.Annal;
+import io.vertx.up.micro.discovery.Orgin;
 import io.vertx.up.tool.Net;
 import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.Values;
@@ -33,6 +34,8 @@ public class ZeroRegistry {
     private static final String PATH_STATUS = "/zero/{0}/services/{1}:{2}:{3}";
 
     private static final String PATH_CATALOG = "/zero/{0}/services";
+
+    private static final String ROUTE_TREE = "/zero/{0}/routes/{1}";
 
     private final transient Annal logger;
     private final transient EtcdData etcd;
@@ -89,5 +92,30 @@ public class ZeroRegistry {
                 Net.getIPv4(), String.valueOf(options.getPort()));
         this.logger.info(Info.ETCD_STATUS, options.getName(), etat, path);
         this.etcd.write(path, etat, Values.ZERO);
+    }
+
+    public void registryRoute(final String name,
+                              final HttpServerOptions options, final Set<String> routes) {
+        final String path = MessageFormat.format(ROUTE_TREE,
+                EtcdPath.ROUTE.toString().toLowerCase(), name);
+        final String host = Net.getIPv4();
+        final String endpoint = MessageFormat.format("http://{0}:{1}",
+                host,
+                String.valueOf(options.getPort()));
+        // Screen Information
+        final StringBuilder builder = new StringBuilder();
+        for (final String route : routes) {
+            builder.append("\n\t\t").append(route);
+        }
+        this.logger.info(Info.ETCD_ROUTE, path, name, endpoint, builder.toString());
+        // Build Data
+        final JsonArray routeData = new JsonArray();
+        Observable.fromIterable(routes)
+                .map(item -> new JsonObject()
+                        .put(Orgin.PATH, item)
+                        .put(Orgin.HOST, host)
+                        .put(Orgin.PORT, options.getPort()))
+                .subscribe(routeData::add);
+        System.out.println(routeData);
     }
 }

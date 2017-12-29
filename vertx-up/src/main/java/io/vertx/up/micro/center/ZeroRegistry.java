@@ -8,8 +8,8 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.eon.em.EtcdPath;
+import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.micro.discovery.Orgin;
 import io.vertx.up.tool.Net;
 import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.Values;
@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
 
@@ -37,11 +38,14 @@ public class ZeroRegistry {
 
     private static final String ROUTE_TREE = "/zero/{0}/routes/{1}";
 
+    private static final ConcurrentMap<String, ZeroRegistry>
+            REGISTRY_MAP = new ConcurrentHashMap<>();
+
     private final transient Annal logger;
     private final transient EtcdData etcd;
 
     public static ZeroRegistry create(final Class<?> useCls) {
-        return new ZeroRegistry(useCls);
+        return Fn.poolThread(REGISTRY_MAP, () -> new ZeroRegistry(useCls));
     }
 
     private ZeroRegistry(final Class<?> useCls) {
@@ -59,20 +63,35 @@ public class ZeroRegistry {
         return this.etcd.getConfig();
     }
 
-    public Set<JsonObject> readData(final EtcdPath etcdPath,
-                                    final BiFunction<String, String, JsonObject> convert) {
-        final String path = MessageFormat.format(PATH_CATALOG, etcdPath.toString().toLowerCase());
-        this.logger.info(Info.ETCD_READ, path);
-        final ConcurrentMap<String, String> nodes = this.etcd.readDir(path, true);
+    public Set<JsonObject> getData(
+            final EtcdPath etcdPath,
+            final String key,
+            final BiFunction<String, JsonArray, Set<JsonObject>> convert
+    ) {
+        final String path = MessageFormat.format(ROUTE_TREE,
+                etcdPath.toString().toLowerCase(), key);
+        this.logger.debug(Info.ETCD_READ, path);
+        final String node = this.etcd.readData(path);
         final Set<JsonObject> sets = new HashSet<>();
+        if (null != node) {
+            final JsonArray value = new JsonArray(node);
+            sets.addAll(convert.apply(key, value));
+        }
+        return sets;
+    }
+
+    public Set<String> getServices(
+            final EtcdPath etcdPath) {
+        final String path = MessageFormat.format(PATH_CATALOG, etcdPath.toString().toLowerCase());
+        this.logger.debug(Info.ETCD_READ, path);
+        final ConcurrentMap<String, String> nodes = this.etcd.readDir(path, true);
+        final Set<String> sets = new HashSet<>();
 
         Observable.fromIterable(nodes.entrySet())
                 .filter(Objects::nonNull)
                 .filter(item -> Objects.nonNull(item.getKey()) && Objects.nonNull(item.getValue()))
                 .filter(item -> Etat.RUNNING == Types.fromStr(Etat.class, item.getValue()))
-                .map(item -> convert.apply(item.getKey(), item.getValue()))
-                .filter(Objects::nonNull)
-                .filter(item -> !item.isEmpty())
+                .map(item -> item.getKey())
                 .subscribe(sets::add);
         return sets;
     }
@@ -97,7 +116,8 @@ public class ZeroRegistry {
     public void registryRoute(final String name,
                               final HttpServerOptions options, final Set<String> routes) {
         final String path = MessageFormat.format(ROUTE_TREE,
-                EtcdPath.ROUTE.toString().toLowerCase(), name);
+                EtcdPath.ENDPOINT.toString().toLowerCase(), name,
+                Net.getIPv4(), String.valueOf(options.getPort()));
         final String host = Net.getIPv4();
         final String endpoint = MessageFormat.format("http://{0}:{1}",
                 host,
@@ -105,17 +125,13 @@ public class ZeroRegistry {
         // Screen Information
         final StringBuilder builder = new StringBuilder();
         for (final String route : routes) {
-            builder.append("\n\t\t").append(route);
+            builder.append("\n\t[ Up Micro ] \t").append(route);
         }
         this.logger.info(Info.ETCD_ROUTE, path, name, endpoint, builder.toString());
         // Build Data
         final JsonArray routeData = new JsonArray();
         Observable.fromIterable(routes)
-                .map(item -> new JsonObject()
-                        .put(Orgin.PATH, item)
-                        .put(Orgin.HOST, host)
-                        .put(Orgin.PORT, options.getPort()))
                 .subscribe(routeData::add);
-        System.out.println(routeData);
+        this.etcd.write(path, routeData, Values.ZERO);
     }
 }

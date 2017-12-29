@@ -26,9 +26,11 @@ interface Info {
 
     String ETCD_SUCCESS = "[ ZERO ] ( Etcd Center ) Zero system detected configuration {0}, start to initialize Etcd Center.";
 
-    String REG_SUCCESS = "[ ZERO ] ( Discovery ) Status: {5}, Action : {6} --> The Service Record " +
-            "( key = {0}, id = {1}, name = {2}, location = {3}, type = {4} )" +
-            "has been registeried in Zero system.";
+    String REG_SUCCESS = "[ ZERO ] ( Discovery ) Record : ( name = {2}, uri = {3} ) " +
+            "key = {4}, id = {5}, status = {0}, type = {1} " +
+            "has been refreshed in Zero system.";
+
+    String REG_REFRESHED = "[ ZERO ] ( Discovery ) Records ( added = {0}, updated = {1}, deleted = {2} ) have been refreshed! ";
 
     String REG_FAILURE = "[ ZERO ] ( Discovery ) Action: {1}, Service Registration has met error: {0}.";
 

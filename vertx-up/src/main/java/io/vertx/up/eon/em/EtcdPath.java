@@ -4,7 +4,5 @@ public enum EtcdPath {
     // EndPoint
     ENDPOINT,
     // Ipc,
-    IPC,
-    // Route
-    ROUTE
+    IPC
 }

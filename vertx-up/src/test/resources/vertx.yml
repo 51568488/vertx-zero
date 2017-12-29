@@ -1,5 +1,5 @@
 zero:
-  lime: db, mongo
+  lime: mongo, etcd3
   vertx:
     clustered:
       enabled: false

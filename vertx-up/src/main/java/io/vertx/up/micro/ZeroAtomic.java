@@ -22,14 +22,6 @@ public interface ZeroAtomic {
             });
         }
     };
-    ConcurrentMap<Integer, AtomicInteger>
-            RPC_STOP_LOGS = new ConcurrentHashMap<Integer, AtomicInteger>() {
-        {
-            RPC_OPTS.forEach((port, option) -> {
-                put(port, new AtomicInteger(0));
-            });
-        }
-    };
     /**
      * Http constants
      */
@@ -37,14 +29,6 @@ public interface ZeroAtomic {
             HTTP_OPTS = ZeroGrid.getServerOptions();
     ConcurrentMap<Integer, AtomicInteger>
             HTTP_START_LOGS = new ConcurrentHashMap<Integer, AtomicInteger>() {
-        {
-            HTTP_OPTS.forEach((port, option) -> {
-                put(port, new AtomicInteger(0));
-            });
-        }
-    };
-    ConcurrentMap<Integer, AtomicInteger>
-            HTTP_STOP_LOGS = new ConcurrentHashMap<Integer, AtomicInteger>() {
         {
             HTTP_OPTS.forEach((port, option) -> {
                 put(port, new AtomicInteger(0));

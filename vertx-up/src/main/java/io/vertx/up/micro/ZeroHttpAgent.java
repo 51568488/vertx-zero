@@ -74,10 +74,11 @@ public class ZeroHttpAgent extends AbstractVerticle {
     @Override
     public void stop() {
         Fn.itMap(ZeroAtomic.HTTP_OPTS, (port, config) -> {
-            final AtomicInteger out = ZeroAtomic.HTTP_STOP_LOGS.get(port);
-            if (Values.ONE == out.getAndIncrement()) {
-                // Status registry
-                endRegistry(SERVICES.get(port), config);
+            // Enabled micro mode.
+            if (EtcdData.enabled()) {
+                // Template call registry to modify the status of current service.
+                final ZeroRegistry registry = ZeroRegistry.create(getClass());
+                registry.registryHttp(SERVICES.get(port), config, Etat.STOPPED);
             }
         });
     }
@@ -114,16 +115,6 @@ public class ZeroHttpAgent extends AbstractVerticle {
             // 4. Send configuration to Event bus
             final String name = SERVICES.get(port);
             startRegistry(name, options, tree);
-        }
-    }
-
-    private void endRegistry(final String name,
-                             final HttpServerOptions options) {
-        // Enabled micro mode.
-        if (EtcdData.enabled()) {
-            // Template call registry to modify the status of current service.
-            final ZeroRegistry registry = ZeroRegistry.create(getClass());
-            registry.registryHttp(name, options, Etat.STOPPED);
         }
     }
 

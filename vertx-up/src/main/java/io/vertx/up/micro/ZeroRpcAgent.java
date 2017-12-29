@@ -76,11 +76,8 @@ public class ZeroRpcAgent extends AbstractVerticle {
     @Override
     public void stop() {
         Fn.itMap(ZeroAtomic.RPC_OPTS, (port, config) -> {
-            final AtomicInteger out = ZeroAtomic.RPC_STOP_LOGS.get(port);
-            if (Values.ONE == out.getAndIncrement()) {
-                // Status registry
-                this.registry.registryRpc(config, Etat.STOPPED);
-            }
+            // Status registry
+            this.registry.registryRpc(config, Etat.STOPPED);
         });
     }
 

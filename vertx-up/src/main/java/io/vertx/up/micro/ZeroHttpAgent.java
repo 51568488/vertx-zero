@@ -10,8 +10,11 @@ import io.vertx.ext.web.Router;
 import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.ID;
+import io.vertx.up.eon.Micro;
+import io.vertx.up.eon.em.Etat;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.micro.center.ZeroRegistry;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
@@ -73,7 +76,7 @@ public class ZeroHttpAgent extends AbstractVerticle {
             final AtomicInteger out = ZeroAtomic.HTTP_STOP_LOGS.get(port);
             if (Values.ONE == out.getAndIncrement()) {
                 // Status registry
-                // REGISTRY.registryHttp(SERVICES.get(port), config, Etat.STOPPED);
+                endRegistry(SERVICES.get(port), config);
             }
         });
     }
@@ -109,22 +112,49 @@ public class ZeroHttpAgent extends AbstractVerticle {
             LOGGER.info(Info.HTTP_LISTEN, getClass().getSimpleName(), address);
             // 4. Send configuration to Event bus
             final String name = SERVICES.get(port);
-            startRegistry(name, tree, options);
+            startRegistry(name, options, tree);
         }
     }
 
-    private void startRegistry(final String name, final Set<String> tree,
-                               final HttpServerOptions options) {
+    private void endRegistry(final String name,
+                             final HttpServerOptions options) {
         // Enabled micro mode.
         if (EtcdData.enabled()) {
-            final JsonObject data = new JsonObject();
-            data.put("name", name);
-            data.put("options", options.toJson());
-            data.put("uris", StringUtil.join(tree));
-            // Send Data to Event Bus
-            final EventBus bus = this.vertx.eventBus();
-            LOGGER.info(Info.HTTP_REGISTRY, getClass().getSimpleName(), name, ID.Addr.REGISTRY_START);
-            bus.publish(ID.Addr.REGISTRY_START, data);
+            // Template call registry to modify the status of current service.
+            final ZeroRegistry registry = ZeroRegistry.create(getClass());
+            registry.registryHttp(name, options, Etat.STOPPED);
         }
+    }
+
+    private void startRegistry(final String name,
+                               final HttpServerOptions options,
+                               final Set<String> tree) {
+        // Enabled micro mode.
+        if (EtcdData.enabled()) {
+            final JsonObject data = getMessage(name, options, tree);
+            // Send Data to Event Bus
+            this.sendMessage(name, ID.Addr.REGISTRY_START, data);
+        }
+    }
+
+    private void sendMessage(final String name,
+                             final String address,
+                             final JsonObject data) {
+        final EventBus bus = this.vertx.eventBus();
+        LOGGER.info(Info.MICRO_REGISTRY_SEND, getClass().getSimpleName(), name, address);
+        bus.publish(address, data);
+    }
+
+    private JsonObject getMessage(final String name,
+                                  final HttpServerOptions options,
+                                  final Set<String> tree) {
+        final JsonObject data = new JsonObject();
+        data.put(Micro.Registry.NAME, name);
+        data.put(Micro.Registry.OPTIONS, options.toJson());
+        // No Uri
+        if (null != tree) {
+            data.put(Micro.Registry.URIS, StringUtil.join(tree));
+        }
+        return data;
     }
 }

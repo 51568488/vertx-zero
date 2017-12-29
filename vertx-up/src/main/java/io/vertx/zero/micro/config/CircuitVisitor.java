@@ -2,7 +2,7 @@ package io.vertx.zero.micro.config;
 
 import io.vertx.circuitbreaker.CircuitBreakerOptions;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.Plugins;
+import io.vertx.up.eon.Micro;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Ensurer;
@@ -27,9 +27,9 @@ public class CircuitVisitor implements Visitor<CircuitBreakerOptions> {
         final JsonObject data = this.node.read();
         // 2. CircuitBreakerOptions building.
         final JsonObject config =
-                Fn.getSemi(data.containsKey(Plugins.Micro.CIRCUIT) &&
-                                null != data.getValue(Plugins.Micro.CIRCUIT), LOGGER,
-                        () -> data.getJsonObject(Plugins.Micro.CIRCUIT),
+                Fn.getSemi(data.containsKey(Micro.CIRCUIT) &&
+                                null != data.getValue(Micro.CIRCUIT), LOGGER,
+                        () -> data.getJsonObject(Micro.CIRCUIT),
                         JsonObject::new);
         return new CircuitBreakerOptions(config);
     }

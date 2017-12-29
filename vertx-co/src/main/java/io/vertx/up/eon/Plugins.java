@@ -27,11 +27,6 @@ public interface Plugins {
             RESOLVER
     };
 
-    interface Micro {
-
-        String CIRCUIT = "circuit";
-    }
-
     // Default infix
     interface Infix {
 

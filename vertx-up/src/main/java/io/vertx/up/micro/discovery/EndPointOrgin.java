@@ -5,8 +5,8 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.types.HttpEndpoint;
 import io.vertx.up.eon.em.EtcdPath;
+import io.vertx.up.micro.center.ZeroRegistry;
 import io.vertx.up.tool.Codec;
-import io.vertx.up.web.center.ZeroRegistry;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 

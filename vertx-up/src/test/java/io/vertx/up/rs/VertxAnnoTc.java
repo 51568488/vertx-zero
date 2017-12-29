@@ -28,7 +28,7 @@ public class VertxAnnoTc extends ZeroBase {
 
     @Test
     public void testNo() {
-        
+
     }
 
     public void testAnno(final TestContext context) {

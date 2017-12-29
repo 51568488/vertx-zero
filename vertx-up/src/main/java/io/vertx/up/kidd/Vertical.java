@@ -1,4 +1,4 @@
-package io.vertx.up.tool;
+package io.vertx.up.kidd;
 
 import io.reactivex.Observable;
 import io.vertx.core.json.JsonArray;

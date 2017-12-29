@@ -1,4 +1,4 @@
-package io.vertx.up.web.center;
+package io.vertx.up.micro.center;
 
 interface Info {
 

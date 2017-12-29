@@ -11,5 +11,5 @@ interface Info {
             "\n\t[ Up Micro ] Micro Service = {1}," +
             "\n\t[ Up Micro ] EndPoint = {2}" +
             "\n\t[ Up Micro ] Route Uris = {3}" +
-            "\n\t[ Up Micro ] Successfully to registeried, wait for discovery.";
+            "\n\t[ Up Micro ] Successfully to registried Routes, wait for discovery......SUCCESS";
 }

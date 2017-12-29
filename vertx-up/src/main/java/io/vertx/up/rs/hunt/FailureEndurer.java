@@ -1,4 +1,4 @@
-package io.vertx.up.micro;
+package io.vertx.up.rs.hunt;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
@@ -6,13 +6,13 @@ import io.vertx.ext.web.RoutingContext;
 /**
  * Common handler to handle failure
  */
-public class ZeroHttpEndurer implements Handler<RoutingContext> {
+public class FailureEndurer implements Handler<RoutingContext> {
 
     public static Handler<RoutingContext> create() {
-        return new ZeroHttpEndurer();
+        return new FailureEndurer();
     }
 
-    private ZeroHttpEndurer() {
+    private FailureEndurer() {
     }
 
     @Override

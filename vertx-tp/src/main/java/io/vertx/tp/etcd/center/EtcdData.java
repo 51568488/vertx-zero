@@ -64,8 +64,11 @@ public class EtcdData {
      */
     public static boolean enabled() {
         final JsonObject config = NODE.read();
-        LOGGER.info(Info.ETCD_ENABLE);
-        return null != config && config.containsKey("etcd");
+        final boolean enabled = null != config && config.containsKey("etcd");
+        if (enabled) {
+            LOGGER.info(Info.ETCD_ENABLE);
+        }
+        return enabled;
     }
 
     private EtcdData(final Class<?> clazz) {

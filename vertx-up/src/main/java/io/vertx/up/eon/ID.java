@@ -8,6 +8,10 @@ public interface ID {
 
     String IGNORE = "$$IGNORE$$";
 
+    interface Addr {
+        String REGISTRY_START = "ZERO://MICRO/REGISTRY/START";
+    }
+
     interface Page {
 
         String PAGE = "page";

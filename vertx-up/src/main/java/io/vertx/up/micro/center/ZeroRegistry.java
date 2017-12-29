@@ -116,8 +116,9 @@ public class ZeroRegistry {
     public void registryRoute(final String name,
                               final HttpServerOptions options, final Set<String> routes) {
         final String path = MessageFormat.format(ROUTE_TREE,
-                EtcdPath.ENDPOINT.toString().toLowerCase(), name,
-                Net.getIPv4(), String.valueOf(options.getPort()));
+                EtcdPath.ENDPOINT.toString().toLowerCase(),
+                MessageFormat.format("{0}:{1}:{2}", name,
+                        Net.getIPv4(), String.valueOf(options.getPort())));
         final String host = Net.getIPv4();
         final String endpoint = MessageFormat.format("http://{0}:{1}",
                 host,

@@ -5,12 +5,11 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.up.annotations.Agent;
-import io.vertx.up.eon.Orders;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.micro.discovery.ServiceJet;
 import io.vertx.up.rs.Axis;
+import io.vertx.up.rs.router.PointAxis;
 import io.vertx.up.rs.router.RouterAxis;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.config.ServerVisitor;
@@ -29,6 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Agent(type = ServerType.API)
 public class ZeroApiAgent extends AbstractVerticle {
+
+    private static final String PATH_ROUTE = "\\/([^\\/]+)\\/([^\\/]+)";
 
     private static final Annal LOGGER = Annal.get(ZeroApiAgent.class);
 
@@ -58,20 +59,16 @@ public class ZeroApiAgent extends AbstractVerticle {
 
             // Set breaker for each server
             ZeroAtomic.API_OPTS.forEach((port, option) -> {
+                /** Mount to api hub **/
+                final Axis<Router> axiser = Fn.poolThread(Pool.APIS,
+                        () -> Instance.instance(PointAxis.class, option, this.vertx));
                 /** Single server processing **/
                 final HttpServer server = this.vertx.createHttpServer(option);
                 /** Router **/
                 final Router router = Router.router(this.vertx);
                 routerAxiser.mount(router);
-
-                /** Breaker and Dispatch **/
-                router.route("/*")
-                        .order(Orders.EVENT)
-                        .handler(ServiceJet
-                                .create(option)
-                                .connect(this.vertx)
-                                .handle()
-                        );
+                /** Api Logical **/
+                axiser.mount(router);
 
                 /** Listening **/
                 server.requestHandler(router::accept).listen();

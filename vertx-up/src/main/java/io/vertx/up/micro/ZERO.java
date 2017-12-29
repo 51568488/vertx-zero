@@ -14,6 +14,9 @@ interface Info {
 
     String HTTP_LISTEN = "[ ZERO ] ( Http Server ) {0} Http Server has been started successfully. Endpoint: {1}.";
 
+    String HTTP_REGISTRY = "[ ZERO ] ( Http Server ) {0} ( name = {1} ) " +
+            "will send data to internal address: {2}.";
+
     String RPC_LISTEN = "[ ZERO ] ( Rpc Server ) Rpc Server has been started successfully. Channel: grpc://{0}:{1}. ";
 
     String RPC_FAILURE = "[ ZERO ] ( Rpc Server ) Rpc Server met failure: details = {0}.";

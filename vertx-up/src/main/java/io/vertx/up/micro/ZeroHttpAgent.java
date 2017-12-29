@@ -1,19 +1,21 @@
 package io.vertx.up.micro;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.annotations.Agent;
-import io.vertx.up.eon.em.Etat;
+import io.vertx.up.eon.ID;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.micro.center.ZeroRegistry;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
+import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroGrid;
 import io.vertx.zero.eon.Values;
@@ -35,9 +37,6 @@ public class ZeroHttpAgent extends AbstractVerticle {
 
     private static final ConcurrentMap<Integer, String> SERVICES =
             ZeroGrid.getServerNames();
-
-    private final transient ZeroRegistry registry
-            = ZeroRegistry.create(getClass());
 
     @Override
     public void start() {
@@ -74,7 +73,7 @@ public class ZeroHttpAgent extends AbstractVerticle {
             final AtomicInteger out = ZeroAtomic.HTTP_STOP_LOGS.get(port);
             if (Values.ONE == out.getAndIncrement()) {
                 // Status registry
-                this.registry.registryHttp(SERVICES.get(port), config, Etat.STOPPED);
+                // REGISTRY.registryHttp(SERVICES.get(port), config, Etat.STOPPED);
             }
         });
     }
@@ -108,12 +107,24 @@ public class ZeroHttpAgent extends AbstractVerticle {
                     MessageFormat.format("http://{0}:{1}/",
                             options.getHost(), portLiteral);
             LOGGER.info(Info.HTTP_LISTEN, getClass().getSimpleName(), address);
-            if (EtcdData.enabled()) {
-                // 4. Etcd Registry
-                final String name = SERVICES.get(port);
-                this.registry.registryHttp(name, options, Etat.RUNNING);
-                this.registry.registryRoute(name, options, tree);
-            }
+            // 4. Send configuration to Event bus
+            final String name = SERVICES.get(port);
+            startRegistry(name, tree, options);
+        }
+    }
+
+    private void startRegistry(final String name, final Set<String> tree,
+                               final HttpServerOptions options) {
+        // Enabled micro mode.
+        if (EtcdData.enabled()) {
+            final JsonObject data = new JsonObject();
+            data.put("name", name);
+            data.put("options", options.toJson());
+            data.put("uris", StringUtil.join(tree));
+            // Send Data to Event Bus
+            final EventBus bus = this.vertx.eventBus();
+            LOGGER.info(Info.HTTP_REGISTRY, getClass().getSimpleName(), name, ID.Addr.REGISTRY_START);
+            bus.publish(ID.Addr.REGISTRY_START, data);
         }
     }
 }

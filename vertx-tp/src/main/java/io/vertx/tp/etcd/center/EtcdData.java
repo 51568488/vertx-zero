@@ -52,6 +52,9 @@ public class EtcdData {
     private transient long timeout = -1;
 
     public static EtcdData create(final Class<?> clazz) {
+        if (enabled()) {
+            LOGGER.info(Info.ETCD_ENABLE);
+        }
         return Fn.pool(POOL, clazz, () ->
                 Fn.get(null, () -> new EtcdData(clazz), clazz));
     }
@@ -64,11 +67,7 @@ public class EtcdData {
      */
     public static boolean enabled() {
         final JsonObject config = NODE.read();
-        final boolean enabled = null != config && config.containsKey("etcd");
-        if (enabled) {
-            LOGGER.info(Info.ETCD_ENABLE);
-        }
-        return enabled;
+        return null != config && config.containsKey("etcd");
     }
 
     private EtcdData(final Class<?> clazz) {
@@ -129,6 +128,13 @@ public class EtcdData {
                 return result;
             }, node);
         }, path);
+    }
+
+    public String readData(
+            final String path
+    ) {
+        return Fn.getJvm(Strings.EMPTY,
+                () -> readNode(path, this.client::get).getValue(), path);
     }
 
     private EtcdKeysResponse.EtcdNode readNode(

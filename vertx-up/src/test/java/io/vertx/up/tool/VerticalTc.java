@@ -4,6 +4,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.quiz.StoreBase;
+import io.vertx.up.kidd.Vertical;
 import io.vertx.up.kidd.unseen.Apeak;
 import io.vertx.up.tool.io.IO;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package io.vertx.zero.marshal.equip;
+package io.vertx.zero.micro.config;
 
 import io.vertx.core.ClusterOptions;
 import io.vertx.core.VertxOptions;
@@ -9,6 +9,7 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Ensurer;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.atom.Ruler;
+import io.vertx.zero.config.NodeVisitor;
 import io.vertx.zero.eon.Info;
 import io.vertx.zero.exception.ClusterConflictException;
 import io.vertx.zero.exception.ZeroException;

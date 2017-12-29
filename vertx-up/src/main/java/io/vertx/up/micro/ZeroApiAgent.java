@@ -17,14 +17,14 @@ import io.vertx.up.eon.Orders;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.zero.micro.config.CircuitVisitor;
+import io.vertx.zero.micro.config.DynamicVisitor;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.RouterAxis;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.config.ServerVisitor;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.marshal.Visitor;
-import io.vertx.zero.marshal.equip.CircuitVisitor;
-import io.vertx.zero.marshal.equip.DynamicVisitor;
-import io.vertx.zero.marshal.equip.ServerVisitor;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -100,7 +100,7 @@ public class ZeroApiAgent extends AbstractVerticle {
         final CircuitBreaker breaker = CircuitBreaker.create(name, this.vertx, OPTIONS);
         final ServiceDiscovery discovery = ServiceDiscovery.create(this.vertx);
         return context -> {
-            // run with circuit breaker
+            // Run with circuit breaker
             breaker.execute(future -> getEndPoints(discovery).setHandler(res -> {
                 if (res.succeeded()) {
                     final List<Record> records = res.result();

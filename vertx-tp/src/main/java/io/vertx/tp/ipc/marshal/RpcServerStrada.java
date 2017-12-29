@@ -1,4 +1,4 @@
-package io.vertx.zero.marshal.equip;
+package io.vertx.tp.ipc.marshal;
 
 import io.vertx.core.ServidorOptions;
 import io.vertx.core.json.JsonObject;

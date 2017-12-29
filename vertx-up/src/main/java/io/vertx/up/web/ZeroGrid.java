@@ -4,11 +4,17 @@ import io.vertx.core.ClusterOptions;
 import io.vertx.core.ServidorOptions;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.tp.ipc.marshal.RpcServerVisitor;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.zero.micro.config.HttpServerVisitor;
+import io.vertx.zero.micro.config.NamesVisitor;
+import io.vertx.zero.micro.config.RxServerVisitor;
+import io.vertx.zero.micro.config.VertxVisitor;
 import io.vertx.up.tool.mirror.Instance;
-import io.vertx.zero.marshal.equip.*;
+import io.vertx.zero.config.NodeVisitor;
+import io.vertx.zero.config.ServerVisitor;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

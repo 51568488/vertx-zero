@@ -1,4 +1,4 @@
-package io.vertx.zero.marshal.equip;
+package io.vertx.zero.micro.config;
 
 import io.vertx.circuitbreaker.CircuitBreakerOptions;
 import io.vertx.core.json.JsonObject;

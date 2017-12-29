@@ -1,9 +1,10 @@
-package io.vertx.zero.marshal.equip;
+package io.vertx.zero.micro.config;
 
 import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.zero.config.NodeVisitor;
 import io.vertx.zero.marshal.Transformer;
 
 public class VertxStrada implements Transformer<VertxOptions> {

@@ -13,7 +13,7 @@ import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.exception.RpcSslAlpnException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.web.center.ZeroRegistry;
+import io.vertx.up.micro.center.ZeroRegistry;
 import io.vertx.zero.eon.Values;
 
 import java.util.concurrent.atomic.AtomicInteger;

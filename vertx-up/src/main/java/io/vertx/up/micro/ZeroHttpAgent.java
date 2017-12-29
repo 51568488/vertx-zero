@@ -5,6 +5,7 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
+import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.func.Fn;
@@ -18,9 +19,7 @@ import io.vertx.up.web.ZeroGrid;
 import io.vertx.zero.eon.Values;
 
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -91,10 +90,15 @@ public class ZeroHttpAgent extends AbstractVerticle {
                     portLiteral);
             final List<Route> routes = router.getRoutes();
             final Map<String, Route> routeMap = new TreeMap<>();
+
+            final Set<String> tree = new TreeSet<>();
             for (final Route route : routes) {
                 // 2.Route
                 final String path = null == route.getPath() ? "/*" : route.getPath();
                 routeMap.put(path, route);
+                if (!"/*".equals(path)) {
+                    tree.add(path);
+                }
             }
             routeMap.forEach((path, route) ->
                     LOGGER.info(Info.MAPPED_ROUTE, getClass().getSimpleName(), path,
@@ -104,8 +108,12 @@ public class ZeroHttpAgent extends AbstractVerticle {
                     MessageFormat.format("http://{0}:{1}/",
                             options.getHost(), portLiteral);
             LOGGER.info(Info.HTTP_LISTEN, getClass().getSimpleName(), address);
-            // 4. Etcd Registry
-            this.registry.registryHttp(SERVICES.get(port), options, Etat.RUNNING);
+            if (EtcdData.enabled()) {
+                // 4. Etcd Registry
+                final String name = SERVICES.get(port);
+                this.registry.registryHttp(name, options, Etat.RUNNING);
+                this.registry.registryRoute(name, options, tree);
+            }
         }
     }
 }

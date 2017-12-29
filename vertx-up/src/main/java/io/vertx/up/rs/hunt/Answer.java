@@ -1,10 +1,13 @@
 package io.vertx.up.rs.hunt;
 
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.agent.Event;
+
+import javax.ws.rs.core.MediaType;
 
 /**
  * Response process to normalize the response request.
@@ -12,6 +15,24 @@ import io.vertx.up.atom.agent.Event;
  * 2. Operation based on event, envelop, context
  */
 public final class Answer {
+
+    public static void reply(
+            final RoutingContext context,
+            final Envelop envelop) {
+        // 1. Get response reference
+        final HttpServerResponse response
+                = context.response();
+        // 2. Set response status
+        final HttpStatusCode code = envelop.status();
+        response.setStatusCode(code.code());
+        response.setStatusMessage(code.message());
+        response.putHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+        // 3. Response process
+        if (!response.ended()) {
+            response.end(envelop.response());
+        }
+        response.close();
+    }
 
     public static void reply(
             final RoutingContext context,
@@ -26,7 +47,6 @@ public final class Answer {
         final HttpStatusCode code = envelop.status();
         response.setStatusCode(code.code());
         response.setStatusMessage(code.message());
-
         // 3. Media processing
         Normalizer.out(response, envelop, event);
         // 3. Response process

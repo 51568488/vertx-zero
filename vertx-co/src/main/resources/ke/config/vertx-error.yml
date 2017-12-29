@@ -53,5 +53,6 @@ E60004: (400) - Zero system detect conversation from "{0}" to type "{1}", but it
 E60005: (400) - Request body validation failure, field = {0}, value = {1}, message = {2}
 E60006: (400) - Server could not accept the mime "{0}", expected should be one of {1}
 E60007: (500) - The system detected internal error, contact administrator and check details = {0}
-E60008: (404) - Zero system detect non record in storage, no record.
-E60009: (400) - Zero system detect duplicated records in storage, size = {0}.
+E60008: (404) - Zero system detect non record in storage, no record
+E60009: (400) - Zero system detect duplicated records in storage, size = {0}
+E60010: (404) - The request {0} of method {1} could not be found in zero system

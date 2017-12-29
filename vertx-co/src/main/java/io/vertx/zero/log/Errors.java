@@ -17,6 +17,19 @@ public final class Errors {
     public static String normalize(final Class<?> clazz,
                                    final int code,
                                    final Object... args) {
+        return normalize(clazz, code, Tpl.ZERO_ERROR, args);
+    }
+
+    public static String normalizeWeb(final Class<?> clazz,
+                                      final int code,
+                                      final Object... args) {
+        return normalize(clazz, code, Tpl.WEB_ERROR, args);
+    }
+
+    private static String normalize(final Class<?> clazz,
+                                    final int code,
+                                    final String tpl,
+                                    final Object... args) {
         return Fn.getJvm(() -> {
             final String key = ("E" + Math.abs(code)).intern();
             final Node<JsonObject> node = Node.infix(Plugins.ERROR);
@@ -29,7 +42,7 @@ public final class Errors {
                 final String error = MessageFormat.format(pattern, args);
                 // 3. Format
                 return MessageFormat.format(
-                        Tpl.ZERO_ERROR, String.valueOf(code),
+                        tpl, String.valueOf(code),
                         clazz.getSimpleName(),
                         error
                 );

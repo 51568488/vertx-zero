@@ -19,14 +19,13 @@ import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
 import io.vertx.up.tool.Net;
+import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroGrid;
 import io.vertx.zero.eon.Values;
 
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -95,15 +94,13 @@ public class ZeroHttpAgent extends AbstractVerticle {
             final List<Route> routes = router.getRoutes();
             final Map<String, Route> routeMap = new TreeMap<>();
 
-            final JsonObject tree = new JsonObject();
+            final Set<String> tree = new TreeSet<>();
             for (final Route route : routes) {
                 // 2.Route
                 final String path = null == route.getPath() ? "/*" : route.getPath();
                 routeMap.put(path, route);
                 if (!"/*".equals(path)) {
-                    // 3.Regex
-                    final String regex = buildRegex(route);
-                    tree.put(path, regex);
+                    tree.add(path);
                 }
             }
             routeMap.forEach((path, route) ->
@@ -120,11 +117,6 @@ public class ZeroHttpAgent extends AbstractVerticle {
         }
     }
 
-    private String buildRegex(final Route name) {
-
-        return name.getPath();
-    }
-
     private void endRegistry(final String name,
                              final HttpServerOptions options) {
         // Enabled micro mode.
@@ -137,7 +129,7 @@ public class ZeroHttpAgent extends AbstractVerticle {
 
     private void startRegistry(final String name,
                                final HttpServerOptions options,
-                               final JsonObject tree) {
+                               final Set<String> tree) {
         // Enabled micro mode.
         if (EtcdData.enabled()) {
             final JsonObject data = getMessage(name, options, tree);
@@ -156,13 +148,13 @@ public class ZeroHttpAgent extends AbstractVerticle {
 
     private JsonObject getMessage(final String name,
                                   final HttpServerOptions options,
-                                  final JsonObject tree) {
+                                  final Set<String> tree) {
         final JsonObject data = new JsonObject();
         data.put(Micro.Registry.NAME, name);
         data.put(Micro.Registry.OPTIONS, options.toJson());
         // No Uri
         if (null != tree) {
-            data.put(Micro.Registry.URIS, tree);
+            data.put(Micro.Registry.URIS, StringUtil.join(tree));
         }
         return data;
     }

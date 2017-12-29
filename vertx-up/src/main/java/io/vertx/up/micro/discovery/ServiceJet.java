@@ -6,14 +6,19 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.types.HttpEndpoint;
+import io.vertx.up.atom.Envelop;
+import io.vertx.up.exception.WebException;
+import io.vertx.up.exception.web._404ServiceNotFoundException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.matcher.Arithmetic;
-import io.vertx.up.micro.matcher.BadArithmetic;
+import io.vertx.up.micro.matcher.CommonArithmetic;
+import io.vertx.up.rs.hunt.Answer;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.marshal.Visitor;
 import io.vertx.zero.micro.config.CircuitVisitor;
@@ -36,7 +41,7 @@ public class ServiceJet {
 
     private transient ServiceDiscovery discovery;
     private transient CircuitBreaker breaker;
-    private final transient Arithmetic arithmetic = Instance.singleton(BadArithmetic.class);
+    private final transient Arithmetic arithmetic = Instance.singleton(CommonArithmetic.class);
     private final transient HttpServerOptions options;
 
     public static ServiceJet create(final HttpServerOptions options) {
@@ -60,10 +65,16 @@ public class ServiceJet {
             this.breaker.execute(future -> getEndPoints().setHandler(res -> {
                 if (res.succeeded()) {
                     final List<Record> records = res.result();
-                    // Find the record hitted.
+                    // Find the record hitted. ( Include Path variable such as /xx/yy/:zz/:xy )
                     final Record hitted = this.arithmetic.search(records, context);
-                    System.out.println(hitted);
                     // Complete actions.
+                    if (null == hitted) {
+                        // Service Not Found ( 404 )
+                        replyError(context);
+                    } else {
+                        // Find record, dispatch request
+                        System.out.println(hitted.toJson());
+                    }
                     future.complete();
                 } else {
                     // Future failed
@@ -71,6 +82,18 @@ public class ServiceJet {
                 }
             }));
         };
+    }
+
+    /**
+     * Service Not Found ( 404 )
+     *
+     * @param context
+     */
+    private void replyError(final RoutingContext context) {
+        final HttpServerRequest request = context.request();
+        final WebException exception = new _404ServiceNotFoundException(getClass(), request.uri(),
+                request.method());
+        Answer.reply(context, Envelop.failure(exception));
     }
 
     private Future<List<Record>> getEndPoints() {

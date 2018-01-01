@@ -1,0 +1,7 @@
+mongo:
+  db_name: ZERO_TLK
+  port: 6017
+  host: 127.0.0.1
+  connection_string: mongodb://localhost:6017
+  username: tlk
+  password: "pl,okmijn123"

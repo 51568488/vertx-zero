@@ -46,4 +46,6 @@ interface Pool {
     ConcurrentMap<String, Axis<Router>> EVENTS = new ConcurrentHashMap<>();
 
     ConcurrentMap<String, Axis<Router>> APIS = new ConcurrentHashMap<>();
+
+    ConcurrentMap<String, Axis<Router>> WALLS = new ConcurrentHashMap<>();
 }

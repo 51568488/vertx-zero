@@ -18,6 +18,7 @@ import io.vertx.up.micro.center.ZeroRegistry;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
+import io.vertx.up.rs.router.WallAxis;
 import io.vertx.up.tool.Net;
 import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
@@ -50,22 +51,26 @@ public class ZeroHttpAgent extends AbstractVerticle {
         /** 2.Call route hub to mount defined **/
         final Axis<Router> axiser = Fn.poolThread(Pool.EVENTS,
                 () -> Instance.instance(EventAxis.class));
+        /** 3.Call route hub to mount walls **/
+        final Axis<Router> wallAxiser = Fn.poolThread(Pool.WALLS,
+                () -> Instance.instance(WallAxis.class, this.vertx));
 
-        /** 3.Get the default HttpServer Options **/
+        /** 4.Get the default HttpServer Options **/
         ZeroAtomic.HTTP_OPTS.forEach((port, option) -> {
-            /** 3.1.Single server processing **/
+            /** 4.1.Single server processing **/
             final HttpServer server = this.vertx.createHttpServer(option);
 
-            /** 3.2. Build router with current option **/
+            /** 4.2. Build router with current option **/
             final Router router = Router.router(this.vertx);
 
             routerAxiser.mount(router);
+            wallAxiser.mount(router);
             axiser.mount(router);
 
-            /** 3.3.Listen for router on the server **/
+            /** 4.3.Listen for router on the server **/
             server.requestHandler(router::accept).listen();
             {
-                // 3.4. Log output
+                // 4.4. Log output
                 registryServer(option, router);
             }
         });

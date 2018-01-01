@@ -6,7 +6,7 @@ import io.vertx.up.annotations.Authenticate;
 import io.vertx.up.annotations.Authorize;
 import io.vertx.up.annotations.Wall;
 
-@Wall(key = "mongo")
+@Wall("mongo")
 public class MongoKeeper {
 
     @Authenticate

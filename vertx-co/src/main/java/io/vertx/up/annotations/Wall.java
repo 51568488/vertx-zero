@@ -35,7 +35,7 @@ public @interface Wall {
      *
      * @return
      */
-    String key();
+    String value();
 
     /**
      * Value for wall sequence, it's for auth handler chain.
@@ -46,5 +46,5 @@ public @interface Wall {
      *
      * @return
      */
-    int value() default Values.ZERO;
+    int order() default Values.ZERO;
 }

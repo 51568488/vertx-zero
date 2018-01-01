@@ -2,9 +2,9 @@ package io.vertx.up.rs;
 
 import io.vertx.ext.unit.TestContext;
 import io.vertx.quiz.ZeroBase;
+import io.vertx.quiz.example.AnnoAgent;
+import io.vertx.quiz.example.AnnoExceAgent;
 import io.vertx.up.eon.em.ServerType;
-import io.vertx.up.example.AnnoAgent;
-import io.vertx.up.example.AnnoExceAgent;
 import io.vertx.up.micro.ZeroHttpAgent;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHelper;

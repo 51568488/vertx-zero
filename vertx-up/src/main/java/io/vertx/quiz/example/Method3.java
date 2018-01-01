@@ -1,10 +1,9 @@
-package io.vertx.up.example;
-
+package io.vertx.quiz.example;
 
 import javax.ws.rs.Path;
 
-@Path("")
-public class Method4 {
+@Path("api")
+public class Method3 {
 
     @Path("test////:name")
     public void test() {

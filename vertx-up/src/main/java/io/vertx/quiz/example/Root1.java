@@ -1,4 +1,4 @@
-package io.vertx.up.example;
+package io.vertx.quiz.example;
 
 import javax.ws.rs.Path;
 

@@ -1,0 +1,19 @@
+secure:
+  # Standard Type
+  mongo:
+    type: mongo
+    user: XXXX
+    config:
+      collection:
+      username:
+      password:
+      permission:
+      role:
+      salt:
+  # User Type
+  other:
+    provider: XXXXX
+    handler: XXXXX
+    user: XXXXX
+    config:
+      # Custom Definition

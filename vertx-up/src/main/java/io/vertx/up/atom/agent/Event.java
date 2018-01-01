@@ -7,6 +7,7 @@ import io.vertx.zero.eon.Strings;
 import javax.ws.rs.core.MediaType;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -109,27 +110,18 @@ public class Event implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Event)) {
             return false;
         }
-
         final Event event = (Event) o;
-
-        if (this.order != event.order) {
-            return false;
-        }
-        if (!this.path.equals(event.path)) {
-            return false;
-        }
-        return this.method == event.method;
+        return this.order == event.order &&
+                Objects.equals(this.path, event.path) &&
+                this.method == event.method;
     }
 
     @Override
     public int hashCode() {
-        int result = this.path.hashCode();
-        result = 31 * result + this.order;
-        result = 31 * result + this.method.hashCode();
-        return result;
+        return Objects.hash(this.path, this.order, this.method);
     }
 
     @Override

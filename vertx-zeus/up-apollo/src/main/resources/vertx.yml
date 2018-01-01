@@ -1,0 +1,8 @@
+zero:
+  lime: secure, mongo
+  vertx:
+    instance:
+    - name: vx-zero
+      options:
+        # Fix block 2000 limit issue.
+        maxEventLoopExecuteTime: 30000000000

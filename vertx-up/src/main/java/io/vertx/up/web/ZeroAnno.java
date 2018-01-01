@@ -1,6 +1,7 @@
 package io.vertx.up.web;
 
 import io.vertx.up.atom.agent.Event;
+import io.vertx.up.atom.secure.Cliff;
 import io.vertx.up.atom.worker.Receipt;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
@@ -12,6 +13,7 @@ import io.vertx.up.web.origin.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -34,6 +36,8 @@ public class ZeroAnno {
             AGENTS = new ConcurrentHashMap<>();
     private final static Set<Class<?>>
             WORKERS = new HashSet<>();
+    private final static Set<Cliff>
+            WALLS = new TreeSet<>();
 
     /**
      * Get all plugins
@@ -95,6 +99,16 @@ public class ZeroAnno {
         return EVENTS;
     }
 
+    /**
+     * Get all guards
+     *
+     * @return
+     */
+    public static Set<Cliff>
+    getWalls() {
+        return WALLS;
+    }
+
     static {
         /** 1.Scan the packages **/
         final Set<Class<?>> clazzes = Pack.getClasses(null);
@@ -110,11 +124,15 @@ public class ZeroAnno {
                     final Inquirer<Set<Event>> event =
                             Instance.singleton(EventInquirer.class);
                     EVENTS.addAll(event.scan(ENDPOINTS));
-                }, null);
+                });
+
+        /** Wall -> Authenticate, Authorize **/
+        final Inquirer<Set<Cliff>> walls =
+                Instance.singleton(WallInquirer.class);
+        WALLS.addAll(walls.scan(clazzes));
 
         /** Queue **/
-        inquirer =
-                Instance.singleton(QueueInquirer.class);
+        inquirer = Instance.singleton(QueueInquirer.class);
         final Set<Class<?>> queues = inquirer.scan(clazzes);
 
         /** Queue -> Receipt **/
@@ -124,7 +142,7 @@ public class ZeroAnno {
                     final Inquirer<Set<Receipt>> receipt =
                             Instance.singleton(ReceiptInquirer.class);
                     RECEIPTS.addAll(receipt.scan(queues));
-                }, null);
+                });
 
         /** Agent **/
         final Inquirer<ConcurrentMap<ServerType, List<Class<?>>>> agent =
@@ -135,6 +153,8 @@ public class ZeroAnno {
         final Inquirer<Set<Class<?>>> worker =
                 Instance.singleton(WorkerInquirer.class);
         WORKERS.addAll(worker.scan(clazzes));
+
+        /** Walls **/
 
         /** Injections **/
         final Inquirer<ConcurrentMap<Class<?>, ConcurrentMap<String, Class<?>>>> afflux =

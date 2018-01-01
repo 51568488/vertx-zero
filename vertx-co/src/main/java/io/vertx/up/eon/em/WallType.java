@@ -1,20 +1,17 @@
 package io.vertx.up.eon.em;
 
-public enum ServerType {
-    // Http Server
-    HTTP("http"),
-    // Web Socket Server
-    SOCK("sock"),
-    // Rx Server
-    RX("rx"),
-    // Rpc Server
-    IPC("ipc"),
-    // Api Gateway
-    API("api");
+/**
+ * Wall type for security
+ */
+public enum WallType {
+    // Mongo Type
+    MONGO("mongo"),
+    // Defined
+    CUSTOM("custom");
 
     private transient final String literal;
 
-    ServerType(final String literal) {
+    WallType(final String literal) {
         this.literal = literal;
     }
 

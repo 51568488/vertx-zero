@@ -38,6 +38,12 @@ public class EventAxis implements Axis<Router> {
             Fn.poolThread(Pool.VERIFIERS,
                     () -> Instance.instance(StandardVerifier.class));
 
+    /**
+     * Secreter for security limitation
+     * 1. Authorization
+     * 2. Authorize
+     */
+
     @Override
     public void mount(final Router router) {
         // Extract Event foreach

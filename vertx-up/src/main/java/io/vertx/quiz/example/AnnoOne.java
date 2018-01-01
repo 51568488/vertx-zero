@@ -1,4 +1,4 @@
-package io.vertx.up.example;
+package io.vertx.quiz.example;
 
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.annotations.Up;

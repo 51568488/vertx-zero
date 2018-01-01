@@ -3,7 +3,7 @@ package io.vertx.up.rs.config;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.quiz.ZeroBase;
-import io.vertx.up.example.RMethod1;
+import io.vertx.quiz.example.RMethod1;
 import org.junit.Test;
 
 import java.lang.reflect.Method;

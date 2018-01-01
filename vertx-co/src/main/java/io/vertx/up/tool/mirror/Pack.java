@@ -47,6 +47,11 @@ public final class Pack {
             add("com.hazelcast");
             // Glassfish
             add("org.glassfish");
+            // Junit
+            add("org.junit");
+            add("junit");
+            // Hamcrest
+            add("org.hamcrest");
         }
     };
 

@@ -2,7 +2,7 @@ package io.vertx.up.rs.config;
 
 import io.vertx.ext.unit.TestContext;
 import io.vertx.quiz.ZeroBase;
-import io.vertx.up.example.*;
+import io.vertx.quiz.example.*;
 import io.vertx.up.exception.PathAnnoEmptyException;
 import io.vertx.up.web.ZeroHelper;
 import org.junit.Test;

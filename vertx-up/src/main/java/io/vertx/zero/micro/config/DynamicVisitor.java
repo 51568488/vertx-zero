@@ -11,8 +11,8 @@ import io.vertx.up.tool.Ensurer;
 import io.vertx.zero.atom.Ruler;
 import io.vertx.zero.eon.Info;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.exception.ServerConfigException;
 import io.vertx.zero.exception.ZeroException;
+import io.vertx.zero.exception.demon.ServerConfigException;
 import io.vertx.zero.marshal.node.Node;
 
 import java.util.concurrent.ConcurrentHashMap;

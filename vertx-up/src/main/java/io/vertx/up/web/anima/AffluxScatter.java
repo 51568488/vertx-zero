@@ -6,7 +6,6 @@ import io.vertx.up.atom.agent.Event;
 import io.vertx.up.atom.worker.Receipt;
 import io.vertx.up.concurrent.Runner;
 import io.vertx.up.eon.Plugins;
-import io.vertx.up.exception.InjectionLimeKeyException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.plugin.Infix;
@@ -14,6 +13,7 @@ import io.vertx.up.tool.mirror.Anno;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAmbient;
 import io.vertx.up.web.ZeroAnno;
+import io.vertx.zero.exception.InjectionLimeKeyException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 

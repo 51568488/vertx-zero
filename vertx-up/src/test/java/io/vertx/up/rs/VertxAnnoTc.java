@@ -1,19 +1,17 @@
 package io.vertx.up.rs;
 
 import io.vertx.ext.unit.TestContext;
-import io.vertx.quiz.ZeroBase;
 import io.vertx.quiz.example.AnnoAgent;
 import io.vertx.quiz.example.AnnoExceAgent;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.micro.ZeroHttpAgent;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.up.web.ZeroHelper;
-import org.junit.Test;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
-public class VertxAnnoTc extends ZeroBase {
+public class VertxAnnoTc {
 
     private static final ConcurrentMap<ServerType, List<Class<?>>>
             AGENTS = ZeroAnno.getAgents();
@@ -26,7 +24,6 @@ public class VertxAnnoTc extends ZeroBase {
         }
     }
 
-    @Test
     public void testNo() {
 
     }

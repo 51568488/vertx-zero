@@ -3,7 +3,7 @@ package io.vertx.up.web;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.quiz.ZeroBase;
-import io.vertx.up.exception.web._400ParameterFromStringException;
+import io.vertx.up.exception._400ParameterFromStringException;
 import org.junit.Test;
 
 import java.math.BigDecimal;

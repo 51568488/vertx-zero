@@ -5,12 +5,12 @@ import io.vertx.core.http.HttpStatusCode;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
 import io.vertx.up.eon.ID;
-import io.vertx.up.exception.IndexExceedException;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.web.ZeroSerializer;
 import io.vertx.zero.eon.Strings;
+import io.vertx.zero.exception.IndexExceedException;
 
 import java.io.Serializable;
 

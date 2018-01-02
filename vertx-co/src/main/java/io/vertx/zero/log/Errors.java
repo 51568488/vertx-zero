@@ -4,7 +4,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.Plugins;
 import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Tpl;
-import io.vertx.zero.exception.ErrorMissingException;
+import io.vertx.zero.exception.heart.ErrorMissingException;
 import io.vertx.zero.marshal.node.Node;
 
 import java.text.MessageFormat;

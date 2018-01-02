@@ -13,7 +13,7 @@ import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.types.HttpEndpoint;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
-import io.vertx.up.exception.web._404ServiceNotFoundException;
+import io.vertx.up.exception._404ServiceNotFoundException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.matcher.Arithmetic;

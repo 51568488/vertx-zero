@@ -3,7 +3,7 @@ package io.vertx.up.kidd.outcome;
 import io.vertx.core.AsyncResult;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
-import io.vertx.up.exception.web._404RecordNotFoundException;
+import io.vertx.up.exception._404RecordNotFoundException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.kidd.Spy;
 import io.vertx.up.log.Annal;

@@ -8,7 +8,7 @@ import io.vertx.up.tool.io.IO;
 import io.vertx.up.web.ZeroCodex;
 import io.vertx.zero.eon.FileSuffix;
 import io.vertx.zero.eon.Strings;
-import io.vertx.zero.exception.EmptyStreamException;
+import io.vertx.zero.exception.heart.EmptyStreamException;
 
 import java.util.List;
 

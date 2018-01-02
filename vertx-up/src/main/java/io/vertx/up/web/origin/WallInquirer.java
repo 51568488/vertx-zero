@@ -4,11 +4,11 @@ import io.reactivex.Observable;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.annotations.Wall;
 import io.vertx.up.atom.secure.Cliff;
-import io.vertx.up.exception.DuplicatedWallException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Codec;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.exception.DuplicatedWallException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 
@@ -54,6 +54,7 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                     keys.add(Instance.invoke(item, "value"));
                     return this.hashPath(item);
                 }).subscribe(hashs::add);
+        // Duplicated adding.
         Fn.flingUp(hashs.size() != wallClses.size(), LOGGER,
                 DuplicatedWallException.class, getClass(),
                 wallClses.stream().map(Class::getName).collect(Collectors.toSet()));

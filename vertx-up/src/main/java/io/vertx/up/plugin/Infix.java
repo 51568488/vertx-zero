@@ -4,6 +4,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.atom.Ruler;
 import io.vertx.zero.exception.ConfigKeyMissingException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
@@ -23,6 +24,8 @@ public interface Infix {
         Fn.flingUp(null == options || !options.containsKey(key)
                 , logger, ConfigKeyMissingException.class,
                 clazz, key);
-        return executor.apply(options.getJsonObject(key));
+        final JsonObject config = options.getJsonObject(key);
+        Fn.flingUp(() -> Ruler.verify(key, config), logger);
+        return executor.apply(config);
     }
 }

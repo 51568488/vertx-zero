@@ -3,7 +3,7 @@ package io.vertx.up.web.limit;
 import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.Motor;
 import io.vertx.up.eon.em.ServerType;
-import io.vertx.up.exception.RpcPreparingException;
+import io.vertx.zero.exception.RpcPreparingException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ZeroHttpAgent;

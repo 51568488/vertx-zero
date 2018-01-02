@@ -8,15 +8,18 @@ import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.up.annotations.Worker;
 import io.vertx.up.concurrent.Runner;
 import io.vertx.up.eon.em.MessageModel;
+import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.micro.spider.EndPointOrgin;
-import io.vertx.up.micro.spider.Orgin;
+import io.vertx.up.micro.discovery.EndPointOrgin;
+import io.vertx.up.micro.discovery.Orgin;
 import io.vertx.up.tool.mirror.Instance;
 
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -45,8 +48,8 @@ public class ZeroApiWorker extends AbstractVerticle {
             // initialized once.
             initializeServices(discovery);
         }
-        // Scan the services every 5s
-        this.vertx.setPeriodic(5000, id -> {
+        // Scan the services every 3s
+        this.vertx.setPeriodic(3000, id -> {
             // Read the latest services
             final ConcurrentMap<String, Record> services = ORIGIN.getRegistryData();
 
@@ -54,15 +57,35 @@ public class ZeroApiWorker extends AbstractVerticle {
             final ConcurrentMap<Flag, Set<String>> resultMap = calculateServices(services);
 
             // Do the modification with thread.
-            Runner.run(
-                    () -> deleteService(discovery, resultMap.get(Flag.DELETE)),
-                    "discovery-deleted");
-            Runner.run(
-                    () -> updateService(discovery, resultMap.get(Flag.UPDATE)),
-                    "discovery-updated");
-            Runner.run(
-                    () -> addService(discovery, resultMap.get(Flag.NEW), services),
-                    "discovery-added");
+            Fn.safeJvm(() -> {
+                final CountDownLatch counter = new CountDownLatch(3);
+                final Set<String> deleted = resultMap.get(Flag.DELETE);
+                final Set<String> updated = resultMap.get(Flag.UPDATE);
+                final Set<String> added = resultMap.get(Flag.NEW);
+                Runner.run(
+                        () -> {
+                            deleteService(discovery, deleted);
+                            counter.countDown();
+                        },
+                        "discovery-deleted");
+                Runner.run(
+                        () -> {
+                            updateService(discovery, updated);
+                            counter.countDown();
+                        },
+                        "discovery-updated");
+                Runner.run(
+                        () -> {
+                            addService(discovery, added, services);
+                            counter.countDown();
+                        },
+                        "discovery-added");
+                // Wait for result
+                counter.await();
+                LOGGER.info(Info.REG_REFRESHED,
+                        added.size(), updated.size(), deleted.size());
+            }, LOGGER);
+
         });
     }
 
@@ -76,10 +99,7 @@ public class ZeroApiWorker extends AbstractVerticle {
                         if (result.succeeded()) {
                             // Delete successfully
                             final Record record = REGISTRITIONS.get(id);
-                            LOGGER.info(Info.REG_SUCCESS, id,
-                                    item, record.getName(),
-                                    record.getLocation(), record.getType(), record.getStatus(),
-                                    "Delete");
+                            successLog(record);
                             // Sync deleted
                             REGISTRITIONS.remove(id);
                             ID_MAP.remove(id);
@@ -99,7 +119,7 @@ public class ZeroApiWorker extends AbstractVerticle {
                     if (result.succeeded()) {
                         final Record record = result.result();
                         // Update successfully
-                        successFinished(record, "Update");
+                        successFinished(record);
                     } else {
                         LOGGER.info(Info.REG_FAILURE, result.cause().getMessage(), "Update");
                     }
@@ -116,7 +136,7 @@ public class ZeroApiWorker extends AbstractVerticle {
                     if (result.succeeded()) {
                         final Record record = result.result();
                         // Add successfully
-                        successFinished(record, "Add");
+                        successFinished(record);
                     } else {
                         LOGGER.info(Info.REG_FAILURE, result.cause().getMessage(), "Add");
                     }
@@ -132,7 +152,7 @@ public class ZeroApiWorker extends AbstractVerticle {
                     if (result.succeeded()) {
                         final Record record = result.result();
                         // Initialized successfully
-                        successFinished(record, "Init");
+                        successFinished(record);
                     } else {
                         LOGGER.info(Info.REG_FAILURE, result.cause().getMessage(), "Init");
                     }
@@ -166,17 +186,26 @@ public class ZeroApiWorker extends AbstractVerticle {
         return result;
     }
 
-    private void successFinished(final Record record, final String action) {
+    private void successFinished(final Record record) {
         // Build key
         final String key = getID(record);
         final String id = record.getRegistration();
-        LOGGER.info(Info.REG_SUCCESS, key,
-                id, record.getName(),
-                record.getLocation(), record.getType(), record.getStatus(),
-                action);
+        successLog(record);
         // Fill container
         REGISTRITIONS.put(key, record);
         ID_MAP.put(key, id);
+    }
+
+    private void successLog(final Record record) {
+        final String key = getID(record);
+        final String id = record.getRegistration();
+        final String endpoint = MessageFormat.format("http://{0}:{1}{2}",
+                record.getLocation().getString(Orgin.HOST),
+                String.valueOf(record.getLocation().getInteger(Orgin.PORT)),
+                record.getMetadata().getString(Orgin.PATH));
+        LOGGER.debug(Info.REG_SUCCESS, record.getStatus(),
+                record.getType(), record.getName(),
+                endpoint, key, id);
     }
 
     private String getID(final Record record) {

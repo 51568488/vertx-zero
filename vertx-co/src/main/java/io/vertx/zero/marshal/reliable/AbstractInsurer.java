@@ -6,8 +6,8 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.exception.JObjectElementException;
 import io.vertx.zero.exception.ZeroException;
+import io.vertx.zero.exception.demon.JObjectElementException;
 
 /**
  * @author lang

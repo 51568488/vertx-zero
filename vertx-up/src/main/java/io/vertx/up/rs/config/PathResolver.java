@@ -1,11 +1,11 @@
 package io.vertx.up.rs.config;
 
-import io.vertx.up.exception.PathAnnoEmptyException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.StringUtil;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
+import io.vertx.zero.exception.PathAnnoEmptyException;
 
 import javax.ws.rs.Path;
 import java.util.regex.Matcher;

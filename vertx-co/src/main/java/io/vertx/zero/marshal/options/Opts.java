@@ -3,9 +3,9 @@ package io.vertx.zero.marshal.options;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.zero.exception.DemonException;
-import io.vertx.zero.exception.EmptyStreamException;
-import io.vertx.zero.exception.LimeFileException;
 import io.vertx.zero.exception.ZeroException;
+import io.vertx.zero.exception.heart.EmptyStreamException;
+import io.vertx.zero.exception.heart.LimeFileException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroTool;
 

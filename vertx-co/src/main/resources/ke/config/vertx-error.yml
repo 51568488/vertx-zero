@@ -5,8 +5,8 @@ E10001: (V) - This rule require all elements of array is JsonObject, Now the ind
 E10002: (V) - The data object {0} missed required field "{1}"
 E10003: (V) - The field {0} value is "{1}", but expected type is "{2}"
 E10004: (V) - The cluster options is enabled, but the "{0}" vertx instance = "{1}"
-# Tp Configuration Error
-E30001: (V) - The key "{0}" could not be found in file "vertx-tp.yml", read config = {1}
+E10005: (V) - The dynamic key "{0}" missing in uniform extension configuration data {1}
+E10006: (V) - The data object {0} contains unsupported/forbidden field "{1}"
 # (Runtime) Vertx start up error
 E40001: Vert.x zero boot class should not be null, please provide the entry of this application
 E40002: Vert.x zero boot class must be marked with annotation "Up", but ( name= {0} ) it''s missing
@@ -43,7 +43,10 @@ E40033: "(Database) You are trying to initialize \"Xtor\" component, but found i
 E40034: "(Database) Your \"Xtor\" component is not ready, (client, clazz, logger, collection) could not be null"
 E40035: "(Database) You are executing the operations in \"Xtor\" component, but met error: {0}"
 E40036: (Rpc) Zero rpc require SSL with Alpn enabled (jks,password), please check your configuration of port = {0}, options = {1}
-E40037: (Rpc) Enabled in current environment, but remote configuration center ( Etcd ) is not prepared.
+E40037: (Rpc) Enabled in current environment, but remote configuration center ( Etcd ) is not prepared
+E40038: "(Security) Zero system detected duplicated \"Wall\" classes [{0}] (Path & Order) should not be the same, it''s invalid"
+E40039: "The network configured for etcd ( host = {0}, port = {1} ) could not be reached"
+E40040: "(Security) You have configured key = \"{0}\" in @Wall class {1}, but it''s missing"
 # (Web) Exception for web
 E60000: (400) - Request validation failure, class = {0}, method = {1}, message = {2}
 E60001: (400) - The input content could not be converted into valid resource user {0}
@@ -53,5 +56,6 @@ E60004: (400) - Zero system detect conversation from "{0}" to type "{1}", but it
 E60005: (400) - Request body validation failure, field = {0}, value = {1}, message = {2}
 E60006: (400) - Server could not accept the mime "{0}", expected should be one of {1}
 E60007: (500) - The system detected internal error, contact administrator and check details = {0}
-E60008: (404) - Zero system detect non record in storage, no record.
-E60009: (400) - Zero system detect duplicated records in storage, size = {0}.
+E60008: (404) - Zero system detect non record in storage, no record
+E60009: (400) - Zero system detect duplicated records in storage, size = {0}
+E60010: (404) - The request {0} of method {1} could not be found in zero system

@@ -81,7 +81,10 @@ public final class Instance {
      */
     public static Class<?> clazz(final String name) {
         return Fn.pool(Storage.CLASSES, name,
-                () -> Fn.getJvm(() -> Class.forName(name), name));
+                () -> Fn.getJvm(() -> Thread
+                        .currentThread()
+                        .getContextClassLoader()
+                        .loadClass(name), name));
     }
 
     /**

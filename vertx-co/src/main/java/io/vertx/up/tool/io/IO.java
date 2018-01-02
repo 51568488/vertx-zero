@@ -11,8 +11,8 @@ import io.vertx.up.func.Fn;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.eon.em.YamlType;
-import io.vertx.zero.exception.EmptyStreamException;
-import io.vertx.zero.exception.JsonFormatException;
+import io.vertx.zero.exception.heart.EmptyStreamException;
+import io.vertx.zero.exception.heart.JsonFormatException;
 import io.vertx.zero.log.Log;
 
 import java.io.BufferedReader;

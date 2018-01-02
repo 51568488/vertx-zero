@@ -37,6 +37,19 @@ public class Fn {
     }
 
     /**
+     * ZeroException to RunZeroException
+     *
+     * @param actuator
+     * @param logger
+     */
+    public static void flingUp(
+            final ZeroActuator actuator,
+            final Annal logger
+    ) {
+        Announce.toRun(logger, actuator);
+    }
+
+    /**
      * ZeroRunException out.
      *
      * @param condition

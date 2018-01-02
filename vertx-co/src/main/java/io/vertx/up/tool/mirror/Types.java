@@ -31,6 +31,12 @@ public class Types {
                 () -> JsonArray.class == value.getClass());
     }
 
+    public static boolean isClass(final Object value) {
+        return Fn.getSemi(null == value, LOGGER,
+                () -> false,
+                () -> null != Instance.clazz(value.toString()));
+    }
+
     public static boolean isJObject(final Object value) {
         return Fn.getSemi(null == value, LOGGER,
                 () -> false,

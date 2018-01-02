@@ -7,5 +7,6 @@ public enum DataType {
     BOOLEAN,
     DATE,
     JOBJECT,
-    JARRAY
+    JARRAY,
+    CLASS
 }

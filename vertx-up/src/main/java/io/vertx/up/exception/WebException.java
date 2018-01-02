@@ -24,7 +24,7 @@ public abstract class WebException extends ZeroRunException {
 
     public WebException(final Class<?> clazz, final Object... args) {
         super(Strings.EMPTY);
-        this.message = Errors.normalize(clazz, getCode(), args);
+        this.message = Errors.normalizeWeb(clazz, getCode(), args);
         this.status = HttpStatusCode.BAD_REQUEST;
     }
 

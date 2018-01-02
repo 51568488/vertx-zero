@@ -7,12 +7,12 @@ import io.vertx.up.atom.agent.Depot;
 import io.vertx.up.atom.agent.Event;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.micro.ZeroHttpEndurer;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.dispatch.ModeSplitter;
 import io.vertx.up.rs.dispatch.StandardVerifier;
+import io.vertx.up.rs.hunt.FailureEndurer;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
 
@@ -37,6 +37,12 @@ public class EventAxis implements Axis<Router> {
     private transient final Sentry<RoutingContext> verifier =
             Fn.poolThread(Pool.VERIFIERS,
                     () -> Instance.instance(StandardVerifier.class));
+
+    /**
+     * Secreter for security limitation
+     * 1. Authorization
+     * 2. Authorize
+     */
 
     @Override
     public void mount(final Router router) {
@@ -73,7 +79,7 @@ public class EventAxis implements Axis<Router> {
                          */
                         route.handler(this.verifier.signal(depot))
                                 .handler(aim.attack(event))
-                                .failureHandler(ZeroHttpEndurer.create());
+                                .failureHandler(FailureEndurer.create());
                     });
         });
     }

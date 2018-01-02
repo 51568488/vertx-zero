@@ -1,9 +1,9 @@
 package io.vertx.up.rs.config;
 
 import io.vertx.core.http.HttpMethod;
-import io.vertx.up.exception.MethodNullException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.zero.exception.MethodNullException;
 
 import javax.ws.rs.*;
 import java.lang.annotation.Annotation;

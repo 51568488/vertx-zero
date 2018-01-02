@@ -2,7 +2,7 @@ package io.vertx.up.web;
 
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.em.ServerType;
-import io.vertx.up.exception.AgentDuplicatedException;
+import io.vertx.zero.exception.AgentDuplicatedException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;

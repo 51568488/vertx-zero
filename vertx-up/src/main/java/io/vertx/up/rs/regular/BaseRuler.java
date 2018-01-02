@@ -2,7 +2,7 @@ package io.vertx.up.rs.regular;
 
 import io.vertx.up.atom.Rule;
 import io.vertx.up.exception.WebException;
-import io.vertx.up.exception.web._400ValidationRuleException;
+import io.vertx.up.exception._400ValidationRuleException;
 
 public abstract class BaseRuler implements Ruler {
 

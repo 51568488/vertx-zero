@@ -30,7 +30,7 @@ public final class ZeroAmbient {
     static {
         INJECTIONS = new ConcurrentHashMap<>();
         // 2. The injections must be configured in lime node.
-        Fn.safeZero(() -> {
+        Fn.flingUp(() -> {
             final JsonObject opt = OPTS.ingest(KEY);
             Fn.itJObject(opt, (item, field) -> {
                 final String plugin = item.toString();

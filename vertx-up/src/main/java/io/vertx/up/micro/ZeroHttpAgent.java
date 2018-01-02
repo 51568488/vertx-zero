@@ -1,26 +1,31 @@
 package io.vertx.up.micro;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
+import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.annotations.Agent;
+import io.vertx.up.eon.ID;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.micro.center.ZeroRegistry;
 import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.router.EventAxis;
 import io.vertx.up.rs.router.RouterAxis;
+import io.vertx.up.rs.router.WallAxis;
+import io.vertx.up.tool.Net;
+import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroGrid;
-import io.vertx.up.web.center.ZeroRegistry;
 import io.vertx.zero.eon.Values;
 
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -37,9 +42,6 @@ public class ZeroHttpAgent extends AbstractVerticle {
     private static final ConcurrentMap<Integer, String> SERVICES =
             ZeroGrid.getServerNames();
 
-    private final transient ZeroRegistry registry
-            = ZeroRegistry.create(getClass());
-
     @Override
     public void start() {
         /** 1.Call router hub to mount commont **/
@@ -48,22 +50,26 @@ public class ZeroHttpAgent extends AbstractVerticle {
         /** 2.Call route hub to mount defined **/
         final Axis<Router> axiser = Fn.poolThread(Pool.EVENTS,
                 () -> Instance.instance(EventAxis.class));
+        /** 3.Call route hub to mount walls **/
+        final Axis<Router> wallAxiser = Fn.poolThread(Pool.WALLS,
+                () -> Instance.instance(WallAxis.class, this.vertx));
 
-        /** 3.Get the default HttpServer Options **/
+        /** 4.Get the default HttpServer Options **/
         ZeroAtomic.HTTP_OPTS.forEach((port, option) -> {
-            /** 3.1.Single server processing **/
+            /** 4.1.Single server processing **/
             final HttpServer server = this.vertx.createHttpServer(option);
 
-            /** 3.2. Build router with current option **/
+            /** 4.2. Build router with current option **/
             final Router router = Router.router(this.vertx);
 
             routerAxiser.mount(router);
+            wallAxiser.mount(router);
             axiser.mount(router);
 
-            /** 3.3.Listen for router on the server **/
+            /** 4.3.Listen for router on the server **/
             server.requestHandler(router::accept).listen();
             {
-                // 3.4. Log output
+                // 4.4. Log output
                 registryServer(option, router);
             }
         });
@@ -72,10 +78,11 @@ public class ZeroHttpAgent extends AbstractVerticle {
     @Override
     public void stop() {
         Fn.itMap(ZeroAtomic.HTTP_OPTS, (port, config) -> {
-            final AtomicInteger out = ZeroAtomic.HTTP_STOP_LOGS.get(port);
-            if (Values.ONE == out.getAndIncrement()) {
-                // Status registry
-                this.registry.registryHttp(SERVICES.get(port), config, Etat.STOPPED);
+            // Enabled micro mode.
+            if (EtcdData.enabled()) {
+                // Template call registry to modify the status of current service.
+                final ZeroRegistry registry = ZeroRegistry.create(getClass());
+                registry.registryHttp(SERVICES.get(port), config, Etat.STOPPED);
             }
         });
     }
@@ -91,10 +98,15 @@ public class ZeroHttpAgent extends AbstractVerticle {
                     portLiteral);
             final List<Route> routes = router.getRoutes();
             final Map<String, Route> routeMap = new TreeMap<>();
+
+            final Set<String> tree = new TreeSet<>();
             for (final Route route : routes) {
                 // 2.Route
                 final String path = null == route.getPath() ? "/*" : route.getPath();
                 routeMap.put(path, route);
+                if (!"/*".equals(path)) {
+                    tree.add(path);
+                }
             }
             routeMap.forEach((path, route) ->
                     LOGGER.info(Info.MAPPED_ROUTE, getClass().getSimpleName(), path,
@@ -102,10 +114,43 @@ public class ZeroHttpAgent extends AbstractVerticle {
             // 3. Endpoint Publish
             final String address =
                     MessageFormat.format("http://{0}:{1}/",
-                            options.getHost(), portLiteral);
+                            Net.getIPv4(), portLiteral);
             LOGGER.info(Info.HTTP_LISTEN, getClass().getSimpleName(), address);
-            // 4. Etcd Registry
-            this.registry.registryHttp(SERVICES.get(port), options, Etat.RUNNING);
+            // 4. Send configuration to Event bus
+            final String name = SERVICES.get(port);
+            startRegistry(name, options, tree);
         }
+    }
+
+    private void startRegistry(final String name,
+                               final HttpServerOptions options,
+                               final Set<String> tree) {
+        // Enabled micro mode.
+        if (EtcdData.enabled()) {
+            final JsonObject data = getMessage(name, options, tree);
+            // Send Data to Event Bus
+            this.sendMessage(name, ID.Addr.REGISTRY_START, data);
+        }
+    }
+
+    private void sendMessage(final String name,
+                             final String address,
+                             final JsonObject data) {
+        final EventBus bus = this.vertx.eventBus();
+        LOGGER.info(Info.MICRO_REGISTRY_SEND, getClass().getSimpleName(), name, address);
+        bus.publish(address, data);
+    }
+
+    private JsonObject getMessage(final String name,
+                                  final HttpServerOptions options,
+                                  final Set<String> tree) {
+        final JsonObject data = new JsonObject();
+        data.put(Registry.NAME, name);
+        data.put(Registry.OPTIONS, options.toJson());
+        // No Uri
+        if (null != tree) {
+            data.put(Registry.URIS, StringUtil.join(tree));
+        }
+        return data;
     }
 }

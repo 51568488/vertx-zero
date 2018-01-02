@@ -23,9 +23,6 @@ public enum ServerType {
     }
 
     public boolean match(final String literal) {
-        if (null == literal) {
-            return false;
-        }
-        return this.literal.equals(literal);
+        return null != literal && this.literal.equals(literal);
     }
 }

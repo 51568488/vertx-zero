@@ -4,8 +4,8 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.em.DataType;
-import io.vertx.zero.exception.DataTypeWrongException;
 import io.vertx.zero.exception.ZeroException;
+import io.vertx.zero.exception.demon.DataTypeWrongException;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -26,6 +26,7 @@ public class TypedInsurer extends AbstractInsurer {
             put(DataType.DATE, Types::isDate);
             put(DataType.JOBJECT, Types::isJObject);
             put(DataType.JARRAY, Types::isJArray);
+            put(DataType.CLASS, Types::isClass);
         }
     };
 

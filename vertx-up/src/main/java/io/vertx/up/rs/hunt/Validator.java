@@ -8,7 +8,7 @@ import io.vertx.up.atom.agent.Depot;
 import io.vertx.up.atom.agent.Event;
 import io.vertx.up.eon.ID;
 import io.vertx.up.exception.WebException;
-import io.vertx.up.exception.web._400ValidationException;
+import io.vertx.up.exception._400ValidationException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.web.ZeroCodex;
 import io.vertx.zero.eon.Strings;

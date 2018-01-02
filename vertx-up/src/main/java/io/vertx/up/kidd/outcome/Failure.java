@@ -2,7 +2,7 @@ package io.vertx.up.kidd.outcome;
 
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
-import io.vertx.up.exception.web._500InternalServerException;
+import io.vertx.up.exception._500InternalServerException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.kidd.Readible;
 import io.vertx.up.tool.mirror.Instance;

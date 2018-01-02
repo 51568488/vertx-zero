@@ -31,7 +31,7 @@ class Verticles {
                         flag);
                 INSTANCES.put(clazz, result.result());
             } else {
-                logger.info(Info.VTC_FAIL,
+                logger.warn(Info.VTC_FAIL,
                         name, option.getInstances(), result.result(),
                         null == result.cause() ? null : result.cause().getMessage(), flag);
             }

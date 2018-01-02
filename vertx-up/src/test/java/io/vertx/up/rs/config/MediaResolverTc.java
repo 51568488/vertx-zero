@@ -2,7 +2,7 @@ package io.vertx.up.rs.config;
 
 import io.vertx.ext.unit.TestContext;
 import io.vertx.quiz.ZeroBase;
-import io.vertx.up.example.Media;
+import io.vertx.quiz.example.Media;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;

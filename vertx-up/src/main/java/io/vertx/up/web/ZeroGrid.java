@@ -4,13 +4,17 @@ import io.vertx.core.ClusterOptions;
 import io.vertx.core.ServidorOptions;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.tp.ipc.marshal.RpcServerVisitor;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
-import io.vertx.zero.marshal.equip.NodeVisitor;
-import io.vertx.zero.marshal.equip.VertxVisitor;
-import io.vertx.zero.marshal.micro.*;
+import io.vertx.zero.config.NodeVisitor;
+import io.vertx.zero.config.ServerVisitor;
+import io.vertx.zero.micro.config.HttpServerVisitor;
+import io.vertx.zero.micro.config.NamesVisitor;
+import io.vertx.zero.micro.config.RxServerVisitor;
+import io.vertx.zero.micro.config.VertxVisitor;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -34,7 +38,7 @@ public class ZeroGrid {
     private static ClusterOptions CLUSTER;
 
     static {
-        Fn.safeZero(() -> {
+        Fn.flingUp(() -> {
             // Init for VertxOptions, ClusterOptions
             // Visit Vertx
             if (VX_OPTS.isEmpty() || null == CLUSTER) {

@@ -6,10 +6,13 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Jackson;
+import io.vertx.up.tool.Net;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.atom.Ruler;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.EtcdConfigEmptyException;
+import io.vertx.zero.exception.EtcdNetworkException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 import mousio.etcd4j.EtcdClient;
@@ -52,6 +55,9 @@ public class EtcdData {
     private transient long timeout = -1;
 
     public static EtcdData create(final Class<?> clazz) {
+        if (enabled()) {
+            LOGGER.info(Info.ETCD_ENABLE);
+        }
         return Fn.pool(POOL, clazz, () ->
                 Fn.get(null, () -> new EtcdData(clazz), clazz));
     }
@@ -64,8 +70,7 @@ public class EtcdData {
      */
     public static boolean enabled() {
         final JsonObject config = NODE.read();
-        LOGGER.info(Info.ETCD_ENABLE);
-        return null != config && config.containsKey("etcd");
+        return null != config && config.containsKey(KEY);
     }
 
     private EtcdData(final Class<?> clazz) {
@@ -75,6 +80,10 @@ public class EtcdData {
         final JsonObject config = NODE.read();
         if (config.containsKey(KEY)) {
             final JsonObject root = config.getJsonObject(KEY);
+            // Verify the data
+            Fn.flingUp(() -> Fn.shuntZero(() ->
+                            Ruler.verify(KEY, root), root),
+                    LOGGER);
             if (root.containsKey(TIMEOUT)) {
                 this.timeout = root.getLong(TIMEOUT);
             }
@@ -89,13 +98,25 @@ public class EtcdData {
                 EtcdConfigEmptyException.class, this.clazz);
 
         final Set<URI> uris = new HashSet<>();
+        final ConcurrentMap<Integer, String> networks
+                = new ConcurrentHashMap<>();
         Observable.fromIterable(this.config)
                 .filter(Objects::nonNull)
                 .map(item -> (JsonObject) item)
                 .filter(item -> item.containsKey(PORT) && item.containsKey(HOST))
-                .map(item -> "http://" + item.getString(HOST) + ":" + item.getInteger(PORT))
+                .map(item -> {
+                    final Integer port = item.getInteger(PORT);
+                    final String host = item.getString(HOST);
+                    networks.put(port, host);
+                    return "http://" + host + ":" + port;
+                })
                 .map(URI::create)
                 .subscribe(uris::add);
+        // Network checking
+        networks.forEach((port, host) ->
+                Fn.flingUp(!Net.isReach(host, port), LOGGER,
+                        EtcdNetworkException.class, getClass(), host, port));
+        LOGGER.info(Info.ETCD_NETWORK);
         this.client = new EtcdClient(uris.toArray(new URI[]{}));
     }
 
@@ -126,6 +147,13 @@ public class EtcdData {
                 return result;
             }, node);
         }, path);
+    }
+
+    public String readData(
+            final String path
+    ) {
+        return Fn.getJvm(Strings.EMPTY,
+                () -> readNode(path, this.client::get).getValue(), path);
     }
 
     private EtcdKeysResponse.EtcdNode readNode(

@@ -4,6 +4,7 @@ public enum MessageModel {
     // Request <-> Response
     // Common Http Worker
     REQUEST_RESPONSE,
+    REQUEST_MICRO_WORKER,
     // Publish <-> Subscribe
     // Common Publisher
     PUBLISH_SUBSCRIBE,

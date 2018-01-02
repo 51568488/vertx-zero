@@ -4,9 +4,9 @@ import io.vertx.up.tool.StringUtil;
 
 import java.util.Set;
 
-public class DuplicatedWallException extends UpException {
+public class WallDuplicatedException extends UpException {
 
-    public DuplicatedWallException(final Class<?> classes,
+    public WallDuplicatedException(final Class<?> classes,
                                    final Set<String> classNames) {
         super(classes, StringUtil.join(classNames));
     }

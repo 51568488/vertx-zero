@@ -1,0 +1,9 @@
+secure:
+  key2:
+    type: mongo
+    config:
+      test: test
+  key:
+    type: mongo
+    config:
+      test: test

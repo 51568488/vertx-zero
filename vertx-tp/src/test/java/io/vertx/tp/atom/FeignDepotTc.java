@@ -2,12 +2,12 @@ package io.vertx.tp.atom;
 
 import io.vertx.ext.unit.TestContext;
 import io.vertx.quiz.ZeroBase;
-import io.vertx.tp.exception.TpKeyMissingException;
+import io.vertx.zero.exception.DynamicKeyMissingException;
 import org.junit.Test;
 
 public class FeignDepotTc extends ZeroBase {
 
-    @Test(expected = TpKeyMissingException.class)
+    @Test(expected = DynamicKeyMissingException.class)
     public void testFeign(final TestContext context) {
         FeignDepot.create("tvk");
     }

@@ -7,10 +7,10 @@ import feign.codec.ErrorDecoder;
 import feign.codec.JsonObjectDecoder;
 import feign.codec.JsonObjectEncoder;
 import io.vertx.core.json.JsonObject;
-import io.vertx.tp.exception.TpKeyMissingException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.zero.atom.Ruler;
+import io.vertx.zero.exception.DynamicKeyMissingException;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.marshal.node.Node;
 
@@ -84,7 +84,7 @@ public class FeignDepot implements Serializable {
         final JsonObject config = TP.read();
         // Check up exception for key
         Fn.flingUp(null == config || !config.containsKey(key),
-                LOGGER, TpKeyMissingException.class,
+                LOGGER, DynamicKeyMissingException.class,
                 getClass(), key, config);
         // Validation passed
         if (verify(config, key)) {

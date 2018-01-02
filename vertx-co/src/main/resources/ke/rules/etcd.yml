@@ -1,0 +1,4 @@
+required:
+- nodes
+typed:
+  nodes: JARRAY

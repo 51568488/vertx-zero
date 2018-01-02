@@ -10,7 +10,6 @@ import io.vertx.ext.web.Router;
 import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.ID;
-import io.vertx.up.eon.Micro;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
@@ -146,11 +145,11 @@ public class ZeroHttpAgent extends AbstractVerticle {
                                   final HttpServerOptions options,
                                   final Set<String> tree) {
         final JsonObject data = new JsonObject();
-        data.put(Micro.Registry.NAME, name);
-        data.put(Micro.Registry.OPTIONS, options.toJson());
+        data.put(Registry.NAME, name);
+        data.put(Registry.OPTIONS, options.toJson());
         // No Uri
         if (null != tree) {
-            data.put(Micro.Registry.URIS, StringUtil.join(tree));
+            data.put(Registry.URIS, StringUtil.join(tree));
         }
         return data;
     }

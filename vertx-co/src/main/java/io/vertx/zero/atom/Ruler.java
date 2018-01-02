@@ -9,6 +9,7 @@ import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.exception.ZeroException;
+import io.vertx.zero.marshal.reliable.ForbiddenInsurer;
 import io.vertx.zero.marshal.reliable.Insurer;
 import io.vertx.zero.marshal.reliable.RequiredInsurer;
 import io.vertx.zero.marshal.reliable.TypedInsurer;
@@ -110,6 +111,9 @@ public class Ruler {
                 reference.flumen(data, rule);
                 // Typed
                 reference = Instance.singleton(TypedInsurer.class);
+                reference.flumen(data, rule);
+                // Forbidden
+                reference = Instance.singleton(ForbiddenInsurer.class);
                 reference.flumen(data, rule);
             } else {
                 final JsonObject data = (JsonObject) input;

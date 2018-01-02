@@ -85,5 +85,4 @@ public class Cliff implements Serializable {
                 ", authorize=" + this.authorize +
                 '}';
     }
-
 }

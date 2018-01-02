@@ -1,8 +1,14 @@
 secure:
   key2:
     type: mongo
+    user: XXXX
     config:
-      test: test
+      collection:
+      username:
+      password:
+      permission:
+      role:
+      salt:
   key:
     type: mongo
     config:

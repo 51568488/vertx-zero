@@ -2,7 +2,6 @@ package io.vertx.zero.micro.config;
 
 import io.vertx.circuitbreaker.CircuitBreakerOptions;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.Micro;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Ensurer;
@@ -20,6 +19,8 @@ public class CircuitVisitor implements Visitor<CircuitBreakerOptions> {
     private final transient Node<JsonObject> node =
             Instance.singleton(ZeroUniform.class);
 
+    private static final String CIRCUIT = "circuit";
+
     @Override
     public CircuitBreakerOptions visit(final String... key)
             throws ZeroException {
@@ -29,9 +30,9 @@ public class CircuitVisitor implements Visitor<CircuitBreakerOptions> {
         final JsonObject data = this.node.read();
         // 3. CircuitBreakerOptions building.
         final JsonObject config =
-                Fn.getSemi(data.containsKey(Micro.CIRCUIT) &&
-                                null != data.getValue(Micro.CIRCUIT), LOGGER,
-                        () -> data.getJsonObject(Micro.CIRCUIT),
+                Fn.getSemi(data.containsKey(CIRCUIT) &&
+                                null != data.getValue(CIRCUIT), LOGGER,
+                        () -> data.getJsonObject(CIRCUIT),
                         JsonObject::new);
         // 4. Verify the configuration data
         return visit(config);
@@ -39,7 +40,7 @@ public class CircuitVisitor implements Visitor<CircuitBreakerOptions> {
 
     private CircuitBreakerOptions visit(final JsonObject data)
             throws ZeroException {
-        LOGGER.info(Info.INF_B_VERIFY, Micro.CIRCUIT, "Micro - Circuit", data.encode());
+        LOGGER.info(Info.INF_B_VERIFY, CIRCUIT, "Circuit", data.encode());
         Ruler.verify("circuit", data);
         return new CircuitBreakerOptions(data);
     }

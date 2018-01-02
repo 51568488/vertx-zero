@@ -46,9 +46,6 @@ class Verticles {
         final String name = clazz.getName();
         final String flag = option.isWorker() ? "Worker" : "Agent";
         final String id = INSTANCES.get(clazz);
-        System.out.println(INSTANCES);
-        System.out.println(clazz);
-        System.out.println(id);
         vertx.undeploy(id, result -> {
             if (result.succeeded()) {
                 logger.info(Info.VTC_STOPPED, name, id, flag);

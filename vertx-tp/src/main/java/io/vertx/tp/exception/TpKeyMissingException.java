@@ -13,6 +13,6 @@ public class TpKeyMissingException extends UpException {
 
     @Override
     public int getCode() {
-        return -30001;
+        return -30002;
     }
 }

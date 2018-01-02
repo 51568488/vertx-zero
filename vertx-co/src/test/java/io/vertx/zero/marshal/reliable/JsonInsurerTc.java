@@ -4,9 +4,9 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.quiz.ZeroBase;
 import io.vertx.up.tool.io.IO;
-import io.vertx.zero.exception.DataTypeWrongException;
-import io.vertx.zero.exception.RequiredFieldException;
 import io.vertx.zero.exception.ZeroException;
+import io.vertx.zero.exception.demon.DataTypeWrongException;
+import io.vertx.zero.exception.demon.RequiredFieldException;
 import org.junit.Test;
 
 public class JsonInsurerTc extends ZeroBase {

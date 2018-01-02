@@ -7,6 +7,8 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Ensurer;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.atom.Ruler;
+import io.vertx.zero.eon.Info;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.marshal.Visitor;
 import io.vertx.zero.marshal.node.Node;
@@ -25,12 +27,20 @@ public class CircuitVisitor implements Visitor<CircuitBreakerOptions> {
         Ensurer.eqLength(getClass(), 0, (Object[]) key);
         // 2. Read data
         final JsonObject data = this.node.read();
-        // 2. CircuitBreakerOptions building.
+        // 3. CircuitBreakerOptions building.
         final JsonObject config =
                 Fn.getSemi(data.containsKey(Micro.CIRCUIT) &&
                                 null != data.getValue(Micro.CIRCUIT), LOGGER,
                         () -> data.getJsonObject(Micro.CIRCUIT),
                         JsonObject::new);
-        return new CircuitBreakerOptions(config);
+        // 4. Verify the configuration data
+        return visit(config);
+    }
+
+    private CircuitBreakerOptions visit(final JsonObject data)
+            throws ZeroException {
+        LOGGER.info(Info.INF_B_VERIFY, Micro.CIRCUIT, "Micro - Circuit", data.encode());
+        Ruler.verify("circuit", data);
+        return new CircuitBreakerOptions(data);
     }
 }

@@ -12,8 +12,8 @@ import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.atom.Ruler;
 import io.vertx.zero.config.ServerVisitor;
 import io.vertx.zero.eon.Info;
-import io.vertx.zero.exception.ServerConfigException;
 import io.vertx.zero.exception.ZeroException;
+import io.vertx.zero.exception.demon.ServerConfigException;
 import io.vertx.zero.marshal.Transformer;
 import io.vertx.zero.marshal.node.Node;
 

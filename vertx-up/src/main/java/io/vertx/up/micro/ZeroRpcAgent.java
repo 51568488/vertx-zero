@@ -10,7 +10,7 @@ import io.vertx.grpc.VertxServerBuilder;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.eon.em.ServerType;
-import io.vertx.up.exception.RpcSslAlpnException;
+import io.vertx.zero.exception.RpcSslAlpnException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.center.ZeroRegistry;

@@ -91,13 +91,24 @@ public class EtcdData {
                 EtcdConfigEmptyException.class, this.clazz);
 
         final Set<URI> uris = new HashSet<>();
+        final ConcurrentMap<Integer, String> networks
+                = new ConcurrentHashMap<>();
         Observable.fromIterable(this.config)
                 .filter(Objects::nonNull)
                 .map(item -> (JsonObject) item)
                 .filter(item -> item.containsKey(PORT) && item.containsKey(HOST))
-                .map(item -> "http://" + item.getString(HOST) + ":" + item.getInteger(PORT))
+                .map(item -> {
+                    final Integer port = item.getInteger(PORT);
+                    final String host = item.getString(HOST);
+                    networks.put(port, host);
+                    return "http://" + host + ":" + port;
+                })
                 .map(URI::create)
                 .subscribe(uris::add);
+        // Network checking
+        networks.forEach((item, value) -> {
+            
+        });
         this.client = new EtcdClient(uris.toArray(new URI[]{}));
     }
 

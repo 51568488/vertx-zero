@@ -8,7 +8,9 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Codec;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.exception.DynamicKeyMissingException;
 import io.vertx.zero.exception.WallDuplicatedException;
+import io.vertx.zero.exception.WallKeyMissingException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 
@@ -17,6 +19,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 /**
@@ -28,6 +32,8 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
 
     private static final Node<JsonObject> NODE = Instance.singleton(ZeroUniform.class);
 
+    private static final String KEY = "secure";
+
     @Override
     public Set<Cliff> scan(final Set<Class<?>> walls) {
         /** 1. Build result **/
@@ -35,8 +41,12 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
         final Set<Class<?>> wallClses = walls.stream()
                 .filter((item) -> item.isAnnotationPresent(Wall.class))
                 .collect(Collectors.toSet());
-        /** 2. Duplicated checking for wallClses **/
-        this.verify(wallClses);
+        if (!wallClses.isEmpty()) {
+            // It means that you have set Wall and enable security configuration
+            // wallClses verification
+            this.verify(wallClses);
+
+        }
         /** 3. Transfer **/
         return wallSet;
     }
@@ -44,15 +54,14 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
     private void verify(final Set<Class<?>> wallClses) {
         /** Wall duplicated **/
         final Set<String> hashs = new HashSet<>();
-        final Set<String> keys = new HashSet<>();
+        final ConcurrentMap<String, Class<?>> keys = new ConcurrentHashMap<>();
         Observable.fromIterable(wallClses)
                 .filter(Objects::nonNull)
-                .map(item -> item.getAnnotation(Wall.class))
-                .filter(Objects::nonNull)
                 .map(item -> {
+                    final Annotation annotation = item.getAnnotation(Wall.class);
                     // Add configuration key into keys;
-                    keys.add(Instance.invoke(item, "value"));
-                    return this.hashPath(item);
+                    keys.put(Instance.invoke(annotation, "value"), item);
+                    return this.hashPath(annotation);
                 }).subscribe(hashs::add);
         // Duplicated adding.
         Fn.flingUp(hashs.size() != wallClses.size(), LOGGER,
@@ -60,6 +69,16 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                 wallClses.stream().map(Class::getName).collect(Collectors.toSet()));
         /** Shared key does not existing **/
         final JsonObject config = NODE.read();
+        Fn.flingUp(!config.containsKey(KEY), LOGGER,
+                DynamicKeyMissingException.class, getClass(),
+                KEY, config);
+        /** Wall key missing **/
+        final JsonObject hitted = config.getJsonObject(KEY);
+        for (final String key : keys.keySet()) {
+            Fn.flingUp(null == hitted || !hitted.containsKey(key), LOGGER,
+                    WallKeyMissingException.class, getClass(),
+                    key, keys.get(key));
+        }
     }
 
     /**

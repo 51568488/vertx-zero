@@ -1,12 +1,11 @@
 # Core configuration Error
 E30001: Vert.x zero server config is missing in current data "{0}"
-# Tp Configuration Error
-E30002: (V) - The key "{0}" could not be found in file "vertx-tp.yml", read config = {1}
 # Configuration validation Error
 E10001: (V) - This rule require all elements of array is JsonObject, Now the index = {0} does not match, it''s {1}
 E10002: (V) - The data object {0} missed required field "{1}"
 E10003: (V) - The field {0} value is "{1}", but expected type is "{2}"
 E10004: (V) - The cluster options is enabled, but the "{0}" vertx instance = "{1}"
+E10005: (V) - The dynamic key "{0}" missing in uniform extension configuration data {1}
 # (Runtime) Vertx start up error
 E40001: Vert.x zero boot class should not be null, please provide the entry of this application
 E40002: Vert.x zero boot class must be marked with annotation "Up", but ( name= {0} ) it''s missing
@@ -46,6 +45,7 @@ E40036: (Rpc) Zero rpc require SSL with Alpn enabled (jks,password), please chec
 E40037: (Rpc) Enabled in current environment, but remote configuration center ( Etcd ) is not prepared
 E40038: "(Security) Zero system detected duplicated \"Wall\" classes [{0}] (Path & Order) should not be the same, it''s invalid"
 E40039: "The network configured for etcd ( host = {0}, port = {1} ) could not be reached"
+E40040: "(Security) You have configured key = \"{0}\" in @Wall class {1}, but it''s missing"
 # (Web) Exception for web
 E60000: (400) - Request validation failure, class = {0}, method = {1}, message = {2}
 E60001: (400) - The input content could not be converted into valid resource user {0}

@@ -65,4 +65,8 @@ public class StringUtil {
     public static boolean isNil(final String input) {
         return null == input || 0 == input.trim().length();
     }
+
+    public static boolean notNil(final String input) {
+        return !isNil(input);
+    }
 }

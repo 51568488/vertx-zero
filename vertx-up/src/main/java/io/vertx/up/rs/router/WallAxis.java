@@ -8,6 +8,7 @@ import io.vertx.up.rs.Axis;
 import io.vertx.up.web.ZeroAnno;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Secure mount
@@ -24,12 +25,23 @@ public class WallAxis implements Axis<Router> {
     private static final Set<Cliff> WALLS =
             ZeroAnno.getWalls();
 
+    static {
+        WALLS.forEach(wall -> {
+            // Initialize cliff set
+            if (!Pool.WALL_MAP.containsKey(wall.getPath())) {
+                Pool.WALL_MAP.put(wall.getPath(), new TreeSet<>());
+            }
+            // Add cliff instance by path
+            Pool.WALL_MAP.get(wall.getPath()).add(wall);
+        });
+    }
+
     public WallAxis(final Vertx vertx) {
         this.vertx = vertx;
     }
 
     @Override
     public void mount(final Router router) {
-        // System.out.println(this.vertx);
+        System.out.println(Thread.currentThread().getId() + ":" + Pool.WALL_MAP);
     }
 }

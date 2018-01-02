@@ -1,6 +1,7 @@
 package io.vertx.up.secure;
 
 import io.vertx.core.Handler;
+import io.vertx.up.atom.secure.Cliff;
 
 /**
  * Secure Handler building for Zero system.
@@ -14,5 +15,5 @@ public interface Secreter<AuthHandler extends Handler<Context>, Context> {
      *
      * @return
      */
-    AuthHandler mount();
+    AuthHandler mount(final Cliff cliff);
 }

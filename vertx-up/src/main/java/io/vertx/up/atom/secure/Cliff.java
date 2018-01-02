@@ -2,6 +2,7 @@ package io.vertx.up.atom.secure;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.em.WallType;
+import io.vertx.up.secure.Secreter;
 import io.vertx.up.tool.Compare;
 
 import java.io.Serializable;
@@ -53,6 +54,10 @@ public class Cliff implements Serializable, Comparable<Cliff> {
      * 403: Authorize method
      */
     private Method authorize;
+    /**
+     * Reference for secreter
+     */
+    private Secreter secreter;
 
     public String getPath() {
         return this.path;
@@ -132,6 +137,14 @@ public class Cliff implements Serializable, Comparable<Cliff> {
 
     public void setUser(final Class<?> user) {
         this.user = user;
+    }
+
+    public Secreter getSecreter() {
+        return this.secreter;
+    }
+
+    public void setSecreter(final Secreter secreter) {
+        this.secreter = secreter;
     }
 
     @Override

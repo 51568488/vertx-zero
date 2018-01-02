@@ -27,7 +27,7 @@ public class CommonArithmetic implements Arithmetic {
                         .filter(record -> isMatch(uri, record))
                         .findAny();
         // Find valid;
-        return hitted.isPresent() ? hitted.get() : null;
+        return hitted.orElse(null);
     }
 
     /**

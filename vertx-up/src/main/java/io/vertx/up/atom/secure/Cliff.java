@@ -38,6 +38,10 @@ public class Cliff implements Serializable, Comparable<Cliff> {
      */
     private Class<?> provider;
     /**
+     * User class
+     */
+    private Class<?> user;
+    /**
      * Proxy instance
      */
     private Object proxy;
@@ -122,6 +126,14 @@ public class Cliff implements Serializable, Comparable<Cliff> {
         this.authorize = authorize;
     }
 
+    public Class<?> getUser() {
+        return this.user;
+    }
+
+    public void setUser(final Class<?> user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -167,6 +179,7 @@ public class Cliff implements Serializable, Comparable<Cliff> {
                 ", proxy=" + this.proxy +
                 ", authenticate=" + this.authenticate +
                 ", authorize=" + this.authorize +
+                ", user=" + this.user +
                 '}';
     }
 }

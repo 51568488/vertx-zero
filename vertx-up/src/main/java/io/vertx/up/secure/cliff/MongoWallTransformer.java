@@ -13,15 +13,13 @@ public class MongoWallTransformer implements Transformer<Cliff> {
 
     @Override
     public Cliff transform(final JsonObject input) {
-        return Fn.safeZero(() -> {
-            // 1. Verify
-            Ruler.verify("wall-mongo", input);
-            // 2. Convert
-            return build(input);
-        }, LOGGER);
+        Fn.flingUp(() -> Ruler.verify("wall-mongo", input), LOGGER);
+        return build(input);
     }
 
     private Cliff build(final JsonObject input) {
-        return new Cliff();
+        final Cliff cliff = new Cliff();
+        System.out.println(input);
+        return cliff;
     }
 }

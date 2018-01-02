@@ -25,10 +25,10 @@ public class WallTransformer implements Transformer<Cliff> {
             if (input.containsKey(Wall.TYPE)) {
                 // Standard
                 final Transformer<Cliff> transformer =
-                        WALL_TRANSFORMER.get(WallType.valueOf(input.getString(Wall.TYPE)));
+                        WALL_TRANSFORMER.get(WallType.from(input.getString(Wall.TYPE)));
                 return transformer.transform(input);
             } else {
-                // Non Standard
+                // Non Standard, TODO: Custom building
                 return new Cliff();
             }
         }, input);

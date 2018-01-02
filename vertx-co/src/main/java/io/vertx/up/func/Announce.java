@@ -53,6 +53,23 @@ class Announce {
         }
     }
 
+    static void toRun(final Annal logger,
+                      final ZeroActuator actuator) {
+        try {
+            actuator.execute();
+        } catch (final ZeroException ex) {
+            if (null != logger) {
+                logger.zero(ex);
+            }
+            throw new ZeroRunException(ex.getMessage()) {
+            };
+        } catch (final Throwable ex) {
+            if (null != logger) {
+                logger.jvm(ex);
+            }
+        }
+    }
+
     /**
      * Execut actuator and throw ZeroRunException out
      *
@@ -66,10 +83,12 @@ class Announce {
         } catch (final ZeroRunException ex) {
             if (null != logger) {
                 logger.vertx(ex);
-                throw ex;
             }
+            throw ex;
         } catch (final Throwable ex) {
-            logger.jvm(ex);
+            if (null != logger) {
+                logger.jvm(ex);
+            }
         }
     }
 }

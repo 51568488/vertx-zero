@@ -11,5 +11,6 @@ secure:
       salt:
   key:
     type: mongo
+    user: XXXX
     config:
       test: test

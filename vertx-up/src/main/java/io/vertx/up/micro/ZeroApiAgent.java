@@ -39,7 +39,7 @@ public class ZeroApiAgent extends AbstractVerticle {
             API_START_LOGS = new ConcurrentHashMap<>();
 
     static {
-        Fn.safeZero(() -> {
+        Fn.flingUp(() -> {
             if (ZeroAtomic.API_OPTS.isEmpty()) {
                 ZeroAtomic.API_OPTS.putAll(VISITOR.visit(ServerType.API.toString()));
                 ZeroAtomic.API_OPTS.forEach((port, option) -> {
@@ -55,7 +55,7 @@ public class ZeroApiAgent extends AbstractVerticle {
         final Axis<Router> routerAxiser = Fn.poolThread(Pool.ROUTERS,
                 () -> Instance.instance(RouterAxis.class));
 
-        Fn.safeZero(() -> {
+        Fn.flingUp(() -> {
 
             // Set breaker for each server
             ZeroAtomic.API_OPTS.forEach((port, option) -> {

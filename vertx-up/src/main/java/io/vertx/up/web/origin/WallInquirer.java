@@ -8,7 +8,7 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Codec;
 import io.vertx.up.tool.mirror.Instance;
-import io.vertx.zero.exception.DuplicatedWallException;
+import io.vertx.zero.exception.WallDuplicatedException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 
@@ -56,7 +56,7 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                 }).subscribe(hashs::add);
         // Duplicated adding.
         Fn.flingUp(hashs.size() != wallClses.size(), LOGGER,
-                DuplicatedWallException.class, getClass(),
+                WallDuplicatedException.class, getClass(),
                 wallClses.stream().map(Class::getName).collect(Collectors.toSet()));
         /** Shared key does not existing **/
         final JsonObject config = NODE.read();

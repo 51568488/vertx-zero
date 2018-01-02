@@ -1,9 +1,9 @@
 package io.vertx.up.plugin.mongo;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.auth.mongo.MongoAuth;
+import io.vertx.ext.auth.mongo.impl.MongoAuthImpl;
 import io.vertx.ext.auth.mongo.impl.MongoUser;
-import io.vertx.ext.web.handler.BasicAuthHandler;
+import io.vertx.ext.web.handler.impl.BasicAuthHandlerImpl;
 import io.vertx.up.atom.secure.Cliff;
 import io.vertx.up.eon.em.WallType;
 import io.vertx.up.func.Fn;
@@ -23,8 +23,9 @@ public class MongoRampart implements Transformer<Cliff> {
         cliff.setType(WallType.MONGO);
         // Fixed/Constant Class Values, ignore other configuration.
         cliff.setUser(MongoUser.class);
-        cliff.setProvider(MongoAuth.class);
-        cliff.setHandler(BasicAuthHandler.class);
+        // Must not be interface, provider/handler must be implementation classes instead.
+        cliff.setProvider(MongoAuthImpl.class);
+        cliff.setHandler(BasicAuthHandlerImpl.class);
         cliff.setSecreter(Instance.singleton(MongoSecreter.class));
         // Config
         cliff.setConfig(input.getJsonObject("config"));

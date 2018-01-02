@@ -9,11 +9,11 @@ import io.vertx.up.atom.secure.Cliff;
  * 2. Create ChainHandler for sequence auth
  * 3. Secure path configuration.
  */
-public interface Secreter<AuthHandler extends Handler<Context>, Context> {
+public interface Secreter<C, V> {
     /**
      * Build ChainHandler based on Guard
      *
      * @return
      */
-    AuthHandler mount(final Cliff cliff);
+    <A extends Handler<C>> A mount(Cliff cliff, V vertxRef);
 }

@@ -51,7 +51,10 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
             // It means that you have set Wall and enable security configuration
             // wallClses verification
             final JsonObject config = this.verify(wallClses);
-            wallSet.add(this.transformer.transform(config));
+            for (final String field : config.fieldNames()) {
+                // Difference key setting
+                wallSet.add(this.transformer.transform(config.getJsonObject(field)));
+            }
         }
         /** 3. Transfer **/
         return wallSet;
@@ -85,7 +88,7 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                     WallKeyMissingException.class, getClass(),
                     key, keys.get(key));
         }
-        return config;
+        return config.getJsonObject(KEY);
     }
 
     /**

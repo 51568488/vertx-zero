@@ -24,6 +24,9 @@ public class WallInquirerTc extends ScanBase {
     public void testScanCorrect() {
         final Set<Class<?>> classes = getClasses();
         classes.remove(WallKeeper2.class);
-        this.walls.scan(classes);
+        final Set<Cliff> treeResult = this.walls.scan(classes);
+        for (final Cliff instance : treeResult) {
+            System.out.println(instance);
+        }
     }
 }

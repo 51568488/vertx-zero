@@ -81,7 +81,7 @@ public class EtcdData {
         if (config.containsKey(KEY)) {
             final JsonObject root = config.getJsonObject(KEY);
             // Verify the data
-            Fn.safeZero(() -> Fn.shuntZero(() ->
+            Fn.flingUp(() -> Fn.shuntZero(() ->
                             Ruler.verify(KEY, root), root),
                     LOGGER);
             if (root.containsKey(TIMEOUT)) {

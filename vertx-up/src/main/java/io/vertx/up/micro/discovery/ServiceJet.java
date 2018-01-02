@@ -32,7 +32,7 @@ public class ServiceJet {
     private static CircuitBreakerOptions OPTIONS;
 
     static {
-        Fn.safeZero(() -> {
+        Fn.flingUp(() -> {
             if (null == OPTIONS) {
                 OPTIONS = VISITOR.visit();
             }

@@ -1,5 +1,8 @@
 package io.vertx.up.eon.em;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 /**
  * Wall type for security
  */
@@ -8,6 +11,14 @@ public enum WallType {
     MONGO("mongo"),
     // Defined
     CUSTOM("custom");
+
+    private static final ConcurrentMap<String, WallType> TYPE_MAP
+            = new ConcurrentHashMap<String, WallType>() {
+        {
+            put("mongo", MONGO);
+            put("custom", CUSTOM);
+        }
+    };
 
     private transient final String literal;
 
@@ -21,5 +32,9 @@ public enum WallType {
 
     public boolean match(final String literal) {
         return null != literal && this.literal.equals(literal);
+    }
+
+    public static WallType from(final String literal) {
+        return TYPE_MAP.get(literal);
     }
 }

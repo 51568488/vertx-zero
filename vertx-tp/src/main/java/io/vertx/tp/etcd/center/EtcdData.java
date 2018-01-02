@@ -6,10 +6,12 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Jackson;
+import io.vertx.up.tool.Net;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.EtcdConfigEmptyException;
+import io.vertx.zero.exception.EtcdNetworkException;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 import mousio.etcd4j.EtcdClient;
@@ -106,9 +108,10 @@ public class EtcdData {
                 .map(URI::create)
                 .subscribe(uris::add);
         // Network checking
-        networks.forEach((item, value) -> {
-            
-        });
+        networks.forEach((port, host) ->
+                Fn.flingUp(!Net.isReach(host, port), LOGGER,
+                        EtcdNetworkException.class, getClass(), host, port));
+        LOGGER.info(Info.ETCD_NETWORK);
         this.client = new EtcdClient(uris.toArray(new URI[]{}));
     }
 

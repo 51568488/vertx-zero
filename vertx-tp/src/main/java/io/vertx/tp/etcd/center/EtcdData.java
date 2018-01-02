@@ -8,6 +8,7 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.tool.Jackson;
 import io.vertx.up.tool.Net;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.atom.Ruler;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.EtcdConfigEmptyException;
@@ -69,7 +70,7 @@ public class EtcdData {
      */
     public static boolean enabled() {
         final JsonObject config = NODE.read();
-        return null != config && config.containsKey("etcd");
+        return null != config && config.containsKey(KEY);
     }
 
     private EtcdData(final Class<?> clazz) {
@@ -79,6 +80,10 @@ public class EtcdData {
         final JsonObject config = NODE.read();
         if (config.containsKey(KEY)) {
             final JsonObject root = config.getJsonObject(KEY);
+            // Verify the data
+            Fn.safeZero(() -> Fn.shuntZero(() ->
+                            Ruler.verify(KEY, root), root),
+                    LOGGER);
             if (root.containsKey(TIMEOUT)) {
                 this.timeout = root.getLong(TIMEOUT);
             }

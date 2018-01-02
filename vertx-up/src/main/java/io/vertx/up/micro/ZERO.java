@@ -49,3 +49,12 @@ interface Pool {
 
     ConcurrentMap<String, Axis<Router>> WALLS = new ConcurrentHashMap<>();
 }
+
+interface Registry {
+
+    String NAME = "name";
+
+    String OPTIONS = "options";
+
+    String URIS = "uris";
+}

@@ -6,7 +6,6 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.annotations.Worker;
 import io.vertx.up.eon.ID;
-import io.vertx.up.eon.Micro;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.eon.em.MessageModel;
 import io.vertx.up.log.Annal;
@@ -33,11 +32,11 @@ public class ZeroHttpRegistry extends AbstractVerticle {
         final EventBus bus = this.vertx.eventBus();
         bus.<JsonObject>consumer(ID.Addr.REGISTRY_START, result -> {
             final JsonObject data = result.body();
-            final String name = data.getString(Micro.Registry.NAME);
+            final String name = data.getString(Registry.NAME);
             final HttpServerOptions options =
-                    new HttpServerOptions(data.getJsonObject(Micro.Registry.OPTIONS));
+                    new HttpServerOptions(data.getJsonObject(Registry.OPTIONS));
             final String[] uris =
-                    data.getString(Micro.Registry.URIS).split(Strings.COMMA);
+                    data.getString(Registry.URIS).split(Strings.COMMA);
             final Set<String> uriData = new TreeSet<>(Arrays.asList(uris));
             // Write the data to registry.
             this.registry.registryHttp(name, options, Etat.RUNNING);

@@ -26,6 +26,7 @@ public class TypedInsurer extends AbstractInsurer {
             put(DataType.DATE, Types::isDate);
             put(DataType.JOBJECT, Types::isJObject);
             put(DataType.JARRAY, Types::isJArray);
+            put(DataType.CLASS, Types::isClass);
         }
     };
 

@@ -3,6 +3,7 @@ secure:
   mongo:
     type: mongo
     user: XXXX
+    provider: XXX
     config:
       collection:
       username:

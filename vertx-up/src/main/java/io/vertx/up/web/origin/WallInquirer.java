@@ -6,11 +6,13 @@ import io.vertx.up.annotations.Wall;
 import io.vertx.up.atom.secure.Cliff;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.secure.cliff.WallTransformer;
 import io.vertx.up.tool.Codec;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.exception.DynamicKeyMissingException;
 import io.vertx.zero.exception.WallDuplicatedException;
 import io.vertx.zero.exception.WallKeyMissingException;
+import io.vertx.zero.marshal.Transformer;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 
@@ -30,9 +32,13 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
 
     private static final Annal LOGGER = Annal.get(WallInquirer.class);
 
-    private static final Node<JsonObject> NODE = Instance.singleton(ZeroUniform.class);
+    private static final Node<JsonObject> NODE =
+            Instance.singleton(ZeroUniform.class);
 
     private static final String KEY = "secure";
+
+    private transient final Transformer<Cliff> transformer =
+            Instance.singleton(WallTransformer.class);
 
     @Override
     public Set<Cliff> scan(final Set<Class<?>> walls) {
@@ -44,14 +50,14 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
         if (!wallClses.isEmpty()) {
             // It means that you have set Wall and enable security configuration
             // wallClses verification
-            this.verify(wallClses);
-
+            final JsonObject config = this.verify(wallClses);
+            wallSet.add(this.transformer.transform(config));
         }
         /** 3. Transfer **/
         return wallSet;
     }
 
-    private void verify(final Set<Class<?>> wallClses) {
+    private JsonObject verify(final Set<Class<?>> wallClses) {
         /** Wall duplicated **/
         final Set<String> hashs = new HashSet<>();
         final ConcurrentMap<String, Class<?>> keys = new ConcurrentHashMap<>();
@@ -79,6 +85,7 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                     WallKeyMissingException.class, getClass(),
                     key, keys.get(key));
         }
+        return config;
     }
 
     /**

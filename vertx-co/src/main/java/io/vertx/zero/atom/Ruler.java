@@ -123,6 +123,9 @@ public class Ruler {
                 // Typed
                 reference = Instance.singleton(TypedInsurer.class);
                 reference.flumen(data, rule);
+                // Forbidden
+                reference = Instance.singleton(ForbiddenInsurer.class);
+                reference.flumen(data, rule);
             }
         }, input, rule);
     }

@@ -29,7 +29,6 @@ public class WebBase extends WebTestBase {
         return list.get(0);
     }
 
-
     private static final ConcurrentMap<Integer, HttpServerOptions>
             SERVERS = ZeroGrid.getServerOptions();
     private static final ConcurrentMap<Integer, AtomicInteger>
@@ -41,6 +40,7 @@ public class WebBase extends WebTestBase {
         }
     };
 
+    @SuppressWarnings("unchecked")
     protected void start() {
         /** 1.Get the default HttpServer Options **/
         SERVERS.forEach((port, option) -> {

@@ -1,4 +1,4 @@
-package io.vertx.up.secure.cliff;
+package io.vertx.up.plugin.mongo;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.mongo.MongoAuth;
@@ -8,12 +8,13 @@ import io.vertx.up.atom.secure.Cliff;
 import io.vertx.up.eon.em.WallType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.atom.Ruler;
 import io.vertx.zero.marshal.Transformer;
 
-public class MongoWallTransformer implements Transformer<Cliff> {
+public class MongoRampart implements Transformer<Cliff> {
 
-    private static final Annal LOGGER = Annal.get(MongoWallTransformer.class);
+    private static final Annal LOGGER = Annal.get(MongoRampart.class);
 
     @Override
     public Cliff transform(final JsonObject input) {
@@ -24,6 +25,8 @@ public class MongoWallTransformer implements Transformer<Cliff> {
         cliff.setUser(MongoUser.class);
         cliff.setProvider(MongoAuth.class);
         cliff.setHandler(BasicAuthHandler.class);
+        cliff.setSecreter(Instance.singleton(MongoSecreter.class));
+        // Config
         cliff.setConfig(input.getJsonObject("config"));
         return cliff;
     }

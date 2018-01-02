@@ -11,13 +11,13 @@ public class MongoKeeper {
 
     @Authenticate
     public User authenticate(final JsonObject input) {
-
+        System.out.println(input);
         return null;
     }
 
     @Authorize
-    public boolean authorize() {
-
+    public boolean authorize(final User user) {
+        System.out.println(user);
         return true;
     }
 }

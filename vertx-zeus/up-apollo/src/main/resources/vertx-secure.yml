@@ -2,8 +2,6 @@ secure:
   # Standard Type
   mongo:
     type: mongo
-    user: XXXX
-    provider: XXX
     config:
       collection:
       username:
@@ -11,10 +9,3 @@ secure:
       permission:
       role:
       salt:
-  # User Type
-  other:
-    provider: XXXXX
-    handler: XXXXX
-    user: XXXXX
-    config:
-      # Custom Definition

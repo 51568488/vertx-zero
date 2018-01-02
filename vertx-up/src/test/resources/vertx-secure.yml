@@ -1,7 +1,6 @@
 secure:
   key2:
     type: mongo
-    user: XXXX
     config:
       collection:
       username:
@@ -11,6 +10,5 @@ secure:
       salt:
   key:
     type: mongo
-    user: XXXX
     config:
       test: test

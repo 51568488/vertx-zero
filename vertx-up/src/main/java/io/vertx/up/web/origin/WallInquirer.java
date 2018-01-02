@@ -50,26 +50,32 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
         if (!wallClses.isEmpty()) {
             // It means that you have set Wall and enable security configuration
             // wallClses verification
-            final JsonObject config = this.verify(wallClses);
+            final ConcurrentMap<String, Class<?>> keys = new ConcurrentHashMap<>();
+            final JsonObject config = this.verify(wallClses, keys);
             for (final String field : config.fieldNames()) {
                 // Difference key setting
-                wallSet.add(this.transformer.transform(config.getJsonObject(field)));
+                final Class<?> cls = keys.get(field);
+                final Cliff cliff = this.transformer.transform(config.getJsonObject(field));
+                // Set Information from class
+                injectData(cliff, cls);
+                wallSet.add(cliff);
             }
         }
         /** 3. Transfer **/
         return wallSet;
     }
 
-    private JsonObject verify(final Set<Class<?>> wallClses) {
+
+    private JsonObject verify(final Set<Class<?>> wallClses,
+                              final ConcurrentMap<String, Class<?>> keysRef) {
         /** Wall duplicated **/
         final Set<String> hashs = new HashSet<>();
-        final ConcurrentMap<String, Class<?>> keys = new ConcurrentHashMap<>();
         Observable.fromIterable(wallClses)
                 .filter(Objects::nonNull)
                 .map(item -> {
                     final Annotation annotation = item.getAnnotation(Wall.class);
                     // Add configuration key into keys;
-                    keys.put(Instance.invoke(annotation, "value"), item);
+                    keysRef.put(Instance.invoke(annotation, "value"), item);
                     return this.hashPath(annotation);
                 }).subscribe(hashs::add);
         // Duplicated adding.
@@ -83,12 +89,18 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                 KEY, config);
         /** Wall key missing **/
         final JsonObject hitted = config.getJsonObject(KEY);
-        for (final String key : keys.keySet()) {
+        for (final String key : keysRef.keySet()) {
             Fn.flingUp(null == hitted || !hitted.containsKey(key), LOGGER,
                     WallKeyMissingException.class, getClass(),
-                    key, keys.get(key));
+                    key, keysRef.get(key));
         }
-        return config.getJsonObject(KEY);
+        return hitted;
+    }
+
+    private void injectData(final Cliff cliff, final Class<?> clazz) {
+        final Annotation annotation = clazz.getAnnotation(Wall.class);
+        cliff.setOrder(Instance.invoke(annotation, "order"));
+        cliff.setPath(Instance.invoke(annotation, "path"));
     }
 
     /**

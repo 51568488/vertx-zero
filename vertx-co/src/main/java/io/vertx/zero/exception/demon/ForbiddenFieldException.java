@@ -13,6 +13,6 @@ public class ForbiddenFieldException extends DemonException {
 
     @Override
     public int getCode() {
-        return -10007;
+        return -10006;
     }
 }

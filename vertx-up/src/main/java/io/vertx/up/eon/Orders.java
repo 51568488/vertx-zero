@@ -33,17 +33,17 @@ public interface Orders {
      * Secure
      * 1,600,000
      */
-    int SECURE = 1600000;
+    int SESSION = 1600000;
     /**
      * Session
      * 1,700,000
      */
-    int SESSION = 1700000;
+    int USER_SESSION = 1700000;
     /**
      * User Session
      * 1,800,000
      */
-    int USER_SESSION = 1800000;
+    int SECURE = 1800000;
     /**
      * Filter for request
      * 1,900,000

@@ -20,6 +20,10 @@
                     <groupId>io.vertx</groupId>
                     <artifactId>vertx-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-auth-common</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>

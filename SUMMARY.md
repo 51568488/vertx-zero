@@ -3,6 +3,7 @@
 ## Zero Doc
 
 * [Vertx Zero Up Framework](README.md)
+  * [0 - Official Document](doc/0-offical-document.md)
   * [1 - Getting Start](doc/zero-starter.md)
   * [2 - Environment](doc/2-environment.md)
     * [2.1 - Docker Environment](doc/zero-docker.md)
@@ -31,8 +32,6 @@
     * [8.1 - How to define Web Exception](doc/zero-error.md)
     * [8.2 - How to validate request \( JSR 303 with Hibernate-Validator \)](doc/zero-validate.md)
     * [8.3 - Advanced Validation \( Rule for @BodyParam \)](doc/zero-verify.md)
-  * 9 - Security
-    * [9.1 - Enable Basic Authorization](doc/91-enable-basic-authorization.md)
 
 ## Useful Related Documents
 
@@ -41,6 +40,4 @@
 * [1 - RxJs](doc/rxjs/README.md)
   * [1.1 - Basic Programming](doc/rxjs/11-streams.md)
   * [1.2 - Time & Space](doc/rxjs/12-time-and-space.md)
-
-
 

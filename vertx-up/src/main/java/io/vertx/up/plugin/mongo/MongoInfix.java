@@ -40,4 +40,8 @@ public class MongoInfix implements Infix {
     public MongoClient get() {
         return CLIENTS.get(NAME);
     }
+
+    public static MongoClient getClient() {
+        return CLIENTS.get(NAME);
+    }
 }

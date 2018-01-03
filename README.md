@@ -83,16 +83,8 @@ Once the Zero is up, you can see following logs in your console \( The default p
    1. [How to define WebException](doc/zero-error.md)
    2. [How to validate request \( JSR 303 with Hibernate-Validator \)](doc/zero-validate.md)
    3. [Advanced Validation \( Rule for @BodyParam \)](doc/zero-verify.md)
-9. Function style \( Fn \)
-   1. [Function Programming: fling](doc/zero-fling.md)
-   2. [Function Programming: safe](doc/zero-safe.md)
-   3. [Function Programming: trans, shunt](doc/zero-trans-shunt.md)
-   4. [Function Programming: get](doc/zero-get.md)
-   5. [Function Programming: it](doc/zero-it.md)
-   6. [Function Programming: pool/packet/zipper](doc/zero-pool.md)
-   7. [Function Programming: nullFlow](doc/zero-flow.md)
-10. Security Authorization
-    1. 
+9. Security
+   1. [Enable Basic Authorization](/doc/91-enable-basic-authorization.md)
 
 ### 3.2. Useful Related Documents
 

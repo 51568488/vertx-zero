@@ -2,26 +2,27 @@ package io.vertx.up.web.origin;
 
 import io.reactivex.Observable;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.annotations.Authenticate;
-import io.vertx.up.annotations.Authorize;
 import io.vertx.up.annotations.Wall;
 import io.vertx.up.atom.secure.Cliff;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.secure.Rampart;
+import io.vertx.up.secure.inquire.OstiumAuth;
+import io.vertx.up.secure.inquire.PhylumAuth;
 import io.vertx.up.tool.Codec;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.exception.DynamicKeyMissingException;
 import io.vertx.zero.exception.WallDuplicatedException;
 import io.vertx.zero.exception.WallKeyMissingException;
-import io.vertx.zero.exception.WallMethodMultiException;
 import io.vertx.zero.marshal.Transformer;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -49,8 +50,10 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                 .filter((item) -> item.isAnnotationPresent(Wall.class))
                 .collect(Collectors.toSet());
         if (!wallClses.isEmpty()) {
-            // It means that you have set Wall and enable security configuration
-            // wallClses verification
+            /**
+             * It means that you have set Wall and enable security configuration
+             * wallClses verification
+             */
             final ConcurrentMap<String, Class<?>> keys = new ConcurrentHashMap<>();
             final JsonObject config = this.verify(wallClses, keys);
             for (final String field : config.fieldNames()) {
@@ -58,7 +61,7 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                 final Class<?> cls = keys.get(field);
                 final Cliff cliff = this.transformer.transform(config.getJsonObject(field));
                 // Set Information from class
-                injectData(cliff, cls);
+                mountData(cliff, cls);
                 wallSet.add(cliff);
             }
         }
@@ -66,7 +69,33 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
         return wallSet;
     }
 
+    private void mountData(final Cliff cliff, final Class<?> clazz) {
+        /** Extract basic data **/
+        mountAnno(cliff, clazz);
+        /** Proxy **/
+        if (cliff.isDefined()) {
+            // Custom Workflow
+            OstiumAuth.create(clazz)
+                    .verify().mount(cliff);
+        } else {
+            // Standard Workflow
+            PhylumAuth.create(clazz)
+                    .verify().mount(cliff);
+        }
+    }
 
+    private void mountAnno(final Cliff cliff, final Class<?> clazz) {
+        final Annotation annotation = clazz.getAnnotation(Wall.class);
+        cliff.setOrder(Instance.invoke(annotation, "order"));
+        cliff.setPath(Instance.invoke(annotation, "path"));
+        cliff.setDefined(Instance.invoke(annotation, "define"));
+    }
+
+    /**
+     * @param wallClses
+     * @param keysRef
+     * @return
+     */
     private JsonObject verify(final Set<Class<?>> wallClses,
                               final ConcurrentMap<String, Class<?>> keysRef) {
         /** Wall duplicated **/
@@ -79,15 +108,18 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                     keysRef.put(Instance.invoke(annotation, "value"), item);
                     return this.hashPath(annotation);
                 }).subscribe(hashs::add);
+        
         // Duplicated adding.
         Fn.flingUp(hashs.size() != wallClses.size(), LOGGER,
                 WallDuplicatedException.class, getClass(),
                 wallClses.stream().map(Class::getName).collect(Collectors.toSet()));
+
         /** Shared key does not existing **/
         final JsonObject config = NODE.read();
         Fn.flingUp(!config.containsKey(KEY), LOGGER,
                 DynamicKeyMissingException.class, getClass(),
                 KEY, config);
+
         /** Wall key missing **/
         final JsonObject hitted = config.getJsonObject(KEY);
         for (final String key : keysRef.keySet()) {
@@ -96,46 +128,6 @@ public class WallInquirer implements Inquirer<Set<Cliff>> {
                     key, keysRef.get(key));
         }
         return hitted;
-    }
-
-    private void injectData(final Cliff cliff, final Class<?> clazz) {
-        final Annotation annotation = clazz.getAnnotation(Wall.class);
-        cliff.setOrder(Instance.invoke(annotation, "order"));
-        cliff.setPath(Instance.invoke(annotation, "path"));
-        /** Proxy **/
-        cliff.setProxy(Instance.instance(clazz));
-        /** Find special method **/
-        final Method[] methods = clazz.getDeclaredMethods();
-        // Duplicated Method checking
-        Fn.flingUp(verifyMethod(methods, Authenticate.class), LOGGER,
-                WallMethodMultiException.class, getClass(),
-                Authenticate.class.getSimpleName(), clazz.getName());
-        Fn.flingUp(verifyMethod(methods, Authorize.class), LOGGER,
-                WallMethodMultiException.class, getClass(),
-                Authorize.class.getSimpleName(), clazz.getName());
-        // Find the first: Authenticate
-        final Optional<Method> authenticateMethod
-                = Arrays.stream(methods).filter(
-                item -> item.isAnnotationPresent(Authenticate.class))
-                .findFirst();
-        cliff.setAuthenticate(authenticateMethod.orElse(null));
-        // Find the second: Authorize
-        final Optional<Method> authorizeMethod
-                = Arrays.stream(methods).filter(
-                item -> item.isAnnotationPresent(Authorize.class))
-                .findFirst();
-        cliff.setAuthorize(authorizeMethod.orElse(null));
-    }
-
-    private boolean verifyMethod(final Method[] methods,
-                                 final Class<? extends Annotation> clazz) {
-
-        final long found = Arrays.stream(methods)
-                .filter(method -> method.isAnnotationPresent(clazz))
-                .count();
-        // If found = 0, 1, OK
-        // If > 1, duplicated
-        return 1 < found;
     }
 
     /**

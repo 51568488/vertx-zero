@@ -1,11 +1,7 @@
 package io.vertx.up.rs.hunt;
 
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.auth.AuthProvider;
-import io.vertx.ext.auth.User;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.atom.Envelop;
@@ -121,31 +117,6 @@ public abstract class BaseAim {
                                   final Depot depot) {
         final Object[] args = buildArgs(context, depot.getEvent());
         // Execute web flow and uniform call.
-        // TODO: Mono User
-        context.setUser(new User() {
-            @Override
-            public User isAuthorized(final String authority, final Handler<AsyncResult<Boolean>> resultHandler) {
-                return null;
-            }
-
-            @Override
-            public User clearCache() {
-                return null;
-            }
-
-            @Override
-            public JsonObject principal() {
-                final JsonObject data = new JsonObject();
-                data.put(ID.Header.USER, context.request().getHeader(ID.Header.USER));
-                data.put(ID.Header.ROLE, context.request().getHeader(ID.Header.ROLE));
-                return data;
-            }
-
-            @Override
-            public void setAuthProvider(final AuthProvider authProvider) {
-
-            }
-        });
         Flower.executeRequest(context, rulers, depot, args, verifier());
     }
 }

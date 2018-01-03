@@ -72,7 +72,6 @@ class Zero {
         } catch (final ZeroException ex) {
             LOGGER.zero(ex);
         } catch (final ZeroRunException ex) {
-            // Throw out customed exception only.
             throw ex;
         } catch (final Throwable ex) {
             LOGGER.jvm(ex);

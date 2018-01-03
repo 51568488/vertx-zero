@@ -12,9 +12,9 @@ import io.vertx.up.rs.Axis;
 import io.vertx.up.rs.Sentry;
 import io.vertx.up.rs.dispatch.ModeSplitter;
 import io.vertx.up.rs.dispatch.StandardVerifier;
-import io.vertx.up.rs.hunt.FailureEndurer;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
+import io.vertx.up.web.failure.CommonEndurer;
 
 import java.util.Set;
 
@@ -79,7 +79,7 @@ public class EventAxis implements Axis<Router> {
                          */
                         route.handler(this.verifier.signal(depot))
                                 .handler(aim.attack(event))
-                                .failureHandler(FailureEndurer.create());
+                                .failureHandler(CommonEndurer.create());
                     });
         });
     }

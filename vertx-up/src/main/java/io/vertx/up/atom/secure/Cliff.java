@@ -7,7 +7,6 @@ import io.vertx.up.tool.Compare;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * Secure class container for special class extraction.
@@ -42,20 +41,6 @@ public class Cliff implements Serializable, Comparable<Cliff> {
      * 403: Authorize method
      */
     private Method authorize;
-    /**
-     * Generate Handler
-     */
-    private Supplier handler;
-
-    @SuppressWarnings("unchecked")
-    public <T> Supplier<T> getHandler() {
-        return this.handler;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> void setHandler(final Supplier<T> handler) {
-        this.handler = handler;
-    }
 
     public String getPath() {
         return this.path;

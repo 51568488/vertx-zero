@@ -51,7 +51,7 @@ abstract class AuthorizationAuthPhylum extends AuthPhylum {
         final String authorization = request.headers().get(HttpHeaders.AUTHORIZATION);
 
         if (authorization == null) {
-            // The modification for default
+            // The modification for default implementation in vert.x
             handler.handle(Future.failedFuture(this.UNAUTHORIZED));
             return;
         }

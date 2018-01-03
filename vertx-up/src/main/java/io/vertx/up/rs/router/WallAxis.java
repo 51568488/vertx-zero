@@ -96,8 +96,8 @@ public class WallAxis implements Axis<Router> {
         return Fn.getJvm(() -> {
             JsonObject config = cliff.getConfig();
             config = null == config ? new JsonObject() : config;
-            final Object reference = cliff.getAuthenticate().invoke(cliff.getProxy(), config);
+            final Object reference = cliff.getAuthorizer().getAuthenticate().invoke(cliff.getProxy(), config);
             return null == reference ? null : (AuthHandler) reference;
-        }, cliff, cliff.getProxy(), cliff.getAuthenticate());
+        }, cliff, cliff.getProxy(), cliff.getAuthorizer(), cliff.getAuthorizer().getAuthenticate());
     }
 }

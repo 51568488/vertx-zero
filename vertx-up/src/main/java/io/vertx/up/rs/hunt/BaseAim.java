@@ -117,7 +117,6 @@ public abstract class BaseAim {
                                   final Depot depot) {
         final Object[] args = buildArgs(context, depot.getEvent());
         // Execute web flow and uniform call.
-        System.out.println(context.user());
         Flower.executeRequest(context, rulers, depot, args, verifier());
     }
 }

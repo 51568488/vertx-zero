@@ -1,4 +1,4 @@
-package io.vertx.up.rs.hunt;
+package io.vertx.up.web.failure;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
@@ -6,20 +6,20 @@ import io.vertx.ext.web.RoutingContext;
 /**
  * Common handler to handle failure
  */
-public class FailureEndurer implements Handler<RoutingContext> {
+public class CommonEndurer implements Handler<RoutingContext> {
 
     public static Handler<RoutingContext> create() {
-        return new FailureEndurer();
+        return new CommonEndurer();
     }
 
-    private FailureEndurer() {
+    private CommonEndurer() {
     }
 
     @Override
     public void handle(final RoutingContext event) {
         if (event.failed()) {
-            final Throwable ex = event.failure();
-            ex.printStackTrace();
+            System.out.println(event.data());
+            event.failure().printStackTrace();
         }
     }
 }

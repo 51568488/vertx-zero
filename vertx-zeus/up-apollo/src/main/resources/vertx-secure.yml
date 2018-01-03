@@ -3,6 +3,5 @@ secure:
   mongo:
     type: mongo
     config:
-      collection: DB_USER
-      username: username
-      password: password
+      collectionName: DB_USER
+      saltStyle: NO_SALT

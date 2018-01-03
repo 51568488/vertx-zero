@@ -2,12 +2,12 @@ package io.vertx.up.atom.secure;
 
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.eon.em.WallType;
-import io.vertx.up.secure.Secreter;
 import io.vertx.up.tool.Compare;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * Secure class container for special class extraction.
@@ -31,18 +31,6 @@ public class Cliff implements Serializable, Comparable<Cliff> {
      */
     private WallType type;
     /**
-     * AuthHandler class
-     */
-    private Class<?> handler;
-    /**
-     * Provider class
-     */
-    private Class<?> provider;
-    /**
-     * User class
-     */
-    private Class<?> user;
-    /**
      * Proxy instance
      */
     private Object proxy;
@@ -55,9 +43,19 @@ public class Cliff implements Serializable, Comparable<Cliff> {
      */
     private Method authorize;
     /**
-     * Reference for secreter
+     * Generate Handler
      */
-    private Secreter secreter;
+    private Supplier handler;
+
+    @SuppressWarnings("unchecked")
+    public <T> Supplier<T> getHandler() {
+        return this.handler;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> void setHandler(final Supplier<T> handler) {
+        this.handler = handler;
+    }
 
     public String getPath() {
         return this.path;
@@ -91,22 +89,6 @@ public class Cliff implements Serializable, Comparable<Cliff> {
         this.type = type;
     }
 
-    public Class<?> getHandler() {
-        return this.handler;
-    }
-
-    public void setHandler(final Class<?> handler) {
-        this.handler = handler;
-    }
-
-    public Class<?> getProvider() {
-        return this.provider;
-    }
-
-    public void setProvider(final Class<?> provider) {
-        this.provider = provider;
-    }
-
     public Object getProxy() {
         return this.proxy;
     }
@@ -129,22 +111,6 @@ public class Cliff implements Serializable, Comparable<Cliff> {
 
     public void setAuthorize(final Method authorize) {
         this.authorize = authorize;
-    }
-
-    public Class<?> getUser() {
-        return this.user;
-    }
-
-    public void setUser(final Class<?> user) {
-        this.user = user;
-    }
-
-    public Secreter getSecreter() {
-        return this.secreter;
-    }
-
-    public void setSecreter(final Secreter secreter) {
-        this.secreter = secreter;
     }
 
     @Override
@@ -187,12 +153,9 @@ public class Cliff implements Serializable, Comparable<Cliff> {
                 ", order=" + this.order +
                 ", config=" + this.config +
                 ", type=" + this.type +
-                ", handler=" + this.handler +
-                ", provider=" + this.provider +
                 ", proxy=" + this.proxy +
                 ", authenticate=" + this.authenticate +
                 ", authorize=" + this.authorize +
-                ", user=" + this.user +
                 '}';
     }
 }

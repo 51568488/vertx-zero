@@ -91,6 +91,8 @@ Once the Zero is up, you can see following logs in your console \( The default p
    5. [Function Programming: it](doc/zero-it.md)
    6. [Function Programming: pool/packet/zipper](doc/zero-pool.md)
    7. [Function Programming: nullFlow](doc/zero-flow.md)
+10. Security Authorization
+    1. 
 
 ### 3.2. Useful Related Documents
 

@@ -4,7 +4,6 @@ import io.vertx.core.MultiMap;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
-import io.vertx.up.eon.ID;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
@@ -150,11 +149,11 @@ public class Envelop implements Serializable {
      *
      * @return
      */
-    public String identifier() {
+    public String identifier(final String field) {
         return Fn.getJvm(Strings.EMPTY, () -> {
             final JsonObject credential = this.user.principal();
-            return Fn.getSemi(null != credential && credential.containsKey(ID.Header.USER),
-                    () -> credential.getString(ID.Header.USER),
+            return Fn.getSemi(null != credential && credential.containsKey(field),
+                    () -> credential.getString(field),
                     () -> Strings.EMPTY);
         }, this.user);
     }

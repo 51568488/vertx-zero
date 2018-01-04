@@ -68,10 +68,12 @@
         <jersey.version>2.26</jersey.version>
         <javax.el.version>3.0.1-b04</javax.el.version>
         <glassfish.el.version>3.0.1-b09</glassfish.el.version>
+
         <!-- Database Needed -->
         <hikari.cp.version>2.7.4</hikari.cp.version>
         <jooq.version>3.10.2</jooq.version>
         <vertx.jooq.version>2.4.1</vertx.jooq.version>
+        <vertx.jooq.async.version>0.4</vertx.jooq.async.version>
         <mysql.version>8.0.8-dmr</mysql.version>
 
         <reflect.asm.version>1.11.3</reflect.asm.version>
@@ -172,6 +174,12 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/io.github.jklingsporn/vertx-jooq-async-future -->
+            <dependency>
+                <groupId>io.github.jklingsporn</groupId>
+                <artifactId>vertx-jooq-async-future</artifactId>
+                <version>${vertx.jooq.async.version}</version>
+            </dependency>
             <!-- http://mvnrepository.com/artifact/io.github.jklingsporn/vertx-jooq-future -->
             <dependency>
                 <groupId>io.github.jklingsporn</groupId>

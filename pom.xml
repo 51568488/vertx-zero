@@ -74,7 +74,7 @@
         <jooq.version>3.10.2</jooq.version>
         <vertx.jooq.version>2.4.1</vertx.jooq.version>
         <vertx.jooq.async.version>0.4</vertx.jooq.async.version>
-        <mysql.version>8.0.8-dmr</mysql.version>
+        <mysql.version>5.1.45</mysql.version>
 
         <reflect.asm.version>1.11.3</reflect.asm.version>
         <asm.version>6.0</asm.version>

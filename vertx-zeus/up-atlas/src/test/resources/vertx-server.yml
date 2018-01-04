@@ -1,0 +1,6 @@
+server:
+- name: up-apollo
+  type: http
+  config:
+    port: 6800
+    host: 0.0.0.0

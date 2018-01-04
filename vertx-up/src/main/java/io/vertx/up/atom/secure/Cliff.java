@@ -5,7 +5,6 @@ import io.vertx.up.eon.em.WallType;
 import io.vertx.up.tool.Compare;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.Objects;
 
 /**
@@ -34,13 +33,35 @@ public class Cliff implements Serializable, Comparable<Cliff> {
      */
     private Object proxy;
     /**
-     * 401: Authenticate method
+     * defined = false
+     * Standard Authorization
      */
-    private Method authenticate;
+    private final Phylum authorizer = new Phylum();
     /**
-     * 403: Authorize method
+     * defined = true
+     * Custom Authorization
      */
-    private Method authorize;
+    private final Ostium authorizor = new Ostium();
+    /**
+     * User-Defined authorization
+     */
+    private boolean defined = false;
+
+    public Phylum getAuthorizer() {
+        return this.authorizer;
+    }
+
+    public Ostium getAuthorizor() {
+        return this.authorizor;
+    }
+
+    public boolean isDefined() {
+        return this.defined;
+    }
+
+    public void setDefined(final boolean defined) {
+        this.defined = defined;
+    }
 
     public String getPath() {
         return this.path;
@@ -80,22 +101,6 @@ public class Cliff implements Serializable, Comparable<Cliff> {
 
     public void setProxy(final Object proxy) {
         this.proxy = proxy;
-    }
-
-    public Method getAuthenticate() {
-        return this.authenticate;
-    }
-
-    public void setAuthenticate(final Method authenticate) {
-        this.authenticate = authenticate;
-    }
-
-    public Method getAuthorize() {
-        return this.authorize;
-    }
-
-    public void setAuthorize(final Method authorize) {
-        this.authorize = authorize;
     }
 
     @Override
@@ -139,8 +144,7 @@ public class Cliff implements Serializable, Comparable<Cliff> {
                 ", config=" + this.config +
                 ", type=" + this.type +
                 ", proxy=" + this.proxy +
-                ", authenticate=" + this.authenticate +
-                ", authorize=" + this.authorize +
+                ", defined=" + this.defined +
                 '}';
     }
 }

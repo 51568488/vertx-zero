@@ -8,7 +8,7 @@ import io.vertx.up.annotations.Wall;
 import io.vertx.up.plugin.mongo.MongoInfix;
 import io.vertx.up.secure.handler.BasicOstium;
 
-@Wall("mongo")
+@Wall(value = "mongo", path = "/exp4/*")
 public class MongoKeeper {
 
     @Authenticate

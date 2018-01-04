@@ -1,5 +1,5 @@
 zero:
-  lime: etcd
+  lime: etcd, pool
   vertx:
     clustered:
       enabled: false

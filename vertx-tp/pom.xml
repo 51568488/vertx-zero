@@ -57,27 +57,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>io.github.jklingsporn</groupId>
-            <artifactId>vertx-jooq-future</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.vertx</groupId>
-                    <artifactId>vertx-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- jooq -->
-        <dependency>
-            <groupId>io.github.jklingsporn</groupId>
-            <artifactId>vertx-jooq-generate</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.vertx</groupId>
-                    <artifactId>vertx-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <!-- Micro Service -->
         <dependency>
             <groupId>io.vertx</groupId>
@@ -111,18 +90,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- MySql Client -->
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-jdbc-client</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.vertx</groupId>
-                    <artifactId>vertx-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <!-- Grpc -->
         <dependency>
             <groupId>io.vertx</groupId>

@@ -185,6 +185,11 @@
                 <artifactId>vertx-jooq-async-generate</artifactId>
                 <version>${vertx.jooq.async.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.github.jklingsporn</groupId>
+                <artifactId>vertx-jooq-async-shared</artifactId>
+                <version>${vertx.jooq.async.version}</version>
+            </dependency>
             <!-- http://mvnrepository.com/artifact/io.github.jklingsporn/vertx-jooq-future -->
             <dependency>
                 <groupId>io.github.jklingsporn</groupId>

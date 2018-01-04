@@ -71,6 +71,7 @@
         <!-- Database Needed -->
         <hikari.cp.version>2.7.4</hikari.cp.version>
         <jooq.version>3.10.2</jooq.version>
+        <vertx.jooq.version>2.4.1</vertx.jooq.version>
         <mysql.version>8.0.8-dmr</mysql.version>
 
         <reflect.asm.version>1.11.3</reflect.asm.version>
@@ -171,6 +172,17 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <!-- http://mvnrepository.com/artifact/io.github.jklingsporn/vertx-jooq-future -->
+            <dependency>
+                <groupId>io.github.jklingsporn</groupId>
+                <artifactId>vertx-jooq-future</artifactId>
+                <version>${vertx.jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.jklingsporn</groupId>
+                <artifactId>vertx-jooq-generate</artifactId>
+                <version>${vertx.jooq.version}</version>
+            </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
@@ -604,6 +616,12 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- http://mvnrepository.com/artifact/org.jooq/jooq-codegen-maven -->
+                <plugin>
+                    <groupId>org.jooq</groupId>
+                    <artifactId>jooq-codegen-maven</artifactId>
+                    <version>${jooq.version}</version>
+                </plugin>
                 <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

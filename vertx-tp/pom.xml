@@ -47,8 +47,17 @@
         </dependency>
         <!-- JooQ -->
         <dependency>
+            <groupId>io.github.jklingsporn</groupId>
+            <artifactId>vertx-jooq-future</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen</artifactId>
+        </dependency>
+        <!-- jooq -->
+        <dependency>
+            <groupId>io.github.jklingsporn</groupId>
+            <artifactId>vertx-jooq-generate</artifactId>
         </dependency>
         <!-- Micro Service -->
         <dependency>

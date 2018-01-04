@@ -1,4 +1,4 @@
-package io.vertx.tp.atom;
+package io.vertx.tp.feign;
 
 import io.vertx.ext.unit.TestContext;
 import io.vertx.quiz.ZeroBase;

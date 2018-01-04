@@ -1,4 +1,4 @@
-package io.vertx.tp.atom;
+package io.vertx.tp.feign;
 
 import feign.Feign;
 import feign.Request;

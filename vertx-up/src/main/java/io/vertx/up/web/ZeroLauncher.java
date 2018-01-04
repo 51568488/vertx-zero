@@ -33,7 +33,7 @@ public class ZeroLauncher implements Launcher<Vertx> {
     private void startStandalone(final Consumer<Vertx> consumer) {
         Motor.each((name, option) -> {
             final Vertx vertx = Vertx.vertx(option);
-
+            
             Motor.codec(vertx.eventBus());
 
             VERTX.putIfAbsent(name, vertx);

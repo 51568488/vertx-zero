@@ -49,11 +49,20 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-mysql-postgresql-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!-- JooQ -->
         <dependency>
             <groupId>io.github.jklingsporn</groupId>
-            <artifactId>vertx-jooq-async-future</artifactId>
-            <version>${vertx.jooq.async.version}</version>
+            <artifactId>vertx-jooq-future</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>io.vertx</groupId>
@@ -63,8 +72,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.jklingsporn</groupId>
-            <artifactId>vertx-jooq-async-generate</artifactId>
-            <version>${vertx.jooq.async.version}</version>
+            <artifactId>vertx-jooq-generate</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>io.vertx</groupId>

@@ -26,13 +26,11 @@ public class JooqInfix implements Infix {
             = new ConcurrentHashMap<>();
     private static final ConcurrentMap<String, Configuration> CONFIGS
             = new ConcurrentHashMap<>();
-    private static final ConcurrentMap<String, VertxDAO> DAOS
+    private static final ConcurrentMap<String, Object> DAOS
             = new ConcurrentHashMap<>();
-    private static Vertx vertxRef;
 
     private static void initInternal(final Vertx vertx,
                                      final String name) {
-        vertxRef = vertx;
         // Initialized client
         Fn.pool(CLIENTS, name,
                 () -> Infix.init(Plugins.Infix.JOOQ,
@@ -42,7 +40,7 @@ public class JooqInfix implements Infix {
         // Initialized default configuration
         Fn.pool(CONFIGS, name, () -> {
             final Configuration configuration = new DefaultConfiguration();
-            configuration.set(SQLDialect.MYSQL_8_0);
+            configuration.set(SQLDialect.MYSQL);
             return configuration;
         });
     }
@@ -60,12 +58,13 @@ public class JooqInfix implements Infix {
         return CLIENTS.get(NAME);
     }
 
-    public static VertxDAO getDao(final Class<?> clazz) {
-        return Fn.pool(DAOS, clazz.getName(), () -> {
-            final Configuration configuration = CONFIGS.get(NAME);
+    public static <T extends VertxDAO> T getDao(final Class<T> clazz) {
+        final Object reference = Fn.pool(DAOS, clazz.getName(), () -> {
+            final Configuration configuration = CONFIGS.get(clazz.getName());
             final VertxDAO dao = Instance.instance(clazz, configuration);
             dao.setClient(getClient());
             return dao;
         });
+        return (T) reference;
     }
 }

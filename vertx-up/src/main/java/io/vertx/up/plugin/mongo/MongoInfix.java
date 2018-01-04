@@ -38,7 +38,7 @@ public class MongoInfix implements Infix {
 
     @Override
     public MongoClient get() {
-        return CLIENTS.get(NAME);
+        return getClient();
     }
 
     public static MongoClient getClient() {

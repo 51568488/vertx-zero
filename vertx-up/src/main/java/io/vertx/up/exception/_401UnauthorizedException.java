@@ -10,7 +10,7 @@ public class _401UnauthorizedException extends WebException {
 
     @Override
     public int getCode() {
-        return -40012;
+        return -60012;
     }
 
     @Override

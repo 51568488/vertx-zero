@@ -10,7 +10,7 @@ public class _403ForbiddenException extends WebException {
 
     @Override
     public int getCode() {
-        return -40013;
+        return -60013;
     }
 
     @Override

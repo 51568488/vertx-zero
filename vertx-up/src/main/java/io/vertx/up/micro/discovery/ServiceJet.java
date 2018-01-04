@@ -5,21 +5,24 @@ import io.vertx.circuitbreaker.CircuitBreakerOptions;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.*;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
+import io.vertx.servicediscovery.ServiceReference;
 import io.vertx.servicediscovery.types.HttpEndpoint;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception._404ServiceNotFoundException;
+import io.vertx.up.exception._405MethodForbiddenException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.matcher.Arithmetic;
 import io.vertx.up.micro.matcher.CommonArithmetic;
 import io.vertx.up.rs.hunt.Answer;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.zero.eon.Strings;
 import io.vertx.zero.marshal.Visitor;
 import io.vertx.zero.micro.config.CircuitVisitor;
 
@@ -70,10 +73,12 @@ public class ServiceJet {
                     // Complete actions.
                     if (null == hitted) {
                         // Service Not Found ( 404 )
-                        replyError(context);
+                        reply404Error(context);
                     } else {
+                        System.out.println(hitted);
                         // Find record, dispatch request
-                        System.out.println(hitted.toJson());
+                        final ServiceReference reference = this.discovery.getReference(hitted);
+                        doRequest(context, reference);
                     }
                     future.complete();
                 } else {
@@ -84,15 +89,77 @@ public class ServiceJet {
         };
     }
 
+    private void doRequest(final RoutingContext context, final ServiceReference reference) {
+        Fn.safeJvm(() -> {
+            // HttpMethod:
+            final HttpMethod method = context.request().method();
+            final String targetUri = redirectUri(context);
+            final HttpClient client = reference.getAs(HttpClient.class);
+            // Final Response
+            final HttpClientRequest request = client.request(method, targetUri,
+                    response -> response.bodyHandler(handler -> {
+                        // Client = 404 -> Transfer to 405
+                        System.out.println(response.statusCode());
+                        if (404 == response.statusCode()) {
+                            reply405Error(context);
+                        } else {
+                            // Perfect Dispatching
+                            replySuccess(context.response(), response, handler);
+                        }
+                    }));
+            // Forward request -> Headers
+            request.headers().setAll(context.request().headers());
+            // Forward body
+            if (null == context.getBody()) {
+                request.end();
+            } else {
+                request.end(context.getBody());
+            }
+        }, LOGGER);
+    }
+
+    private void replySuccess(final HttpServerResponse response,
+                              final HttpClientResponse clientResponse,
+                              final Buffer buffer) {
+        final String data = buffer.toString();
+        // Copy header
+        response.headers().setAll(clientResponse.headers());
+        response.setStatusCode(clientResponse.statusCode());
+        response.setStatusMessage(clientResponse.statusMessage());
+        response.write(data);
+        response.end();
+    }
+
+    private String redirectUri(final RoutingContext event) {
+        final StringBuilder uri = new StringBuilder();
+        uri.append(event.request().path());
+        if (null != event.request().query()) {
+            uri.append(String.valueOf(Strings.QUESTION)).append(event.request().query());
+        }
+        return uri.toString();
+    }
+
     /**
      * Service Not Found ( 404 )
      *
      * @param context
      */
-    private void replyError(final RoutingContext context) {
+    private void reply404Error(final RoutingContext context) {
         final HttpServerRequest request = context.request();
         final WebException exception = new _404ServiceNotFoundException(getClass(), request.uri(),
                 request.method());
+        Answer.reply(context, Envelop.failure(exception));
+    }
+
+    /**
+     * Method not Allowed ( 405 )
+     *
+     * @param context
+     */
+    private void reply405Error(final RoutingContext context) {
+        final HttpServerRequest request = context.request();
+        final WebException exception = new _405MethodForbiddenException(getClass(), request.method(),
+                request.uri());
         Answer.reply(context, Envelop.failure(exception));
     }
 

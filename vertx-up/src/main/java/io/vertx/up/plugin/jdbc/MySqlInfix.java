@@ -35,6 +35,10 @@ public class MySqlInfix implements Infix {
 
     @Override
     public SQLClient get() {
+        return getClient();
+    }
+
+    public static SQLClient getClient() {
         return CLIENTS.get(NAME);
     }
 }

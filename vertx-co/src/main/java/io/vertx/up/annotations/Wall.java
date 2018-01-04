@@ -47,4 +47,17 @@ public @interface Wall {
      * @return
      */
     int order() default Values.ZERO;
+
+    /**
+     * Whether current authorization mode is user-defined
+     * 1. The default value is false, it means that you must implement AuthHandler method annotated with @Authenticate
+     * 2. If default value is true, you must implement tha phase method as following:
+     * Annotated with @Phase
+     * Phase(HEADER): JsonObject parse(MultiMap headers, JsonObject body)
+     * Phase(AUTHORIZE): void authorize(JsonObject, AsyncHandler<User>)
+     * Phase(ACCESS): User isAuthorized(String, Handler<AsyncResult<Boolean>> resultHandler)
+     *
+     * @return
+     */
+    boolean define() default false;
 }

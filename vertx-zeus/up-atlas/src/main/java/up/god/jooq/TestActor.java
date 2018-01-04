@@ -17,7 +17,6 @@ public class TestActor {
     @Path("/say")
     @GET
     public String sayHell(){
-        System.out.println(client);
         return "Hello Jooq";
     }
 }

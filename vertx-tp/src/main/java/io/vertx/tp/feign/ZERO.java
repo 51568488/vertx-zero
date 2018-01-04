@@ -1,4 +1,4 @@
-package io.vertx.tp.atom;
+package io.vertx.tp.feign;
 
 interface Info {
 

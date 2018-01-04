@@ -51,7 +51,7 @@ public class WallAxis implements Axis<Router> {
     @Override
     public void mount(final Router router) {
         // Session Global for Authorzation
-        router.route("/*").order(Orders.SESSION).handler(
+        router.route().order(Orders.SESSION).handler(
                 SessionHandler.create(LocalSessionStore.create(this.vertx))
         );
         Pool.WALL_MAP.forEach((path, cliffes) -> {

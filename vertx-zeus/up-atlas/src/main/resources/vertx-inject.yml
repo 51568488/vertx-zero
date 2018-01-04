@@ -1,1 +1,2 @@
-mysql: io.vertx.up.plugin.jdbc.MySqlInfix
+# mysql: io.vertx.up.plugin.jdbc.MySqlInfix
+jooq: io.vertx.tp.plugin.jooq.JooqInfix

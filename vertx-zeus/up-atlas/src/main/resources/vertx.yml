@@ -1,5 +1,5 @@
 zero:
-  lime: mysql
+  lime: jooq
   vertx:
     instance:
     - name: vx-zero

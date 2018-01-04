@@ -8,8 +8,12 @@
         <version>0.4.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <name>( Zero Mesh ) Atlas</name>
+    <name>( Zero Mesh ) Atlas - Jdbc</name>
     <artifactId>up-atlas</artifactId>
-
-
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+    </dependencies>
 </project>

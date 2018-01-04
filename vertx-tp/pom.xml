@@ -34,6 +34,22 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- Hikari Cp -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- JooQ -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+        </dependency>
         <!-- Micro Service -->
         <dependency>
             <groupId>io.vertx</groupId>

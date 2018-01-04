@@ -68,6 +68,10 @@
         <jersey.version>2.26</jersey.version>
         <javax.el.version>3.0.1-b04</javax.el.version>
         <glassfish.el.version>3.0.1-b09</glassfish.el.version>
+        <!-- Database Needed -->
+        <hikari.cp.version>2.7.4</hikari.cp.version>
+        <jooq.version>3.10.2</jooq.version>
+        <mysql.version>8.0.8-dmr</mysql.version>
 
         <reflect.asm.version>1.11.3</reflect.asm.version>
         <asm.version>6.0</asm.version>
@@ -165,6 +169,12 @@
                 <groupId>cn.vertxup</groupId>
                 <artifactId>vertx-up</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
             <dependency>
@@ -500,6 +510,28 @@
                 <groupId>org.reactivestreams</groupId>
                 <artifactId>reactive-streams</artifactId>
                 <version>${reactive.streams}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikari.cp.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.jooq/jooq-codegen -->
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-meta</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq</artifactId>
+                <version>${jooq.version}</version>
             </dependency>
             <!-- Netty -->
             <dependency>

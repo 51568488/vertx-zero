@@ -1,6 +1,7 @@
 package io.vertx.up.eon;
 
 import javax.inject.Inject;
+import javax.inject.infix.Jooq;
 import javax.inject.infix.Mongo;
 import javax.inject.infix.MySql;
 import java.lang.annotation.Annotation;
@@ -34,8 +35,10 @@ public interface Plugins {
 
         String MYSQL = "mysql";
 
+        String JOOQ = "jooq";
+
         String[] DATA = new String[]{
-                MONGO, MYSQL
+                MONGO, MYSQL, JOOQ
         };
     }
 
@@ -44,6 +47,7 @@ public interface Plugins {
                 {
                     put(Mongo.class, Infix.MONGO);
                     put(MySql.class, Infix.MYSQL);
+                    put(Jooq.class, Infix.JOOQ);
                 }
             };
 

@@ -75,7 +75,6 @@ public class ServiceJet {
                         // Service Not Found ( 404 )
                         reply404Error(context);
                     } else {
-                        System.out.println(hitted);
                         // Find record, dispatch request
                         final ServiceReference reference = this.discovery.getReference(hitted);
                         doRequest(context, reference);
@@ -99,7 +98,6 @@ public class ServiceJet {
             final HttpClientRequest request = client.request(method, targetUri,
                     response -> response.bodyHandler(handler -> {
                         // Client = 404 -> Transfer to 405
-                        System.out.println(response.statusCode());
                         if (404 == response.statusCode()) {
                             reply405Error(context);
                         } else {

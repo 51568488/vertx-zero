@@ -1,6 +1,5 @@
 package io.vertx.tp.hikari;
 
-import com.zaxxer.hikari.pool.HikariPool;
 import io.vertx.core.json.JsonObject;
 import io.vertx.tp.hikari.config.HikariCpConfig;
 import io.vertx.up.func.Fn;
@@ -9,6 +8,8 @@ import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.atom.Ruler;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
+
+import java.sql.Connection;
 
 /**
  * Enabled hikari pool
@@ -36,7 +37,7 @@ public class HikariCpPool {
         });
     }
 
-    public static HikariPool getPool() {
-        return CONFIG.getPool();
+    public static Connection getConnection() {
+        return Fn.getJvm(() -> CONFIG.getPool().getConnection(), CONFIG);
     }
 }

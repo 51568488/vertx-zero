@@ -99,6 +99,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- MySql Client -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-jdbc-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- Scala Library -->
         <dependency>

@@ -1,12 +1,10 @@
 package io.vertx.tp.hikari;
 
-import com.zaxxer.hikari.pool.HikariPool;
-import org.junit.Test;
+import java.sql.Connection;
 
 public class HikariCpTc {
 
-    @Test
     public void testCp() {
-        final HikariPool pool = HikariCpPool.getPool();
+        final Connection connection = HikariCpPool.getConnection();
     }
 }

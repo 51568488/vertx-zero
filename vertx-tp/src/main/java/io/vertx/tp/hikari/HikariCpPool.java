@@ -37,6 +37,10 @@ public class HikariCpPool {
         });
     }
 
+    public static Connection getConnection(final JsonObject config) {
+        return Fn.getJvm(() -> HikariCpConfig.create(config).getPool().getConnection(), config);
+    }
+
     public static Connection getConnection() {
         return Fn.getJvm(() -> CONFIG.getPool().getConnection(), CONFIG);
     }

@@ -1,8 +1,2 @@
-required:
-- host
-- port
-- username
-- password
-- database
 typed:
-  port: INTEGER
+  provider: JOBJECT

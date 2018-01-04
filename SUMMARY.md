@@ -14,7 +14,7 @@
     * [3.2 - Restful Api, @Path usage](doc/zero-path.md)
     * [3.3 - \( JSR 311 Extend \) @BodyParam usage](doc/zero-param.md)
     * [3.4 - Set POJO as parameters](doc/zero-pojo.md)
-  * 4 - Mime Supported Matrix
+  * [4 - Mime Supported Matrix](doc/4-mime-supported-matrix.md)
     * [4.1 - Parameter type supported](doc/zero-typed.md)
     * [4.2 - Mime type Matrix](doc/zero-mime.md)
   * 5 - Request Flow
@@ -32,6 +32,8 @@
     * [8.1 - How to define Web Exception](doc/zero-error.md)
     * [8.2 - How to validate request \( JSR 303 with Hibernate-Validator \)](doc/zero-validate.md)
     * [8.3 - Advanced Validation \( Rule for @BodyParam \)](doc/zero-verify.md)
+  * 9 - Security
+    * [9.1 - Enable Basic Authorization](doc/91-enable-basic-authorization.md)
 
 ## Useful Related Documents
 

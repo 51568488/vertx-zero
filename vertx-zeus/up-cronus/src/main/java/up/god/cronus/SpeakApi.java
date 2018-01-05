@@ -26,7 +26,7 @@ public class SpeakApi {
 
     @Path("/forward")
     @POST
-    @Ipc(value = "IPC://EVENT/ADDR", name = "ipc-ceous")
+    @Ipc(value = "IPC://EVENT/ADDR", name = "ipc-coeus")
     public JsonObject ipc(@BodyParam final JsonObject data) {
         System.out.println(data);
         return data;

@@ -23,7 +23,7 @@ public class OneWayAim extends BaseAim implements Aim<RoutingContext> {
 
             // 2. Method callxx
             final Object returnValue = invoke(event, arguments);
-            final Envelop request = Envelop.success(returnValue);
+            final Envelop request = Flower.continuous(context, returnValue);
 
             // 3. Build event bus
             final Vertx vertx = context.vertx();

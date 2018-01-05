@@ -1,25 +1,95 @@
 package io.vertx.up.atom.flux;
 
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.eon.em.IpcType;
 
 import java.io.Serializable;
-import java.nio.Buffer;
 
 public class IpcData implements Serializable {
     /**
-     * Call service name
+     * Default community type
      */
-    private String service;
+    private IpcType type = IpcType.UNITY;
     /**
-     * Call data
+     * Community Port
      */
-    private Buffer buffer;
+    private Integer port;
     /**
-     * Additional configuration
+     * Community Host
      */
-    private JsonObject additional;
+    private String host;
     /**
-     * Address
+     * Community data
+     */
+    private Buffer data;
+    /**
+     * Target address
      */
     private String address;
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(final String address) {
+        this.address = address;
+    }
+
+    /**
+     * Additional Config
+     */
+    private JsonObject config = new JsonObject();
+
+    public IpcType getType() {
+        return this.type;
+    }
+
+    public void setType(final IpcType type) {
+        this.type = type;
+    }
+
+    public Integer getPort() {
+        return this.port;
+    }
+
+    public void setPort(final Integer port) {
+        this.port = port;
+    }
+
+    public String getHost() {
+        return this.host;
+    }
+
+    public void setHost(final String host) {
+        this.host = host;
+    }
+
+    public Buffer getData() {
+        return this.data;
+    }
+
+    public void setData(final Buffer data) {
+        this.data = data;
+    }
+
+    public JsonObject getConfig() {
+        return this.config;
+    }
+
+    public void setConfig(final JsonObject config) {
+        this.config = config;
+    }
+
+    @Override
+    public String toString() {
+        return "IpcData{" +
+                "type=" + this.type +
+                ", port=" + this.port +
+                ", host='" + this.host + '\'' +
+                ", data=" + this.data +
+                ", address='" + this.address + '\'' +
+                ", config=" + this.config +
+                '}';
+    }
 }

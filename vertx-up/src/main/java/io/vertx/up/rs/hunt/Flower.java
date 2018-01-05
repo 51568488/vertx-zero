@@ -17,6 +17,14 @@ import java.util.Map;
 
 class Flower {
 
+    static <T> Envelop continuous(final RoutingContext context,
+                                  final T entity) {
+        final Envelop envelop = Envelop.success(entity);
+        envelop.setHeaders(context.request().headers());
+        envelop.setUser(context.user());
+        return envelop;
+    }
+
     static void executeRequest(final RoutingContext context,
                                final Map<String, List<Rule>> rulers,
                                final Depot depot,

@@ -2,6 +2,7 @@ package io.vertx.up.func;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.exception.WebException;
 import io.vertx.up.log.Annal;
 import io.vertx.zero.exception.ZeroException;
 import io.vertx.zero.exception.ZeroRunException;
@@ -65,6 +66,25 @@ public class Fn {
     ) {
         if (condition) {
             Announce.outUp(logger, upClass, args);
+        }
+    }
+
+    /**
+     * WebException out
+     *
+     * @param condition
+     * @param logger
+     * @param webClass
+     * @param args
+     */
+    public static void flingWeb(
+            final boolean condition,
+            final Annal logger,
+            final Class<? extends WebException> webClass,
+            final Object... args
+    ) {
+        if (condition) {
+            Announce.outWeb(logger, webClass, args);
         }
     }
 

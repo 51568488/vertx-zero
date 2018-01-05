@@ -8,10 +8,18 @@ interface Info {
     String ETCD_READ = "[ ZERO ] ( Etcd Catalog ) Read the path {0} service lists.";
 
     String ETCD_ROUTE = "[ ZERO ] ( Etcd Catalog ) The following routes has been push to:" +
-            "\n\t[ Up Micro ] Application Name = {0}," +
+            "\n\t[ Up Micro ] <Application Name> = \"{0}\"," +
             "\n\t[ Up Micro ] Configuration Path = {1}, " +
             "\n\t[ Up Micro ] Micro Service = {2}," +
             "\n\t[ Up Micro ] EndPoint = {3}" +
             "\n\t[ Up Micro ] Route Uris = {4}" +
-            "\n\t[ Up Micro ] Successfully to registried Routes, wait for discovery......SUCCESS";
+            "\n\t[ Up Micro ] √ Successfully to registered Routes, wait for discovery......SUCCESS √";
+
+    String ETCD_IPCS = "[ ZERO ] ( Etcd Catalog ) The following routes has been push to:" +
+            "\n\t[ Up Rpc   ] <Application Name> = \"{0}\"," +
+            "\n\t[ Up Rpc   ] Configuration Rpc Point = {1}, " +
+            "\n\t[ Up Rpc   ] Ipc Service Name = {2}," +
+            "\n\t[ Up Rpc   ] EndPoint = {3}" +
+            "\n\t[ Up Rpc   ] Ipc Address = {4}" +
+            "\n\t[ Up Rpc   ] √ Successfully to registered IPCs, wait for community......SUCCESS √";
 }

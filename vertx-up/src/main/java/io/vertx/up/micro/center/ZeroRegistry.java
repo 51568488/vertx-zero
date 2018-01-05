@@ -16,6 +16,7 @@ import io.vertx.zero.eon.Values;
 
 import java.text.MessageFormat;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -92,7 +93,7 @@ public class ZeroRegistry {
                 .filter(Objects::nonNull)
                 .filter(item -> Objects.nonNull(item.getKey()) && Objects.nonNull(item.getValue()))
                 .filter(item -> Etat.RUNNING == Types.fromStr(Etat.class, item.getValue()))
-                .map(item -> item.getKey())
+                .map(Map.Entry::getKey)
                 .subscribe(sets::add);
         return sets;
     }
@@ -112,6 +113,29 @@ public class ZeroRegistry {
                 Net.getIPv4(), String.valueOf(options.getPort()));
         this.logger.info(Info.ETCD_STATUS, options.getName(), etat, path);
         this.etcd.write(path, etat, Values.ZERO);
+    }
+
+    public void registryIpcs(final ServidorOptions options, final Set<String> ipcs) {
+        final String path = MessageFormat.format(ROUTE_TREE, this.etcd.getApp(),
+                EtcdPath.IPC.toString().toLowerCase(),
+                MessageFormat.format("{0}:{1}:{2}", options.getName(),
+                        Net.getIPv4(), String.valueOf(options.getPort())));
+        final String host = Net.getIPv4();
+        final String endpoint = MessageFormat.format("grpc://{0}:{1}",
+                host,
+                String.valueOf(options.getPort()));
+        // Screen Information
+        final StringBuilder builder = new StringBuilder();
+        for (final String ipc : ipcs) {
+            builder.append("\n\t[ Up Rpc √ ] \t").append(ipc);
+        }
+        this.logger.info(Info.ETCD_IPCS, this.etcd.getApp(),
+                path, options.getName(), endpoint, builder.toString());
+        // Build Data
+        final JsonArray routeData = new JsonArray();
+        Observable.fromIterable(ipcs)
+                .subscribe(routeData::add);
+        this.etcd.write(path, routeData, Values.ZERO);
     }
 
     public void registryRoute(final String name,

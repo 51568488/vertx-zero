@@ -3,19 +3,21 @@ package io.vertx.up.micro;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.ServidorOptions;
+import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
 import io.vertx.grpc.VertxServer;
 import io.vertx.grpc.VertxServerBuilder;
 import io.vertx.up.annotations.Agent;
+import io.vertx.up.eon.ID;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.eon.em.ServerType;
-import io.vertx.zero.exception.RpcSslAlpnException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.center.ZeroRegistry;
 import io.vertx.up.tool.Net;
 import io.vertx.zero.eon.Values;
+import io.vertx.zero.exception.RpcSslAlpnException;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -97,10 +99,18 @@ public class ZeroRpcAgent extends AbstractVerticle {
                 // Started to write data in etcd center.
                 LOGGER.info(Info.ETCD_SUCCESS, this.registry.getConfig());
                 // Status registry
-                this.registry.registryRpc(options, Etat.RUNNING);
+                startRegistry(options);
             } else {
                 LOGGER.info(Info.RPC_FAILURE, null == handler.cause() ? "None" : handler.cause().getMessage());
             }
         }
+    }
+
+    private void startRegistry(final ServidorOptions options) {
+        // Rpc Agent is only valid in Micro mode
+        final EventBus bus = this.vertx.eventBus();
+        final String address = ID.Addr.IPC_START;
+        LOGGER.info(Info.IPC_REGISTRY_SEND, getClass().getSimpleName(), options.getName(), address);
+        bus.publish(address, options.toJson());
     }
 }

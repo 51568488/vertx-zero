@@ -194,7 +194,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <!-- Alpn -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-tcnative-boringssl-static</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-tcnative</artifactId>
+            <version>${netty.tcnative.version}</version>
+            <classifier>${os.detected.classifier}</classifier>
+        </dependency>
     </dependencies>
     <build>
         <extensions>

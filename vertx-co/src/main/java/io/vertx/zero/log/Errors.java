@@ -34,7 +34,6 @@ public final class Errors {
             final String key = ("E" + Math.abs(code)).intern();
             final Node<JsonObject> node = Node.infix(Plugins.ERROR);
             final JsonObject data = node.read();
-
             if (null != data && data.containsKey(key)) {
                 // 1. Read pattern
                 final String pattern = data.getString(key);

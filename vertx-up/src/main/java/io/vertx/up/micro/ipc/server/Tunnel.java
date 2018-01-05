@@ -1,4 +1,4 @@
-package io.vertx.up.micro.ipc;
+package io.vertx.up.micro.ipc.server;
 
 import io.grpc.BindableService;
 

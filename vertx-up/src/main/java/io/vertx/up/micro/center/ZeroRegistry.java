@@ -69,7 +69,7 @@ public class ZeroRegistry {
             final String key,
             final BiFunction<String, JsonArray, Set<JsonObject>> convert
     ) {
-        final String path = MessageFormat.format(ROUTE_TREE, this.etcd.getApp(),
+        final String path = MessageFormat.format(ROUTE_TREE, this.etcd.getApplication(),
                 etcdPath.toString().toLowerCase(), key);
         this.logger.debug(Info.ETCD_READ, path);
         final String node = this.etcd.readData(path);
@@ -83,7 +83,7 @@ public class ZeroRegistry {
 
     public Set<String> getServices(
             final EtcdPath etcdPath) {
-        final String path = MessageFormat.format(PATH_CATALOG, this.etcd.getApp(),
+        final String path = MessageFormat.format(PATH_CATALOG, this.etcd.getApplication(),
                 etcdPath.toString().toLowerCase());
         this.logger.debug(Info.ETCD_READ, path);
         final ConcurrentMap<String, String> nodes = this.etcd.readDir(path, true);
@@ -100,7 +100,7 @@ public class ZeroRegistry {
 
     public void registryHttp(final String service,
                              final HttpServerOptions options, final Etat etat) {
-        final String path = MessageFormat.format(PATH_STATUS, this.etcd.getApp(),
+        final String path = MessageFormat.format(PATH_STATUS, this.etcd.getApplication(),
                 EtcdPath.ENDPOINT.toString().toLowerCase(), service,
                 Net.getIPv4(), String.valueOf(options.getPort()));
         this.logger.info(Info.ETCD_STATUS, service, etat, path);
@@ -108,7 +108,7 @@ public class ZeroRegistry {
     }
 
     public void registryRpc(final ServidorOptions options, final Etat etat) {
-        final String path = MessageFormat.format(PATH_STATUS, this.etcd.getApp(),
+        final String path = MessageFormat.format(PATH_STATUS, this.etcd.getApplication(),
                 EtcdPath.IPC.toString().toLowerCase(), options.getName(),
                 Net.getIPv4(), String.valueOf(options.getPort()));
         this.logger.info(Info.ETCD_STATUS, options.getName(), etat, path);
@@ -116,7 +116,7 @@ public class ZeroRegistry {
     }
 
     public void registryIpcs(final ServidorOptions options, final Set<String> ipcs) {
-        final String path = MessageFormat.format(ROUTE_TREE, this.etcd.getApp(),
+        final String path = MessageFormat.format(ROUTE_TREE, this.etcd.getApplication(),
                 EtcdPath.IPC.toString().toLowerCase(),
                 MessageFormat.format("{0}:{1}:{2}", options.getName(),
                         Net.getIPv4(), String.valueOf(options.getPort())));
@@ -129,7 +129,7 @@ public class ZeroRegistry {
         for (final String ipc : ipcs) {
             builder.append("\n\t[ Up Rpc √ ] \t").append(ipc);
         }
-        this.logger.info(Info.ETCD_IPCS, this.etcd.getApp(),
+        this.logger.info(Info.ETCD_IPCS, this.etcd.getApplication(),
                 path, options.getName(), endpoint, builder.toString());
         // Build Data
         final JsonArray routeData = new JsonArray();
@@ -140,7 +140,7 @@ public class ZeroRegistry {
 
     public void registryRoute(final String name,
                               final HttpServerOptions options, final Set<String> routes) {
-        final String path = MessageFormat.format(ROUTE_TREE, this.etcd.getApp(),
+        final String path = MessageFormat.format(ROUTE_TREE, this.etcd.getApplication(),
                 EtcdPath.ENDPOINT.toString().toLowerCase(),
                 MessageFormat.format("{0}:{1}:{2}", name,
                         Net.getIPv4(), String.valueOf(options.getPort())));
@@ -153,7 +153,7 @@ public class ZeroRegistry {
         for (final String route : routes) {
             builder.append("\n\t[ Up Micro ] \t").append(route);
         }
-        this.logger.info(Info.ETCD_ROUTE, this.etcd.getApp(),
+        this.logger.info(Info.ETCD_ROUTE, this.etcd.getApplication(),
                 path, name, endpoint, builder.toString());
         // Build Data
         final JsonArray routeData = new JsonArray();

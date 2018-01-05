@@ -50,11 +50,11 @@ public class AsyncAim extends BaseAim implements Aim<RoutingContext> {
                 message.put(String.valueOf(idx), arguments[idx]);
             }
             // 2.1. Direct send arguments
-            invoked = Envelop.success(message);
+            invoked = Flower.continuous(context, message);
         } else {
             // 2.2. Method call
             final Object returnValue = invoke(event, arguments);
-            invoked = Envelop.success(returnValue);
+            invoked = Flower.continuous(context, returnValue);
         }
         // 3. Envelop injection for User/Headers
         invoked.setHeaders(context.request().headers());

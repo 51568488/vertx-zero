@@ -139,7 +139,7 @@ public class EtcdData {
         return this.config;
     }
 
-    public String getApp() {
+    public String getApplication() {
         return this.application;
     }
 

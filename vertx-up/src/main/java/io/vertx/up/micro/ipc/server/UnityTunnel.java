@@ -1,4 +1,4 @@
-package io.vertx.up.micro.ipc;
+package io.vertx.up.micro.ipc.server;
 
 import io.vertx.core.Future;
 import io.vertx.tp.ipc.eon.IpcRequest;

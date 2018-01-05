@@ -1,4 +1,4 @@
-package io.vertx.up.atom;
+package io.vertx.up.atom.hold;
 
 public class Virtual {
 

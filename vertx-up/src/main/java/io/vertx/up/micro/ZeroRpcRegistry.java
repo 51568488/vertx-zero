@@ -10,9 +10,7 @@ import io.vertx.up.eon.em.Etat;
 import io.vertx.up.eon.em.MessageModel;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.center.ZeroRegistry;
-import io.vertx.up.web.ZeroAnno;
-
-import java.util.Set;
+import io.vertx.up.micro.ipc.server.Tunnel;
 
 /**
  * Get data from event bus and push metdata to Etcd ( IPC )
@@ -25,9 +23,6 @@ public class ZeroRpcRegistry extends AbstractVerticle {
 
     private static final Annal LOGGER = Annal.get(ZeroRpcRegistry.class);
 
-    private transient final Set<String> IPCS
-            = ZeroAnno.getIpcs();
-
     @Override
     public void start() {
         final EventBus bus = this.vertx.eventBus();
@@ -36,7 +31,7 @@ public class ZeroRpcRegistry extends AbstractVerticle {
             final ServidorOptions options = new ServidorOptions(data);
             // Write the data to registry.
             this.registry.registryRpc(options, Etat.RUNNING);
-            this.registry.registryIpcs(options, this.IPCS);
+            this.registry.registryIpcs(options, Tunnel.IPCS.keySet());
 
             LOGGER.info(Info.MICRO_REGISTRY_CONSUME, getClass().getSimpleName(),
                     options.getName(), ID.Addr.IPC_START);

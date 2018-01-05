@@ -24,9 +24,14 @@ public class IpcData implements Serializable {
      */
     private Buffer data;
     /**
-     * Target address
+     * Community address
      */
     private String address;
+
+    /**
+     * Additional Config
+     */
+    private JsonObject config = new JsonObject();
 
     public String getAddress() {
         return this.address;
@@ -35,11 +40,6 @@ public class IpcData implements Serializable {
     public void setAddress(final String address) {
         this.address = address;
     }
-
-    /**
-     * Additional Config
-     */
-    private JsonObject config = new JsonObject();
 
     public IpcType getType() {
         return this.type;
@@ -88,7 +88,6 @@ public class IpcData implements Serializable {
                 ", port=" + this.port +
                 ", host='" + this.host + '\'' +
                 ", data=" + this.data +
-                ", address='" + this.address + '\'' +
                 ", config=" + this.config +
                 '}';
     }

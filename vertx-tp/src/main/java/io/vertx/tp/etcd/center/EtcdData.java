@@ -41,10 +41,17 @@ public class EtcdData {
      * Config data
      */
     private static final String KEY = "etcd";
+    /**
+     * It's required for micro service, it means cluster name for current micro services.
+     */
+    private static final String MICRO = "micro";
+    private static final String NODES = "nodes";
+    private static final String TIMEOUT = "timeout";
+    /**
+     * Sub nodes of nodes
+     */
     private static final String PORT = "port";
     private static final String HOST = "host";
-    private static final String TIMEOUT = "timeout";
-    private static final String NODES = "nodes";
     /**
      * Etcd Client
      */
@@ -53,6 +60,7 @@ public class EtcdData {
     private final transient Class<?> clazz;
     private final transient Annal logger;
     private transient long timeout = -1;
+    private transient String application = Strings.EMPTY;
 
     public static EtcdData create(final Class<?> clazz) {
         if (enabled()) {
@@ -87,12 +95,15 @@ public class EtcdData {
             if (root.containsKey(TIMEOUT)) {
                 this.timeout = root.getLong(TIMEOUT);
             }
+            if (root.containsKey(MICRO)) {
+                this.application = root.getString(MICRO);
+            }
             // Nodes
             if (root.containsKey(NODES)) {
                 this.config.addAll(root.getJsonArray(NODES));
             }
             LOGGER.info(Info.ETCD_TIMEOUT,
-                    this.timeout, this.config.size());
+                    this.application, this.timeout, this.config.size());
         }
         Fn.flingUp(this.config.isEmpty(), this.logger,
                 EtcdConfigEmptyException.class, this.clazz);
@@ -126,6 +137,10 @@ public class EtcdData {
 
     public JsonArray getConfig() {
         return this.config;
+    }
+
+    public String getApp() {
+        return this.application;
     }
 
     public ConcurrentMap<String, String> readDir(

@@ -8,6 +8,7 @@ import io.vertx.tp.ipc.service.UnityServiceGrpc;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.flux.IpcData;
 import io.vertx.up.eon.em.IpcType;
+import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ipc.DataEncap;
 
 import java.lang.reflect.Method;
@@ -16,6 +17,8 @@ import java.lang.reflect.Method;
  * Unity tunnel
  */
 public class UnityTunnel implements Tunnel {
+
+    private static final Annal LOGGER = Annal.get(UnityTunnel.class);
 
     @Override
     public BindableService init() {
@@ -30,7 +33,7 @@ public class UnityTunnel implements Tunnel {
                 if (null != method) {
                     // Method called with message handler
                     final Envelop envelop = DataEncap.consume(data);
-                    
+
                     System.out.println(method);
                     System.out.println(envelop);
                 } else {

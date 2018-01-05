@@ -1,5 +1,5 @@
 zero:
-  lime: mongo, etcd3
+  lime: mongo, etcd3, rpc
   vertx:
     instance:
     - name: vx-zero

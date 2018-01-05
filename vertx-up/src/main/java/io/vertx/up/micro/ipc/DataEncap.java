@@ -26,6 +26,7 @@ public class DataEncap {
         if (null != record) {
             data.setHost(record.getLocation().getString("host"));
             data.setPort(record.getLocation().getInteger("port"));
+            data.setName(record.getName());
         }
     }
 

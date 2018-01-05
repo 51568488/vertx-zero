@@ -1,0 +1,5 @@
+rpc:
+  uniform:
+    jks: "ipc/ssl/rpc-client-truststore.jks"
+    password: "wibble"
+  extension:

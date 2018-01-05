@@ -1,8 +1,4 @@
 rpc:
+  ssl: false
   uniform:
-    jks: "ipc/ssl/rpc-client-truststore.jks"
-    password: "wibble"
-  extension:
-    coeus:
-      jks: "ipc/ssl/rpc-client-truststore.jks"
-      password: "wibble"
+    type: PEM

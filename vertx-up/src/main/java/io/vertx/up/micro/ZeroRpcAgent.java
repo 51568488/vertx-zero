@@ -5,11 +5,11 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.ServidorOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.net.JksOptions;
 import io.vertx.grpc.VertxServer;
 import io.vertx.grpc.VertxServerBuilder;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.ID;
+import io.vertx.up.eon.em.CertType;
 import io.vertx.up.eon.em.Etat;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
@@ -17,10 +17,11 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.micro.center.ZeroRegistry;
 import io.vertx.up.micro.ipc.server.Tunnel;
 import io.vertx.up.micro.ipc.server.UnityTunnel;
+import io.vertx.up.micro.ssl.CertPipe;
 import io.vertx.up.tool.Net;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.Values;
-import io.vertx.zero.exception.RpcSslAlpnException;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -32,8 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ZeroRpcAgent extends AbstractVerticle {
 
     private static final Annal LOGGER = Annal.get(ZeroRpcAgent.class);
-    private static final String KEY_JKS = "jks";
-    private static final String KEY_PWD = "password";
+    private static final String SSL = "ssl";
 
     private final transient ZeroRegistry registry
             = ZeroRegistry.create(getClass());
@@ -50,20 +50,14 @@ public class ZeroRpcAgent extends AbstractVerticle {
              * ssl, alpn, jks, password
              * **/
             final JsonObject options = config.getOptions();
-
-            Fn.flingUp(!options.containsKey(KEY_JKS) || !options.containsKey(KEY_PWD), LOGGER,
-                    RpcSslAlpnException.class, getClass(), port, options);
-            /**
-             * 4.Must enabled ssl in agent to enable rpc.
-             */
-            final String jks = options.getString(KEY_JKS);
-            final String password = options.getString(KEY_PWD);
-            builder.useSsl(option -> option
-                    .setSsl(true)
-                    .setUseAlpn(true)
-                    .setKeyStoreOptions(new JksOptions()
-                            .setPath(jks)
-                            .setPassword(password)));
+            // 4.SSL Enabled
+            if (options.containsKey(SSL) && Boolean.valueOf(options.getValue(SSL).toString())) {
+                final Object type = options.getValue("type");
+                final CertType certType = null == type ?
+                        CertType.PEM : Types.fromStr(CertType.class, type.toString());
+                final CertPipe<JsonObject> pipe = CertPipe.get(certType);
+                builder.useSsl(pipe.parse(options));
+            }
             /**
              * 5.Service added.
              */

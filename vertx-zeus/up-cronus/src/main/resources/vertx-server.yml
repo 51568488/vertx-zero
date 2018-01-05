@@ -7,7 +7,7 @@ server:
 - name: ipc-cronus
   type: ipc
   config:
-    jks: "ipc/ssl/rpc-server-keystore.jks"
-    password: "wibble"
     port: 6883
     host: 0.0.0.0
+    ssl: false
+    type: PEM

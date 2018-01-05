@@ -10,8 +10,8 @@ import io.vertx.up.concurrent.Runner;
 import io.vertx.up.eon.em.MessageModel;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
-import io.vertx.up.micro.discovery.EndPointOrgin;
-import io.vertx.up.micro.discovery.Orgin;
+import io.vertx.up.micro.discovery.EndPointOrigin;
+import io.vertx.up.micro.discovery.Origin;
 import io.vertx.up.tool.mirror.Instance;
 
 import java.text.MessageFormat;
@@ -30,7 +30,7 @@ public class ZeroApiWorker extends AbstractVerticle {
 
     private static final Annal LOGGER = Annal.get(ZeroApiWorker.class);
 
-    private static final Orgin ORIGIN = Instance.singleton(EndPointOrgin.class);
+    private static final Origin ORIGIN = Instance.singleton(EndPointOrigin.class);
 
     private static final ConcurrentMap<String, Record> REGISTRITIONS
             = new ConcurrentHashMap<>();
@@ -200,9 +200,9 @@ public class ZeroApiWorker extends AbstractVerticle {
         final String key = getID(record);
         final String id = record.getRegistration();
         final String endpoint = MessageFormat.format("http://{0}:{1}{2}",
-                record.getLocation().getString(Orgin.HOST),
-                String.valueOf(record.getLocation().getInteger(Orgin.PORT)),
-                record.getMetadata().getString(Orgin.PATH));
+                record.getLocation().getString(Origin.HOST),
+                String.valueOf(record.getLocation().getInteger(Origin.PORT)),
+                record.getMetadata().getString(Origin.PATH));
         LOGGER.debug(Info.REG_SUCCESS, record.getStatus(),
                 record.getType(), record.getName(),
                 endpoint, key, id);
@@ -210,7 +210,7 @@ public class ZeroApiWorker extends AbstractVerticle {
 
     private String getID(final Record record) {
         final JsonObject metadata = record.getMetadata();
-        return metadata.getString(Orgin.ID);
+        return metadata.getString(Origin.ID);
     }
 
     private enum Flag {

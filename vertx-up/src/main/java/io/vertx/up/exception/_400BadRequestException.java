@@ -8,6 +8,6 @@ public class _400BadRequestException extends WebException {
 
     @Override
     public int getCode() {
-        return -40011;
+        return -60011;
     }
 }

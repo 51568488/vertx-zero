@@ -22,7 +22,7 @@ public class SyncAim extends BaseAim implements Aim<RoutingContext> {
             final Object result = invoke(event, arguments);
 
             // 3. Resource model building
-            final Envelop data = Envelop.success(result);
+            final Envelop data = Flower.continuous(context, result);
 
             // 4. Process modal
             Answer.reply(context, data, event);

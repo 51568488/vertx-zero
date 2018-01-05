@@ -90,10 +90,11 @@
         <ignite.version>2.3.0</ignite.version>
         <etcd.version>2.14.0</etcd.version>
         <mongodb.async.version>3.6.1</mongodb.async.version>
-        <!-- Vert.x Addition -->
+        <!-- Rpc -->
         <protobuf.version>3.5.1</protobuf.version>
         <vertx.grpc.version>1.6.1</vertx.grpc.version>
         <grpc.version>1.8.0</grpc.version>
+        <!-- Vert.x Addition -->
         <rxjava2.version>2.1.8</rxjava2.version>
         <netty.tcnative.version>2.0.7.Final</netty.tcnative.version>
         <netty.version>4.1.19.Final</netty.version>
@@ -140,6 +141,7 @@
         <maven.plugin.spotify>1.0.0</maven.plugin.spotify>
         <maven.plugin.protobuf>0.5.1</maven.plugin.protobuf>
         <maven.plugin.os>1.5.0.Final</maven.plugin.os>
+        <maven.plugin.antrun>1.8</maven.plugin.antrun>
     </properties>
     <prerequisites>
         <maven>3.5.0</maven>
@@ -173,7 +175,12 @@
                 <artifactId>vertx-up</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <!-- https://mvnrepository.com/artifact/io.netty/netty-tcnative -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-tcnative</artifactId>
+                <version>${netty.tcnative.version}</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/io.github.jklingsporn/vertx-jooq-async-future -->
             <dependency>
                 <groupId>io.github.jklingsporn</groupId>
@@ -639,6 +646,12 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-antrun-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven.plugin.antrun}</version>
+                </plugin>
                 <!-- http://mvnrepository.com/artifact/org.jooq/jooq-codegen-maven -->
                 <plugin>
                     <groupId>org.jooq</groupId>

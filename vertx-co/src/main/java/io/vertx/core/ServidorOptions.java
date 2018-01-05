@@ -62,6 +62,16 @@ public class ServidorOptions implements Serializable {
         this.options = options;
     }
 
+    public JsonObject toJson() {
+        final JsonObject data = new JsonObject();
+        data.put("name", this.name);
+        final JsonObject config = null == this.options ? new JsonObject() : this.options.copy();
+        config.put("host", this.host);
+        config.put("port", this.port);
+        data.put("config", config);
+        return data;
+    }
+
     @Override
     public String toString() {
         return "ServidorOptions{" +

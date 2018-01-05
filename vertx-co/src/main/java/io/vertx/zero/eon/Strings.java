@@ -22,4 +22,6 @@ public interface Strings {
     String DOLLER = "$";
 
     String COLON = ":";
+
+    String QUESTION = "?";
 }

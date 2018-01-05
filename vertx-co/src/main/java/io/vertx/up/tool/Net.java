@@ -4,6 +4,7 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.net.IPHost;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -32,6 +33,10 @@ public class Net {
      */
     public static String getIPv4() {
         return IPHost.getInstance().getExtranetIPv4Address();
+    }
+
+    public static String getHostName() {
+        return Fn.getJvm(() -> (InetAddress.getLocalHost()).getHostName(), true);
     }
 
     /**

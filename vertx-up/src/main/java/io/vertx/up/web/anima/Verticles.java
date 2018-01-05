@@ -3,6 +3,7 @@ package io.vertx.up.web.anima;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.up.eon.Info;
+import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,10 +47,10 @@ class Verticles {
         final String name = clazz.getName();
         final String flag = option.isWorker() ? "Worker" : "Agent";
         final String id = INSTANCES.get(clazz);
-        vertx.undeploy(id, result -> {
+        Fn.safeNull(() -> vertx.undeploy(id, result -> {
             if (result.succeeded()) {
                 logger.info(Info.VTC_STOPPED, name, id, flag);
             }
-        });
+        }), id);
     }
 }

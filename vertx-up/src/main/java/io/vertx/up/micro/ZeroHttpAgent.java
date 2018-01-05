@@ -129,16 +129,11 @@ public class ZeroHttpAgent extends AbstractVerticle {
         if (EtcdData.enabled()) {
             final JsonObject data = getMessage(name, options, tree);
             // Send Data to Event Bus
-            this.sendMessage(name, ID.Addr.REGISTRY_START, data);
+            final EventBus bus = this.vertx.eventBus();
+            final String address = ID.Addr.REGISTRY_START;
+            LOGGER.info(Info.MICRO_REGISTRY_SEND, getClass().getSimpleName(), name, address);
+            bus.publish(address, data);
         }
-    }
-
-    private void sendMessage(final String name,
-                             final String address,
-                             final JsonObject data) {
-        final EventBus bus = this.vertx.eventBus();
-        LOGGER.info(Info.MICRO_REGISTRY_SEND, getClass().getSimpleName(), name, address);
-        bus.publish(address, data);
     }
 
     private JsonObject getMessage(final String name,

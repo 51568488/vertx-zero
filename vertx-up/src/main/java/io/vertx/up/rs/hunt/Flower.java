@@ -4,9 +4,9 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Rule;
-import io.vertx.up.atom.Virtual;
 import io.vertx.up.atom.agent.Depot;
 import io.vertx.up.atom.agent.Event;
+import io.vertx.up.atom.hold.Virtual;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.rs.regular.Ruler;
 import io.vertx.zero.eon.Values;
@@ -16,6 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 class Flower {
+
+    static <T> Envelop continuous(final RoutingContext context,
+                                  final T entity) {
+        final Envelop envelop = Envelop.success(entity);
+        envelop.setHeaders(context.request().headers());
+        envelop.setUser(context.user());
+        return envelop;
+    }
 
     static void executeRequest(final RoutingContext context,
                                final Map<String, List<Rule>> rulers,

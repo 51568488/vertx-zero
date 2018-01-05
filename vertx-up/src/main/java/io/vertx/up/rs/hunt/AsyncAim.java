@@ -6,8 +6,8 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Envelop;
-import io.vertx.up.atom.Virtual;
 import io.vertx.up.atom.agent.Event;
+import io.vertx.up.atom.hold.Virtual;
 import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Aim;
 import io.vertx.up.web.ZeroResponser;
@@ -50,11 +50,11 @@ public class AsyncAim extends BaseAim implements Aim<RoutingContext> {
                 message.put(String.valueOf(idx), arguments[idx]);
             }
             // 2.1. Direct send arguments
-            invoked = Envelop.success(message);
+            invoked = Flower.continuous(context, message);
         } else {
             // 2.2. Method call
             final Object returnValue = invoke(event, arguments);
-            invoked = Envelop.success(returnValue);
+            invoked = Flower.continuous(context, returnValue);
         }
         // 3. Envelop injection for User/Headers
         invoked.setHeaders(context.request().headers());

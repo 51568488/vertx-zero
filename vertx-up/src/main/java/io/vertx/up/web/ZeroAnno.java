@@ -38,6 +38,8 @@ public class ZeroAnno {
             WORKERS = new HashSet<>();
     private final static Set<Cliff>
             WALLS = new TreeSet<>();
+    private final static Set<String>
+            IPCS = new TreeSet<>();
 
     /**
      * Get all plugins
@@ -89,6 +91,11 @@ public class ZeroAnno {
         return ENDPOINTS;
     }
 
+    public static Set<String>
+    getIpcs() {
+        return IPCS;
+    }
+
     /**
      * Get all envents
      *
@@ -135,13 +142,16 @@ public class ZeroAnno {
         inquirer = Instance.singleton(QueueInquirer.class);
         final Set<Class<?>> queues = inquirer.scan(clazzes);
 
-        /** Queue -> Receipt **/
+        /** Queue -> Receipt/Ipc **/
         Fn.safeSemi(!queues.isEmpty(),
                 LOGGER,
                 () -> {
                     final Inquirer<Set<Receipt>> receipt =
                             Instance.singleton(ReceiptInquirer.class);
                     RECEIPTS.addAll(receipt.scan(queues));
+                    final Inquirer<Set<String>> ipc =
+                            Instance.singleton(IpcInquirer.class);
+                    IPCS.addAll(ipc.scan(queues));
                 });
 
         /** Agent **/

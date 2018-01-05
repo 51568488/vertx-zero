@@ -17,6 +17,9 @@ interface Info {
     String MICRO_REGISTRY_SEND = "[ ZERO ] ---> {2} ( Http Server ) {0} ( name = {1} ) " +
             "is sending data to internal address.";
 
+    String IPC_REGISTRY_SEND = "[ ZERO ] ---> {2} ( Rpc Server ) {0} ( name = {1} ) " +
+            "is sending data to internal address.";
+
     String MICRO_REGISTRY_CONSUME = "[ ZERO ] {2} <--- ( Micro Worker ) {0} ( name = {1} ) " +
             "get data from internal address.";
 

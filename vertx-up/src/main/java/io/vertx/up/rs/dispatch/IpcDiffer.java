@@ -5,6 +5,8 @@ import io.vertx.up.atom.agent.Event;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Aim;
+import io.vertx.up.rs.hunt.IpcAim;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.exception.ReturnTypeException;
 
 import java.lang.reflect.Method;
@@ -34,6 +36,7 @@ class IpcDiffer implements Differ<RoutingContext> {
         final Method method = event.getAction();
         final Class<?> returnType = method.getReturnType();
         // Rpc Mode only
+        Aim<RoutingContext> aim = null;
         if (Void.class == returnType || void.class == returnType) {
             // Exception because this method must has return type to
             // send message to event bus. It means that it require
@@ -42,7 +45,9 @@ class IpcDiffer implements Differ<RoutingContext> {
                     getClass(), method);
         } else {
             // Mode 6: Ipc channel enabled
+            aim = Fn.pool(Pool.AIMS, Thread.currentThread().getName() + "-mode-ipc",
+                    () -> Instance.instance(IpcAim.class));
         }
-        return null;
+        return aim;
     }
 }

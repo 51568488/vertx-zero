@@ -1,5 +1,5 @@
 zero:
-  lime: etcd3
+  lime: etcd3, rpc
   vertx:
     instance:
     - name: vx-zero

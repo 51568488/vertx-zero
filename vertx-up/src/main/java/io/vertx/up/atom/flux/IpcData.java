@@ -12,6 +12,10 @@ public class IpcData implements Serializable {
      */
     private IpcType type = IpcType.UNITY;
     /**
+     * Community Name
+     */
+    private String name;
+    /**
      * Community Port
      */
     private Integer port;
@@ -32,6 +36,14 @@ public class IpcData implements Serializable {
      * Additional Config
      */
     private JsonObject config = new JsonObject();
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
 
     public String getAddress() {
         return this.address;

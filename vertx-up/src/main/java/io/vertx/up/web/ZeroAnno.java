@@ -10,6 +10,7 @@ import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.tool.mirror.Pack;
 import io.vertx.up.web.origin.*;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,8 +39,8 @@ public class ZeroAnno {
             WORKERS = new HashSet<>();
     private final static Set<Cliff>
             WALLS = new TreeSet<>();
-    private final static Set<String>
-            IPCS = new TreeSet<>();
+    private final static ConcurrentMap<String, Method>
+            IPCS = new ConcurrentHashMap<>();
 
     /**
      * Get all plugins
@@ -91,7 +92,7 @@ public class ZeroAnno {
         return ENDPOINTS;
     }
 
-    public static Set<String>
+    public static ConcurrentMap<String, Method>
     getIpcs() {
         return IPCS;
     }
@@ -149,9 +150,9 @@ public class ZeroAnno {
                     final Inquirer<Set<Receipt>> receipt =
                             Instance.singleton(ReceiptInquirer.class);
                     RECEIPTS.addAll(receipt.scan(queues));
-                    final Inquirer<Set<String>> ipc =
+                    final Inquirer<ConcurrentMap<String, Method>> ipc =
                             Instance.singleton(IpcInquirer.class);
-                    IPCS.addAll(ipc.scan(queues));
+                    IPCS.putAll(ipc.scan(queues));
                 });
 
         /** Agent **/

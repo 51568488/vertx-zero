@@ -15,7 +15,10 @@ import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.center.ZeroRegistry;
+import io.vertx.up.micro.ipc.server.Tunnel;
+import io.vertx.up.micro.ipc.server.UnityTunnel;
 import io.vertx.up.tool.Net;
+import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.eon.Values;
 import io.vertx.zero.exception.RpcSslAlpnException;
 
@@ -65,7 +68,9 @@ public class ZeroRpcAgent extends AbstractVerticle {
              * 5.Service added.
              */
             {
-                // TODO: Wait for service implementation of Rpc Backend.
+                // UnityService add
+                final Tunnel tunnel = Instance.singleton(UnityTunnel.class);
+                builder.addService(tunnel.init());
             }
             /**
              * 6.Server added.

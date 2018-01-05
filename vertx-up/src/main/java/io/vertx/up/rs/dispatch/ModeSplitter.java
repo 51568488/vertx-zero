@@ -36,23 +36,24 @@ public class ModeSplitter {
     public Aim<RoutingContext> distribute(final Event event) {
         return Fn.get(() -> {
             // 1. Scan method to check @Address
-            final boolean annotated = event.getAction().isAnnotationPresent(Address.class);
-            final boolean rpc = event.getAction().isAnnotationPresent(Ipc.class);
             final Method method = event.getAction();
-            final Class<?> returnType = method.getReturnType();
-            // 2. Split request flow
-            final Aim<RoutingContext> aim = null;
-            // 3. Only one channel enabled
+            final boolean annotated = method.isAnnotationPresent(Address.class);
+            final boolean rpc = method.isAnnotationPresent(Ipc.class);
+            // 2. Only one channel enabled
             Fn.flingUp(rpc && annotated, LOGGER, ChannelMultiException.class,
                     getClass(), method);
+
             final Differ<RoutingContext> differ;
             if (annotated) {
+
                 // EventBus Mode for Mode: 1,3,5
                 differ = EventDiffer.create();
             } else if (rpc) {
+
                 // Ipc Mode for Mode: 6
                 differ = IpcDiffer.create();
             } else {
+
                 // Non Event Bus for Mode: 2,4
                 differ = CommonDiffer.create();
             }

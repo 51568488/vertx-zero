@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentMap;
  * 1. Backend : The worker will publish service out.
  * 2. Frontend : The api gateway will do discovery
  */
-public interface Orgin {
+public interface Origin {
     /**
      * Get backend
      *

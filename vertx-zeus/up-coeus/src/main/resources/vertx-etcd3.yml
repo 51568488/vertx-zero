@@ -1,4 +1,5 @@
 etcd:
+  micro: zero-istio
   nodes:
   - host: localhost
     port: 6189

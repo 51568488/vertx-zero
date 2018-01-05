@@ -42,12 +42,13 @@ E40032: You are in mode "Direct", the input index must be greatter and equal to 
 E40033: "(Database) You are trying to initialize \"Xtor\" component, but found invalid component {0} in method {1}"
 E40034: "(Database) Your \"Xtor\" component is not ready, (client, clazz, logger, collection) could not be null"
 E40035: "(Database) You are executing the operations in \"Xtor\" component, but met error: {0}"
-E40036: (Rpc) Zero rpc require SSL with Alpn enabled (jks,password), please check your configuration of port = {0}, options = {1}
+E40036: (Rpc) Zero rpc require SSL with Alpn enabled, please check your configuration of port = {0}, options = {1}
 E40037: (Rpc) Enabled in current environment, but remote configuration center ( Etcd ) is not prepared
 E40038: "(Security) Zero system detected duplicated \"Wall\" classes [{0}] (Path & Order) should not be the same, it''s invalid"
 E40039: "The network configured for etcd ( host = {0}, port = {1} ) could not be reached"
 E40040: "(Security) You have configured key = \"{0}\" in @Wall class {1}, but it''s missing"
 E40041: "(Security) Every @Wall class must contains only one method annotated with {0}, current {1} contains more"
+E40042: "You have enabled @Address and @Ipc both on method \"{0}\" of class \"{1}\", only one channel should be valid."
 # (Web) Exception for web
 E60000: (400) - Request validation failure, class = {0}, method = {1}, message = {2}
 E60001: (400) - The input content could not be converted into valid resource user {0}
@@ -60,6 +61,9 @@ E60007: (500) - The system detected internal error, contact administrator and ch
 E60008: (404) - Zero system detect non record in storage, no record
 E60009: (400) - Zero system detect duplicated records in storage, size = {0}
 E60010: (404) - The request {0} of method {1} could not be found in zero system
-E40011: "(400) - (Security) Zero system detected invalid request in request"
-E40012: "(401) - (Security) Unauthorized request met in request"
-E40013: "(403) - (Security) Access denied/forbidden in request"
+E60011: "(400) - (Security) Zero system detected invalid request in request"
+E60012: "(401) - (Security) Unauthorized request met in request"
+E60013: "(403) - (Security) Access denied/forbidden in request"
+E60014: "(405) - The method \"{0}\" for request uri {1} is not allowed"
+E60015: "(501) - The service ( name = {0}, address = {1}, method = {2}, class = {3} ) could not be found"
+E60016: "(501) - The service address = {0} is wrong in name = {1}"

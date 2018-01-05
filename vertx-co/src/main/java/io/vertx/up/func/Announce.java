@@ -1,5 +1,6 @@
 package io.vertx.up.func;
 
+import io.vertx.up.exception.WebException;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.exception.ZeroException;
@@ -48,6 +49,18 @@ class Announce {
         if (null != error) {
             if (null != logger) {
                 logger.vertx(error);
+            }
+            throw error;
+        }
+    }
+
+    static void outWeb(final Annal logger,
+                       final Class<? extends WebException> webClass,
+                       final Object... args) {
+        final WebException error = Instance.instance(webClass, args);
+        if (null != error) {
+            if (null != logger) {
+                logger.warn(error.getMessage());
             }
             throw error;
         }

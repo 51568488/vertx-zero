@@ -17,19 +17,23 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class EndPointOrgin implements Orgin {
+public class EndPointOrigin implements Origin {
 
     private final transient ZeroRegistry registry
             = ZeroRegistry.create(getClass());
 
     @Override
     public ConcurrentMap<String, Record> getRegistryData() {
+        return readData(EtcdPath.ENDPOINT);
+    }
+
+    protected ConcurrentMap<String, Record> readData(final EtcdPath path) {
         // Get End Points.
-        final Set<String> results = this.registry.getServices(EtcdPath.ENDPOINT);
+        final Set<String> results = this.registry.getServices(path);
         // Get records by results.
         final Set<JsonObject> routes = new HashSet<>();
         Observable.fromIterable(results)
-                .map(key -> this.registry.getData(EtcdPath.ENDPOINT, key, this::getItem))
+                .map(key -> this.registry.getData(path, key, this::getItem))
                 .subscribe(routes::addAll);
         // Build discovery record with metadata to identifier the key.
         final ConcurrentMap<String, Record> map = new ConcurrentHashMap<>();

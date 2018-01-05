@@ -2,6 +2,7 @@ package io.vertx.zero.exception;
 
 import io.vertx.core.json.JsonObject;
 
+@Deprecated
 public class RpcSslAlpnException extends UpException {
 
     public RpcSslAlpnException(final Class<?> clazz,

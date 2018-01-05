@@ -4,7 +4,7 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.servicediscovery.Record;
-import io.vertx.up.micro.discovery.Orgin;
+import io.vertx.up.micro.discovery.Origin;
 import io.vertx.up.tool.StringUtil;
 import io.vertx.zero.eon.Strings;
 
@@ -40,8 +40,8 @@ public class CommonArithmetic implements Arithmetic {
     private boolean isMatch(final String uri, final Record record) {
         final JsonObject data = record.getMetadata();
         boolean match = false;
-        if (data.containsKey(Orgin.PATH)) {
-            final String path = data.getString(Orgin.PATH);
+        if (data.containsKey(Origin.PATH)) {
+            final String path = data.getString(Origin.PATH);
             if (!StringUtil.isNil(path) && path.contains(Strings.COLON)) {
                 final Pattern pattern = RegexPath.createRegex(path);
                 match = pattern.matcher(uri).matches();

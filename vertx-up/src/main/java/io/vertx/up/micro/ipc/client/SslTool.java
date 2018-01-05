@@ -23,6 +23,7 @@ public class SslTool {
                                             final IpcData data) {
         final String grpcHost = data.getHost();
         final Integer grpcPort = data.getPort();
+        LOGGER.info(Info.CLIENT_BUILD, grpcHost, String.valueOf(grpcPort));
         final VertxChannelBuilder builder =
                 VertxChannelBuilder
                         .forAddress(vertx, grpcHost, grpcPort);
@@ -50,10 +51,11 @@ public class SslTool {
                     // Set builder
                     final String jks = sslConfig.getString("jks");
                     final String password = sslConfig.getString("password");
+                    LOGGER.info(Info.CLIENT_SSL, jks, null != password);
                     builder.useSsl(option -> option
                             .setSsl(true)
                             .setUseAlpn(true)
-                            .setTrustOptions(new JksOptions()
+                            .setTrustStoreOptions(new JksOptions()
                                     .setPath(jks)
                                     .setPassword(password)));
                 });

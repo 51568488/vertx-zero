@@ -21,6 +21,12 @@ public class UnityStub implements RpcStub {
         stub.unityCall(request, response -> {
             if (response.succeeded()) {
                 System.out.println(response.result().getEnvelop().getBody());
+            } else {
+                final Throwable ex = response.cause();
+                if (null != ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("Error");
             }
         });
     }

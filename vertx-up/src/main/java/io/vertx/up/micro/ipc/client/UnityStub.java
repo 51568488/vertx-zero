@@ -26,7 +26,6 @@ public class UnityStub implements RpcStub {
                 if (null != ex) {
                     ex.printStackTrace();
                 }
-                System.out.println("Error");
             }
         });
     }

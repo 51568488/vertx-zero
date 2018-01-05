@@ -10,6 +10,6 @@ public class SpeakIpcWorker {
 
     @Ipc("IPC://EVENT/ADDR")
     public void send(final Message<Envelop> envelop) {
-
+        envelop.reply(Envelop.success("Hello Lang"));
     }
 }

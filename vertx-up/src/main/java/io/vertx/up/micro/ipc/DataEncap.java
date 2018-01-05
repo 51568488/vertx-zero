@@ -54,6 +54,19 @@ public class DataEncap {
     }
 
     /**
+     * @param data
+     * @return
+     */
+    public static IpcRequest in(final IpcData data) {
+        final IpcEnvelop envelop = IpcEnvelop.newBuilder()
+                .setBody(data.getData().toString())
+                .setType(Format.JSON).build();
+        return IpcRequest.newBuilder()
+                .setEnvelop(envelop)
+                .build();
+    }
+
+    /**
      * Middle process
      *
      * @param request
@@ -107,14 +120,5 @@ public class DataEncap {
             }
         }
         return envelop;
-    }
-
-    public static IpcRequest in(final IpcData data) {
-        final IpcEnvelop envelop = IpcEnvelop.newBuilder()
-                .setBody(data.getData().toString())
-                .setType(Format.JSON).build();
-        return IpcRequest.newBuilder()
-                .setEnvelop(envelop)
-                .build();
     }
 }

@@ -1,6 +1,7 @@
 package io.vertx.up.micro.ipc.server;
 
 import io.grpc.BindableService;
+import io.vertx.core.Vertx;
 import io.vertx.up.web.ZeroAnno;
 
 import java.lang.reflect.Method;
@@ -15,7 +16,7 @@ public interface Tunnel {
      *
      * @return
      */
-    BindableService init();
+    BindableService init(Vertx vertx);
 
     ConcurrentMap<String, Method> IPCS
             = ZeroAnno.getIpcs();

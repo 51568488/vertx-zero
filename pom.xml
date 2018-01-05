@@ -90,10 +90,11 @@
         <ignite.version>2.3.0</ignite.version>
         <etcd.version>2.14.0</etcd.version>
         <mongodb.async.version>3.6.1</mongodb.async.version>
-        <!-- Vert.x Addition -->
+        <!-- Rpc -->
         <protobuf.version>3.5.1</protobuf.version>
         <vertx.grpc.version>1.6.1</vertx.grpc.version>
         <grpc.version>1.8.0</grpc.version>
+        <!-- Vert.x Addition -->
         <rxjava2.version>2.1.8</rxjava2.version>
         <netty.tcnative.version>2.0.7.Final</netty.tcnative.version>
         <netty.version>4.1.19.Final</netty.version>

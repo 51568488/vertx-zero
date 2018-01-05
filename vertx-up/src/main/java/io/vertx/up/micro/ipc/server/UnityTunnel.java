@@ -25,6 +25,7 @@ public class UnityTunnel implements Tunnel {
         return new UnityServiceGrpc.UnityServiceVertxImplBase() {
             @Override
             public void unityCall(final IpcRequest request, final Future<IpcResponse> future) {
+                LOGGER.info("Hello");
                 // IpcData building
                 final IpcData data = DataEncap.consume(request, IpcType.UNITY);
                 // Method handle

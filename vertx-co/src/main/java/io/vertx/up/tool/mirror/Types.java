@@ -31,6 +31,10 @@ public class Types {
                 () -> JsonArray.class == value.getClass());
     }
 
+    public static boolean isVoid(final Class<?> clazz) {
+        return null == clazz || Void.class == clazz || void.class == clazz;
+    }
+
     public static boolean isClass(final Object value) {
         return Fn.getSemi(null == value, LOGGER,
                 () -> false,

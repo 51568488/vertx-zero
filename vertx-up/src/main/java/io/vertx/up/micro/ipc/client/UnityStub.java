@@ -13,7 +13,9 @@ import io.vertx.up.micro.ipc.DataEncap;
 public class UnityStub implements RpcStub {
 
     @Override
-    public Future<Envelop> send(final Vertx vertx, final IpcData data) {
+    public Future<Envelop> send(
+            final Vertx vertx,
+            final IpcData data) {
         // Channel
         final ManagedChannel channel = SslTool.getChannel(vertx, data);
         final UnityServiceGrpc.UnityServiceVertxStub stub
@@ -21,23 +23,25 @@ public class UnityStub implements RpcStub {
         // Request
         final IpcRequest request = DataEncap.in(data);
         // Call and return to future
-        final Future<Envelop> future = Future.future();
+        final Future<Envelop> handler = Future.future();
         stub.unityCall(request, response -> {
             if (response.succeeded()) {
                 System.out.println(response.result().getEnvelop().getBody());
-                future.complete(Envelop.ok());
+                // Answer.reply(context, Envelop.success("Success"));
+                handler.complete(Envelop.success("Success"));
             } else {
                 final Throwable ex = response.cause();
                 if (null != ex) {
                     final Envelop envelop = Envelop.failure(
                             new _500UnexpectedRpcException(getClass(), ex)
                     );
-                    future.complete(envelop);
+                    // Answer.reply(context, envelop);
+                    handler.complete(envelop);
                 } else {
                     // TODO: Impossible code;
                 }
             }
         });
-        return future;
+        return handler;
     }
 }

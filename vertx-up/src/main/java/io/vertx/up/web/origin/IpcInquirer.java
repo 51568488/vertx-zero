@@ -2,7 +2,13 @@ package io.vertx.up.web.origin;
 
 import io.reactivex.Observable;
 import io.vertx.up.annotations.Ipc;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
+import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
+import io.vertx.up.tool.mirror.Types;
+import io.vertx.zero.exception.IpcMethodReturnException;
+import io.vertx.zero.exception.IpcMethodTargetException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -15,6 +21,8 @@ import java.util.concurrent.ConcurrentMap;
  * @Ipc and @Address must be in @Queue class instead of other specification.
  */
 public class IpcInquirer implements Inquirer<ConcurrentMap<String, Method>> {
+
+    private static final Annal LOGGER = Annal.get(IpcInquirer.class);
 
     /**
      * @param classes all classes must be annotated with @Queue
@@ -33,11 +41,46 @@ public class IpcInquirer implements Inquirer<ConcurrentMap<String, Method>> {
                 .flatMap(clazz -> Observable.fromArray(clazz.getDeclaredMethods()))
                 .filter(Objects::nonNull)
                 .filter(method -> method.isAnnotationPresent(Ipc.class))
+                .map(this::ensureTarget)
+                .map(this::ensureSpec)
                 .subscribe(method -> {
                     final Annotation annotation = method.getAnnotation(Ipc.class);
                     final String address = Instance.invoke(annotation, "value");
                     addresses.put(address, method);
                 });
         return addresses;
+    }
+
+    /**
+     * Method with @Ipc must contain return type
+     *
+     * @param method
+     * @return
+     */
+    private Method ensureSpec(final Method method) {
+        Fn.flingUp(Types.isVoid(method.getReturnType()), LOGGER,
+                IpcMethodReturnException.class, getClass(),
+                method);
+        return method;
+    }
+
+    /**
+     * If set to or name, must not be null/empty at the sametime.
+     *
+     * @param method
+     * @return
+     */
+    private Method ensureTarget(final Method method) {
+        final Annotation annotation = method.getAnnotation(Ipc.class);
+        final String to = Instance.invoke(annotation, "to");
+        final String name = Instance.invoke(annotation, "name");
+        if (StringUtil.isNil(to) && StringUtil.isNil(name)) {
+            return method;
+        }
+        // to and name must not be null
+        Fn.flingUp(StringUtil.isNil(to) || StringUtil.isNil(name), LOGGER,
+                IpcMethodTargetException.class, getClass(),
+                method, to, name);
+        return method;
     }
 }

@@ -95,6 +95,18 @@ public class DataEncap {
      */
     public static Envelop consume(final IpcData data) {
         final JsonObject json = data.getData().toJsonObject();
+        return build(json);
+    }
+
+    public static IpcResponse out(final IpcData data) {
+        final IpcEnvelop result = IpcEnvelop.newBuilder()
+                .setBody(data.getData().toString())
+                .setType(Format.JSON)
+                .build();
+        return IpcResponse.newBuilder().setEnvelop(result).build();
+    }
+
+    private static Envelop build(final JsonObject json) {
         Envelop envelop = Envelop.ok();
         // 1. Headers
         if (null != json) {
@@ -122,19 +134,9 @@ public class DataEncap {
         return envelop;
     }
 
-    public static IpcResponse out(final IpcData data) {
-        final IpcEnvelop result = IpcEnvelop.newBuilder()
-                .setBody(data.getData().toString())
-                .setType(Format.JSON)
-                .build();
-        return IpcResponse.newBuilder().setEnvelop(result).build();
-    }
-
-    public static IpcData out(final IpcResponse data) {
-        final IpcData result = new IpcData();
+    public static Envelop out(final IpcResponse data) {
         final String json = data.getEnvelop().getBody();
         final JsonObject responseData = new JsonObject(json);
-        System.out.println(responseData.encodePrettily());
-        return result;
+        return build(responseData);
     }
 }

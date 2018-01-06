@@ -26,19 +26,14 @@ public class UnityStub implements RpcStub {
         final Future<Envelop> handler = Future.future();
         stub.unityCall(request, response -> {
             if (response.succeeded()) {
-                System.out.println(response.result().getEnvelop().getBody());
-                // Answer.reply(context, Envelop.success("Success"));
-                handler.complete(Envelop.success("Success"));
+                handler.complete(DataEncap.out(response.result()));
             } else {
                 final Throwable ex = response.cause();
                 if (null != ex) {
                     final Envelop envelop = Envelop.failure(
                             new _500UnexpectedRpcException(getClass(), ex)
                     );
-                    // Answer.reply(context, envelop);
                     handler.complete(envelop);
-                } else {
-                    // TODO: Impossible code;
                 }
             }
         });

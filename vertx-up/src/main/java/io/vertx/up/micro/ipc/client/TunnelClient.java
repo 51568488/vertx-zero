@@ -37,9 +37,9 @@ public class TunnelClient {
             new ConcurrentHashMap<IpcType, RpcStub>() {
                 {
                     put(IpcType.UNITY, Instance.singleton(UnityStub.class));
-                    put(IpcType.CONSUME, Instance.singleton(ConsumeStub.class));
-                    put(IpcType.DUPLIEX, Instance.singleton(DupliexStub.class));
-                    put(IpcType.PRODUCE, Instance.singleton(ProduceStub.class));
+                    // put(IpcType.CONSUME, Instance.singleton(ConsumeStub.class));
+                    // put(IpcType.DUPLIEX, Instance.singleton(DupliexStub.class));
+                    // put(IpcType.PRODUCE, Instance.singleton(ProduceStub.class));
                 }
             };
 

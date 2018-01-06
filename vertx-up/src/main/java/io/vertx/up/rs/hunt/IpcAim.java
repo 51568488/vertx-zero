@@ -25,12 +25,12 @@ public class IpcAim extends BaseAim implements Aim<RoutingContext> {
             final Envelop data = Flower.continuous(context, result);
 
             // 4. Rpc Client Call to send the data.
-            final Future<Envelop> future = TunnelClient.create(getClass())
+            final Future<Envelop> handler = TunnelClient.create(getClass())
                     .connect(context.vertx())
                     .connect(event)
                     .send(data);
             // 5. Reply
-            future.complete();
+            handler.setHandler(res -> Answer.reply(context, res.result()));
         }, context, event), event);
     }
 }

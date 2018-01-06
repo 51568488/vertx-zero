@@ -11,8 +11,8 @@ import io.vertx.up.atom.flux.IpcData;
 public interface RpcStub {
     /**
      * Rpc Logical
-     *
-     * @param data
      */
-    Future<Envelop> send(Vertx vertx, IpcData data);
+    Future<Envelop> send(
+            final Vertx vertx,
+            IpcData data);
 }

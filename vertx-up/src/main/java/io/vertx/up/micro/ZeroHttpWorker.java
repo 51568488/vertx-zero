@@ -6,13 +6,13 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.up.annotations.Worker;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.worker.Receipt;
-import io.vertx.zero.exception.AsyncSignatureException;
-import io.vertx.zero.exception.WorkerArgumentException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
 import io.vertx.zero.eon.Values;
+import io.vertx.zero.exception.AsyncSignatureException;
+import io.vertx.zero.exception.WorkerArgumentException;
 
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -42,18 +42,16 @@ public class ZeroHttpWorker extends AbstractVerticle {
             // 5. Verify
             verify(method);
             try {
-                Fn.safeNull(() -> {
-                    bus.<Envelop>consumer(address, message -> {
-                        if (isVoid(method)) {
-                            // void Message<Envelop>
-                            Instance.invoke(reference, method.getName(), message);
-                        } else {
-                            // Envelop ( Envelop )
-                            syncReply(message, reference, method.getName());
-                        }
+                Fn.safeNull(() -> bus.<Envelop>consumer(address, message -> {
+                    if (isVoid(method)) {
+                        // void Message<Envelop>
+                        Instance.invoke(reference, method.getName(), message);
+                    } else {
+                        // Envelop ( Envelop )
+                        syncReply(message, reference, method.getName());
+                    }
 
-                    });
-                }, address, reference, method);
+                }), address, reference, method);
             } catch (final Throwable ex) {
                 ex.printStackTrace();
             }

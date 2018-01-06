@@ -64,7 +64,7 @@ public class ZeroRpcAgent extends AbstractVerticle {
             {
                 // UnityService add
                 final Tunnel tunnel = Instance.singleton(UnityTunnel.class);
-                builder.addService(tunnel.init());
+                builder.addService(tunnel.init(this.vertx));
             }
             /**
              * 6.Server added.

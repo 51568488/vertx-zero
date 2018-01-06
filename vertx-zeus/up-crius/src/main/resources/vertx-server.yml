@@ -1,6 +1,13 @@
 server:
 - name: up-crius
-  type: rx
+  type: http
   config:
-    port: 6083
+    port: 6085
     host: 0.0.0.0
+- name: ipc-crius
+  type: ipc
+  config:
+    port: 6885
+    host: 0.0.0.0
+    ssl: false
+    type: PEM

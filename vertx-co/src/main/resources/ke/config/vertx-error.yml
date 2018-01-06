@@ -48,9 +48,11 @@ E40038: "(Security) Zero system detected duplicated \"Wall\" classes [{0}] (Path
 E40039: "The network configured for etcd ( host = {0}, port = {1} ) could not be reached"
 E40040: "(Security) You have configured key = \"{0}\" in @Wall class {1}, but it''s missing"
 E40041: "(Security) Every @Wall class must contains only one method annotated with {0}, current {1} contains more"
-E40042: "You have enabled @Address and @Ipc both on method \"{0}\" of class \"{1}\", only one channel should be valid."
+E40042: "You have enabled @Address and @Ipc both on method \"{0}\" of class \"{1}\", only one channel should be valid"
 E40043: "You have annotated method {0} with @Ipc and set current point is \"sender\", it means that you must set \"to\" and \"name\" both at the same time, but now ( to = {1}, name = {2} )"
-E40044: "The method annotated method {0} with @Ipc must contain return value, return type must not be Void/void."
+E40044: "The method {0} annotated with @Ipc must contain return value, return type must not be Void/void"
+E40045: "The method {0} annotated with @Ipc must set direction ( value or (name|to) ), now the system do not know the direction"
+E40046: "The method {0} annotated with @Ipc must contain only one argument of Envelop type"
 # (Web) Exception for web
 E60000: (400) - Request validation failure, class = {0}, method = {1}, message = {2}
 E60001: (400) - The input content could not be converted into valid resource user {0}
@@ -71,3 +73,4 @@ E60015: "(501) - The service ( name = {0}, address = {1}, method = {2}, class = 
 E60016: "(501) - The service address = {0} is wrong in name = {1}"
 E60017: "(504) - The remote service ( location = {0}, name = {1} ) met error, details = {2}"
 E60018: "(501) - The micro service could not find method by address = {0}, error occurs"
+E60019: "(500) - Unexpected error found when communitting, details {0}"

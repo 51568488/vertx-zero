@@ -1,5 +1,6 @@
 package io.vertx.up.micro.ipc.client;
 
+import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.servicediscovery.Record;
 import io.vertx.up.annotations.Ipc;
@@ -26,7 +27,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class TunnelClient {
 
-    private transient Vertx vertxRef;
+    private transient Vertx vertx;
     private transient Event event;
     private final transient Annal logger;
 
@@ -51,7 +52,7 @@ public class TunnelClient {
     }
 
     public TunnelClient connect(final Vertx vertx) {
-        this.vertxRef = vertx;
+        this.vertx = vertx;
         return this;
     }
 
@@ -60,7 +61,7 @@ public class TunnelClient {
         return this;
     }
 
-    public void send(final Envelop envelop) {
+    public Future<Envelop> send(final Envelop envelop) {
         // 1. Extract address
         final String address = getValue("to");
         final IpcType type = getValue("type");
@@ -75,7 +76,7 @@ public class TunnelClient {
         DataEncap.in(data, envelop);
         // 5. Stub
         final RpcStub stub = STUBS.getOrDefault(type, Instance.singleton(UnityStub.class));
-        stub.send(this.vertxRef, data);
+        return stub.send(this.vertx, data);
     }
 
     private <T> T getValue(final String attr) {

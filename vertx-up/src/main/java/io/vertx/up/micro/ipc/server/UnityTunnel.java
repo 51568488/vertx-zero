@@ -11,6 +11,7 @@ import io.vertx.tp.ipc.service.UnityServiceGrpc;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.flux.IpcData;
 import io.vertx.up.eon.em.IpcType;
+import io.vertx.up.exception._501RpcMethodMissingException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ipc.DataEncap;
@@ -35,16 +36,16 @@ public class UnityTunnel implements Tunnel {
                 // Method handle
                 final Method method = IPCS.get(data.getAddress());
                 // Work mode
-                System.out.println(method);
                 if (null == method) {
-                    // No Rpc Handler here. Error
-
+                    // No Rpc Handler here
+                    final Envelop envelop =
+                            Envelop.failure(new _501RpcMethodMissingException(getClass(), data.getAddress()));
                 } else {
                     // Method called with message handler
                     final Envelop envelop = DataEncap.consume(data);
                     // Send message to address
                     final Class<?> returnType = method.getReturnType();
-
+                    // Method dispatch for different workflow.
                     if (Void.class == returnType || void.class == returnType) {
                         // Message sending
                         final EventBus bus = vertx.eventBus();

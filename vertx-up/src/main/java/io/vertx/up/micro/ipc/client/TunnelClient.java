@@ -62,7 +62,7 @@ public class TunnelClient {
 
     public void send(final Envelop envelop) {
         // 1. Extract address
-        final String address = getValue("value");
+        final String address = getValue("to");
         final IpcType type = getValue("type");
         // 2. Record extract
         final Record record = findTarget();
@@ -84,9 +84,15 @@ public class TunnelClient {
         return Instance.invoke(annotation, attr);
     }
 
+    /**
+     * Here's the logical of current IPC
+     * 1. The address contains all the etcd address that published
+     *
+     * @return Found record for IPC
+     */
     private Record findTarget() {
         final ConcurrentMap<String, Record> address = ORIGIN.getRegistryData();
-        final String target = getValue("value");
+        final String target = getValue("to");
         final String name = getValue("name");
         // 1. Find service names
         final Record record = address.values().stream()

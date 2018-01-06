@@ -22,7 +22,12 @@ public class IpcInquirer implements Inquirer<ConcurrentMap<String, Method>> {
      */
     @Override
     public ConcurrentMap<String, Method> scan(final Set<Class<?>> classes) {
-        // 1. Scan all classes for @Queue
+        /**
+         * Here are some specification for IPC community
+         * 1. As IPC server, must extract @Ipc ( from ) part and registred to Etcd
+         * 2. This address is published and other nodes could visit current Micro service.
+         * 3. Scan all classes annotated with @Queue only, @Ipc must be used inner @Queue
+         */
         final ConcurrentMap<String, Method> addresses = new ConcurrentHashMap<>();
         Observable.fromIterable(classes)
                 .flatMap(clazz -> Observable.fromArray(clazz.getDeclaredMethods()))

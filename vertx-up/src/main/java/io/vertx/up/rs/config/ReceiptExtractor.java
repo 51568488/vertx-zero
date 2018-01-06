@@ -3,15 +3,15 @@ package io.vertx.up.rs.config;
 import io.reactivex.Observable;
 import io.vertx.up.annotations.Address;
 import io.vertx.up.atom.worker.Receipt;
-import io.vertx.zero.exception.AccessProxyException;
-import io.vertx.zero.exception.AddressWrongException;
-import io.vertx.zero.exception.NoArgConstructorException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.rs.Extractor;
 import io.vertx.up.tool.mirror.Anno;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroAnno;
+import io.vertx.zero.exception.AccessProxyException;
+import io.vertx.zero.exception.AddressWrongException;
+import io.vertx.zero.exception.NoArgConstructorException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -33,11 +33,11 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
     static {
         if (ADDRESS.isEmpty()) {
             /** 1. Get all endpoints **/
-            final Set<Class<?>> endpoints = ZeroAnno.getEndpoints();
+            final Set<Class<?>> queues = ZeroAnno.getEndpoints();
 
             /** 2. Scan for @Address to matching **/
-            Observable.fromIterable(endpoints)
-                    .map(endpoint -> Anno.query(endpoint, Address.class))
+            Observable.fromIterable(queues)
+                    .map(queue -> Anno.query(queue, Address.class))
                     // 3. Scan annotations
                     .subscribe(annotations -> Observable.fromArray(annotations)
                             .map(addressAnno -> Instance.invoke(addressAnno, "value"))

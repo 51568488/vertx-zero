@@ -229,4 +229,15 @@ public class Envelop implements Serializable {
         }
         return data;
     }
+
+    @Override
+    public String toString() {
+        return "Envelop{" +
+                "status=" + this.status +
+                ", headers=" + this.headers +
+                ", error=" + this.error +
+                ", data=" + this.data +
+                ", user=" + this.user +
+                '}';
+    }
 }

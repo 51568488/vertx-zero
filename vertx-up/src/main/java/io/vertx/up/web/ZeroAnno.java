@@ -143,16 +143,22 @@ public class ZeroAnno {
         inquirer = Instance.singleton(QueueInquirer.class);
         final Set<Class<?>> queues = inquirer.scan(clazzes);
 
-        /** Queue -> Receipt/Ipc **/
+        /** Queue -> Receipt **/
         Fn.safeSemi(!queues.isEmpty(),
                 LOGGER,
                 () -> {
                     final Inquirer<Set<Receipt>> receipt =
                             Instance.singleton(ReceiptInquirer.class);
                     RECEIPTS.addAll(receipt.scan(queues));
+                });
+
+        /** Ipc Only **/
+        Fn.safeSemi(IPCS.isEmpty(),
+                LOGGER,
+                () -> {
                     final Inquirer<ConcurrentMap<String, Method>> ipc =
                             Instance.singleton(IpcInquirer.class);
-                    IPCS.putAll(ipc.scan(queues));
+                    IPCS.putAll(ipc.scan(clazzes));
                 });
 
         /** Agent **/

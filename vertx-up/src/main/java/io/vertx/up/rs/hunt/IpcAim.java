@@ -1,5 +1,6 @@
 package io.vertx.up.rs.hunt;
 
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.up.atom.Envelop;
@@ -24,10 +25,12 @@ public class IpcAim extends BaseAim implements Aim<RoutingContext> {
             final Envelop data = Flower.continuous(context, result);
 
             // 4. Rpc Client Call to send the data.
-            TunnelClient.create(getClass())
+            final Future<Envelop> handler = TunnelClient.create(getClass())
                     .connect(context.vertx())
                     .connect(event)
                     .send(data);
+            // 5. Reply
+            handler.setHandler(res -> Answer.reply(context, res.result()));
         }, context, event), event);
     }
 }

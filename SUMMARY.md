@@ -32,7 +32,7 @@
     * [8.1 - How to define Web Exception](doc/zero-error.md)
     * [8.2 - How to validate request \( JSR 303 with Hibernate-Validator \)](doc/zero-validate.md)
     * [8.3 - Advanced Validation \( Rule for @BodyParam \)](doc/zero-verify.md)
-  * 9 - Security
+  * [9 - Security](doc/9-security.md)
     * [9.1 - Enable Basic Authorization](doc/91-enable-basic-authorization.md)
 
 ## Useful Related Documents

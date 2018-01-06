@@ -29,9 +29,21 @@ public @interface Ipc {
     String name() default "";
 
     /**
-     * Event Bus address
+     * Event Bus address, this address must be used with name(), it means that
+     * current Ipc should be send message to
+     * 1. Service ( name = xxx, from = xxx )
      *
      * @return
      */
-    String value();
+    String to() default "";
+
+    /**
+     * Event Bus address, this address must be used standalone, it means that
+     * current Ipc should read message only and do not send out.
+     * 1. Service ( name = current )
+     * 2. value is used instead of from direction.
+     *
+     * @return
+     */
+    String value() default "";
 }

@@ -23,7 +23,9 @@ public class UnityStub implements RpcStub {
                 System.out.println(response.result().getEnvelop().getBody());
             } else {
                 final Throwable ex = response.cause();
+                
                 if (null != ex) {
+
                     ex.printStackTrace();
                 }
             }

@@ -10,8 +10,8 @@ public class SpeakWorker {
      * @param envelop
      */
     @Ipc(value = "IPC://EVENT/ADDR")
-    public Envelop send(final Envelop envelop) {
+    public String send(final Envelop envelop) {
         System.out.println("Called");
-        return envelop;
+        return "Hello World";
     }
 }

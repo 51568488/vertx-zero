@@ -13,7 +13,10 @@ import io.vertx.up.eon.em.IpcType;
 import io.vertx.up.exception._501RpcMethodMissingException;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ipc.DataEncap;
+import io.vertx.up.micro.ipc.tower.FinalTransit;
+import io.vertx.up.micro.ipc.tower.NodeTransit;
 import io.vertx.up.micro.ipc.tower.Transit;
+import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
 
 import java.lang.annotation.Annotation;
@@ -45,31 +48,45 @@ public class UnityTunnel implements Tunnel {
                     final Envelop envelop = DataEncap.consume(data);
                     // Execute Transit
                     final Transit transit = getTransit(method);
+                    // Execute Transit
+                    final Future<Envelop> result = transit.async(envelop);
+                    final Envelop community = result.result();
+                    // Build IpcData
+                    final IpcData responseData = build(community, envelop);
+                    future.complete(DataEncap.out(responseData));
                 }
             }
         };
     }
 
-    private Transit getTransit(final Method method) {
-        final Annotation annotation = method.getAnnotation(Ipc.class);
-        // 1. Extract transit type
-        final String to = Instance.invoke(annotation, "to");
-        return null;
+    private IpcData build(final Envelop community, final Envelop envelop) {
+        // Headers and user could not be modified
+        community.setHeaders(envelop.headers());
+        community.setUser(envelop.user());
+        // IpcResponse -> Output Envelop
+        final IpcData responseData = new IpcData();
+        responseData.setType(IpcType.UNITY);
+        DataEncap.in(responseData, community);
+        return responseData;
     }
 
-    private Envelop buildResponse(final Object ret) {
-        // Return value
-        if (null == ret) {
-            // Null converted to Envelop
-            return Envelop.ok();
+    private Transit getTransit(final Method method) {
+        final Annotation annotation = method.getAnnotation(Ipc.class);
+        // 1. Check only one is enough because of Error-40043
+        // 2. to and from must not be null at the same time because of Error-40045
+        final String to = Instance.invoke(annotation, "to");
+        final Transit transit;
+        if (StringUtil.isNil(to)) {
+            // Node transit
+            transit = Instance.singleton(FinalTransit.class);
+            LOGGER.info(Info.NODE_FINAL, method, method.getDeclaringClass());
         } else {
-            if (ret instanceof Envelop) {
-                // Direct return
-                return (Envelop) ret;
-            } else {
-                // Success for other types
-                return Envelop.success(ret);
-            }
+            // Final transit
+            transit = Instance.singleton(NodeTransit.class);
+            LOGGER.info(Info.NODE_MIDDLE, method, method.getDeclaringClass());
         }
+        // Connect for transit
+        transit.connect(method);
+        return transit;
     }
 }

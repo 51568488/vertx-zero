@@ -7,6 +7,7 @@ import io.vertx.ext.auth.User;
 import io.vertx.servicediscovery.Record;
 import io.vertx.tp.ipc.eon.IpcEnvelop;
 import io.vertx.tp.ipc.eon.IpcRequest;
+import io.vertx.tp.ipc.eon.IpcResponse;
 import io.vertx.tp.ipc.eon.em.Format;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.flux.IpcData;
@@ -15,10 +16,8 @@ import io.vertx.up.eon.em.IpcType;
 
 /**
  * Data serialization to set data
- * 1. Client data Envelop -> RpcEnvelop
- * 2. Server data RpcEnvelop -> Method arguments
- * 3. Method return value -> RpcEnvelop
- * 4. RpcEnvelop extract -> Envelop
+ * Envelop -> IpcData -> IpcRequest -> ...
+ * IpcResponse -> IpcData -> Envelop
  */
 public class DataEncap {
 
@@ -40,12 +39,13 @@ public class DataEncap {
             }
             // Header
             final MultiMap headers = envelop.headers();
-            final JsonObject headerData = new JsonObject();
-            headers.forEach((entry) -> headerData.put(entry.getKey(), entry.getValue()));
-            sendData.put("header", headerData);
+            if (null != headers) {
+                final JsonObject headerData = new JsonObject();
+                headers.forEach((entry) -> headerData.put(entry.getKey(), entry.getValue()));
+                sendData.put("header", headerData);
+            }
             // Data
-            final JsonObject businessData = envelop.data();
-            sendData.put("data", businessData);
+            sendData.put("data", envelop.data().toString());
             sendData.put("config", data.getConfig());
             // Data Prepared finished.
             sendData.put("address", data.getAddress());
@@ -120,5 +120,21 @@ public class DataEncap {
             }
         }
         return envelop;
+    }
+
+    public static IpcResponse out(final IpcData data) {
+        final IpcEnvelop result = IpcEnvelop.newBuilder()
+                .setBody(data.getData().toString())
+                .setType(Format.JSON)
+                .build();
+        return IpcResponse.newBuilder().setEnvelop(result).build();
+    }
+
+    public static IpcData out(final IpcResponse data) {
+        final IpcData result = new IpcData();
+        final String json = data.getEnvelop().getBody();
+        final JsonObject responseData = new JsonObject(json);
+        System.out.println(responseData.encodePrettily());
+        return result;
     }
 }

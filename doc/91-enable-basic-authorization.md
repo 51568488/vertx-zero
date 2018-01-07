@@ -16,7 +16,7 @@ Then it means that you must create new file named `vertx-secure.yml` instead wit
 ```yaml
 secure:
   # Standard Type
-  mongo:
+  mongox:
     type: mongo
     config:
       collectionName: DB_USER
@@ -38,7 +38,7 @@ import io.vertx.up.annotations.Wall;
 import io.vertx.up.plugin.mongo.MongoInfix;
 import io.vertx.up.secure.handler.BasicOstium;
 
-@Wall(value = "mongo", path = "/exp4/*")
+@Wall(value = "mongox", path = "/exp4/*")
 public class MongoKeeper {
 
     @Authenticate
@@ -49,6 +49,8 @@ public class MongoKeeper {
     }
 }
 ```
+
+This class is annotated with @Wall, if the **path** is not set, it will be the value `/*` for all routes, the value should be configured in `vertx-secure.yml.`in current example it's `mongox`. You can define more than one walls for each routes. Then you must create the `AuthHandler` method to create the AuthHandler, now you can use `BasicOstium` to create basic authorization handler, also this method must be annotated with `@Authenticate`. 
 
 
 

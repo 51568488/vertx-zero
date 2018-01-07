@@ -29,5 +29,33 @@ public class SpeakApi {
 }
 ```
 
+## 2. Terminator
+
+You must be sure current terminator name is "ipc-coeus" in `vertx-server.yml` as following:
+
+```yaml
+- name: ipc-coeus
+  type: ipc
+  config:
+    port: 6884
+    host: 0.0.0.0
+```
+
+Then you can write the code as following:
+
+```java
+
+import io.vertx.up.annotations.Ipc;
+import io.vertx.up.atom.Envelop;
+
+public class SpeakWorker {
+
+    @Ipc(value = "IPC://EVENT/ADDR")
+    public String send(final Envelop envelop) {
+        return envelop.toString();
+    }
+}
+```
+
 
 

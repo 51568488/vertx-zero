@@ -7,5 +7,40 @@ In zero system, the developer could focus on code logical instead of Rpc interna
 
 Then you can write your code in zero service.
 
+## 1. Rpc Mode
+
+In zero system, it only support three rpc node:
+
+* Sender
+* Transfer
+* Final
+
+Here are some different code.
+
+### 1.1. Sender
+
+```java
+import io.vertx.core.json.JsonObject;
+import io.vertx.up.annotations.EndPoint;
+import io.vertx.up.annotations.Ipc;
+
+import javax.ws.rs.BodyParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
+@EndPoint
+@Path("/cronus")
+public class SpeakApi {
+
+    @Path("/forward")
+    @POST
+    @Ipc(to = "IPC://EVENT/ADDR", name = "ipc-coeus")
+    public JsonObject ipc(@BodyParam final JsonObject data) {
+        System.out.println(data);
+        return data;
+    }
+}
+```
+
 
 

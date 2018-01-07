@@ -52,14 +52,14 @@ Once you have prepared the environment of Etcd3,  You can configure service node
 
 ### 2.1. Service Node
 
-In your file vertx.yml, you can extend node as following:
+In your file **vertx.yml**, you can extend node as following:
 
 ```yaml
 zero:
   lime: mongo, etcd3
 ```
 
-Here etcd3 is only the file suffix, not fixed, you can set any name for files. Because above lime is `etcd3`, then create new file in your resources as following:
+Here etcd3 is only the file suffix, not fixed, you can set any name for files. Because above lime is `etcd3`, then create new file `vertx-etcd3.yml` in your resources as following:
 
 ```yaml
 etcd:
@@ -70,13 +70,56 @@ etcd:
   timeout: 2
 ```
 
-Please be careful about `micro `property, it means that you can run multi **Cluster** in one etcd environment, the micro describe the name for all micro services, different micro name will not be communicated with zero system. You must set all your micro service zero instances with one unique name. Please refer following pictures:
-
-
+Please be careful about `micro`property, it means that you can run multi **Cluster** in one etcd environment, the micro describe the name for all micro services, different micro name will not be communicated with zero system. You must set all your micro service zero instances with one unique name. Please refer following pictures:
 
 ### 2.2. Api Gateway
 
-Once you have set service node, you can set Api Gateway node. 
+Once you have set service node, you can set Api Gateway node, there are two points for configuration:
+
+In `vertx-server.yml`, you must define new node for Api Gateway as following, be sure the type is **api** instead: 
+
+```yaml
+server:
+- name: gateway-cronus
+  type: api
+  config:
+    port: 6099
+    host: 0.0.0.0
+```
+
+Also you must set the same configuration for etcd in Api Gateway project. The last point is that the launcher class is different from Service Node.
+
+In service node, you start up zero instance as following:
+
+```java
+import io.vertx.up.VertxApplication;
+import io.vertx.up.annotations.Up;
+
+@Up
+public class Anchor {
+
+    public static void main(final String[] args) {
+        VertxApplication.run(Anchor.class);
+    }
+}
+```
+
+But in api gateway, you must use another class for start up:
+
+```java
+import io.vertx.up.VertxApplication;
+import io.vertx.up.annotations.ApiGateway;
+import io.vertx.up.annotations.Up;
+
+@Up
+@ApiGateway
+public class Anchor {
+
+    public static void main(final String[] args) {
+        VertxApplication.run(Anchor.class);
+    }
+}
+```
 
 
 

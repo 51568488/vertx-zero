@@ -1,4 +1,4 @@
-# Example One: Single Rpc
+# Rpc Basic in Zero
 
 In zero system, the developer could focus on code logical instead of Rpc internally, this example will describe Rpc development for micro service communication. For environment preparing, please refer following document
 

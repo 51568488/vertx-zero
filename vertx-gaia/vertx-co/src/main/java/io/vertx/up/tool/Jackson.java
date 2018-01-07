@@ -2,6 +2,7 @@ package io.vertx.up.tool;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.reactivex.Observable;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
@@ -28,6 +29,11 @@ public final class Jackson {
     private static final Annal LOGGER = Annal.get(Jackson.class);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    static {
+        MAPPER.findAndRegisterModules();
+        MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    }
 
     public static JsonObject visitJObject(
             final JsonObject item,

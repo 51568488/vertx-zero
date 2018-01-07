@@ -70,11 +70,11 @@ etcd:
   timeout: 2
 ```
 
-Please be careful about `micro`property, it means that you can run multi **Cluster/Application** with one etcd environment, the micro describe the name for all micro services in one application, different micro name will not be communicated with zero system. You must set all your micro service zero instances with one unique name. Please refer following pictures:
+Please be careful about `micro`property, it means that you can run multi **Cluster/Application** with one etcd environment, the micro describe the name for all micro services in one application, different micro name will not be communicated inner zero system. You must set all your micro service zero instances with one unique name. Please refer following pictures:
 
 ![](/doc/image/micro-group.png)
 
-The **micro** attribute just like application namespace concept, as above pictures there are two applications: zero-istio & app-tlk, these two applications shared one Etcd3 as registry data center but these two applications are not related. 
+The **micro** attribute just like application namespace concept, as above pictures there are two applications: zero-istio & app-tlk, these two applications shared one Etcd3 as registry data center but these two applications are not related.
 
 ### 2.2. Api Gateway
 

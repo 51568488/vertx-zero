@@ -91,7 +91,7 @@ Then in cronus console you should see following:
 
 Send request to [http://10.0.0.7:6083/cronus/forward](http://10.0.0.7:6083/cronus/forward), you should see following output
 
-Request Body:
+**Request Body:**
 
 ```json
 {
@@ -100,7 +100,7 @@ Request Body:
 }
 ```
 
-Response Body:
+**Response Body:**
 
 ```json
 {
@@ -112,5 +112,14 @@ Response Body:
 }
 ```
 
-In this way, these two services communicated and the second service put the "Terminator" value in "role" key.
+In this way, these two services communicated and the second service put the "Terminator" value in "role" key, the request flow in zero should be as following \( up-coeus / up-cronus \) are both two different micro services:
+
+```
+1. Client Request -> ( Origanitor ) Service = up-cronus
+2. ( Origanitor ) -> ( Terminator ) Service = up-coeus, Ipc = ipc-coeus
+3. ( Terminator ) -> Call method to put role=Terminator into data
+4. ( Terminator ) -> Generate new response -> Client Request
+```
+
+
 

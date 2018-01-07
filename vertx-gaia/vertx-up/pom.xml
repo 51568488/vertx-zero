@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>vertx-zero</artifactId>
+        <artifactId>vertx-gaia</artifactId>
         <groupId>cn.vertxup</groupId>
-        <version>0.4.5</version>
+        <version>0.4.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>vertx-up</artifactId>
-    <name>vertx-up: Zero Up Web Container</name>
+    <name>( Vertx Core ) Zero Up Web Container</name>
     <dependencies>
         <dependency>
             <groupId>io.vertx</groupId>

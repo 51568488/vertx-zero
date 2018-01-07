@@ -9,6 +9,7 @@ import io.vertx.up.plugin.Infix;
 import io.vertx.up.tool.mirror.Instance;
 import org.jooq.Configuration;
 import org.jooq.ConnectionProvider;
+import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultConnectionProvider;
@@ -59,5 +60,10 @@ public class JooqInfix implements Infix {
         final Object dao = Instance.instance(clazz, CONFIGS.get(NAME));
         Instance.invoke(dao, "setVertx", vertxRef);
         return (T) dao;
+    }
+    
+    public static DSLContext getDSL() {
+        final Configuration configuration = CONFIGS.get(NAME);
+        return configuration.dsl();
     }
 }

@@ -74,7 +74,7 @@ Please be careful about `micro`property, it means that you can run multi **Clust
 
 ![](/doc/image/micro-group.png)
 
-The **micro** attribute just like application namespace concept, as above pictures there are two applications: zero-istio & app-tlk, these two applications shared one Etcd3 as registry data center but these two applications are not related.
+The **micro** attribute just like application **namespace** concept, as above pictures there are two applications: **zero-istio & app-tlk**, these two applications shared one Etcd3 as registry data center but these two applications are not related \( Could not communicate with Ipc \).
 
 ### 2.2. Api Gateway
 

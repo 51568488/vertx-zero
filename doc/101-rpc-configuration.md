@@ -28,7 +28,23 @@ You can add new node of `type=ipc` IPC \( Internal Process Calling \) instead of
 
 Rpc client configuration must be configured standalone. Here are the comments:
 
+In your `vertx.yml` configuration file, you must extend another `lime` node as following:
 
+```yaml
+zero:
+  lime: etcd3, rpc
+```
+
+Then you must create new file `vertx-rpc.yml` with following content:
+
+```yaml
+rpc:
+  ssl: false
+  uniform:
+    type: PEM
+  extension:
+    type: XXX
+```
 
 
 

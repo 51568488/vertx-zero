@@ -51,7 +51,9 @@ public class SpeakWorker {
 
     @Ipc(value = "IPC://EVENT/ADDR")
     public String send(final Envelop envelop) {
-        return envelop.toString();
+        final JsonObject data = envelop.data();
+        data.put("role", "Terminator");
+        return data.encode();
     }
 }
 ```
@@ -87,7 +89,5 @@ Then in cronus console you should see following:
 
 ## 4. Send request
 
-Send request to http://10.0.0.7:6083/cronus/forward, you should see following output.
-
-
+Send request to [http://10.0.0.7:6083/cronus/forward](http://10.0.0.7:6083/cronus/forward), you should see following output.
 

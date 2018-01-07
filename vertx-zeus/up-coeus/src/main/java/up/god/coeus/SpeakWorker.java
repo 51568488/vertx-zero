@@ -1,17 +1,15 @@
 package up.god.coeus;
 
+import io.vertx.core.json.JsonObject;
 import io.vertx.up.annotations.Ipc;
 import io.vertx.up.atom.Envelop;
 
 public class SpeakWorker {
-    /**
-     * Middle service
-     *
-     * @param envelop
-     */
+
     @Ipc(value = "IPC://EVENT/ADDR")
-    public String send(final Envelop envelop) {
-        System.out.println("Called");
-        return "Hello World";
+    public JsonObject send(final Envelop envelop) {
+        final JsonObject data = envelop.data(JsonObject.class);
+        data.put("role", "Terminator");
+        return data;
     }
 }

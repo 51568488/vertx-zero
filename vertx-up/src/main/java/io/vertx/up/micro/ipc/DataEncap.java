@@ -45,7 +45,8 @@ public class DataEncap {
                 sendData.put("header", headerData);
             }
             // Data
-            sendData.put("data", envelop.data().toString());
+            final Object content = envelop.data();
+            sendData.put("data", content);
             sendData.put("config", data.getConfig());
             // Data Prepared finished.
             sendData.put("address", data.getAddress());

@@ -127,5 +127,5 @@ public class Anchor {
 
 ## 3. Rpc Configuration
 
-If you want to enable Rpc communication, you can refer document: [10.1 - Rpc Configuration](/doc/101-rpc-configuration.md) for more details.
+If you want to enable Rpc communication, you can refer document: [10.1 - Rpc Configuration](101-rpc-configuration.md) for more details.
 

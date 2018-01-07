@@ -27,7 +27,7 @@ If you want to use Zero framework, you can add following dependency into you `po
         <dependency>
             <groupId>cn.vertxup</groupId>
             <artifactId>vertx-up</artifactId>
-            <version>0.4.4</version>
+            <version>0.4.5</version>
         </dependency>
 ```
 
@@ -84,35 +84,6 @@ public final class Statute {
     ......
 }
 ```
-
-## 5. Dependency Library
-
-_Lombok is standalone library, you can ignore this library in your project and write pojo with pure java. But we recommend you to use this library to simplify the POJO writting._
-
-* [Vert.x \(3.5.0\)](http://www.mvnrepository.com/artifact/io.vertx) 
-  * core
-  * web
-  * config
-  * config-yml
-  * unit,
-  * zookeeper
-  * hazelcast
-  * web-api-contract
-* [ \( JSR311 \) Jws Rs \(2.1\)](http://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api) 
-* [ \( JSR330 \) Inject \(1\) ](https://mvnrepository.com/artifact/javax.inject/javax.inject)
-* [ \( JSR303 \) Validation \(2.0.0.Final\) ](https://mvnrepository.com/artifact/javax.validation/validation-api)
-* [Hibernate Validator \(6.0.5.Final\)](https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator)
-* [Jersey Common \(2.26\)](http://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common) \( For media type parsing \)
-* Logback
-  * [logback-classic \(1.2.3\)](http://mvnrepository.com/artifact/ch.qos.logback/logback-classic)
-  * [logback-core \(1.2.3\)](http://mvnrepository.com/artifact/ch.qos.logback/logback-core)
-  * [jul-to-slf4j \(1.7.25\)](http://mvnrepository.com/artifact/org.slf4j/jul-to-slf4j)
-  * [log4j-slf4j-impl \(1.7.25\)](https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl)
-* [Junit \(4.12\)](http://mvnrepository.com/artifact/junit/junit)
-* [ReflectAsm \(1.11.3\)](http://www.mvnrepository.com/artifact/com.esotericsoftware/reflectasm/)
-* [Jackson-Yaml \(2.9.2\)](http://www.mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml)
-* [Lombok \(1.16.18\)](http://mvnrepository.com/artifact/org.projectlombok/lombok)
-* [Feign Client \(8.18.0\)](https://mvnrepository.com/artifact/com.netflix.feign/feign-core)
 
 
 

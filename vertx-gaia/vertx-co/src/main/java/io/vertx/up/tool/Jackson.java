@@ -29,6 +29,10 @@ public final class Jackson {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    static {
+        MAPPER.findAndRegisterModules();
+    }
+
     public static JsonObject visitJObject(
             final JsonObject item,
             final String... keys

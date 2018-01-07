@@ -34,6 +34,8 @@
     * [8.3 - Advanced Validation \( Rule for @BodyParam \)](doc/zero-verify.md)
   * [9 - Security](doc/9-security.md)
     * [9.1 - Enable Basic Authorization](doc/91-enable-basic-authorization.md)
+  * 10 - Micro Service
+    * [10.1 - Rpc Configuration](doc/101-rpc-configuration.md)
 
 ## Useful Related Documents
 

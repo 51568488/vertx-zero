@@ -72,6 +72,8 @@ etcd:
 
 Please be careful about `micro`property, it means that you can run multi **Cluster** in one etcd environment, the micro describe the name for all micro services, different micro name will not be communicated with zero system. You must set all your micro service zero instances with one unique name. Please refer following pictures:
 
+![](/doc/image/micro-group.png)
+
 ### 2.2. Api Gateway
 
 Once you have set service node, you can set Api Gateway node, there are two points for configuration:
@@ -124,6 +126,4 @@ public class Anchor {
 ## 3. Rpc Configuration
 
 If you want to enable Rpc communication, you can refer document: [10.1 - Rpc Configuration](/doc/101-rpc-configuration.md) for more details.
-
-
 

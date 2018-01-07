@@ -7,6 +7,9 @@ import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.serialization.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -33,6 +36,11 @@ public class ZeroSerializer {
 
                     put(double.class, Instance.singleton(DoubleSaber.class));
                     put(Double.class, Instance.singleton(DoubleSaber.class));
+
+                    put(LocalDate.class, Instance.singleton(Java8DataTimeSaber.class));
+                    put(LocalDateTime.class, Instance.singleton(Java8DataTimeSaber.class));
+                    put(LocalTime.class, Instance.singleton(Java8DataTimeSaber.class));
+
                     put(float.class, Instance.singleton(FloatSaber.class));
                     put(Float.class, Instance.singleton(FloatSaber.class));
                     put(BigDecimal.class, Instance.singleton(BigDecimalSaber.class));

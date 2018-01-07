@@ -11,9 +11,9 @@ Then you can write your code in zero service.
 
 In zero system, it only support three rpc node:
 
-* Sender
-* Transfer
-* Final
+* Originator
+* Coordinator
+* Terminator
 
 Here are some different code.
 

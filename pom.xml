@@ -10,12 +10,9 @@
     <description>Vertx Zero Framework is a tool for Service Mesh Micro Service.</description>
     <url>http://www.vertxup.cn</url>
     <modules>
-        <module>vertx-up</module>
         <module>vertx-zeus</module>
-        <module>vertx-co</module>
-        <module>vertx-tp</module>
-        <module>vertx-rx</module>
-        <module>vertx-zero-parent</module>
+        <module>vertx-import</module>
+        <module>vertx-gaia</module>
     </modules>
     <packaging>pom</packaging>
     <!-- License -->
@@ -830,7 +827,7 @@
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
-                        <phase>deploy</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
@@ -838,28 +835,6 @@
                             <executable>gpg2</executable>
                             <keyname>lang.yu</keyname>
                             <passphrase>pl,okmijn123</passphrase>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Mojo -->
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <version>3.0</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <version>1.8</version>
-                                </requireJavaVersion>
-                            </rules>
                         </configuration>
                     </execution>
                 </executions>
@@ -877,29 +852,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${encoding}</encoding>
-                    <!-- Disable annotation processing for ourselves. -->
-                    <compilerArgument>-proc:none</compilerArgument>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*Tc.java</include>
-                        <include>**/*Te.java</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/Base*.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
-
 </project>

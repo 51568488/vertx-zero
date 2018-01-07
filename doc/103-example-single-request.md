@@ -44,7 +44,6 @@ You must be sure current terminator name is "ipc-coeus" in `vertx-server.yml` as
 Then you can write the code as following:
 
 ```java
-
 import io.vertx.up.annotations.Ipc;
 import io.vertx.up.atom.Envelop;
 
@@ -56,6 +55,12 @@ public class SpeakWorker {
     }
 }
 ```
+
+**\*: Be sure the "to" attribute in Originator is the same as "value" in Terminator**
+
+## 3. Start Up
+
+
 
 
 

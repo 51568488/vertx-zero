@@ -5,7 +5,7 @@
     <parent>
         <artifactId>vertx-zero</artifactId>
         <groupId>cn.vertxup</groupId>
-        <version>0.4.5-SNAPSHOT</version>
+        <version>0.4.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>vertx-tp: Zero Integration Plugins</name>
@@ -198,12 +198,6 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-tcnative-boringssl-static</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-tcnative</artifactId>
-            <version>${netty.tcnative.version}</version>
-            <classifier>${os.detected.classifier}</classifier>
         </dependency>
     </dependencies>
     <build>

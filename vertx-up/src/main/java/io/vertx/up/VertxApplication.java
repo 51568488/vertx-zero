@@ -1,6 +1,7 @@
 package io.vertx.up;
 
 import io.vertx.core.Vertx;
+import io.vertx.up.annotations.ApiGateway;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.concurrent.Runner;
 import io.vertx.up.func.Fn;
@@ -45,7 +46,13 @@ public class VertxApplication {
     public static void run(final Class<?> clazz, final Object... args) {
         Fn.shuntRun(() -> {
             // Run vertx application.
-            new VertxApplication(clazz).run(args);
+            if (clazz.isAnnotationPresent(ApiGateway.class)) {
+                // Api Gateway Instance
+                DansApplication.run(clazz);
+            } else {
+                // Common Up Instance
+                new VertxApplication(clazz).run(args);
+            }
         }, LOGGER);
     }
 

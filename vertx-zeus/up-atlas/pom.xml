@@ -5,7 +5,7 @@
     <parent>
         <artifactId>vertx-zeus</artifactId>
         <groupId>cn.vertxup</groupId>
-        <version>0.4.5</version>
+        <version>0.4.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>( Zero Mesh ) Atlas - Jooq</name>

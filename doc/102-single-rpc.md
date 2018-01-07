@@ -41,7 +41,5 @@ Here are some different code.
 
 ### 1.4. Workflow
 
-
-
-
+![](/doc/image/rpc-workflow.png)
 

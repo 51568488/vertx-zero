@@ -13,7 +13,7 @@ zero:
 
 Then it means that you must create new file named `vertx-secure.yml` instead with following content:
 
-```
+```yaml
 secure:
   # Standard Type
   mongo:

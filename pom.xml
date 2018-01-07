@@ -5,16 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.vertxup</groupId>
     <artifactId>vertx-zero</artifactId>
-    <version>0.4.5</version>
+    <version>0.4.6-SNAPSHOT</version>
     <name>vertx-zero: Vertx Up Zero Framework</name>
     <description>Vertx Zero Framework is a tool for Service Mesh Micro Service.</description>
     <url>http://www.vertxup.cn</url>
     <modules>
-        <module>vertx-up</module>
         <module>vertx-zeus</module>
-        <module>vertx-co</module>
-        <module>vertx-tp</module>
-        <module>vertx-rx</module>
+        <module>vertx-import</module>
+        <module>vertx-gaia</module>
     </modules>
     <packaging>pom</packaging>
     <!-- License -->
@@ -823,7 +821,6 @@
                 </configuration>
             </plugin>
             <!-- Deploy Only -->
-            <!--
             <plugin>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>${maven.plugin.pgp}</version>
@@ -842,29 +839,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
-            <!-- Mojo -->
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <version>3.0</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <version>1.8</version>
-                                </requireJavaVersion>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
@@ -878,29 +852,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${encoding}</encoding>
-                    <!-- Disable annotation processing for ourselves. -->
-                    <compilerArgument>-proc:none</compilerArgument>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*Tc.java</include>
-                        <include>**/*Te.java</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/Base*.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
-
 </project>

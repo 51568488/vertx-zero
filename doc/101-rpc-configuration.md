@@ -43,7 +43,66 @@ rpc:
   uniform:
     type: PEM
   extension:
-    type: XXX
+    {name}:
+      type: XXX
+```
+
+Please be careful about the attributes `uniform` and `extension `it's the same except following:
+
+* The system will scan all client configuration under extension by name setted first. For example the target name is `up-ceous`, you must set {name} to `up-ceous`, then when current service communicate with** up-ceous **service, the client configuration will use it under **extension** instead of **uniform**.
+* If there is no configuration under extension, the uniform configuration will be used. uniform just like default client configuration.
+
+This configuration file is only used in **SSL** mode.
+
+## 3. SSL Configuraiton \( Examples \)
+
+Here are some examples of Rpc SSL configuration.
+
+```yaml
+# Rpc Server with PEM ( OpenSSLEngine )
+- name: ipc-cronus
+  type: ipc
+  config:
+    port: 6883
+    host: 0.0.0.0
+    ssl: true
+    type: PEM
+    cert: tlk/server-cert.pem
+    key: tlk/server-key.pem
+
+# Rpc Server with Jsk ( JSKEngine )
+- name: ipc-cronus
+  type: ipc
+  config:
+    port: 6883
+    host: 0.0.0.0
+    ssl: true
+    type: JKS
+    jsk: tlk/server-key.jks
+    password: wibble
+
+# Rpc Client use default
+rpc:
+  ssl: true
+  uniform:
+    type: PEM
+    cert: tlk/server-cert.pem
+    key: tlk/server-key.pem
+
+# Rpc Client with spec service
+
+rpc:
+  ssl: true
+  uniform:
+    type: PEM
+    cert: tlk/server-cert.pem
+    key: tlk/server-key.pem
+  extension:
+    up-cerous:
+      type: JKS
+      jsk: tlk/server-key.jks
+      password: wibble
+
 ```
 
 

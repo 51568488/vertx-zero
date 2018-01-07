@@ -16,5 +16,19 @@ You can configure rpc server in `vertx-server.yml` directly, it's not needed to 
     type: PEM
 ```
 
-You can add new node of `type=ipc` IPC \( Internal Process Calling \).
+You can add new node of `type=ipc` IPC \( Internal Process Calling \) instead of `http`, Here are some additional configuration info of rpc to enable SSL.
+
+* **ssl**: Whether enable SSL communication with Rpc
+* **type**: Here are three types of SSL, please refer gRpc/vertx document to see more details of the types:
+  * JKS
+  * PKCS12
+  * PEM
+
+## 2. Rpc Client
+
+Rpc client configuration must be configured standalone. Here are the comments:
+
+
+
+
 

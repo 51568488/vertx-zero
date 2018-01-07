@@ -7,7 +7,7 @@ In zero system, the developer could focus on code logical instead of Rpc interna
 
 Then you can write your code in zero service.
 
-## 1. Rpc Mode
+## 1. Rpc Workflow
 
 In zero system, it only support three rpc node:
 
@@ -41,9 +41,20 @@ Here are some different code.
 
 ### 1.4. Workflow
 
-![](/doc/image/rpc-workflow.png)As above describe, in one request, there should be following roles:
+As above describe, in one request, there should be following roles:
 
-* Sender + Final
-* 
+![](/doc/image/rpc-workflow.png)
+
+* **Originator** and **Terminator** must be only one in IPC workflow.
+* **Coordinator** could contains one or more.
+
+## 2. Limitation
+
+Because the** Originator** offten send request from Agent class, the signature of method is freedom. But for **Coordinator** & **Terminator**, the method signature must obey following rules:
+
+* This method must contains return value;
+* If there are some async workflow, you can return Future&lt;T&gt; as result;
+* The argument must be length = 1 and type = Envelop; \( Zero defined \)
+
 
 

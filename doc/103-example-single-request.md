@@ -51,7 +51,7 @@ public class SpeakWorker {
 
     @Ipc(value = "IPC://EVENT/ADDR")
     public String send(final Envelop envelop) {
-        final JsonObject data = envelop.data();
+        final JsonObject data = envelop.data(JsonObject.class);
         data.put("role", "Terminator");
         return data.encode();
     }

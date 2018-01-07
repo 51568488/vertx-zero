@@ -60,7 +60,30 @@ public class SpeakWorker {
 
 ## 3. Start Up
 
+In the coeus console you should see following:
 
+```
+	[ Up Rpc   ] <Application Name> = "zero-istio",
+	[ Up Rpc   ] Configuration Rpc Point = /zero/zero-istio/ipc/routes/ipc-coeus:10.0.0.7:6884, 
+	[ Up Rpc   ] Service Name = ipc-coeus,
+	[ Up Rpc   ] Ipc Channel = grpc://10.0.0.7:6884
+	[ Up Rpc   ] Ipc Address = 
+	[ Up Rpc √ ] 	IPC://EVENT/ADDR
+	[ Up Rpc   ] √ Successfully to registered IPCs, wait for community......SUCCESS √ 
+```
+
+Then in cronus console you should see following:
+
+```
+	[ Up Micro ] <Application Name> = "zero-istio",
+	[ Up Micro ] Configuration Path = /zero/zero-istio/endpoint/routes/up-cronus:10.0.0.7:6083, 
+	[ Up Micro ] Service Name = up-cronus,
+	[ Up Micro ] EndPoint = http://10.0.0.7:6083
+	[ Up Micro ] Route Uris = 
+	[ Up Micro ] 	/cronus/direct
+	[ Up Micro ] 	/cronus/forward
+	[ Up Micro ] √ Successfully to registered Routes, wait for discovery......SUCCESS √
+```
 
 
 

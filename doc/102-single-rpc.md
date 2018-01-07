@@ -17,14 +17,14 @@ In zero system, it only support three rpc node:
 
 Here are some different code.
 
-### 1.1. Sender
+### 1.1. Originator
 
 ```java
     @Ipc(to = "IPC://EVENT/ADDR", name = "ipc-coeus")
     public JsonObject ipc(@BodyParam final JsonObject data) ...
 ```
 
-### 1.2. Transfer
+### 1.2. Coordinator
 
 ```java
     @Ipc(value = "IPC://EVENT/ADDR",
@@ -32,7 +32,7 @@ Here are some different code.
     public String send(final Envelop envelop) ...
 ```
 
-### 1.3. Final
+### 1.3. Terminator
 
 ```java
     @Ipc(value = "IPC://EVENT/FINAL")
@@ -41,5 +41,9 @@ Here are some different code.
 
 ### 1.4. Workflow
 
-![](/doc/image/rpc-workflow.png)
+![](/doc/image/rpc-workflow.png)As above describe, in one request, there should be following roles:
+
+* Sender + Final
+* 
+
 

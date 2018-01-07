@@ -1,9 +1,11 @@
 package io.vertx.up.micro;
 
 import io.vertx.servicediscovery.Record;
+import io.vertx.tp.etcd.center.EtcdData;
 import io.vertx.up.micro.discovery.EndPointOrigin;
 import io.vertx.up.micro.discovery.Origin;
 import io.vertx.up.tool.mirror.Instance;
+import org.junit.Test;
 
 import java.util.concurrent.ConcurrentMap;
 
@@ -16,5 +18,10 @@ public class EndPointOrginTc {
             System.out.println(key);
             System.out.println(value.toJson().encodePrettily());
         });
+    }
+
+    @Test
+    public void testNodes() {
+        final EtcdData data = EtcdData.create(getClass());
     }
 }

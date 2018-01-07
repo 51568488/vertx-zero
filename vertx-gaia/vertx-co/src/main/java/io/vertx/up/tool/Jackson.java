@@ -2,6 +2,7 @@ package io.vertx.up.tool;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.reactivex.Observable;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
@@ -31,6 +32,7 @@ public final class Jackson {
 
     static {
         MAPPER.findAndRegisterModules();
+        MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
     public static JsonObject visitJObject(

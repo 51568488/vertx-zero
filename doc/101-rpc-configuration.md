@@ -47,7 +47,7 @@ rpc:
       type: XXX
 ```
 
-Please be careful about the attributes `uniform` and `extension `it's the same except following:
+Please be careful about the attributes `uniform` and `extension`it's the same except following:
 
 * The system will scan all client configuration under extension by name setted first. For example the target name is `up-ceous`, you must set {name} to `up-ceous`, then when current service communicate with** up-ceous **service, the client configuration will use it under **extension** instead of **uniform**.
 * If there is no configuration under extension, the uniform configuration will be used. uniform just like default client configuration.
@@ -59,6 +59,7 @@ This configuration file is only used in **SSL** mode.
 Here are some examples of Rpc SSL configuration.
 
 ```yaml
+## vertx-server.yml
 # Rpc Server with PEM ( OpenSSLEngine )
 - name: ipc-cronus
   type: ipc
@@ -81,6 +82,7 @@ Here are some examples of Rpc SSL configuration.
     jsk: tlk/server-key.jks
     password: wibble
 
+## vertx-rpc.yml ( The name depend on lime )
 # Rpc Client use default
 rpc:
   ssl: true
@@ -102,7 +104,6 @@ rpc:
       type: JKS
       jsk: tlk/server-key.jks
       password: wibble
-
 ```
 
 

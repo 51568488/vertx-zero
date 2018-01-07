@@ -31,6 +31,7 @@
 9. Security
    1. [9.1 - Enable Basic Authorization](/doc/91-enable-basic-authorization.md)
 10. Summary
+    1. [10.1 - Rpc Configuration](/doc/101-rpc-configuration.md)
 
 
 

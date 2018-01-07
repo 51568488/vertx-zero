@@ -76,7 +76,7 @@ Please be careful about `micro`property, it means that you can run multi **Clust
 
 Once you have set service node, you can set Api Gateway node, there are two points for configuration:
 
-In `vertx-server.yml`, you must define new node for Api Gateway as following, be sure the type is **api** instead: 
+In `vertx-server.yml`, you must define new node for Api Gateway as following, be sure the type is **api** instead:
 
 ```yaml
 server:
@@ -104,7 +104,7 @@ public class Anchor {
 }
 ```
 
-But in api gateway, you must use another class for start up:
+But in api gateway, you must use another class for start up, you must use `io.vertx.up.annotations.ApiGateway` annotation for launcher:
 
 ```java
 import io.vertx.up.VertxApplication;

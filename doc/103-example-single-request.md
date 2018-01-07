@@ -89,5 +89,28 @@ Then in cronus console you should see following:
 
 ## 4. Send request
 
-Send request to [http://10.0.0.7:6083/cronus/forward](http://10.0.0.7:6083/cronus/forward), you should see following output.
+Send request to [http://10.0.0.7:6083/cronus/forward](http://10.0.0.7:6083/cronus/forward), you should see following output
+
+Request Body:
+
+```json
+{
+  "username":"lang.yu",
+  "password":"173AFAD5992A3F73A472FC09B05B1FB7"
+}
+```
+
+Response Body:
+
+```json
+{
+    "data": {
+        "username": "lang.yu",
+        "password": "173AFAD5992A3F73A472FC09B05B1FB7",
+        "role": "Terminator"
+    }
+}
+```
+
+In this way, these two services communicated and the second service put the "Terminator" value in "role" key.
 

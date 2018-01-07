@@ -41,7 +41,7 @@ Here are some different code.
 
 ### 1.4. Workflow
 
-As above describe, in one request, there should be following roles:
+As above describe, in one request, there should be following roles \( Here are two Rpc request flow \):
 
 ![](/doc/image/rpc-workflow.png)
 

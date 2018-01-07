@@ -36,7 +36,8 @@
     * [9.1 - Enable Basic Authorization](doc/91-enable-basic-authorization.md)
   * 10 - Micro Service
     * [10.1 - Rpc Configuration](doc/101-rpc-configuration.md)
-    * [10.2 - Single Rpc](doc/102-single-rpc.md)
+    * [10.2 - Rpc Basic in Zero](doc/102-single-rpc.md)
+    * [10.3 - Example: Single Request](doc/103-example-single-request.md)
 
 ## Useful Related Documents
 

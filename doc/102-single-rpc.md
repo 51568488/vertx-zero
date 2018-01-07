@@ -28,7 +28,7 @@ Here are some different code.
 
 ```java
     @Ipc(value = "IPC://EVENT/ADDR",
-            name = "ipc-coeus", to = "IPC://EVENT/FINAL")
+            name = "ipc-crius", to = "IPC://EVENT/FINAL")
     public String send(final Envelop envelop) ...
 ```
 

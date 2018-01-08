@@ -174,6 +174,7 @@ public final class Jackson {
                 Fn.getJvm(() -> MAPPER.writeValueAsString(t), t), t);
     }
 
+
     public static <T> T deserialize(final JsonObject value, final Class<T> type) {
         return Fn.get(null,
                 () -> deserialize(value.encode(), type), value);

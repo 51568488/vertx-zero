@@ -1,0 +1,5 @@
+type: "io.vertx.zero.atom.User"
+mapping:
+  username: "zUsername"
+  password: "zPassword"
+  email: "zEmail"

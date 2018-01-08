@@ -1,10 +1,17 @@
 package io.vertx.up.web;
 
+import io.reactivex.Observable;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.atom.Envelop;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
+import io.vertx.up.tool.Jackson;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.serialization.*;
+import io.vertx.zero.atom.Mirror;
+import io.vertx.zero.eon.Values;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,6 +20,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 /**
  * ZeroSerializer the request by different type.
@@ -23,6 +31,8 @@ import java.util.concurrent.ConcurrentMap;
  */
 @SuppressWarnings("unchecked")
 public class ZeroSerializer {
+
+    private static final Annal LOGGER = Annal.get(ZeroSerializer.class);
 
     private static final ConcurrentMap<Class<?>, Saber> SABERS =
             new ConcurrentHashMap<Class<?>, Saber>() {
@@ -131,5 +141,57 @@ public class ZeroSerializer {
             reference = saber.from(input);
         }
         return reference;
+    }
+
+    public static <T> JsonArray toArray(final List<T> list, final Function<JsonObject, JsonObject> converted) {
+        final JsonArray array = Jackson.serializeJson(list);
+        final JsonArray result = new JsonArray();
+        Observable.fromIterable(array)
+                .filter(Objects::nonNull)
+                .map(item -> (JsonObject) item)
+                .map(converted::apply)
+                .subscribe(result::add);
+        return result;
+    }
+
+    public static <T> JsonArray toArray(final List<T> list) {
+        return toArray(list, item -> item);
+    }
+
+    public static <T> JsonArray toArray(final List<T> list, final String pojo) {
+        return Fn.get(new JsonArray(), () -> {
+            final Function<JsonObject, JsonObject> converted =
+                    (from) -> Mirror.create(ZeroSerializer.class)
+                            .pickup(pojo).connect(from).to().json();
+            return toArray(list, converted);
+        }, pojo, list);
+    }
+
+    public static <T> JsonObject toObject(final T entity, final String pojo) {
+        return Fn.get(new JsonObject(), () -> {
+            final JsonObject from = Jackson.serializeJson(entity);
+            return Mirror.create(ZeroSerializer.class)
+                    .pickup(pojo).connect(from).to().json();
+        }, entity, pojo);
+    }
+
+    public static <T> Envelop collect(final List<T> list) {
+        return Envelop.success(toArray(list, item -> item));
+    }
+
+    public static <T> Envelop unique(final List<T> list) {
+        return Fn.getSemi(null == list || 0 == list.size(), LOGGER,
+                () -> Envelop.success(new JsonObject()),
+                () -> unique(list.get(Values.IDX)));
+    }
+
+    public static <T> Envelop unique(final JsonArray data) {
+        return Fn.getSemi(null == data || 0 == data.size(), LOGGER,
+                () -> Envelop.success(new JsonObject()),
+                () -> unique(data.getJsonObject(Values.IDX)));
+    }
+
+    public static <T> Envelop unique(final T entity) {
+        return Fn.getJvm(Envelop.success(new JsonObject()), () -> Envelop.success(entity), entity);
     }
 }

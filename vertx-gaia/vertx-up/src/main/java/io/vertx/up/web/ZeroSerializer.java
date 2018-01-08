@@ -159,10 +159,20 @@ public class ZeroSerializer {
     }
 
     public static <T> JsonArray toArray(final List<T> list, final String pojo) {
-        final Function<JsonObject, JsonObject> converted =
-                (from) -> Mirror.create(ZeroSerializer.class)
-                        .pickup(pojo).connect(from).to().json();
-        return toArray(list, converted);
+        return Fn.get(new JsonArray(), () -> {
+            final Function<JsonObject, JsonObject> converted =
+                    (from) -> Mirror.create(ZeroSerializer.class)
+                            .pickup(pojo).connect(from).to().json();
+            return toArray(list, converted);
+        }, pojo, list);
+    }
+
+    public static <T> JsonObject toObject(final T entity, final String pojo) {
+        return Fn.get(new JsonObject(), () -> {
+            final JsonObject from = Jackson.serializeJson(entity);
+            return Mirror.create(ZeroSerializer.class)
+                    .pickup(pojo).connect(from).to().json();
+        }, entity, pojo);
     }
 
     public static <T> Envelop collect(final List<T> list) {

@@ -1,0 +1,6 @@
+pojo:
+  type: "up.god.pojo.User"
+  mapping:
+    username: "zUsername"
+    password: "zPassword"
+    email: "zEmail"

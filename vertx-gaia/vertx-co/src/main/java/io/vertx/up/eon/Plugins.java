@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.infix.Jooq;
 import javax.inject.infix.Mongo;
 import javax.inject.infix.MySql;
+import javax.inject.infix.Rpc;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,8 +38,10 @@ public interface Plugins {
 
         String JOOQ = "jooq";
 
+        String RPC = "rpc";
+
         String[] DATA = new String[]{
-                MONGO, MYSQL, JOOQ
+                MONGO, MYSQL, JOOQ, RPC
         };
     }
 
@@ -48,6 +51,7 @@ public interface Plugins {
                     put(Mongo.class, Infix.MONGO);
                     put(MySql.class, Infix.MYSQL);
                     put(Jooq.class, Infix.JOOQ);
+                    put(Rpc.class, Infix.RPC);
                 }
             };
 

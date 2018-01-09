@@ -22,6 +22,37 @@ public class SslTool {
     private static final Node<JsonObject> node = Instance.singleton(ZeroUniform.class);
 
     private static final String SSL = "ssl";
+    private static final String HOST = "host";
+    private static final String PORT = "port";
+
+    /**
+     * @param vertx  Vert.x instance
+     * @param config configuration
+     * @return ManagedChannel
+     */
+    public static ManagedChannel getChannel(final Vertx vertx,
+                                            final JsonObject config) {
+        final String rpcHost = config.getString(HOST);
+        final Integer rpcPort = config.getInteger(PORT);
+        LOGGER.info(Info.CLIENT_RPC, rpcHost, String.valueOf(rpcPort));
+        final VertxChannelBuilder builder =
+                VertxChannelBuilder
+                        .forAddress(vertx, rpcHost, rpcPort);
+        Fn.safeSemi(null != config.getValue(SSL), LOGGER,
+                () -> {
+                    final JsonObject sslConfig = config.getJsonObject(SSL);
+                    if (null != sslConfig && !sslConfig.isEmpty()) {
+                        final Object type = sslConfig.getValue("type");
+                        final CertType certType = null == type ?
+                                CertType.PEM : Types.fromStr(CertType.class, type.toString());
+                        final TrustPipe<JsonObject> pipe = TrustPipe.get(certType);
+                        // Enable SSL
+                        builder.useSsl(pipe.parse(sslConfig));
+                    }
+                },
+                () -> builder.usePlaintext(true));
+        return builder.build();
+    }
 
     public static ManagedChannel getChannel(final Vertx vertx,
                                             final IpcData data) {

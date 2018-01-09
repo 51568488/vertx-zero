@@ -1,4 +1,4 @@
-package io.vertx.up.micro.ipc.client;
+package io.vertx.up.plugin.rpc;
 
 import io.grpc.ManagedChannel;
 import io.vertx.core.Vertx;
@@ -9,21 +9,16 @@ import io.vertx.up.eon.em.CertType;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ssl.TrustPipe;
-import io.vertx.up.tool.Jackson;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.marshal.node.Node;
 import io.vertx.zero.marshal.node.ZeroUniform;
 
-public class SslTool {
+public class RpcSslTool {
 
-    private static final Annal LOGGER = Annal.get(SslTool.class);
+    private static final Annal LOGGER = Annal.get(RpcSslTool.class);
 
     private static final Node<JsonObject> node = Instance.singleton(ZeroUniform.class);
-
-    private static final String SSL = "ssl";
-    private static final String HOST = "host";
-    private static final String PORT = "port";
 
     /**
      * @param vertx  Vert.x instance
@@ -32,15 +27,15 @@ public class SslTool {
      */
     public static ManagedChannel getChannel(final Vertx vertx,
                                             final JsonObject config) {
-        final String rpcHost = config.getString(HOST);
-        final Integer rpcPort = config.getInteger(PORT);
+        final String rpcHost = config.getString(Key.HOST);
+        final Integer rpcPort = config.getInteger(Key.PORT);
         LOGGER.info(Info.CLIENT_RPC, rpcHost, String.valueOf(rpcPort));
         final VertxChannelBuilder builder =
                 VertxChannelBuilder
                         .forAddress(vertx, rpcHost, rpcPort);
-        Fn.safeSemi(null != config.getValue(SSL), LOGGER,
+        Fn.safeSemi(null != config.getValue(Key.SSL), LOGGER,
                 () -> {
-                    final JsonObject sslConfig = config.getJsonObject(SSL);
+                    final JsonObject sslConfig = config.getJsonObject(Key.SSL);
                     if (null != sslConfig && !sslConfig.isEmpty()) {
                         final Object type = sslConfig.getValue("type");
                         final CertType certType = null == type ?
@@ -69,29 +64,18 @@ public class SslTool {
                 () -> {
                     // Extension or Uniform
                     final JsonObject rpcConfig = config.getJsonObject("rpc");
-                    if (rpcConfig.containsKey(SSL) && Boolean.valueOf(rpcConfig.getValue(SSL).toString())) {
-                        final JsonObject sslConfig = new JsonObject();
-                        if (rpcConfig.containsKey("extension")) {
-                            // Non Uniform, Search by name
-                            final String name = data.getName();
-                            final JsonObject visited = Jackson.visitJObject(rpcConfig, "extension", name);
-                            if (null != visited) {
-                                sslConfig.mergeIn(visited);
-                            }
-                        }
-                        if (sslConfig.isEmpty()) {
-                            // Uniform mode default.
-                            sslConfig.mergeIn(Jackson.visitJObject(rpcConfig, "uniform"));
-                        }
-                        final Object type = sslConfig.getValue("type");
+                    final String name = data.getName();
+                    final JsonObject ssl = RpcHelper.getSslConfig(name, rpcConfig);
+                    if (ssl.isEmpty()) {
+                        // Disabled SSL
+                        builder.usePlaintext(true);
+                    } else {
+                        final Object type = ssl.getValue("type");
                         final CertType certType = null == type ?
                                 CertType.PEM : Types.fromStr(CertType.class, type.toString());
                         final TrustPipe<JsonObject> pipe = TrustPipe.get(certType);
                         // Enabled SSL
-                        builder.useSsl(pipe.parse(sslConfig));
-                    } else {
-                        // Disabled SSL
-                        builder.usePlaintext(true);
+                        builder.useSsl(pipe.parse(ssl));
                     }
                 });
         return builder.build();

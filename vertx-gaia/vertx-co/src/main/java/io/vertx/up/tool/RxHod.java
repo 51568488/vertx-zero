@@ -2,11 +2,15 @@ package io.vertx.up.tool;
 
 import io.vertx.up.func.Fn;
 
-public class RxContainer {
+/**
+ * Single Rxjava container for null pointer that is not used in
+ * Rxjava2.
+ */
+public class RxHod {
 
     private Object reference;
 
-    public <T> RxContainer add(final T reference) {
+    public <T> RxHod add(final T reference) {
         this.reference = reference;
         return this;
     }

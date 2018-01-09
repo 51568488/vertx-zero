@@ -17,13 +17,6 @@ public class SpeakApi {
     @Rpc
     private transient RpcClient client;
 
-    @Path("/direct")
-    @POST
-    @Ipc(to = "IPC://EVENT/ADDR", name = "ipc-coeus")
-    public JsonObject ipc(@BodyParam final JsonObject data) {
-        return data;
-    }
-
     @Path("/call")
     @POST
     public void rpc(@BodyParam final JsonObject data) {
@@ -34,5 +27,12 @@ public class SpeakApi {
                 data, handler -> {
                     System.out.println(handler.result());
                 });
+    }
+
+    @Path("/direct")
+    @POST
+    @Ipc(to = "IPC://EVENT/ADDR", name = "ipc-coeus")
+    public JsonObject ipc(@BodyParam final JsonObject data) {
+        return data;
     }
 }

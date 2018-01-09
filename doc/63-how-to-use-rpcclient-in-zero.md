@@ -50,7 +50,7 @@ import io.vertx.up.annotations.Ipc;
 import io.vertx.up.atom.Envelop;
 // service name = ipc-coeus
 public class SpeakWorker {
-    
+
     @Ipc(value = "IPC://EVENT/ADDR")
     public JsonObject send(final Envelop envelop) {
         final JsonObject data = envelop.data(JsonObject.class);
@@ -63,13 +63,13 @@ public class SpeakWorker {
 Start up console
 
 ```
-	[ Up Rpc   ] <Application Name> = "zero-istio",
-	[ Up Rpc   ] Configuration Rpc Point = /zero/zero-istio/ipc/routes/ipc-coeus:192.168.40.60:6884, 
-	[ Up Rpc   ] Service Name = ipc-coeus,
-	[ Up Rpc   ] Ipc Channel = grpc://192.168.40.60:6884
-	[ Up Rpc   ] Ipc Address = 
-	[ Up Rpc √ ] 	IPC://EVENT/ADDR
-	[ Up Rpc   ] √ Successfully to registered IPCs, wait for community......SUCCESS √
+    [ Up Rpc   ] <Application Name> = "zero-istio",
+    [ Up Rpc   ] Configuration Rpc Point = /zero/zero-istio/ipc/routes/ipc-coeus:192.168.40.60:6884, 
+    [ Up Rpc   ] Service Name = ipc-coeus,
+    [ Up Rpc   ] Ipc Channel = grpc://192.168.40.60:6884
+    [ Up Rpc   ] Ipc Address = 
+    [ Up Rpc √ ]     IPC://EVENT/ADDR
+    [ Up Rpc   ] √ Successfully to registered IPCs, wait for community......SUCCESS √
 ```
 
 ### 2.2. Rpc Service Consumer \( Originator \)
@@ -114,7 +114,7 @@ Send request to service **icp-cronus**
 }
 ```
 
-In this demo, you'll see following data output in service **ipc-cronus**, that here put the code in above. 
+In this demo, you'll see following data output in service **ipc-cronus**, that here put the code in above.
 
 ```json
 {"username":"lang.yu","password":"173AFAD5992A3F73A472FC09B05B1FB7","role":"Terminator"}

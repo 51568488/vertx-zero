@@ -22,6 +22,7 @@
 6. Plugin
    1. [6.1 - How to use MongoClient in Zero](zero-mongo.md)
    2. [6.2 - How to use MySqlClient in Zero](zero-mysql.md)
+   3. [6.3 - How to use RpcClient in Zero](/doc/63-how-to-use-rpcclient-in-zero.md)
 7. Dependency Injection
    1. [7.1 - How to use Dependency Injection \( JSR330 \)](zero-di.md)
 8. Exception \( Error \)

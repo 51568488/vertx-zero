@@ -38,5 +38,11 @@ mongo: io.vertx.up.plugin.mongo.MongoInfix
 rpc: io.vertx.up.plugin.rpc.RpcInfix
 ```
 
+## 2. Code for Rpc
+
+Rpc code need at least two micro services in your environment. 
+
+### 2.1. Rpc Service Provider \( \) 
+
 
 

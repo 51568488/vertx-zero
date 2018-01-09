@@ -27,6 +27,12 @@ mysql:
   database: DB_HTL
 ```
 
+**vertx-inject.yml**
+
+```yaml
+mongo: io.vertx.up.plugin.jdbc.MySqlInfix
+```
+
 ## 2. Consumer Code
 
 ```java
@@ -59,3 +65,6 @@ public class InjectApi {
     }
 }
 ```
+
+
+

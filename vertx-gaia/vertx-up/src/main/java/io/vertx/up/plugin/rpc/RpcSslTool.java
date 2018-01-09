@@ -43,9 +43,10 @@ public class RpcSslTool {
                         final TrustPipe<JsonObject> pipe = TrustPipe.get(certType);
                         // Enable SSL
                         builder.useSsl(pipe.parse(sslConfig));
+                    } else {
+                        builder.usePlaintext(true);
                     }
-                },
-                () -> builder.usePlaintext(true));
+                });
         return builder.build();
     }
 

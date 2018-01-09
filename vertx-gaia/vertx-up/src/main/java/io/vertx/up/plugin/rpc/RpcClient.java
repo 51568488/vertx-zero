@@ -51,13 +51,13 @@ public interface RpcClient {
      *                }
      * @param data    send the data
      * @param handler async handler
-     * @param <T>     return type
      * @return Rpc client
      */
     @Fluent
-    <T> RpcClient connect(JsonObject config,
-                          JsonObject data,
-                          Handler<AsyncResult<T>> handler);
+    RpcClient connect(
+            JsonObject config,
+            JsonObject data,
+            Handler<AsyncResult<JsonObject>> handler);
 
     /**
      * Only support Unity Type
@@ -66,12 +66,12 @@ public interface RpcClient {
      * @param address service address
      * @param data    JsonObject data
      * @param handler async handler
-     * @param <T>     return type
      * @return Rpc client
      */
     @Fluent
-    <T> RpcClient connect(final String name,
-                          final String address,
-                          final JsonObject data,
-                          Handler<AsyncResult<T>> handler);
+    RpcClient connect(
+            String name,
+            String address,
+            JsonObject data,
+            Handler<AsyncResult<JsonObject>> handler);
 }

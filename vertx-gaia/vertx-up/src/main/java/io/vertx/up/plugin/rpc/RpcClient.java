@@ -5,7 +5,6 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.em.IpcType;
 
 import java.util.UUID;
 
@@ -75,27 +74,4 @@ public interface RpcClient {
                           final String address,
                           final JsonObject data,
                           Handler<AsyncResult<T>> handler);
-
-    /**
-     * Build target config
-     *
-     * @param name service name
-     * @param addr target address
-     * @param type target type
-     * @return JsonObject of config
-     */
-    static JsonObject on(final String name,
-                         final String addr,
-                         final IpcType type) {
-        final JsonObject config = new JsonObject();
-        config.put("name", name);
-        config.put("addr", addr);
-        config.put("type", type);
-        return config;
-    }
-
-    static JsonObject on(final String name,
-                         final String addr) {
-        return on(name, addr, IpcType.UNITY);
-    }
 }

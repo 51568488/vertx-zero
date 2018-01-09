@@ -33,10 +33,10 @@ public class TunnelClient {
 
     private static final Origin ORIGIN = Instance.singleton(IpcOrigin.class);
 
-    private static final ConcurrentMap<IpcType, RpcStub> STUBS =
-            new ConcurrentHashMap<IpcType, RpcStub>() {
+    private static final ConcurrentMap<IpcType, Spear> STUBS =
+            new ConcurrentHashMap<IpcType, Spear>() {
                 {
-                    put(IpcType.UNITY, Instance.singleton(UnityStub.class));
+                    put(IpcType.UNITY, Instance.singleton(UnitySpear.class));
                     // put(IpcType.CONSUME, Instance.singleton(ConsumeStub.class));
                     // put(IpcType.DUPLIEX, Instance.singleton(DupliexStub.class));
                     // put(IpcType.PRODUCE, Instance.singleton(ProduceStub.class));
@@ -75,7 +75,7 @@ public class TunnelClient {
         DataEncap.in(data, record);
         DataEncap.in(data, envelop);
         // 5. Stub
-        final RpcStub stub = STUBS.getOrDefault(type, Instance.singleton(UnityStub.class));
+        final Spear stub = STUBS.getOrDefault(type, Instance.singleton(UnitySpear.class));
         return stub.send(this.vertx, data);
     }
 

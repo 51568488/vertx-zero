@@ -112,6 +112,7 @@ public class AffluxScatter implements Scatter<Vertx> {
                         getClass(), infixCls, pluginKey);
 
                 final Infix reference = Instance.singleton(infixCls);
+                
                 ret = Instance.invoke(reference, "get");
             } else {
                 LOGGER.warn(Info.INFIX_IMPL, infixCls.getName(), Infix.class.getName());

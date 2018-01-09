@@ -23,9 +23,10 @@
     * [5.3 - Request Workflow Introduction](doc/zero-mode.md)
     * [5.4 - How to use Envelop \( Uniform Resource Model \)](doc/zero-envelop.md)
     * [5.5 - \(Recommend\) Example 1: Advanced usage for Envelop](doc/zero-uniform.md)
-  * 6 - Plugin
+  * [6 - Plugin](doc/6-plugin.md)
     * [6.1 - How to use MongoClient in Zero](doc/zero-mongo.md)
     * [6.2 - How to use MySqlClient in Zero](doc/zero-mysql.md)
+    * [6.3 - How to use RpcClient in Zero](doc/63-how-to-use-rpcclient-in-zero.md)
   * 7 - Dependency Injection
     * [7.1 - How to use Dependency Injection \( JSR330 \)](doc/zero-di.md)
   * 8 - Exception \( Error \)

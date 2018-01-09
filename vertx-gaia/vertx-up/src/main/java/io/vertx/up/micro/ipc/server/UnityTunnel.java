@@ -36,25 +36,26 @@ public class UnityTunnel implements Tunnel {
             public void unityCall(final IpcRequest request, final Future<IpcResponse> future) {
                 // IpcData building
                 final IpcData data = DataEncap.consume(request, IpcType.UNITY);
+                // Method called with message handler
+                final Envelop envelop = DataEncap.consume(data);
                 // Method handle
                 final Method method = IPCS.get(data.getAddress());
                 // Work mode
+                final Envelop community;
                 if (null == method) {
                     // No Rpc Handler here
-                    final Envelop envelop =
-                            Envelop.failure(new _501RpcMethodMissingException(getClass(), data.getAddress()));
+                    community = Envelop.failure(
+                            new _501RpcMethodMissingException(getClass(), data.getAddress()));
                 } else {
-                    // Method called with message handler
-                    final Envelop envelop = DataEncap.consume(data);
                     // Execute Transit
                     final Transit transit = getTransit(method);
                     // Execute Transit
                     final Future<Envelop> result = transit.async(envelop);
-                    final Envelop community = result.result();
-                    // Build IpcData
-                    final IpcData responseData = build(community, envelop);
-                    future.complete(DataEncap.out(responseData));
+                    community = result.result();
                 }
+                // Build IpcData
+                final IpcData responseData = build(community, envelop);
+                future.complete(DataEncap.out(responseData));
             }
         };
     }

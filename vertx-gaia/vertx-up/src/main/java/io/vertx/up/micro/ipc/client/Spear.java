@@ -8,7 +8,7 @@ import io.vertx.up.atom.flux.IpcData;
 /**
  * Different implementation by type.
  */
-public interface RpcStub {
+public interface Spear {
     /**
      * Rpc Logical
      */

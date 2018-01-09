@@ -13,6 +13,9 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.flux.IpcData;
 import io.vertx.up.atom.hold.VirtualUser;
 import io.vertx.up.eon.em.IpcType;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
+import io.vertx.up.tool.StringUtil;
 
 /**
  * Data serialization to set data
@@ -20,6 +23,8 @@ import io.vertx.up.eon.em.IpcType;
  * IpcResponse -> IpcData -> Envelop
  */
 public class DataEncap {
+
+    private static final Annal LOGGER = Annal.get(DataEncap.class);
 
     public static void in(final IpcData data, final Record record) {
         if (null != record) {
@@ -136,8 +141,12 @@ public class DataEncap {
     }
 
     public static Envelop out(final IpcResponse data) {
+        return build(outJson(data));
+    }
+
+    public static JsonObject outJson(final IpcResponse data) {
         final String json = data.getEnvelop().getBody();
-        final JsonObject responseData = new JsonObject(json);
-        return build(responseData);
+        return Fn.getSemi(StringUtil.notNil(json), LOGGER,
+                () -> new JsonObject(json));
     }
 }

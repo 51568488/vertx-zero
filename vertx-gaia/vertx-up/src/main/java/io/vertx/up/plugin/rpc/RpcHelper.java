@@ -32,7 +32,7 @@ class RpcHelper {
         final ConcurrentMap<String, Record> registryData = ORIGIN.getRegistryData();
         final String name = config.getString(Key.NAME);
         final String address = config.getString(Key.ADDR);
-        LOGGER.info(Info.RPC_SERVICE, name, address);
+        LOGGER.debug(Info.RPC_SERVICE, name, address);
         // Empty Found
         Fn.flingWeb(registryData.values().isEmpty(), LOGGER,
                 _424RpcServiceException.class, RpcHelper.class,
@@ -40,25 +40,23 @@ class RpcHelper {
 
         // Service status checking
         final RxHod container = new RxHod();
-        // Iterator Matching
+        // Lookup Record instance
         Observable.fromIterable(registryData.values())
                 .filter(Objects::nonNull)
                 .filter(item -> StringUtil.notNil(item.getName()))
-                .map(item -> {
-                    // Service Not Found
-                    Fn.flingWeb(!item.getName().equals(name), LOGGER,
-                            _424RpcServiceException.class, RpcHelper.class,
-                            name, address);
-                    // Address Not Found
-                    final String addr = item.getMetadata().getString(Key.PATH);
-                    Fn.flingWeb(!addr.equals(address), LOGGER,
-                            _424RpcServiceException.class, RpcHelper.class,
-                            name, address);
-                    return item;
-                })
                 .filter(item -> name.equals(item.getName()) &&
                         address.equals(item.getMetadata().getString(Key.PATH)))
                 .subscribe(container::add);
+        // Service Not Found
+        Fn.flingWeb(!container.successed(), LOGGER,
+                _424RpcServiceException.class, RpcHelper.class,
+                name, address);
+        // Address Not Found
+        Fn.flingWeb(!container.successed(), LOGGER,
+                _424RpcServiceException.class, RpcHelper.class,
+                name, address);
+        final Record record = container.get();
+        LOGGER.debug(Info.RPC_FOUND, record.toJson());
         return container.get();
     }
 
@@ -80,7 +78,7 @@ class RpcHelper {
         normalized.put(Key.HOST, record.getLocation().getString(Key.HOST));
         normalized.put(Key.PORT, record.getLocation().getInteger(Key.PORT));
         normalized.put(Key.SSL, ssl);
-        return null;
+        return normalized;
     }
 
     static JsonObject getSslConfig(final String name,

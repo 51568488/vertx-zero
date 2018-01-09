@@ -100,6 +100,7 @@ public class IpcData implements Serializable {
                 ", port=" + this.port +
                 ", host='" + this.host + '\'' +
                 ", data=" + this.data +
+                ", address=" + this.address +
                 ", config=" + this.config +
                 '}';
     }

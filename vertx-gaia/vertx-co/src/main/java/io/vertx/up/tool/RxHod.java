@@ -15,6 +15,10 @@ public class RxHod {
         return this;
     }
 
+    public boolean successed() {
+        return null != this.reference;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T get() {
         return Fn.get(() -> (T) this.reference, this.reference);

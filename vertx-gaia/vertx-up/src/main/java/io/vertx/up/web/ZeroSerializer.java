@@ -143,6 +143,7 @@ public class ZeroSerializer {
         return reference;
     }
 
+    @Deprecated
     public static <T> JsonArray toArray(final List<T> list, final Function<JsonObject, JsonObject> converted) {
         final JsonArray array = Jackson.serializeJson(list);
         final JsonArray result = new JsonArray();
@@ -154,10 +155,12 @@ public class ZeroSerializer {
         return result;
     }
 
+    @Deprecated
     public static <T> JsonArray toArray(final List<T> list) {
         return toArray(list, item -> item);
     }
 
+    @Deprecated
     public static <T> JsonArray toArray(final List<T> list, final String pojo) {
         return Fn.get(new JsonArray(), () -> {
             final Function<JsonObject, JsonObject> converted =
@@ -167,6 +170,7 @@ public class ZeroSerializer {
         }, pojo, list);
     }
 
+    @Deprecated
     public static <T> JsonObject toObject(final T entity, final String pojo) {
         return Fn.get(new JsonObject(), () -> {
             final JsonObject from = Jackson.serializeJson(entity);
@@ -175,22 +179,26 @@ public class ZeroSerializer {
         }, entity, pojo);
     }
 
+    @Deprecated
     public static <T> Envelop collect(final List<T> list) {
         return Envelop.success(toArray(list, item -> item));
     }
 
+    @Deprecated
     public static <T> Envelop unique(final List<T> list) {
         return Fn.getSemi(null == list || 0 == list.size(), LOGGER,
                 () -> Envelop.success(new JsonObject()),
                 () -> unique(list.get(Values.IDX)));
     }
 
+    @Deprecated
     public static <T> Envelop unique(final JsonArray data) {
         return Fn.getSemi(null == data || 0 == data.size(), LOGGER,
                 () -> Envelop.success(new JsonObject()),
                 () -> unique(data.getJsonObject(Values.IDX)));
     }
 
+    @Deprecated
     public static <T> Envelop unique(final T entity) {
         return Fn.getJvm(Envelop.success(new JsonObject()), () -> Envelop.success(entity), entity);
     }

@@ -23,4 +23,6 @@ interface Info {
     String LIME_FILE = "[ ZERO ] Lime node configured file = \"{0}\"" +
             " is missing, please check the missed file";
 
+    String OP_MSG = "[ ZERO ] This operation is not supported! " +
+            "( method = {0}, class = {1} )";
 }

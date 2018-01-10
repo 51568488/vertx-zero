@@ -1,7 +1,8 @@
-package io.vertx.up;
+package io.vertx.up.boot;
 
 import io.vertx.core.Vertx;
 import io.vertx.tp.etcd.center.EtcdData;
+import io.vertx.up.Launcher;
 import io.vertx.up.annotations.Up;
 import io.vertx.up.concurrent.Runner;
 import io.vertx.up.func.Fn;

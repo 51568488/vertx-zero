@@ -1,4 +1,4 @@
-package io.vertx.up.kidd;
+package io.vertx.up.kidd.outcome;
 
 import io.vertx.up.atom.Envelop;
 

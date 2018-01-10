@@ -19,6 +19,27 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("unchecked")
 public final class Ux {
+    /**
+     * Json calculation
+     */
+    public static class Json {
+
+        public static JsonObject deNull(final JsonObject entity) {
+            return Self.deNull(entity, false);
+        }
+
+        public static JsonObject deNullNew(final JsonObject entity) {
+            return Self.deNull(entity, true);
+        }
+
+        public static JsonObject merge(final JsonObject target, final JsonObject source) {
+            return Dual.merge(target, source, false);
+        }
+
+        public static JsonObject appendNew(final JsonObject target, final JsonObject source) {
+            return Dual.merge(target, source, true);
+        }
+    }
 
     public static <T> JsonObject toJson(final T entity) {
         return To.toJson(entity, "");
@@ -66,22 +87,6 @@ public final class Ux {
             final JsonArray array
     ) {
         return Envelop.success(To.toUnique(array, ""));
-    }
-
-    public static JsonObject deNull(final JsonObject entity) {
-        return Self.deNull(entity, false);
-    }
-
-    public static JsonObject deNullNew(final JsonObject entity) {
-        return Self.deNull(entity, true);
-    }
-
-    public static JsonObject append(final JsonObject target, final JsonObject source) {
-        return Dual.append(target, source, false);
-    }
-
-    public static JsonObject appendNew(final JsonObject target, final JsonObject source) {
-        return Dual.append(target, source, true);
     }
 
     public static <T> JsonObject toUnique(

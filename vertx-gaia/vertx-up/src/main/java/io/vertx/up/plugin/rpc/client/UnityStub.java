@@ -31,7 +31,7 @@ public class UnityStub implements RpcStub {
         final Future<JsonObject> handler = Future.future();
         stub.unityCall(request, response ->
                 // Reply
-                RpcRepdor.create(getClass()).replyJson(handler, response));
+                RpcRepdor.create(this.getClass()).replyJson(handler, response));
         return handler;
     }
 }

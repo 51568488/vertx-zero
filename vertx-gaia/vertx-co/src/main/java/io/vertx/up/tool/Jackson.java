@@ -1,5 +1,6 @@
 package io.vertx.up.tool;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -67,6 +68,8 @@ public final class Jackson {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Jackson.MAPPER.setDateFormat(dateFormat);
+        // Ignore null value
+        Jackson.MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         // Non-standard JSON but we allow C style comments in our JSON
         Jackson.MAPPER.configure(JsonParser.Feature.ALLOW_COMMENTS, true);

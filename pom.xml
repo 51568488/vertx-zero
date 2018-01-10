@@ -76,7 +76,7 @@
 
         <reflect.asm.version>1.11.3</reflect.asm.version>
         <asm.version>6.0</asm.version>
-        <lombok.version>1.16.18</lombok.version>
+        <lombok.version>1.16.20</lombok.version>
         <guice.version>4.1.0</guice.version>
         <hibernate.validator.version>6.0.7.Final</hibernate.validator.version>
         <scala.version>2.12.4</scala.version>
@@ -91,18 +91,18 @@
         <!-- Rpc -->
         <protobuf.version>3.5.1</protobuf.version>
         <vertx.grpc.version>1.6.1</vertx.grpc.version>
-        <grpc.version>1.8.0</grpc.version>
+        <grpc.version>1.9.0</grpc.version>
         <!-- Vert.x Addition -->
         <rxjava2.version>2.1.8</rxjava2.version>
         <netty.tcnative.version>2.0.7.Final</netty.tcnative.version>
         <netty.version>4.1.19.Final</netty.version>
         <hazelcast.version>3.9.2</hazelcast.version>
         <swagger.version>1.5.0</swagger.version>
-        <error.prone.version>2.1.3</error.prone.version>
+        <error.prone.version>2.2.0</error.prone.version>
         <reactive.streams>1.0.2</reactive.streams>
         <!-- JSR -->
         <jsr311.version>1.1.1</jsr311.version>
-        <jsr330.version>1</jsr330.version>
+        <jsr330.version>1.0-PFD-1</jsr330.version>
         <jsr303.version>2.0.1.Final</jsr303.version>
         <jcache.version>1.1.0</jcache.version>
         <jsr305.version>3.0.2</jsr305.version>

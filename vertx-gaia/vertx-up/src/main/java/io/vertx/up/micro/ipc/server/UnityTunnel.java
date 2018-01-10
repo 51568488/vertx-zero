@@ -46,20 +46,16 @@ public class UnityTunnel implements Tunnel {
                     // No Rpc Handler here
                     community = Envelop.failure(
                             new _501RpcMethodMissingException(this.getClass(), data.getAddress()));
-                    // Build IpcData
-                    final IpcData responseData = UnityTunnel.this.build(community, envelop);
-                    future.complete(DataEncap.out(responseData));
                 } else {
                     // Execute Transit
                     final Transit transit = UnityTunnel.this.getTransit(method);
                     // Execute Transit
                     final Future<Envelop> result = transit.async(envelop);
-                    result.setHandler(res -> {
-                        LOGGER.info(Info.NODE_RESPONSE, res.result().response());
-                        final IpcData responseData = UnityTunnel.this.build(res.result(), envelop);
-                        future.complete(DataEncap.out(responseData));
-                    });
+                    community = result.result();
                 }
+                // Build IpcData
+                final IpcData responseData = UnityTunnel.this.build(community, envelop);
+                future.complete(DataEncap.out(responseData));
             }
         };
     }

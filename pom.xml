@@ -102,7 +102,7 @@
         <reactive.streams>1.0.2</reactive.streams>
         <!-- JSR -->
         <jsr311.version>1.1.1</jsr311.version>
-        <jsr330.version>1.0-PFD-1</jsr330.version>
+        <jsr330.version>1</jsr330.version>
         <jsr303.version>2.0.1.Final</jsr303.version>
         <jcache.version>1.1.0</jcache.version>
         <jsr305.version>3.0.2</jsr305.version>

@@ -6,7 +6,6 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.agent.Event;
 import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Aim;
-import io.vertx.up.web.ZeroResponser;
 
 /**
  * SyncAim: Non-Event Bus: Request-Response
@@ -14,7 +13,7 @@ import io.vertx.up.web.ZeroResponser;
 public class SyncAim extends BaseAim implements Aim<RoutingContext> {
     @Override
     public Handler<RoutingContext> attack(final Event event) {
-        return Fn.get(() -> (context) -> ZeroResponser.exec(() -> {
+        return Fn.get(() -> (context) -> Responser.exec(() -> {
             // 1. Build Arguments
             final Object[] arguments = buildArgs(context, event);
 

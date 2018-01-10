@@ -1,7 +1,7 @@
 package io.vertx.rx.web.limit;
 
 import io.vertx.rx.micro.ZeroRxAgent;
-import io.vertx.up.Motor;
+import io.vertx.up.boot.Motor;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.web.limit.Factor;
 

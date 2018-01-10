@@ -5,7 +5,6 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception._404RecordNotFoundException;
 import io.vertx.up.func.Fn;
-import io.vertx.up.kidd.Spy;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Instance;
 

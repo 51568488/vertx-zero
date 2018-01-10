@@ -1,0 +1,4 @@
+type: "io.vertx.up.aiki.UserJson"
+mapping:
+  name: zName
+  email: zEmail

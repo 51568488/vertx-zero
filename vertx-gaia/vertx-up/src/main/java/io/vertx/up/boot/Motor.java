@@ -1,4 +1,4 @@
-package io.vertx.up;
+package io.vertx.up.boot;
 
 import io.vertx.core.ClusterOptions;
 import io.vertx.core.VertxOptions;

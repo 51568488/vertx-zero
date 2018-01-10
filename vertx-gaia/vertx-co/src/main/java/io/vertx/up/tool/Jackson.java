@@ -3,10 +3,7 @@ package io.vertx.up.tool;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.reactivex.Observable;
 import io.vertx.core.json.DecodeException;
@@ -19,6 +16,7 @@ import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Supplier;
@@ -65,9 +63,16 @@ public final class Jackson {
     public static ObjectMapper MAPPER = new ObjectMapper();
 
     static {
+        // TimeZone Issue
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Jackson.MAPPER.setDateFormat(dateFormat);
+
         // Non-standard JSON but we allow C style comments in our JSON
         Jackson.MAPPER.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
         Jackson.MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        Jackson.MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Jackson.MAPPER.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
 
         final SimpleModule module = new SimpleModule();
         // custom types
@@ -77,7 +82,9 @@ public final class Jackson {
         module.addSerializer(Instant.class, new InstantSerializer());
         module.addSerializer(byte[].class, new ByteArraySerializer());
 
+
         Jackson.MAPPER.registerModule(module);
+        Jackson.MAPPER.findAndRegisterModules();
     }
 
     public static JsonObject visitJObject(

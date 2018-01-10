@@ -32,12 +32,19 @@ public final class Ux {
             return Self.deNull(entity, true);
         }
 
-        public static JsonObject merge(final JsonObject target, final JsonObject source) {
-            return Dual.merge(target, source, false);
+        public static JsonObject append(final JsonObject target, final JsonObject source) {
+            return Dual.append(target, source, false);
+        }
+
+        /**
+         * Because of Array, do not support immutable
+         */
+        public static JsonObject append(final JsonObject target, final JsonArray array) {
+            return Dual.append(target, array);
         }
 
         public static JsonObject appendNew(final JsonObject target, final JsonObject source) {
-            return Dual.merge(target, source, true);
+            return Dual.append(target, source, true);
         }
     }
 

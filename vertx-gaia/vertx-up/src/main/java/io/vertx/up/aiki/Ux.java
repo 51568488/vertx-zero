@@ -9,12 +9,15 @@ import io.vertx.up.exception.WebException;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Here Ux is a util interface of uniform to call different tools.
  * It just like helper for business usage.
  */
+@SuppressWarnings("unchecked")
 public final class Ux {
 
     public static <T> JsonObject toJson(final T entity) {
@@ -134,6 +137,10 @@ public final class Ux {
         return Async.toSingle("", future);
     }
 
+    public static <T> Future<T> thenGeneric(final CompletableFuture<T> future) {
+        return Async.toFuture(future);
+    }
+
     public static <T> Future<Envelop> then(final String pojo, final CompletableFuture<T> future) {
         return Async.toSingle(pojo, future);
     }
@@ -152,5 +159,13 @@ public final class Ux {
 
     public static <T> Future<Envelop> thenUnique(final String pojo, final CompletableFuture<List<T>> future) {
         return Async.toUnique(pojo, future);
+    }
+
+    public static <F, S, T> Future<T> thenComposite(final BiFunction<F, List<S>, T> mergeFun, final Future<F> source, final Supplier<Future<S>>... suppliers) {
+        return Fluctuate.thenComposite(mergeFun, source, suppliers);
+    }
+
+    public static <F, S, T> Future<T> thenComposite(final BiFunction<F, List<S>, T> mergeFun, final Future<F> source, final Function<F, Future<S>>... functions) {
+        return Fluctuate.thenComposite(mergeFun, source, functions);
     }
 }

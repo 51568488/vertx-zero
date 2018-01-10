@@ -3,22 +3,31 @@ package io.vertx.up.aiki;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.quiz.StoreBase;
+import io.vertx.up.tool.Jackson;
 import org.junit.Test;
+
+import java.time.LocalDateTime;
 
 public class UxToTc extends StoreBase {
 
     @Test
     public void testUserJson(final TestContext context) {
-        final JsonObject data = Ux.toJson(getEntity());
-        getLogger().info("[ ZERO TEST ] Data: {0}", data);
-        context.assertEquals(getEntityJson(), data);
+        final JsonObject data = Ux.toJson(this.getEntity());
+        this.getLogger().info("[ ZERO TEST ] Data: {0}", data);
+        context.assertEquals(this.getEntityJson(), data);
     }
 
     @Test
     public void testUserPojo(final TestContext context) {
-        final JsonObject data = Ux.toJson(getEntity(), "user");
-        getLogger().info("[ ZERO TEST ] Pojo Data: {0}", data);
-        context.assertEquals(getEntityToJson(), data);
+        final JsonObject data = Ux.toJson(this.getEntity(), "user");
+        this.getLogger().info("[ ZERO TEST ] Pojo Data: {0}", data);
+        context.assertEquals(this.getEntityToJson(), data);
+    }
+
+    @Test
+    public void testUserSerial() {
+        final DateTimeJson json = new DateTimeJson();
+        System.out.println(Jackson.serialize(json));
     }
 
     private UserJson getEntity() {
@@ -41,5 +50,17 @@ public class UxToTc extends StoreBase {
                 .put("age", 12)
                 .put("zEmail", "lang.yu@hpe.com")
                 .put("zName", "Lang");
+    }
+}
+
+class DateTimeJson {
+    private LocalDateTime time = LocalDateTime.now();
+
+    public LocalDateTime getTime() {
+        return this.time;
+    }
+
+    public void setTime(final LocalDateTime time) {
+        this.time = time;
     }
 }

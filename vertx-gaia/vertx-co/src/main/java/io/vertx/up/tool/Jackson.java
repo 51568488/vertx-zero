@@ -31,8 +31,8 @@ public final class Jackson {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     static {
-        MAPPER.findAndRegisterModules();
-        MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        Jackson.MAPPER.findAndRegisterModules();
+        Jackson.MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
     public static JsonObject visitJObject(
@@ -41,7 +41,7 @@ public final class Jackson {
     ) {
 
         Ensurer.gtLength(Jackson.class, 0, (Object[]) keys);
-        return searchData(item, JsonObject.class, keys);
+        return Jackson.searchData(item, JsonObject.class, keys);
     }
 
     public static JsonArray visitJArray(
@@ -49,7 +49,7 @@ public final class Jackson {
             final String... keys
     ) {
         Ensurer.gtLength(Jackson.class, 0, (Object[]) keys);
-        return searchData(item, JsonArray.class, keys);
+        return Jackson.searchData(item, JsonArray.class, keys);
     }
 
     public static Integer visitInt(
@@ -57,7 +57,7 @@ public final class Jackson {
             final String... keys
     ) {
         Ensurer.gtLength(Jackson.class, 0, (Object[]) keys);
-        return searchData(item, Integer.class, keys);
+        return Jackson.searchData(item, Integer.class, keys);
     }
 
     public static String visitString(
@@ -65,7 +65,7 @@ public final class Jackson {
             final String... keys
     ) {
         Ensurer.gtLength(Jackson.class, 0, (Object[]) keys);
-        return searchData(item, String.class, keys);
+        return Jackson.searchData(item, String.class, keys);
     }
 
     private static <T> T searchData(final JsonObject data,
@@ -79,7 +79,7 @@ public final class Jackson {
         final String path = pathes[Values.IDX];
         /** 3. Continue searching if key existing, otherwise terminal. **/
         return Fn.getSemi(current.containsKey(path) && null != current.getValue(path),
-                LOGGER,
+                Jackson.LOGGER,
                 () -> {
                     final Object curVal = current.getValue(path);
                     T result = null;
@@ -97,7 +97,7 @@ public final class Jackson {
                                     Arrays.copyOfRange(pathes,
                                             Values.ONE,
                                             pathes.length);
-                            result = searchData(continueNode,
+                            result = Jackson.searchData(continueNode,
                                     clazz,
                                     continueKeys);
                         }
@@ -113,8 +113,8 @@ public final class Jackson {
         Fn.safeJvm(() -> Observable.fromIterable(source)
                 .filter(Objects::nonNull)
                 .map(item -> (JsonObject) item)
-                .map(item -> item.mergeIn(findByKey(target, targetKey, item.getValue(sourceKey))))
-                .subscribe(result::add), LOGGER);
+                .map(item -> item.mergeIn(Jackson.findByKey(target, targetKey, item.getValue(sourceKey))))
+                .subscribe(result::add), Jackson.LOGGER);
         return result;
     }
 
@@ -162,42 +162,44 @@ public final class Jackson {
     }
 
     public static <T, R extends Iterable> R serializeJson(final T t) {
-        final String content = serialize(t);
+        final String content = Jackson.serialize(t);
         return Fn.getJvm(null,
-                () -> Fn.getSemi(content.trim().startsWith(Strings.LEFT_BRACES), LOGGER,
+                () -> Fn.getSemi(content.trim().startsWith(Strings.LEFT_BRACES), Jackson.LOGGER,
                         () -> (R) new JsonObject(content),
                         () -> (R) new JsonArray(content)), content);
     }
 
     public static <T> String serialize(final T t) {
-        return Fn.get(null, () ->
-                Fn.getJvm(() -> MAPPER.writeValueAsString(t), t), t);
+        return Fn.get(null, () -> Fn.getJvm(() ->
+                (t instanceof JsonObject) ? ((JsonObject) t).encode() :
+                        ((t instanceof JsonArray) ? ((JsonArray) t).encode() :
+                                Jackson.MAPPER.writeValueAsString(t)), t), t);
     }
 
 
     public static <T> T deserialize(final JsonObject value, final Class<T> type) {
         return Fn.get(null,
-                () -> deserialize(value.encode(), type), value);
+                () -> Jackson.deserialize(value.encode(), type), value);
     }
 
     public static <T> T deserialize(final JsonArray value, final Class<T> type) {
         return Fn.get(null,
-                () -> deserialize(value.encode(), type), value);
+                () -> Jackson.deserialize(value.encode(), type), value);
     }
 
     public static <T> T deserialize(final String value, final Class<T> type) {
         return Fn.get(null,
-                () -> Fn.getJvm(() -> MAPPER.readValue(value, type)), value);
+                () -> Fn.getJvm(() -> Jackson.MAPPER.readValue(value, type)), value);
     }
 
     public static <T> T deserialize(final String value, final TypeReference<T> type) {
         return Fn.get(null,
-                () -> Fn.getJvm(() -> MAPPER.readValue(value, type)), value);
+                () -> Fn.getJvm(() -> Jackson.MAPPER.readValue(value, type)), value);
     }
 
     public static <T> T deserialize(final InputStream in, final Class<T> type) {
         return Fn.get(null,
-                () -> Fn.getJvm(() -> MAPPER.readValue(in, type)), in);
+                () -> Fn.getJvm(() -> Jackson.MAPPER.readValue(in, type)), in);
     }
 
     public static <T> List<T> convert(final List<JsonObject> result, final Class<T> clazz) {

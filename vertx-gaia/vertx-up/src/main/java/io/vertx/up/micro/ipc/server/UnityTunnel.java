@@ -41,21 +41,23 @@ public class UnityTunnel implements Tunnel {
                 // Method handle
                 final Method method = IPCS.get(data.getAddress());
                 // Work mode
-                final Envelop community;
                 if (null == method) {
                     // No Rpc Handler here
-                    community = Envelop.failure(
+                    final Envelop community = Envelop.failure(
                             new _501RpcMethodMissingException(this.getClass(), data.getAddress()));
+                    // Build IpcData
+                    final IpcData responseData = UnityTunnel.this.build(community, envelop);
+                    future.complete(DataEncap.out(responseData));
                 } else {
                     // Execute Transit
                     final Transit transit = UnityTunnel.this.getTransit(method);
                     // Execute Transit
                     final Future<Envelop> result = transit.async(envelop);
-                    community = result.result();
+                    result.setHandler(res -> {
+                        final IpcData responseData = UnityTunnel.this.build(res.result(), envelop);
+                        future.complete(DataEncap.out(responseData));
+                    });
                 }
-                // Build IpcData
-                final IpcData responseData = UnityTunnel.this.build(community, envelop);
-                future.complete(DataEncap.out(responseData));
             }
         };
     }

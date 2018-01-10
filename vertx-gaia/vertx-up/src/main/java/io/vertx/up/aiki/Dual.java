@@ -5,7 +5,7 @@ import io.vertx.core.json.JsonObject;
 
 class Dual {
 
-    static JsonObject append(
+    static JsonObject merge(
             final JsonObject target,
             final JsonObject source,
             final boolean immutable

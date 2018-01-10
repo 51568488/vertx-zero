@@ -1,5 +1,6 @@
 package io.vertx.zero.atom;
 
+import io.reactivex.Observable;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
@@ -7,6 +8,7 @@ import io.vertx.up.tool.Jackson;
 import io.vertx.up.tool.io.IO;
 
 import java.text.MessageFormat;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
 /**
@@ -29,7 +31,8 @@ public class Mirror {
         this.logger = Annal.get(clazz);
     }
 
-    public Mirror pickup(final String filename) {
+    public Mirror mount(final String filename) {
+        // Build meta
         this.mojo = Fn.pool(Pool.MOJOS, filename, () -> {
             final JsonObject data = IO.getYaml(MessageFormat.format(POJO, filename));
             return Fn.get(() -> Jackson.deserialize(data, Mojo.class), data);
@@ -38,30 +41,33 @@ public class Mirror {
     }
 
     public Mirror connect(final JsonObject data) {
-        this.data = Fn.get(new JsonObject(), () -> data, data);
+        // Copy new data
+        this.data = Fn.get(new JsonObject(), data::copy, data);
         return this;
     }
 
     public Mirror to() {
-        this.mojo.getMapper()
-                .forEach((from, to) ->
-                        this.converted.put(to, this.data.getValue(from)));
+        this.convert(this.mojo.getMapper());
         return this;
     }
 
-    public Mirror to(final Function<Object, Object> function) {
-        this.mojo.getMapper()
-                .forEach((from, to) ->
-                        this.converted.put(to,
-                                function.apply(this.data.getValue(from))));
-        return this;
+    private void convert(final ConcurrentMap<String, String> mapper) {
+        Observable.fromIterable(this.data.fieldNames())
+                .groupBy(mapper::containsKey)
+                .map(contain -> contain.getKey() ?
+                        contain.subscribe(from -> {
+                            // Existing in mapper
+                            final String to = mapper.get(from);
+                            this.converted.put(to, this.data.getValue(from));
+                        }) :
+                        contain.subscribe(item ->
+                                // Not found in mapper
+                                this.converted.put(item, this.data.getValue(item)))
+                ).subscribe();
     }
 
-    public Mirror from(final Function<Object, Object> function) {
-        this.mojo.getRevert()
-                .forEach((from, to) ->
-                        this.converted.put(to,
-                                function.apply(this.data.getValue(from))));
+    public Mirror from() {
+        this.convert(this.mojo.getRevert());
         return this;
     }
 
@@ -70,13 +76,6 @@ public class Mirror {
         result.forEach((entry) ->
                 this.converted.put(function.apply(entry.getKey()),
                         entry.getValue()));
-        return this;
-    }
-
-    public Mirror from() {
-        this.mojo.getRevert()
-                .forEach((from, to) ->
-                        this.converted.put(to, this.data.getValue(from)));
         return this;
     }
 
@@ -102,7 +101,7 @@ public class Mirror {
         return Fn.get(null, () -> (T) reference, reference);
     }
 
-    public JsonObject json() {
+    public JsonObject result() {
         return this.converted;
     }
 }

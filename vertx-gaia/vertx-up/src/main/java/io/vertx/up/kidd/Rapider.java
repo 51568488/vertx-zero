@@ -13,6 +13,7 @@ import io.vertx.up.tool.mirror.Instance;
  * Fast tool to extract params
  */
 @SuppressWarnings("unchecked")
+@Deprecated
 public class Rapider {
     /**
      * Get data from event bus directly or body request.

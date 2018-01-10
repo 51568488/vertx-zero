@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ClassDeserializer;
 import com.fasterxml.jackson.databind.ClassSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -17,6 +19,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class Mojo implements Serializable {
 
+    private static final Annal LOGGER = Annal.get(Mojo.class);
     private static final String TYPE = "type";
     private static final String MAPPING = "mapping";
 
@@ -29,7 +32,6 @@ public class Mojo implements Serializable {
     private final ConcurrentMap<String, String> config = new ConcurrentHashMap<>();
 
     public Class<?> getType() {
-
         return this.type;
     }
 
@@ -42,6 +44,9 @@ public class Mojo implements Serializable {
     }
 
     public ConcurrentMap<String, String> getRevert() {
+        Fn.safeSemi(this.config.keySet().size() != this.config.values().size(), LOGGER,
+                () -> LOGGER.warn(Info.VALUE_SAME,
+                        this.config.keySet().size(), this.config.values().size()));
         final ConcurrentMap<String, String> mapper =
                 new ConcurrentHashMap<>();
         this.config.forEach((key, value) -> mapper.put(value, key));

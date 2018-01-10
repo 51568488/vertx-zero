@@ -25,9 +25,9 @@ class To {
                 () -> Fn.getSemi(StringUtil.isNil(pojo), null,
                         () -> Jackson.serializeJson(entity),
                         () -> Mirror.create(To.class)
-                                .pickup(pojo)
+                                .mount(pojo)
                                 .connect(Jackson.serializeJson(entity))
-                                .to().json()),
+                                .to().result()),
                 entity);
     }
 

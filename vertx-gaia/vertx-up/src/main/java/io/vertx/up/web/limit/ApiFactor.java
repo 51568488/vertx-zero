@@ -1,6 +1,6 @@
 package io.vertx.up.web.limit;
 
-import io.vertx.up.Motor;
+import io.vertx.up.boot.Motor;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ZeroApiAgent;

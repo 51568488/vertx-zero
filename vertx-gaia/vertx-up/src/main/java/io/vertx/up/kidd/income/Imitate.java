@@ -1,4 +1,4 @@
-package io.vertx.up.kidd;
+package io.vertx.up.kidd.income;
 
 import io.vertx.core.eventbus.Message;
 import io.vertx.up.atom.Envelop;

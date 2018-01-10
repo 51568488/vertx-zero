@@ -3,6 +3,7 @@ package io.vertx.up;
 import io.vertx.core.Vertx;
 import io.vertx.up.annotations.ApiGateway;
 import io.vertx.up.annotations.Up;
+import io.vertx.up.boot.DansApplication;
 import io.vertx.up.concurrent.Runner;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;

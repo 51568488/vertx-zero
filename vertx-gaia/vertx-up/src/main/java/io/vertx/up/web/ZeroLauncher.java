@@ -3,7 +3,7 @@ package io.vertx.up.web;
 import io.vertx.core.Vertx;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.up.Launcher;
-import io.vertx.up.Motor;
+import io.vertx.up.boot.Motor;
 import io.vertx.up.log.Annal;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +33,7 @@ public class ZeroLauncher implements Launcher<Vertx> {
     private void startStandalone(final Consumer<Vertx> consumer) {
         Motor.each((name, option) -> {
             final Vertx vertx = Vertx.vertx(option);
-            
+
             Motor.codec(vertx.eventBus());
 
             VERTX.putIfAbsent(name, vertx);

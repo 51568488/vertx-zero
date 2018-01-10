@@ -10,13 +10,12 @@ import io.vertx.up.atom.agent.Event;
 import io.vertx.up.atom.hold.Virtual;
 import io.vertx.up.func.Fn;
 import io.vertx.up.rs.Aim;
-import io.vertx.up.web.ZeroResponser;
 
 public class AsyncAim extends BaseAim implements Aim<RoutingContext> {
 
     @Override
     public Handler<RoutingContext> attack(final Event event) {
-        return Fn.get(() -> (context) -> ZeroResponser.exec(() -> {
+        return Fn.get(() -> (context) -> Responser.exec(() -> {
             // 1. Build Envelop
             final Envelop request = invoke(context, event);
             // 2. Build event bus

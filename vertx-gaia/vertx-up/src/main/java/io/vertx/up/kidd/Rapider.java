@@ -3,6 +3,7 @@ package io.vertx.up.kidd;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.atom.Envelop;
+import io.vertx.up.kidd.income.Imitate;
 import io.vertx.up.kidd.income.IntImitate;
 import io.vertx.up.kidd.income.JObjectImitate;
 import io.vertx.up.kidd.income.StringImitate;

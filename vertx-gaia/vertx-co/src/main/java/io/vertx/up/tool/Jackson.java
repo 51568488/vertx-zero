@@ -1,8 +1,13 @@
 package io.vertx.up.tool;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.reactivex.Observable;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
@@ -13,12 +18,12 @@ import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.*;
 import java.util.function.Supplier;
+
+import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 
 /**
  * Lookup the json tree data
@@ -26,13 +31,53 @@ import java.util.function.Supplier;
 @SuppressWarnings({"unchecked"})
 public final class Jackson {
 
-    private static final Annal LOGGER = Annal.get(Jackson.class);
+    private static class JsonObjectSerializer extends JsonSerializer<JsonObject> {
+        @Override
+        public void serialize(final JsonObject value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
+            jgen.writeObject(value.getMap());
+        }
+    }
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static class JsonArraySerializer extends JsonSerializer<JsonArray> {
+        @Override
+        public void serialize(final JsonArray value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
+            jgen.writeObject(value.getList());
+        }
+    }
+
+    private static class InstantSerializer extends JsonSerializer<Instant> {
+        @Override
+        public void serialize(final Instant value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
+            jgen.writeString(ISO_INSTANT.format(value));
+        }
+    }
+
+    private static class ByteArraySerializer extends JsonSerializer<byte[]> {
+        private final Base64.Encoder BASE64 = Base64.getEncoder();
+
+        @Override
+        public void serialize(final byte[] value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
+            jgen.writeString(this.BASE64.encodeToString(value));
+        }
+    }
+
+    private static final Annal LOGGER = Annal.get(Jackson.class);
+    public static ObjectMapper MAPPER = new ObjectMapper();
 
     static {
-        Jackson.MAPPER.findAndRegisterModules();
+        // Non-standard JSON but we allow C style comments in our JSON
+        Jackson.MAPPER.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
         Jackson.MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+        final SimpleModule module = new SimpleModule();
+        // custom types
+        module.addSerializer(JsonObject.class, new JsonObjectSerializer());
+        module.addSerializer(JsonArray.class, new JsonArraySerializer());
+        // he have 2 extensions: RFC-7493
+        module.addSerializer(Instant.class, new InstantSerializer());
+        module.addSerializer(byte[].class, new ByteArraySerializer());
+
+        Jackson.MAPPER.registerModule(module);
     }
 
     public static JsonObject visitJObject(
@@ -170,10 +215,7 @@ public final class Jackson {
     }
 
     public static <T> String serialize(final T t) {
-        return Fn.get(null, () -> Fn.getJvm(() ->
-                (t instanceof JsonObject) ? ((JsonObject) t).encode() :
-                        ((t instanceof JsonArray) ? ((JsonArray) t).encode() :
-                                Jackson.MAPPER.writeValueAsString(t)), t), t);
+        return Fn.get(null, () -> Fn.getJvm(() -> Jackson.MAPPER.writeValueAsString(t), t), t);
     }
 
 
@@ -195,11 +237,6 @@ public final class Jackson {
     public static <T> T deserialize(final String value, final TypeReference<T> type) {
         return Fn.get(null,
                 () -> Fn.getJvm(() -> Jackson.MAPPER.readValue(value, type)), value);
-    }
-
-    public static <T> T deserialize(final InputStream in, final Class<T> type) {
-        return Fn.get(null,
-                () -> Fn.getJvm(() -> Jackson.MAPPER.readValue(in, type)), in);
     }
 
     public static <T> List<T> convert(final List<JsonObject> result, final Class<T> clazz) {

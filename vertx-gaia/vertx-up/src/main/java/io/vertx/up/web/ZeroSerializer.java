@@ -165,7 +165,7 @@ public class ZeroSerializer {
         return Fn.get(new JsonArray(), () -> {
             final Function<JsonObject, JsonObject> converted =
                     (from) -> Mirror.create(ZeroSerializer.class)
-                            .pickup(pojo).connect(from).to().json();
+                            .mount(pojo).connect(from).to().result();
             return toArray(list, converted);
         }, pojo, list);
     }
@@ -175,7 +175,7 @@ public class ZeroSerializer {
         return Fn.get(new JsonObject(), () -> {
             final JsonObject from = Jackson.serializeJson(entity);
             return Mirror.create(ZeroSerializer.class)
-                    .pickup(pojo).connect(from).to().json();
+                    .mount(pojo).connect(from).to().result();
         }, entity, pojo);
     }
 

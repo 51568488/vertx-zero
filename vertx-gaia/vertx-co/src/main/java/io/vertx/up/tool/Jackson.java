@@ -1,7 +1,6 @@
 package io.vertx.up.tool;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
@@ -10,55 +9,23 @@ import io.reactivex.Observable;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.aiki.Blade;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.Strings;
 import io.vertx.zero.eon.Values;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Supplier;
-
-import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 
 /**
  * Lookup the json tree data
  */
 @SuppressWarnings({"unchecked"})
 public final class Jackson {
-
-    private static class JsonObjectSerializer extends JsonSerializer<JsonObject> {
-        @Override
-        public void serialize(final JsonObject value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
-            jgen.writeObject(value.getMap());
-        }
-    }
-
-    private static class JsonArraySerializer extends JsonSerializer<JsonArray> {
-        @Override
-        public void serialize(final JsonArray value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
-            jgen.writeObject(value.getList());
-        }
-    }
-
-    private static class InstantSerializer extends JsonSerializer<Instant> {
-        @Override
-        public void serialize(final Instant value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
-            jgen.writeString(ISO_INSTANT.format(value));
-        }
-    }
-
-    private static class ByteArraySerializer extends JsonSerializer<byte[]> {
-        private final Base64.Encoder BASE64 = Base64.getEncoder();
-
-        @Override
-        public void serialize(final byte[] value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
-            jgen.writeString(this.BASE64.encodeToString(value));
-        }
-    }
 
     private static final Annal LOGGER = Annal.get(Jackson.class);
     public static ObjectMapper MAPPER = new ObjectMapper();
@@ -84,7 +51,9 @@ public final class Jackson {
         // he have 2 extensions: RFC-7493
         module.addSerializer(Instant.class, new InstantSerializer());
         module.addSerializer(byte[].class, new ByteArraySerializer());
-
+        // Zero Extension
+        module.addSerializer(Blade.class, new BladeSerializer());
+        module.addDeserializer(Blade.class, new BladeDeserializer());
 
         Jackson.MAPPER.registerModule(module);
         Jackson.MAPPER.findAndRegisterModules();

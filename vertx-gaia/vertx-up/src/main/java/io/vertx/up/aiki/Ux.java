@@ -5,9 +5,12 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.query.Pager;
+import io.vertx.up.atom.query.Sorter;
 import io.vertx.up.exception.WebException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -20,6 +23,27 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("unchecked")
 public final class Ux {
+    // Business method
+    // page, size -> JsonObject
+    public static JsonObject toPagerJson(final int page, final int size) {
+        return Pagination.toPager(page, size).toJson();
+    }
+
+    // page, size -> Pager
+    public static Pager toPager(final int page, final int size) {
+        return Pagination.toPager(page, size);
+    }
+
+    // field, asc -> Sorter
+    public static Sorter toSorter(final String field, final boolean asc) {
+        return Pagination.toSorter(field, asc);
+    }
+
+    // field, mode -> Sorter
+    public static Sorter toSorter(final String field, final int mode) {
+        return Pagination.toSorter(field, mode);
+    }
+
     // ---------------------- JsonObject Returned --------------------------
     // T -> JsonObject
     public static <T> JsonObject toJson(final T entity) {
@@ -115,6 +139,21 @@ public final class Ux {
     // -> Message<Envelop> -> String ( Interface mode )
     public static String getString(final Message<Envelop> message, final int index) {
         return In.request(message, index, String.class);
+    }
+
+    // -> Message<Envelop> -> T ( Agent mode )
+    public static <T> T getT(final Message<Envelop> message, final Class<T> clazz) {
+        return In.request(message, clazz);
+    }
+
+    // -> Message<Envelop> -> String ( Security )
+    public static String getUserID(final Message<Envelop> message, final String field) {
+        return In.requestUser(message, field);
+    }
+
+    // -> Message<Envelop> -> UUID ( Security )
+    public static UUID getUserUUID(final Message<Envelop> message, final String field) {
+        return UUID.fromString(getUserID(message, field));
     }
 
     // -> Message<Envelop> -> Integer ( Interface mode )

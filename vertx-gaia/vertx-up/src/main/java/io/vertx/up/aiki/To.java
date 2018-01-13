@@ -75,6 +75,14 @@ class To {
                 entity);
     }
 
+    static <T> Envelop toEnvelop(
+            final T entity,
+            final WebException error
+    ) {
+        return Fn.get(Envelop.failure(error),
+                () -> Envelop.success(entity), entity);
+    }
+
     static WebException toError(
             final Class<? extends WebException> clazz,
             final Object... args

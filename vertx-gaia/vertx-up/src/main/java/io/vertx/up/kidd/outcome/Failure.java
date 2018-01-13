@@ -4,7 +4,6 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.exception._500InternalServerException;
 import io.vertx.up.func.Fn;
-import io.vertx.up.kidd.Readible;
 import io.vertx.up.tool.mirror.Instance;
 
 import java.util.function.Supplier;
@@ -28,8 +27,6 @@ class Failure {
 
     static Supplier<Envelop> build(
             final WebException error) {
-        final Readible readible = Readible.get();
-        readible.interpret(error);
         return () -> Envelop.failure(error);
     }
 }

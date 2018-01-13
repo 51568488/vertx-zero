@@ -35,6 +35,11 @@ public class Uson {
         return this;
     }
 
+    public Uson append(final String field, final Object value) {
+        this.objectReference.put(field, value);
+        return this;
+    }
+
     public Uson convert(final String from, final String to) {
         Self.convert(this.objectReference, new ConcurrentHashMap<String, String>() {{
             this.put(from, to);

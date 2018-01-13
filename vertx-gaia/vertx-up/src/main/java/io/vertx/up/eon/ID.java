@@ -9,17 +9,10 @@ public interface ID {
     String IGNORE = "$$IGNORE$$";
 
     interface Addr {
-        
+
         String REGISTRY_START = "ZERO://MICRO/REGISTRY/START";
 
         String IPC_START = "ZERO://MICRO/IPC/START";
-    }
-
-    interface Page {
-
-        String PAGE = "page";
-
-        String SIZE = "size";
     }
 
     interface Header {

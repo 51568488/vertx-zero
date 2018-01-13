@@ -1,12 +1,14 @@
 package io.vertx.up.atom.query;
 
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.eon.ID;
 import io.vertx.up.func.Fn;
 
 import java.io.Serializable;
 
 public class Pager implements Serializable {
+
+    private static final String PAGE = "page";
+    private static final String SIZE = "size";
     /**
      * Start page: >= 1
      */
@@ -42,8 +44,8 @@ public class Pager implements Serializable {
      * @return
      */
     public static Pager create(final JsonObject pageJson) {
-        final int page = pageJson.getInteger(ID.Page.PAGE);
-        final int size = pageJson.getInteger(ID.Page.SIZE);
+        final int page = pageJson.getInteger(PAGE);
+        final int size = pageJson.getInteger(SIZE);
         return new Pager(page, size);
     }
 
@@ -60,8 +62,8 @@ public class Pager implements Serializable {
 
     public JsonObject toJson() {
         final JsonObject data = new JsonObject();
-        data.put(ID.Page.PAGE, this.page);
-        data.put(ID.Page.SIZE, this.size);
+        data.put(PAGE, this.page);
+        data.put(SIZE, this.size);
         return data;
     }
 

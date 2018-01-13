@@ -8,6 +8,7 @@ import io.vertx.up.log.Annal;
 /**
  * Abstract imitate to process request
  */
+@Deprecated
 public abstract class BaseImitate<T> implements Imitate<T> {
 
     protected T request(
@@ -15,7 +16,7 @@ public abstract class BaseImitate<T> implements Imitate<T> {
             final Class<T> clazz
     ) {
         final Envelop body = message.body();
-        return Fn.getSemi(null == body, getLogger(), Fn::nil,
+        return Fn.getSemi(null == body, this.getLogger(), Fn::nil,
                 () -> body.data(clazz));
     }
 
@@ -24,11 +25,11 @@ public abstract class BaseImitate<T> implements Imitate<T> {
             final Integer index,
             final Class<T> clazz) {
         final Envelop body = message.body();
-        return Fn.getSemi(null == body, getLogger(), Fn::nil,
+        return Fn.getSemi(null == body, this.getLogger(), Fn::nil,
                 () -> body.data(index, clazz));
     }
 
     protected Annal getLogger() {
-        return Annal.get(getClass());
+        return Annal.get(this.getClass());
     }
 }

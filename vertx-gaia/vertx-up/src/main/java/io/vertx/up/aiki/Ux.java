@@ -19,34 +19,6 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("unchecked")
 public final class Ux {
-    /**
-     * Json calculation
-     */
-    public static class Json {
-
-        public static JsonObject deNull(final JsonObject entity) {
-            return Self.deNull(entity, false);
-        }
-
-        public static JsonObject deNullNew(final JsonObject entity) {
-            return Self.deNull(entity, true);
-        }
-
-        public static JsonObject append(final JsonObject target, final JsonObject source) {
-            return Dual.append(target, source, false);
-        }
-
-        /**
-         * Because of Array, do not support immutable
-         */
-        public static JsonObject append(final JsonObject target, final JsonArray array) {
-            return Dual.append(target, array);
-        }
-
-        public static JsonObject appendNew(final JsonObject target, final JsonObject source) {
-            return Dual.append(target, source, true);
-        }
-    }
 
     public static <T> JsonObject toJson(final T entity) {
         return To.toJson(entity, "");
@@ -180,4 +152,6 @@ public final class Ux {
     public static <F, S, T> Future<T> thenComposite(final BiFunction<F, List<S>, T> mergeFun, final Future<F> source, final Function<F, Future<S>>... functions) {
         return Fluctuate.thenComposite(mergeFun, source, functions);
     }
+
+    
 }

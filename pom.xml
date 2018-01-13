@@ -142,6 +142,7 @@
         <maven.plugin.protobuf>0.5.1</maven.plugin.protobuf>
         <maven.plugin.os>1.5.0.Final</maven.plugin.os>
         <maven.plugin.antrun>1.8</maven.plugin.antrun>
+        <maven.plugin.aspectj>1.10</maven.plugin.aspectj>
     </properties>
     <prerequisites>
         <maven>3.5.0</maven>
@@ -677,6 +678,12 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/aspectj-maven-plugin -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>aspectj-maven-plugin</artifactId>
+                    <version>${maven.plugin.aspectj}</version>
+                </plugin>
                 <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-antrun-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

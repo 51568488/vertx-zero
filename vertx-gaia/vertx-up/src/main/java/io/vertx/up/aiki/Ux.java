@@ -152,4 +152,6 @@ public final class Ux {
     public static <F, S, T> Future<T> thenComposite(final BiFunction<F, List<S>, T> mergeFun, final Future<F> source, final Function<F, Future<S>>... functions) {
         return Fluctuate.thenComposite(mergeFun, source, functions);
     }
+
+    
 }

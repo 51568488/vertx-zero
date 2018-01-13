@@ -2,22 +2,22 @@ package com.fasterxml.jackson.databind;
 
 import com.fasterxml.jackson.core.JsonParser;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.aiki.Blade;
+import io.vertx.up.aiki.Uson;
 
 import java.io.IOException;
 
 /**
  * @author Lang
  */
-public class BladeDeserializer extends JsonDeserializer<Blade> { // NOPMD
+public class BladeDeserializer extends JsonDeserializer<Uson> { // NOPMD
     /**
      *
      */
     @Override
-    public Blade deserialize(final JsonParser parser,
-                             final DeserializationContext context)
+    public Uson deserialize(final JsonParser parser,
+                            final DeserializationContext context)
             throws IOException {
         final JsonNode node = parser.getCodec().readTree(parser);
-        return Blade.create(new JsonObject(node.toString()));
+        return Uson.create(new JsonObject(node.toString()));
     }
 }

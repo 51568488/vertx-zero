@@ -14,6 +14,7 @@ import java.util.Objects;
 /**
  * Field mapping tool to process JsonObject or JsonArray
  */
+@Deprecated
 public class Vertical {
     /**
      * Default support recursion

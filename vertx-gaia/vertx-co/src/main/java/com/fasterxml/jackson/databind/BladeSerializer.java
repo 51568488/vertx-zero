@@ -1,16 +1,16 @@
 package com.fasterxml.jackson.databind;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import io.vertx.up.aiki.Blade;
+import io.vertx.up.aiki.Uson;
 
 import java.io.IOException;
 
 /**
  * @author Lang
  */
-public class BladeSerializer extends JsonSerializer<Blade> {
+public class BladeSerializer extends JsonSerializer<Uson> {
     @Override
-    public void serialize(final Blade blade,
+    public void serialize(final Uson blade,
                           final JsonGenerator jgen,
                           final SerializerProvider provider) throws IOException {
         jgen.writeObject(blade.to().getMap());

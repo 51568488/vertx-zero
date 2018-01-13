@@ -6,6 +6,8 @@ import io.vertx.up.atom.Envelop;
 /**
  * Income for request definition
  */
+
+@Deprecated
 public interface Imitate<T> {
     /**
      * @param message

@@ -60,6 +60,11 @@
             <artifactId>jooq</artifactId>
             <version>${jooq.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-aspects</artifactId>
+            <version>${jcabi.version}</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

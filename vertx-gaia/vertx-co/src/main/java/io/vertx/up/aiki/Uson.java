@@ -16,6 +16,10 @@ public class Uson {
 
     private final transient JsonObject objectReference;
 
+    public static Uson create(final String field, final Object value) {
+        return new Uson(new JsonObject().put(field, value));
+    }
+
     public static Uson create(final JsonObject item) {
         return new Uson(item);
     }

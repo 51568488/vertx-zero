@@ -1,6 +1,8 @@
 package io.vertx.up.aiki;
 
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -68,6 +70,14 @@ public final class Ux {
         return To.toError(clazz, args);
     }
 
+    // -> WebException transfer
+    public static WebException toError(
+            final Class<?> clazz,
+            final Throwable error
+    ) {
+        return To.toError(clazz, error);
+    }
+
     // ---------------------- JsonArray Returned --------------------------
     // -> List<T> -> JsonArray
     public static <T> JsonArray toArray(final List<T> list) {
@@ -126,6 +136,15 @@ public final class Ux {
         return To.toUnique(array, "");
     }
 
+    // ---------------------- Web Flow --------------------------------------
+    public static <T> Handler<AsyncResult<T>> toHandler(
+            final Class<?> clazz,
+            final Message<Envelop> message
+    ) {
+        return Web.toHandler(clazz, message);
+    }
+
+    // ---------------------- Request Data Extract --------------------------
     // -> Message<Envelop> -> JsonObject ( Interface mode )
     public static JsonObject getJson(final Message<Envelop> message) {
         return In.request(message, 0, JsonObject.class);
@@ -171,6 +190,7 @@ public final class Ux {
         return In.request(message, index, Long.class);
     }
 
+    // ---------------------- Future --------------------------
     // -> CompletableFuture<T> -> Future<JsonObject> ( Async )
     public static <T> Future<JsonObject> thenJson(final CompletableFuture<T> future) {
         return Async.toJsonFuture("", future);
@@ -260,13 +280,17 @@ public final class Ux {
     }
 
     // -> IfElse true -> Future<T>, false -> Future<F>
-    public static <T, F, R> Future<R> thenOtherwise(final Future<Boolean> condition, final Future<T> trueFuture, final Function<T, R> trueFun, final Future<F> falseFuture, final Function<F, R> falseFun) {
+    public static <T, F, R> Future<R> thenOtherwise(final Future<Boolean> condition, final Supplier<Future<T>> trueFuture, final Function<T, R> trueFun, final Supplier<Future<F>> falseFuture, final Function<F, R> falseFun) {
         return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, falseFuture, falseFun);
     }
 
     // -> IfOr true -> Future<T>, false -> Future<R>
-    public static <T, R> Future<R> thenError(final Future<Boolean> condition, final Future<T> trueFuture, final Function<T, R> trueFun, final Class<? extends WebException> clazz, final Object... args) {
-        final WebException error = To.toError(clazz, args);
-        return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, error);
+    public static <T, R> Future<R> thenError(final Future<Boolean> condition, final Supplier<Future<T>> trueFuture, final Function<T, R> trueFun, final Class<? extends WebException> clazz, final Object... args) {
+        return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, clazz, args);
+    }
+
+    // -> IfOr true -> Future<JsonObject>, false -> Future<JsonObject>
+    public static Future<JsonObject> thenError(final Future<Boolean> condition, final Supplier<Future<JsonObject>> trueFuture, final Class<? extends WebException> clazz, final Object... args) {
+        return Fluctuate.thenOtherwise(condition, trueFuture, item -> item, clazz, args);
     }
 }

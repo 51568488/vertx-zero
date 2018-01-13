@@ -6,6 +6,7 @@ import io.vertx.up.tool.StringUtil;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +37,21 @@ class Self {
                 .filter(StringUtil::notNil)
                 .map(result::remove)
                 .subscribe();
+        return result;
+    }
+
+    static JsonObject convert(
+            final JsonObject entity,
+            final ConcurrentMap<String, String> mapping,
+            final boolean immutable
+    ) {
+        final JsonObject result = immutable ? entity.copy() : entity;
+        for (final String from : mapping.keySet()) {
+            if (result.containsKey(from)) {
+                final String to = mapping.get(from);
+                result.put(to, result.getValue(from));
+            }
+        }
         return result;
     }
 }

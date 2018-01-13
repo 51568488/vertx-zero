@@ -3,6 +3,8 @@ package io.vertx.up.aiki;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Stream for JsonObject
  */
@@ -25,6 +27,13 @@ public class Uson {
 
     public Uson append(final JsonArray array) {
         Dual.append(this.objectReference, array);
+        return this;
+    }
+
+    public Uson convert(final String from, final String to) {
+        Self.convert(this.objectReference, new ConcurrentHashMap<String, String>() {{
+            this.put(from, to);
+        }}, false);
         return this;
     }
 

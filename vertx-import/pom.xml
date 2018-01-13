@@ -19,6 +19,7 @@
         <jooq.version>3.10.3</jooq.version>
         <hazelcast.version>3.9.2</hazelcast.version>
         <maven.javadoc.skip>true</maven.javadoc.skip>
+        <aspectj.version>1.8.13</aspectj.version>
     </properties>
     <dependencies>
         <dependency>
@@ -36,14 +37,17 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.vertxup</groupId>

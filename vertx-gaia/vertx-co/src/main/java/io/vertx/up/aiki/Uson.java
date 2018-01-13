@@ -2,6 +2,8 @@ package io.vertx.up.aiki;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.up.func.Fn;
+import io.vertx.up.log.Annal;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,14 +12,17 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Uson {
 
-    private transient JsonObject objectReference = new JsonObject();
+    private static final Annal LOGGER = Annal.get(Uson.class);
+
+    private final transient JsonObject objectReference;
 
     public static Uson create(final JsonObject item) {
         return new Uson(item);
     }
 
     private Uson(final JsonObject json) {
-        this.objectReference = json;
+        this.objectReference = Fn.get(new JsonObject(), () -> json, json);
+        LOGGER.info(Info.STREAM_START, String.valueOf(this.hashCode()), json);
     }
 
     public Uson append(final JsonObject object) {
@@ -48,6 +53,7 @@ public class Uson {
     }
 
     public JsonObject to() {
+        LOGGER.info(Info.STREAM_END, String.valueOf(this.hashCode()), this.objectReference);
         return this.objectReference;
     }
 

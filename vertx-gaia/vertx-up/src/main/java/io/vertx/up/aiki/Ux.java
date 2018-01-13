@@ -142,8 +142,13 @@ public final class Ux {
     }
 
     // -> Message<Envelop> -> T ( Agent mode )
-    public static <T> T getT(final Message<Envelop> message, final Class<T> clazz) {
+    public static <T> T getBodyT(final Message<Envelop> message, final Class<T> clazz) {
         return In.request(message, clazz);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static <T> T getJsonT(final Message<Envelop> message, final Class<T> clazz) {
+        return In.request(message, 0, clazz);
     }
 
     // -> Message<Envelop> -> String ( Security )
@@ -254,5 +259,14 @@ public final class Ux {
         return Fluctuate.thenComposite(mergeFun, source, functions);
     }
 
+    // -> IfElse true -> Future<T>, false -> Future<F>
+    public static <T, F, R> Future<R> thenOtherwise(final Future<Boolean> condition, final Future<T> trueFuture, final Function<T, R> trueFun, final Future<F> falseFuture, final Function<F, R> falseFun) {
+        return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, falseFuture, falseFun);
+    }
 
+    // -> IfOr true -> Future<T>, false -> Future<R>
+    public static <T, R> Future<R> thenError(final Future<Boolean> condition, final Future<T> trueFuture, final Function<T, R> trueFun, final Class<? extends WebException> clazz, final Object... args) {
+        final WebException error = To.toError(clazz, args);
+        return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, error);
+    }
 }

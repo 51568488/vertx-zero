@@ -23,4 +23,11 @@ class In {
         return Fn.getSemi(null == body, null, Fn::nil,
                 () -> body.data(index, clazz));
     }
+
+    static <T> String requestUser(
+            final Message<Envelop> message,
+            final String field
+    ) {
+        return message.body().identifier(field);
+    }
 }

@@ -15,13 +15,14 @@ public abstract class JsonSaber extends BaseSaber {
     public Object from(final Class<?> paramType,
                        final String literal) {
         return Fn.get(() ->
-                        Fn.getSemi(isValid(paramType), getLogger(),
+                        Fn.getSemi(this.isValid(paramType), this.getLogger(),
                                 () -> {
                                     try {
-                                        return getFun().apply(literal);
+                                        return this.getFun().apply(literal);
                                     } catch (final DecodeException ex) {
-                                        getLogger().jvm(ex);
-                                        throw new _400ParameterFromStringException(getClass(), paramType, literal);
+                                        // Do not do anything
+                                        // getLogger().jvm(ex);
+                                        throw new _400ParameterFromStringException(this.getClass(), paramType, literal);
                                     }
                                 }, Fn::nil),
                 paramType, literal);

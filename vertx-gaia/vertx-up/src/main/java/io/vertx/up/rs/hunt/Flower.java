@@ -48,9 +48,9 @@ class Flower {
         }
     }
 
-    private static void replyError(final RoutingContext context,
-                                   final WebException error,
-                                   final Event event) {
+    static void replyError(final RoutingContext context,
+                           final WebException error,
+                           final Event event) {
         final Envelop envelop = Envelop.failure(error);
         Answer.reply(context, envelop, event);
     }

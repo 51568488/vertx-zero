@@ -87,8 +87,22 @@ class To {
             final Class<? extends WebException> clazz,
             final Object... args
     ) {
-        return Fn.get(new _500InternalServerException(To.class, "clazz arg is null"),
-                () -> Instance.instance(clazz, args), clazz);
+        if (null == clazz || null == args) {
+            // Fix Cast WebException error.
+            return new _500InternalServerException(To.class, "clazz arg is null");
+        } else {
+            return Instance.instance(clazz, args);
+        }
+    }
+
+    @SuppressWarnings("all")
+    static WebException toError(
+            final Class<?> clazz,
+            final Throwable error
+    ) {
+        return Fn.getSemi(error instanceof WebException, null,
+                () -> (WebException) error,
+                () -> new _500InternalServerException(clazz, error.getMessage()));
     }
 
     static Envelop toEnvelop(

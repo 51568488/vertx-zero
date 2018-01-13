@@ -108,6 +108,8 @@
         <jsr305.version>3.0.2</jsr305.version>
         <!-- Testing -->
         <junit.version>4.12</junit.version>
+        <!-- AspectJ -->
+        <aspectj.version>1.8.13</aspectj.version>
         <!-- Logging -->
         <log4j2.version>2.10.0</log4j2.version>
         <log4j.version>1.2.17</log4j.version>
@@ -178,6 +180,22 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-tcnative</artifactId>
                 <version>${netty.tcnative.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjtools</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/io.github.jklingsporn/vertx-jooq-async-future -->
             <dependency>

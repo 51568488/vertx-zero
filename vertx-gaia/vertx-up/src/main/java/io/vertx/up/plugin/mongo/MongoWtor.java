@@ -23,6 +23,7 @@ import java.util.function.Function;
  * Tool for mongodb, simply the writing with MongoClient
  * Write thread executor -> Wtor
  */
+@Deprecated
 public class MongoWtor {
 
     private static final Annal LOGGER = Annal.get(MongoWtor.class);
@@ -41,7 +42,7 @@ public class MongoWtor {
     private MongoWtor(final MongoClient client) {
         // Invalid constructor
         Fn.flingUp(null == client, LOGGER,
-                XtorConnectException.class, getClass(),
+                XtorConnectException.class, this.getClass(),
                 "client = " + client, "constructor(MongoClient)");
         this.client = client;
     }
@@ -50,7 +51,7 @@ public class MongoWtor {
     public MongoWtor connect(final Class<?> clazz) {
         // Invalid connect
         Fn.flingUp(null == clazz, LOGGER,
-                XtorConnectException.class, getClass(),
+                XtorConnectException.class, this.getClass(),
                 "hitted = " + clazz, "connect(Class)");
         this.hitted = clazz;
         this.logger = (null == clazz) ? Annal.get(MongoWtor.class) : Annal.get(clazz);
@@ -61,7 +62,7 @@ public class MongoWtor {
     public MongoWtor connect(final String collection) {
         // Invalid connect
         Fn.flingUp(StringUtil.isNil(collection), LOGGER,
-                XtorConnectException.class, getClass(),
+                XtorConnectException.class, this.getClass(),
                 "collection = " + collection, "connect(String)");
         this.collection = collection;
         return this;
@@ -150,7 +151,7 @@ public class MongoWtor {
                         } else {
                             Fn.flingUp(true, LOGGER,
                                     XtorExecuteException.class,
-                                    getClass(), cause(res.cause()));
+                                    this.getClass(), this.cause(res.cause()));
                         }
                         counter.countDown();
                     });
@@ -187,7 +188,7 @@ public class MongoWtor {
                                     } else {
                                         Fn.flingUp(true, LOGGER,
                                                 XtorExecuteException.class,
-                                                getClass(), cause(res.cause()));
+                                                this.getClass(), this.cause(res.cause()));
                                     }
                                     counter.countDown();
                                 });
@@ -198,7 +199,7 @@ public class MongoWtor {
                         } else {
                             Fn.flingUp(true, LOGGER,
                                     XtorExecuteException.class,
-                                    getClass(), cause(res.cause()));
+                                    this.getClass(), this.cause(res.cause()));
                             counter.countDown();
                         }
                     });
@@ -215,7 +216,7 @@ public class MongoWtor {
     private void ensure() {
         Fn.flingUp(null == this.client || null == this.collection ||
                         null == this.hitted || null == this.logger, LOGGER,
-                XtorNotReadyException.class, getClass());
+                XtorNotReadyException.class, this.getClass());
     }
 
     private JsonObject execute(
@@ -226,10 +227,10 @@ public class MongoWtor {
         final ConcurrentMap<String, BiFunction<Object, Object, Object>> funcMap =
                 new ConcurrentHashMap<String, BiFunction<Object, Object, Object>>() {
                     {
-                        put(field, func);
+                        this.put(field, func);
                     }
                 };
-        return write(condition, new JsonObject(), funcMap);
+        return this.write(condition, new JsonObject(), funcMap);
     }
 
     private BiFunction<Object, Object, Object> increase(final int step) {

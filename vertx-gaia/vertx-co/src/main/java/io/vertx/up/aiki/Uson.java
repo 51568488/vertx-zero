@@ -6,34 +6,34 @@ import io.vertx.core.json.JsonObject;
 /**
  * Stream for JsonObject
  */
-public class Blade {
+public class Uson {
 
     private transient JsonObject objectReference = new JsonObject();
 
-    public static Blade create(final JsonObject item) {
-        return new Blade(item);
+    public static Uson create(final JsonObject item) {
+        return new Uson(item);
     }
 
-    private Blade(final JsonObject json) {
+    private Uson(final JsonObject json) {
         this.objectReference = json;
     }
 
-    public Blade append(final JsonObject object) {
+    public Uson append(final JsonObject object) {
         Dual.append(this.objectReference, object, false);
         return this;
     }
 
-    public Blade append(final JsonArray array) {
+    public Uson append(final JsonArray array) {
         Dual.append(this.objectReference, array);
         return this;
     }
 
-    public Blade remove(final String... keys) {
+    public Uson remove(final String... keys) {
         Self.remove(this.objectReference, false, keys);
         return this;
     }
 
-    public Blade denull() {
+    public Uson denull() {
         Self.deNull(this.objectReference, false);
         return this;
     }

@@ -9,7 +9,7 @@ import io.reactivex.Observable;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.up.aiki.Blade;
+import io.vertx.up.aiki.Uson;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Types;
@@ -52,8 +52,8 @@ public final class Jackson {
         module.addSerializer(Instant.class, new InstantSerializer());
         module.addSerializer(byte[].class, new ByteArraySerializer());
         // Zero Extension
-        module.addSerializer(Blade.class, new BladeSerializer());
-        module.addDeserializer(Blade.class, new BladeDeserializer());
+        module.addSerializer(Uson.class, new BladeSerializer());
+        module.addDeserializer(Uson.class, new BladeDeserializer());
 
         Jackson.MAPPER.registerModule(module);
         Jackson.MAPPER.findAndRegisterModules();

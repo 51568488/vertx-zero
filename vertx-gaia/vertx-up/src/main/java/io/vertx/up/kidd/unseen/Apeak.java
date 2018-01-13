@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 /**
  * Configuration to store the mapping
  */
+@Deprecated
 public class Apeak implements Iterable<Map.Entry<String, String>> {
 
     private static final Annal LOGGER = Annal.get(Apeak.class);

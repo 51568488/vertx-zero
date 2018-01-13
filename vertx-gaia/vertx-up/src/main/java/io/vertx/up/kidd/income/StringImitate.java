@@ -3,13 +3,14 @@ package io.vertx.up.kidd.income;
 import io.vertx.core.eventbus.Message;
 import io.vertx.up.atom.Envelop;
 
+@Deprecated
 public class StringImitate extends BaseImitate<String> {
 
     @Override
     public String request(
             final Message<Envelop> message
     ) {
-        return request(message, String.class);
+        return this.request(message, String.class);
     }
 
     @Override
@@ -17,6 +18,6 @@ public class StringImitate extends BaseImitate<String> {
             final Message<Envelop> message,
             final int index
     ) {
-        return request(message, index, String.class);
+        return this.request(message, index, String.class);
     }
 }

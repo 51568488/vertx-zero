@@ -3,6 +3,7 @@ package io.vertx.up.aiki;
 import io.reactivex.Observable;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
+import io.vertx.up.exception.WebException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,5 +54,41 @@ class Fluctuate {
             });
             return result;
         });
+    }
+
+    static <T, F, R> Future<R> thenOtherwise(
+            final Future<Boolean> conditionFuture,
+            final Future<T> trueFuture, final Function<T, R> trueFun,
+            final Future<F> falseFuture, final Function<F, R> falseFun
+    ) {
+        final Future<R> future = Future.future();
+        conditionFuture.setHandler(handler -> {
+            if (handler.succeeded() && handler.result()) {
+                // Success & Boolean
+                trueFuture.setHandler(trueRes -> future.complete(trueFun.apply(trueRes.result())));
+            } else {
+                // Failed & Boolean = false;
+                falseFuture.setHandler(falseRes -> future.complete(falseFun.apply(falseRes.result())));
+            }
+        });
+        return future;
+    }
+
+    static <T, R> Future<R> thenOtherwise(
+            final Future<Boolean> conditionFuture,
+            final Future<T> trueFuture, final Function<T, R> trueFun,
+            final WebException error
+    ) {
+        final Future<R> future = Future.future();
+        conditionFuture.setHandler(handler -> {
+            if (handler.succeeded() && handler.result()) {
+                // Success & Boolean
+                trueFuture.setHandler(trueRes -> future.complete(trueFun.apply(trueRes.result())));
+            } else {
+                // Failed & Boolean = false;
+                future.fail(error);
+            }
+        });
+        return future;
     }
 }

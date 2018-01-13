@@ -14,7 +14,7 @@ public class BladeTc {
     @Test
     public void testBlade() {
         final JsonObject data = new JsonObject().put("email", "lang.yu@hpe.com");
-        final Blade blade = Jackson.deserialize(data, Blade.class);
+        final Uson blade = Jackson.deserialize(data, Uson.class);
         System.out.println(blade);
     }
 

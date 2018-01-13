@@ -27,6 +27,7 @@ import java.util.function.Function;
  * Tool for mongodb, simply the query with MongoClient
  * Read thread executor -> Rtor
  */
+@Deprecated
 public class MongoRtor {
 
     private static final Annal LOGGER = Annal.get(MongoRtor.class);
@@ -48,7 +49,7 @@ public class MongoRtor {
     private MongoRtor(final MongoClient client) {
         // Invalid constructor
         Fn.flingUp(null == client, LOGGER,
-                XtorConnectException.class, getClass(),
+                XtorConnectException.class, this.getClass(),
                 "client = " + client, "constructor(MongoClient)");
         this.client = client;
     }
@@ -57,7 +58,7 @@ public class MongoRtor {
     public MongoRtor connect(final Class<?> clazz) {
         // Invalid connect
         Fn.flingUp(null == clazz, LOGGER,
-                XtorConnectException.class, getClass(),
+                XtorConnectException.class, this.getClass(),
                 "hitted = " + clazz, "connect(Class)");
         this.hitted = clazz;
         this.logger = (null == clazz) ? Annal.get(MongoWtor.class) : Annal.get(clazz);
@@ -68,7 +69,7 @@ public class MongoRtor {
     public MongoRtor connect(final String collection) {
         // Invalid connect
         Fn.flingUp(StringUtil.isNil(collection), LOGGER,
-                XtorConnectException.class, getClass(),
+                XtorConnectException.class, this.getClass(),
                 "collection = " + collection, "connect(String)");
         this.collection = collection;
         return this;
@@ -111,7 +112,7 @@ public class MongoRtor {
                            final String refKey,
                            final String verticalKey,
                            final String mountField) {
-        return read(dataObject, refKey, verticalKey, mountField, true);
+        return this.read(dataObject, refKey, verticalKey, mountField, true);
     }
 
     /**
@@ -179,7 +180,7 @@ public class MongoRtor {
                     } else {
                         Fn.flingUp(true, LOGGER,
                                 XtorExecuteException.class,
-                                getClass(), cause(res.cause()));
+                                this.getClass(), this.cause(res.cause()));
                     }
                     counter.countDown();
                 });
@@ -209,7 +210,7 @@ public class MongoRtor {
             final String verticalKey,
             final String mountField
     ) {
-        return read(dataArray, refKey, verticalKey, mountField, false);
+        return this.read(dataArray, refKey, verticalKey, mountField, false);
     }
 
     /**
@@ -264,7 +265,7 @@ public class MongoRtor {
                         } else {
                             Fn.flingUp(true, LOGGER,
                                     XtorExecuteException.class,
-                                    getClass(), cause(res.cause()));
+                                    this.getClass(), this.cause(res.cause()));
                         }
                         counter.countDown();
                     });
@@ -288,6 +289,6 @@ public class MongoRtor {
     private void ensure() {
         Fn.flingUp(null == this.client || null == this.collection ||
                         null == this.hitted || null == this.logger, LOGGER,
-                XtorNotReadyException.class, getClass());
+                XtorNotReadyException.class, this.getClass());
     }
 }

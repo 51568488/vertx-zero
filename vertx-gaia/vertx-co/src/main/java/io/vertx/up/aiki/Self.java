@@ -50,6 +50,8 @@ class Self {
             if (result.containsKey(from)) {
                 final String to = mapping.get(from);
                 result.put(to, result.getValue(from));
+                // Remove before key
+                result.remove(from);
             }
         }
         return result;

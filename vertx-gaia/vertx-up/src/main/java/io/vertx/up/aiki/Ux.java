@@ -137,11 +137,12 @@ public final class Ux {
     }
 
     // ---------------------- Web Flow --------------------------------------
-    public static <T> Handler<AsyncResult<T>> toHandler(
-            final Class<?> clazz,
-            final Message<Envelop> message
-    ) {
-        return Web.toHandler(clazz, message);
+    public static <T> Handler<AsyncResult<T>> toHandler(final Message<Envelop> message) {
+        return Web.toHandler(message);
+    }
+
+    public static <T> Handler<AsyncResult<Boolean>> toHandler(final Message<Envelop> message, final JsonObject data) {
+        return Web.toHandler(message, data);
     }
 
     // ---------------------- Request Data Extract --------------------------
@@ -299,8 +300,29 @@ public final class Ux {
         return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, null);
     }
 
-    // -> If future success, Future<R> will be build by the first result of future.
-    public static <T, R> Future<R> thenTrue(final Future<T> future, final Function<T, Future<R>> next) {
-        return Fluctuate.thenOtherwise(future, next);
+    // -> Mongo
+    public static class Mongo {
+
+        public static Future<Boolean> missing(final String collection, final JsonObject filter) {
+            return MongoUx.missing(collection, filter);
+        }
+
+        public static Future<JsonObject> insert(final String collection, final JsonObject data) {
+            return MongoUx.insert(collection, data);
+        }
+
+        public static Future<JsonObject> findOne(final String collection, final JsonObject filter) {
+            return MongoUx.findOne(collection, filter);
+        }
+
+        public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
+                                                           final String field, final Object value) {
+            return MongoUx.findOneAndReplace(collection, filter, new JsonObject().put(field, value));
+        }
+
+        public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
+                                                           final JsonObject data) {
+            return MongoUx.findOneAndReplace(collection, filter, data);
+        }
     }
 }

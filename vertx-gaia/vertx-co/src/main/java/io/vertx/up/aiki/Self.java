@@ -1,6 +1,7 @@
 package io.vertx.up.aiki;
 
 import io.reactivex.Observable;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.tool.StringUtil;
 
@@ -49,11 +50,39 @@ class Self {
         for (final String from : mapping.keySet()) {
             if (result.containsKey(from)) {
                 final String to = mapping.get(from);
-                result.put(to, result.getValue(from));
+                // JsonArray loop
+                final Object value = result.getValue(from);
+                if (null == value) {
+                    // null
+                    result.put(to, value);
+                } else {
+                    if (JsonArray.class == value.getClass()) {
+                        // JsonArray
+                        result.put(to, convert((JsonArray) value, mapping, false));
+                    } else if (JsonObject.class == value.getClass()) {
+                        // JsonObject
+                        result.put(to, convert((JsonObject) value, mapping, false));
+                    } else {
+                        // Other Data
+                        result.put(to, value);
+                    }
+                }
                 // Remove before key
                 result.remove(from);
             }
         }
+        return result;
+    }
+
+    static JsonArray convert(
+            final JsonArray array,
+            final ConcurrentMap<String, String> mapping,
+            final boolean immutable
+    ) {
+        final JsonArray result = immutable ? array.copy() : array;
+        Observable.fromIterable(result)
+                .map(item -> (JsonObject) item)
+                .subscribe(item -> convert(item, mapping, false));
         return result;
     }
 }

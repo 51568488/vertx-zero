@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ClassDeserializer;
 import com.fasterxml.jackson.databind.ClassSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.quiz.ZeroBase;
 import io.vertx.up.tool.Jackson;
@@ -32,6 +33,16 @@ public class BladeTc extends ZeroBase {
         final JsonObject data = IO.getJObject(this.getFile("Uson.json"));
         final JsonObject result = Uson.create(data).convert("_id", "key").to();
         System.out.println(result.encodePrettily());
+    }
+
+    @Test
+    public void testArray() {
+        final JsonArray target = IO.getJArray(this.getFile("From.json"));
+        final JsonArray source = IO.getJArray(this.getFile("To.json"));
+        final JsonArray zip = Dual.zip(target, source, "name", "name1");
+        System.out.println(zip);
+        final JsonArray arr = Uarr.create(target).zip(source, "name", "name1").to();
+        System.out.println(arr);
     }
 }
 

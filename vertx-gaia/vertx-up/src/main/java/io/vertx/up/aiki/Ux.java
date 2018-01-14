@@ -314,6 +314,14 @@ public final class Ux {
     // -> Mongo
     public static class Mongo {
 
+        public static JsonObject termIn(final JsonObject filter, final String field, final JsonArray values) {
+            return MongoUx.termIn(filter, field, values);
+        }
+
+        public static JsonObject termLike(final JsonObject filter, final String field, final String value) {
+            return MongoUx.termLike(filter, field, value);
+        }
+
         public static Future<Boolean> missing(final String collection, final JsonObject filter) {
             return MongoUx.missing(collection, filter);
         }
@@ -347,6 +355,10 @@ public final class Ux {
         public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter,
                                                         final FindOptions options) {
             return MongoUx.findWithOptions(collection, filter, options);
+        }
+
+        public static Future<JsonArray> find(final String collection, final JsonObject filter) {
+            return MongoUx.findWithOptions(collection, filter, new FindOptions());
         }
     }
 }

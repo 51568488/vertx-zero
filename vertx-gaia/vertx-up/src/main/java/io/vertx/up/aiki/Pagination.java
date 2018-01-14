@@ -1,5 +1,6 @@
 package io.vertx.up.aiki;
 
+import io.vertx.core.json.JsonObject;
 import io.vertx.up.atom.query.Pager;
 import io.vertx.up.atom.query.Sorter;
 
@@ -9,6 +10,12 @@ class Pagination {
             final int page,
             final int size) {
         return Pager.create(page, size);
+    }
+
+    static Pager toPager(
+            final JsonObject data
+    ) {
+        return Pager.create(data);
     }
 
     static Sorter toSorter(

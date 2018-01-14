@@ -48,7 +48,7 @@
         </dependency>
         <dependency>
             <groupId>cn.vertxup</groupId>
-            <artifactId>vertx-up</artifactId>
+            <artifactId>vertx-rx</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

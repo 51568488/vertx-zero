@@ -102,4 +102,12 @@ class Fluctuate {
         });
         return future;
     }
+
+    static <T> Future<T> thenError(
+            final Class<? extends WebException> clazz,
+            final Object... args
+    ) {
+        final WebException error = To.toError(clazz, args);
+        return Future.failedFuture(error);
+    }
 }

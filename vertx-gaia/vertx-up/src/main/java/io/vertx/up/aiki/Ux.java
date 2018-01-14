@@ -295,6 +295,11 @@ public final class Ux {
         return Fluctuate.thenOtherwise(condition, trueFuture, item -> item, clazz, args);
     }
 
+    // -> To error directly
+    public static <T> Future<T> thenError(final Class<? extends WebException> clazz, final Object... args) {
+        return Fluctuate.thenError(clazz, args);
+    }
+
     // -> If only true -> Future<T>
     public static <T, R> Future<R> thenTrue(final Future<Boolean> condition, final Supplier<Future<T>> trueFuture, final Function<T, R> trueFun) {
         return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, null);
@@ -305,6 +310,10 @@ public final class Ux {
 
         public static Future<Boolean> missing(final String collection, final JsonObject filter) {
             return MongoUx.missing(collection, filter);
+        }
+
+        public static Future<Boolean> existing(final String collection, final JsonObject filter) {
+            return MongoUx.existing(collection, filter);
         }
 
         public static Future<JsonObject> insert(final String collection, final JsonObject data) {
@@ -323,6 +332,10 @@ public final class Ux {
         public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                            final JsonObject data) {
             return MongoUx.findOneAndReplace(collection, filter, data);
+        }
+
+        public static Future<Long> removeDocument(final String collection, final JsonObject filter) {
+            return MongoUx.removeDocument(collection, filter);
         }
     }
 }

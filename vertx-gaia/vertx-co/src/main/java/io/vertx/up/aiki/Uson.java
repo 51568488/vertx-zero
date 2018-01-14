@@ -4,6 +4,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
+import io.vertx.up.tool.mirror.Types;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -48,6 +49,15 @@ public class Uson {
         Self.convert(this.objectReference, new ConcurrentHashMap<String, String>() {{
             this.put(from, to);
         }}, false);
+        return this;
+    }
+
+    public Uson plus(final String from, final Integer seed) {
+        final Object value = this.objectReference.getValue(from);
+        if (null != value && Types.isInteger(value)) {
+            final Integer old = this.objectReference.getInteger(from);
+            this.objectReference.put(from, old + seed);
+        }
         return this;
     }
 

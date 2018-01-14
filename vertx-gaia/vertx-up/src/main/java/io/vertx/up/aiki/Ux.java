@@ -298,4 +298,9 @@ public final class Ux {
     public static <T, R> Future<R> thenTrue(final Future<Boolean> condition, final Supplier<Future<T>> trueFuture, final Function<T, R> trueFun) {
         return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, null);
     }
+
+    // -> If future success, Future<R> will be build by the first result of future.
+    public static <T, R> Future<R> thenTrue(final Future<T> future, final Function<T, Future<R>> next) {
+        return Fluctuate.thenOtherwise(future, next);
+    }
 }

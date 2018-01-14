@@ -103,4 +103,20 @@ class Fluctuate {
         return future;
     }
 
+    static <T, R> Future<R> thenOtherwise(
+            final Future<T> firstFuture,
+            final Function<T, Future<R>> secondSupplier
+    ) {
+        final Future<R> future = Future.future();
+        firstFuture.setHandler(handler -> {
+            if (handler.succeeded()) {
+                // Second
+                final Future<R> secondFuture = secondSupplier.apply(handler.result());
+                secondFuture.setHandler(secondRes -> future.complete(secondFuture.result()));
+            } else {
+                future.complete();
+            }
+        });
+        return future;
+    }
 }

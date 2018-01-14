@@ -48,27 +48,29 @@ class Self {
     ) {
         final JsonObject result = immutable ? entity.copy() : entity;
         for (final String from : mapping.keySet()) {
-            if (result.containsKey(from)) {
-                final String to = mapping.get(from);
-                // JsonArray loop
-                final Object value = result.getValue(from);
-                if (null == value) {
-                    // null
+            // JsonArray loop
+            final Object value = result.getValue(from);
+            final String to = mapping.get(from);
+            if (null == value) {
+                // null pointer
+                if (result.containsKey(from)) {
                     result.put(to, value);
+                    result.remove(from);
+                }
+            } else {
+                if (JsonArray.class == value.getClass()) {
+                    // JsonArray
+                    result.put(from, convert((JsonArray) value, mapping, false));
+                } else if (JsonObject.class == value.getClass()) {
+                    // JsonObject
+                    result.put(from, convert((JsonObject) value, mapping, false));
                 } else {
-                    if (JsonArray.class == value.getClass()) {
-                        // JsonArray
-                        result.put(to, convert((JsonArray) value, mapping, false));
-                    } else if (JsonObject.class == value.getClass()) {
-                        // JsonObject
-                        result.put(to, convert((JsonObject) value, mapping, false));
-                    } else {
-                        // Other Data
+                    // Other Data
+                    if (result.containsKey(from)) {
                         result.put(to, value);
+                        result.remove(from);
                     }
                 }
-                // Remove before key
-                result.remove(from);
             }
         }
         return result;

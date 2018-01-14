@@ -31,6 +31,22 @@ class MongoUx {
         }));
     }
 
+    static JsonObject termIn(final JsonObject filter, final String field, final JsonArray values) {
+        final JsonObject terms = new JsonObject();
+        if (null != filter) {
+            terms.mergeIn(filter);
+        }
+        return terms.put(field, new JsonObject().put("$in", values));
+    }
+
+    static JsonObject termLike(final JsonObject filter, final String field, final String value) {
+        final JsonObject terms = new JsonObject();
+        if (null != filter) {
+            terms.mergeIn(filter);
+        }
+        return terms.put(field, new JsonObject().put("$regex", ".*" + value + ".*"));
+    }
+
     static Future<JsonObject> insert(final String collection, final JsonObject data) {
         return Ux.thenGeneric(future -> CLIENT.insert(collection, data, res -> {
             if (res.succeeded()) {

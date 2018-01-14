@@ -33,6 +33,11 @@ public class Uarr {
         return this;
     }
 
+    public Uarr zip(final JsonArray array, final String fromKey, final String toKey) {
+        Dual.zip(this.arrayReference, array, fromKey, toKey);
+        return this;
+    }
+
     public JsonArray to() {
         LOGGER.info(Info.STREAM_END, String.valueOf(this.hashCode()), this.arrayReference);
         return this.arrayReference;

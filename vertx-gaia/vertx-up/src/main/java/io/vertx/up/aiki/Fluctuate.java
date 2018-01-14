@@ -14,6 +14,7 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unchecked")
 class Fluctuate {
+
     /**
      * Source ->
      * Target1
@@ -90,10 +91,16 @@ class Fluctuate {
                 trueFuture.setHandler(trueRes -> future.complete(trueFun.apply(trueRes.result())));
             } else {
                 // Failed & Boolean = false;
-                final WebException error = Instance.instance(clazz, args);
-                future.fail(error);
+                if (null == clazz) {
+                    future.complete();
+                } else {
+                    // Error existing
+                    final WebException error = Instance.instance(clazz, args);
+                    future.fail(error);
+                }
             }
         });
         return future;
     }
+
 }

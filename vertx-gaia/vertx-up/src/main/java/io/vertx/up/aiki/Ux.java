@@ -293,4 +293,9 @@ public final class Ux {
     public static Future<JsonObject> thenError(final Future<Boolean> condition, final Supplier<Future<JsonObject>> trueFuture, final Class<? extends WebException> clazz, final Object... args) {
         return Fluctuate.thenOtherwise(condition, trueFuture, item -> item, clazz, args);
     }
+
+    // -> If only true -> Future<T>
+    public static <T, R> Future<R> thenTrue(final Future<Boolean> condition, final Supplier<Future<T>> trueFuture, final Function<T, R> trueFun) {
+        return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, null);
+    }
 }

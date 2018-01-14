@@ -43,7 +43,7 @@ class PathResolver {
     public static String resolve(final Path path, final String root) {
         Fn.flingUp(null == path, LOGGER,
                 PathAnnoEmptyException.class, PathResolver.class);
-        return Fn.getSemi(StringUtil.isNil(root), LOGGER, () -> calculate(path.value()),
+        return Fn.getSemi(StringUtil.isNil(root), LOGGER, () -> calculate(path(path.value())),
                 () -> {
                     final String api = calculate(root);
                     final String contextPath = calculate(path.value());

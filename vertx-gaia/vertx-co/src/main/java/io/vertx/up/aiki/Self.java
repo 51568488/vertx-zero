@@ -47,13 +47,14 @@ class Self {
             final boolean immutable
     ) {
         final JsonObject result = immutable ? entity.copy() : entity;
-        for (final String from : mapping.keySet()) {
+        for (final String from : entity.fieldNames()) {
+            // Find to field
             // JsonArray loop
             final Object value = result.getValue(from);
-            final String to = mapping.get(from);
             if (null == value) {
                 // null pointer
-                if (result.containsKey(from)) {
+                if (mapping.containsKey(from)) {
+                    final String to = mapping.get(from);
                     result.put(to, value);
                     result.remove(from);
                 }
@@ -66,7 +67,8 @@ class Self {
                     result.put(from, convert((JsonObject) value, mapping, false));
                 } else {
                     // Other Data
-                    if (result.containsKey(from)) {
+                    if (mapping.containsKey(from)) {
+                        final String to = mapping.get(from);
                         result.put(to, value);
                         result.remove(from);
                     }

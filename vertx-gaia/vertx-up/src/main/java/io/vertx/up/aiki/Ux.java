@@ -6,6 +6,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.mongo.FindOptions;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.query.Pager;
 import io.vertx.up.atom.query.Sorter;
@@ -336,6 +337,11 @@ public final class Ux {
 
         public static Future<Long> removeDocument(final String collection, final JsonObject filter) {
             return MongoUx.removeDocument(collection, filter);
+        }
+
+        public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter,
+                                                        final FindOptions options) {
+            return MongoUx.findWithOptions(collection, filter, options);
         }
     }
 }

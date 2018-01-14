@@ -1,10 +1,15 @@
 package io.vertx.up.aiki;
 
+import io.reactivex.Observable;
 import io.vertx.core.Future;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.mongo.FindOptions;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.up.log.Annal;
 import io.vertx.up.plugin.mongo.MongoInfix;
+
+import java.util.Objects;
 
 class MongoUx {
 
@@ -58,6 +63,18 @@ class MongoUx {
             final Long removed = res.result().getRemovedCount();
             LOGGER.debug(Info.MSG_DELETE, collection, filter, removed);
             future.complete(removed);
+        }));
+    }
+
+    static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter,
+                                             final FindOptions options) {
+        return Ux.thenGeneric(future -> CLIENT.findWithOptions(collection, filter, options, res -> {
+            final JsonArray result = new JsonArray();
+            Observable.fromIterable(res.result())
+                    .filter(Objects::nonNull)
+                    .subscribe(result::add);
+            LOGGER.debug(Info.MSG_FIND, collection, filter, options.toJson(), result);
+            future.complete(result);
         }));
     }
 }

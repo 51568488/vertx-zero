@@ -37,6 +37,11 @@ public final class Ux {
         return Pagination.toPager(page, size);
     }
 
+    // JsonObject -> Pager
+    public static Pager toPager(final JsonObject data) {
+        return Pagination.toPager(data);
+    }
+
     // field, asc -> Sorter
     public static Sorter toSorter(final String field, final boolean asc) {
         return Pagination.toSorter(field, asc);

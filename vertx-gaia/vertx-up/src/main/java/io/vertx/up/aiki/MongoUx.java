@@ -14,14 +14,14 @@ class MongoUx {
 
     static Future<Boolean> missing(final String collection, final JsonObject filter) {
         return Ux.thenGeneric(future -> CLIENT.findOne(collection, filter, null, res -> {
-            LOGGER.info(Info.MSG_FILTER, collection, filter, res.result());
+            LOGGER.debug(Info.MSG_FILTER, collection, filter, res.result());
             future.complete(null == res.result());
         }));
     }
 
     static Future<Boolean> existing(final String collection, final JsonObject filter) {
         return Ux.thenGeneric(future -> CLIENT.findOne(collection, filter, null, res -> {
-            LOGGER.info(Info.MSG_FILTER, collection, filter, res.result());
+            LOGGER.debug(Info.MSG_FILTER, collection, filter, res.result());
             future.complete(null != res.result());
         }));
     }
@@ -29,10 +29,10 @@ class MongoUx {
     static Future<JsonObject> insert(final String collection, final JsonObject data) {
         return Ux.thenGeneric(future -> CLIENT.insert(collection, data, res -> {
             if (res.succeeded()) {
-                LOGGER.info(Info.MSG_INSERT, collection, data);
+                LOGGER.debug(Info.MSG_INSERT, collection, data);
                 future.complete(data);
             } else {
-                LOGGER.info(Info.MSG_INSERT, collection, null);
+                LOGGER.debug(Info.MSG_INSERT, collection, null);
                 future.complete();
             }
         }));
@@ -40,7 +40,7 @@ class MongoUx {
 
     static Future<JsonObject> findOne(final String collection, final JsonObject filter) {
         return Ux.thenGeneric(future -> CLIENT.findOne(collection, filter, null, res -> {
-            LOGGER.info(Info.MSG_FILTER, collection, filter, res.result());
+            LOGGER.debug(Info.MSG_FILTER, collection, filter, res.result());
             future.complete(res.result());
         }));
     }
@@ -48,7 +48,7 @@ class MongoUx {
     static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                 final JsonObject data) {
         return Ux.thenGeneric(future -> CLIENT.findOneAndReplace(collection, filter, data, result -> {
-            LOGGER.info(Info.MSG_UPDATE, collection, filter, data);
+            LOGGER.debug(Info.MSG_UPDATE, collection, filter, data);
             future.complete(result.result());
         }));
     }
@@ -56,7 +56,7 @@ class MongoUx {
     static Future<Long> removeDocument(final String collection, final JsonObject filter) {
         return Ux.thenGeneric(future -> CLIENT.removeDocument(collection, filter, res -> {
             final Long removed = res.result().getRemovedCount();
-            LOGGER.info(Info.MSG_DELETE, collection, filter, removed);
+            LOGGER.debug(Info.MSG_DELETE, collection, filter, removed);
             future.complete(removed);
         }));
     }

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +40,61 @@ class Self {
                 .filter(StringUtil::notNil)
                 .map(result::remove)
                 .subscribe();
+        return result;
+    }
+
+    static JsonObject copy(
+            final JsonObject entity,
+            final String from,
+            final String to,
+            final boolean immutable
+    ) {
+        final JsonObject result = immutable ? entity.copy() : entity;
+        if (StringUtil.notNil(to) && entity.containsKey(from)) {
+            result.put(to, entity.getValue(from));
+        }
+        return result;
+    }
+
+    static JsonArray copy(
+            final JsonArray array,
+            final String from,
+            final String to,
+            final boolean immutable
+    ) {
+        final JsonArray result = immutable ? array.copy() : array;
+        Observable.fromIterable(result)
+                .map(item -> (JsonObject) item)
+                .subscribe(item -> copy(item, from, to, false));
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    static <I, O> JsonObject convert(
+            final JsonObject entity,
+            final String field,
+            final Function<I, O> function,
+            final boolean immutable
+    ) {
+        final JsonObject result = immutable ? entity.copy() : entity;
+        final Object value = result.getValue(field);
+        if (null != value) {
+            final I input = (I) value;
+            result.put(field, function.apply(input));
+        }
+        return result;
+    }
+
+    static <I, O> JsonArray convert(
+            final JsonArray array,
+            final String field,
+            final Function<I, O> function,
+            final boolean immutable
+    ) {
+        final JsonArray result = immutable ? array.copy() : array;
+        Observable.fromIterable(result)
+                .map(item -> (JsonObject) item)
+                .subscribe(item -> convert(item, field, function, false));
         return result;
     }
 

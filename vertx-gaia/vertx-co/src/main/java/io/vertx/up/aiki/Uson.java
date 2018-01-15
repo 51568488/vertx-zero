@@ -7,6 +7,7 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Types;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * Stream for JsonObject
@@ -58,6 +59,16 @@ public class Uson {
             final Integer old = this.objectReference.getInteger(from);
             this.objectReference.put(from, old + seed);
         }
+        return this;
+    }
+
+    public <I, O> Uson convert(final String field, final Function<I, O> function) {
+        Self.convert(this.objectReference, field, function, false);
+        return this;
+    }
+
+    public Uson copy(final String from, final String to) {
+        Self.copy(this.objectReference, from, to, false);
         return this;
     }
 

@@ -6,6 +6,7 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 public class Uarr {
     private static final Annal LOGGER = Annal.get(Uarr.class);
@@ -30,6 +31,16 @@ public class Uarr {
         Self.convert(this.arrayReference, new ConcurrentHashMap<String, String>() {{
             this.put(from, to);
         }}, false);
+        return this;
+    }
+
+    public <I, O> Uarr convert(final String field, final Function<I, O> function) {
+        Self.convert(this.arrayReference, field, function, false);
+        return this;
+    }
+
+    public Uarr copy(final String from, final String to) {
+        Self.copy(this.arrayReference, from, to, false);
         return this;
     }
 

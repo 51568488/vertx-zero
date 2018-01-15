@@ -16,25 +16,25 @@ public class Period {
 
     private static final List<DateTimeFormatter> DATETIMES = new ArrayList<DateTimeFormatter>() {
         {
-            add(Iso.DATE_TIME);
-            add(Iso.INSTANT);
-            add(Iso.RFC1123_DATE_TIME);
-            add(Iso.COMMON);
-            add(Iso.READBALE);
+            this.add(Iso.DATE_TIME);
+            this.add(Iso.INSTANT);
+            this.add(Iso.RFC1123_DATE_TIME);
+            this.add(Iso.COMMON);
+            this.add(Iso.READBALE);
         }
     };
 
     private static final List<DateTimeFormatter> DATES = new ArrayList<DateTimeFormatter>() {
         {
-            add(Iso.DATE);
-            add(Iso.BASIC_DATE);
-            add(Iso.ORDINAL_DATE);
+            this.add(Iso.DATE);
+            this.add(Iso.BASIC_DATE);
+            this.add(Iso.ORDINAL_DATE);
         }
     };
 
     private static final List<DateTimeFormatter> TIMES = new ArrayList<DateTimeFormatter>() {
         {
-            add(Iso.TIME);
+            this.add(Iso.TIME);
         }
     };
 

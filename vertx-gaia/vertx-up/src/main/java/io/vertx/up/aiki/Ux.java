@@ -291,7 +291,7 @@ public final class Ux {
      * @param mergeFun    Each element: JsonObject + JsonArray -> JsonObject
      * @return JsonArray
      */
-    public static Future<JsonArray> thenScatterJson(final Future<gi> source, final Function<JsonObject, Future<JsonObject>> generateFun, final BiFunction<JsonObject, JsonArray, JsonObject> mergeFun) {
+    public static Future<JsonArray> thenScatterJson(final Future<JsonArray> source, final Function<JsonObject, Future<JsonArray>> generateFun, final BiFunction<JsonObject, JsonArray, JsonObject> mergeFun) {
         return Fluctuate.thenScatterJson(source, generateFun, mergeFun);
     }
 

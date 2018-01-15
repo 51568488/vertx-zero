@@ -15,10 +15,7 @@ import io.vertx.up.exception.WebException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 /**
  * Here Ux is a util interface of uniform to call different tools.
@@ -224,7 +221,6 @@ public final class Ux {
         return Async.toSingle("", future);
     }
 
-
     // -> CompletableFuture<T> -> Future<Envelop> ( Async with pojo )
     public static <T> Future<Envelop> then(final String pojo, final CompletableFuture<T> future) {
         return Async.toSingle(pojo, future);
@@ -261,6 +257,45 @@ public final class Ux {
     }
 
     /**
+     * Parallel generate
+     * Source ->
+     * source1 -> Future<1>
+     * source2 -> Future<2>
+     * For each element merge 1,2 -> 3
+     *
+     * @param source      List<F>
+     * @param generateFun F -> Future<S>
+     * @param mergeFun    Each element: (F,S) -> T
+     * @param <F>         first
+     * @param <S>         second
+     * @param <T>         third
+     * @return List<T>
+     */
+    public static <F, S, T> Future<List<T>> thenParallel(final Future<List<F>> source, final Function<F, Future<S>> generateFun, final BiFunction<F, S, T> mergeFun) {
+        return Fluctuate.thenParallel(source, generateFun, mergeFun);
+    }
+
+    public static Future<JsonArray> thenParallelJson(final Future<JsonArray> source, final Function<JsonObject, Future<JsonObject>> generateFun, final BinaryOperator<JsonObject> operatorFun) {
+        return Fluctuate.thenParallelJson(source, generateFun, operatorFun);
+    }
+
+    /**
+     * Scatter generate
+     * Source ->
+     * source1 -> Future<List<1>>
+     * source2 -> Future<List<2>>
+     * Fore each element mergage 1, List<2> -> 3
+     *
+     * @param source      JsonArray
+     * @param generateFun JsonObject -> Future<JsonArray>
+     * @param mergeFun    Each element: JsonObject + JsonArray -> JsonObject
+     * @return JsonArray
+     */
+    public static Future<JsonArray> thenScatterJson(final Future<gi> source, final Function<JsonObject, Future<JsonObject>> generateFun, final BiFunction<JsonObject, JsonArray, JsonObject> mergeFun) {
+        return Fluctuate.thenScatterJson(source, generateFun, mergeFun);
+    }
+
+    /**
      * Merge multi Future<> to single one, one for all module.
      * source ->
      * supplier1
@@ -277,13 +312,13 @@ public final class Ux {
      * @param <T>       Type of return
      * @return Future<T> for final result.
      */
-    public static <F, S, T> Future<T> thenComposite(final BiFunction<F, List<S>, T> mergeFun, final Future<F> source, final Supplier<Future<S>>... suppliers) {
-        return Fluctuate.thenComposite(mergeFun, source, suppliers);
+    public static <F, S, T> Future<T> thenComposite(final Future<F> source, final BiFunction<F, List<S>, T> mergeFun, final Supplier<Future<S>>... suppliers) {
+        return Fluctuate.thenComposite(source, mergeFun, suppliers);
     }
 
     // -> Merge multi Future<> to single one, one for all module.
-    public static <F, S, T> Future<T> thenComposite(final BiFunction<F, List<S>, T> mergeFun, final Future<F> source, final Function<F, Future<S>>... functions) {
-        return Fluctuate.thenComposite(mergeFun, source, functions);
+    public static <F, S, T> Future<T> thenComposite(final Future<F> source, final BiFunction<F, List<S>, T> mergeFun, final Function<F, Future<S>>... functions) {
+        return Fluctuate.thenComposite(source, mergeFun, functions);
     }
 
     // -> IfElse true -> Future<T>, false -> Future<F>

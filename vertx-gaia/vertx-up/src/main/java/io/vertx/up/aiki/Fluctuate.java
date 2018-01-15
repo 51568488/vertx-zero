@@ -3,17 +3,90 @@ package io.vertx.up.aiki;
 import io.reactivex.Observable;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import io.vertx.up.exception.WebException;
+import io.vertx.up.tool.Statute;
 import io.vertx.up.tool.mirror.Instance;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unchecked")
 class Fluctuate {
+    /**
+     * Source -> List<F> -> List<Future<S>>
+     */
+    static <F, S, T> Future<List<T>> thenParallel(
+            final Future<List<F>> source,
+            final Function<F, Future<S>> generateFun,
+            final BiFunction<F, S, T> mergeFun
+    ) {
+        return source.compose(first -> {
+            final List<Future> secondFutures = new ArrayList<>();
+            Observable.fromIterable(first)
+                    .map(generateFun::apply)
+                    .filter(Objects::nonNull)
+                    .subscribe(secondFutures::add);
+            final Future<List<T>> result = Future.future();
+            CompositeFuture.all(secondFutures).setHandler(res -> {
+                final List<S> secondary = res.result().list();
+                // Zipper Operation, the base list is first.
+                final List<T> completed = Statute.zipper(first, secondary, mergeFun);
+                result.complete(completed);
+            });
+            return result;
+        });
+    }
+
+    static Future<JsonArray> thenScatterJson(
+            final Future<JsonArray> source,
+            final Function<JsonObject, Future<JsonObject>> generateFun,
+            final BiFunction<JsonObject, JsonArray, JsonObject> mergeFun
+    ) {
+        return source.compose(first -> {
+            final List secondFutures = new ArrayList<>();
+            Observable.fromIterable(first)
+                    .map(item -> (JsonObject) item)
+                    .map(generateFun::apply)
+                    .subscribe(secondFutures::add);
+            final Future<JsonArray> result = Future.future();
+            CompositeFuture.all(secondFutures).setHandler(res -> {
+                final List<JsonArray> secondary = res.result().list();
+                // Zipper Operation, the base list is first
+                final List<JsonObject> completed = Statute.zipper(first.getList(), secondary, mergeFun);
+                result.complete(new JsonArray(completed));
+            });
+            return result;
+        });
+    }
+
+    static Future<JsonArray> thenParallelJson(
+            final Future<JsonArray> source,
+            final Function<JsonObject, Future<JsonObject>> generateFun,
+            final BinaryOperator<JsonObject> operatorFun
+    ) {
+        return source.compose(first -> {
+            final List secondFutures = new ArrayList<>();
+            Observable.fromIterable(first)
+                    .map(item -> (JsonObject) item)
+                    .map(generateFun::apply)
+                    .subscribe(secondFutures::add);
+            final Future<JsonArray> result = Future.future();
+            CompositeFuture.all(secondFutures).setHandler(res -> {
+                final List<JsonObject> secondary = res.result().list();
+                // Zipper Operation, the base list is first
+                final List<JsonObject> completed = Statute.zipper(first.getList(), secondary, operatorFun);
+                result.complete(new JsonArray(completed));
+            });
+            return result;
+        });
+    }
 
     /**
      * Source ->
@@ -21,8 +94,8 @@ class Fluctuate {
      * Target2
      */
     static <F, S, T> Future<T> thenComposite(
-            final BiFunction<F, List<S>, T> mergeFun,
             final Future<F> source,
+            final BiFunction<F, List<S>, T> mergeFun,
             final Supplier<Future<S>>... suppliers) {
         return source.compose(first -> {
             final List<Future> secondFutures = new ArrayList<>();
@@ -40,8 +113,8 @@ class Fluctuate {
     }
 
     static <F, S, T> Future<T> thenComposite(
-            final BiFunction<F, List<S>, T> mergeFun,
             final Future<F> source,
+            final BiFunction<F, List<S>, T> mergeFun,
             final Function<F, Future<S>>... functions) {
         return source.compose(first -> {
             final List<Future> secondFutures = new ArrayList<>();

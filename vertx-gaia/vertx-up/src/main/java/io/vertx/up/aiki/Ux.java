@@ -392,6 +392,14 @@ public final class Ux {
             return MongoUx.findWithOptions(collection, filter, options);
         }
 
+        public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter, final FindOptions options,
+                                                        // Secondary Query
+                                                        final String joinedCollection, final String joinedKey, final JsonObject additional,
+                                                        final BinaryOperator<JsonObject> operatorFun) {
+            return MongoUx.findWithOptions(collection, filter, options,
+                    joinedCollection, joinedKey, additional, operatorFun);
+        }
+
         public static Future<JsonArray> find(final String collection, final JsonObject filter) {
             return MongoUx.findWithOptions(collection, filter, new FindOptions());
         }

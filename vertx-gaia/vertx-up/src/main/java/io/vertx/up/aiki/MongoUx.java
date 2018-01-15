@@ -10,6 +10,7 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.plugin.mongo.MongoInfix;
 
 import java.util.Objects;
+import java.util.function.BinaryOperator;
 
 class MongoUx {
 
@@ -92,5 +93,18 @@ class MongoUx {
             LOGGER.debug(Info.MSG_FIND, collection, filter, options.toJson(), result);
             future.complete(result);
         }));
+    }
+
+    static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter, final FindOptions options,
+                                             // Secondary Query
+                                             final String joinedCollection, final String joinedKey, final JsonObject additional,
+                                             final BinaryOperator<JsonObject> operatorFun) {
+        return Ux.thenParallelJson(findWithOptions(collection, filter, options),
+                item -> {
+                    final JsonObject joinedFilter = (null == additional) ? new JsonObject() : additional;
+                    // MongoDB only
+                    joinedFilter.put(joinedKey, item.getValue("_id"));
+                    return findOne(joinedCollection, joinedFilter);
+                }, operatorFun);
     }
 }

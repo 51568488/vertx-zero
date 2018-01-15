@@ -6,6 +6,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.func.Fn;
+import io.vertx.up.kidd.Readible;
 import io.vertx.up.log.Annal;
 import io.vertx.up.web.ZeroSerializer;
 import io.vertx.zero.eon.Strings;
@@ -65,7 +66,7 @@ public class Envelop implements Serializable {
     public <T> T data(final Class<T> clazz) {
         T reference = null;
         if (this.data.containsKey(Key.DATA)) {
-            reference = extract(this.data.getValue(Key.DATA), clazz);
+            reference = this.extract(this.data.getValue(Key.DATA), clazz);
         }
         return reference;
     }
@@ -80,13 +81,13 @@ public class Envelop implements Serializable {
     public <T> T data(final Integer argIndex, final Class<T> clazz) {
         T reference = null;
         Fn.flingUp(0 > argIndex, LOGGER,
-                IndexExceedException.class, getClass(), argIndex);
+                IndexExceedException.class, this.getClass(), argIndex);
         if (this.data.containsKey(Key.DATA)) {
             final JsonObject raw = this.data.getJsonObject(Key.DATA);
             if (null != raw) {
                 final String key = argIndex.toString();
                 if (raw.containsKey(key)) {
-                    reference = extract(raw.getValue(key), clazz);
+                    reference = this.extract(raw.getValue(key), clazz);
                 }
             }
         }
@@ -121,7 +122,7 @@ public class Envelop implements Serializable {
         if (null == this.error) {
             response = this.data;
         } else {
-            response = fail(this.error);
+            response = this.fail(this.error);
         }
         return response.encode();
     }
@@ -171,7 +172,7 @@ public class Envelop implements Serializable {
     }
 
     private <T> Envelop(final T data, final HttpStatusCode status) {
-        this.data = build(ZeroSerializer.toSupport(data));
+        this.data = this.build(ZeroSerializer.toSupport(data));
         this.error = null;
         this.status = status;
     }
@@ -211,6 +212,9 @@ public class Envelop implements Serializable {
      * @return
      */
     public static Envelop failure(final WebException error) {
+        // Inner building error
+        final Readible readible = Readible.get();
+        readible.interpret(error);
         return new Envelop(error);
     }
 

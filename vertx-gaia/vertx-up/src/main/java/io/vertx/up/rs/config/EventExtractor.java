@@ -32,7 +32,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
     public Set<Event> extract(final Class<?> clazz) {
         return Fn.get(new ConcurrentHashSet<>(), () -> {
             // 1. Class verify
-            verify(clazz);
+            this.verify(clazz);
             // 2. Check whether clazz annotated with @PATH
             final Set<Event> result = new ConcurrentHashSet<>();
             Fn.safeSemi(clazz.isAnnotationPresent(Path.class), LOGGER,
@@ -40,11 +40,11 @@ public class EventExtractor implements Extractor<Set<Event>> {
                         // 3.1. Append Root Path
                         final Path path = ZeroHelper.getPath(clazz);
                         assert null != path : "Path should not be null.";
-                        result.addAll(extract(clazz, PathResolver.resolve(path)));
+                        result.addAll(this.extract(clazz, PathResolver.resolve(path)));
                     },
                     () -> {
                         // 3.2. Use method Path directly
-                        result.addAll(extract(clazz, null));
+                        result.addAll(this.extract(clazz, null));
                     });
             return result;
         }, clazz);
@@ -56,15 +56,15 @@ public class EventExtractor implements Extractor<Set<Event>> {
             // Class direct.
             Fn.flingUp(!Instance.noarg(clazz), LOGGER,
                     NoArgConstructorException.class,
-                    getClass(), clazz);
+                    this.getClass(), clazz);
         }
         Fn.flingUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
                 AccessProxyException.class,
-                getClass(), clazz);
+                this.getClass(), clazz);
         // Event Source Checking
         Fn.flingUp(!clazz.isAnnotationPresent(EndPoint.class),
                 LOGGER, EventSourceException.class,
-                getClass(), clazz.getName());
+                this.getClass(), clazz.getName());
     }
 
     private Set<Event> extract(final Class<?> clazz, final String root) {
@@ -73,7 +73,7 @@ public class EventExtractor implements Extractor<Set<Event>> {
         final Method[] methods = clazz.getDeclaredMethods();
         for (final Method method : methods) {
             // 1.Build Event
-            final Event event = extract(method, root);
+            final Event event = this.extract(method, root);
             if (null != event) {
                 events.add(event);
             }

@@ -73,7 +73,7 @@ public abstract class BaseAim {
      */
     protected Object invoke(final Event event, final Object[] args) {
         final Method method = event.getAction();
-        getLogger().info("[ ZERO-DEBUG ] Method = {0}, Args = {1}",
+        this.getLogger().info("[ ZERO-DEBUG ] Method = {0}, Args = {1}",
                 method.getName(), StringUtil.join(args));
         return Instance.invoke(event.getProxy(), method.getName(), args);
     }
@@ -81,7 +81,7 @@ public abstract class BaseAim {
     protected Envelop failure(final String address,
                               final AsyncResult<Message<Envelop>> handler) {
         final WebException error
-                = new _500DeliveryErrorException(getClass(),
+                = new _500DeliveryErrorException(this.getClass(),
                 address,
                 Fn.get(null,
                         () -> handler.cause().getMessage(), handler.cause()));
@@ -97,7 +97,7 @@ public abstract class BaseAim {
             envelop = message.body();
         } catch (final Throwable ex) {
             final WebException error
-                    = new _500EntityCastException(getClass(),
+                    = new _500EntityCastException(this.getClass(),
                     address, ex.getMessage());
             envelop = Envelop.failure(error);
         }
@@ -109,14 +109,19 @@ public abstract class BaseAim {
     }
 
     protected Annal getLogger() {
-        return Annal.get(getClass());
+        return Annal.get(this.getClass());
     }
 
     protected void executeRequest(final RoutingContext context,
                                   final Map<String, List<Rule>> rulers,
                                   final Depot depot) {
-        final Object[] args = buildArgs(context, depot.getEvent());
-        // Execute web flow and uniform call.
-        Flower.executeRequest(context, rulers, depot, args, verifier());
+        try {
+            final Object[] args = this.buildArgs(context, depot.getEvent());
+            // Execute web flow and uniform call.
+            Flower.executeRequest(context, rulers, depot, args, this.verifier());
+        } catch (final WebException error) {
+            // Bad request of 400 for parameter processing
+            Flower.replyError(context, error, depot.getEvent());
+        }
     }
 }

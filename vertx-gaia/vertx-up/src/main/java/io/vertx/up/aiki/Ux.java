@@ -1,13 +1,19 @@
 package io.vertx.up.aiki;
 
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.mongo.FindOptions;
 import io.vertx.up.atom.Envelop;
+import io.vertx.up.atom.query.Pager;
+import io.vertx.up.atom.query.Sorter;
 import io.vertx.up.exception.WebException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -20,6 +26,32 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("unchecked")
 public final class Ux {
+    // Business method
+    // page, size -> JsonObject
+    public static JsonObject toPagerJson(final int page, final int size) {
+        return Pagination.toPager(page, size).toJson();
+    }
+
+    // page, size -> Pager
+    public static Pager toPager(final int page, final int size) {
+        return Pagination.toPager(page, size);
+    }
+
+    // JsonObject -> Pager
+    public static Pager toPager(final JsonObject data) {
+        return Pagination.toPager(data);
+    }
+
+    // field, asc -> Sorter
+    public static Sorter toSorter(final String field, final boolean asc) {
+        return Pagination.toSorter(field, asc);
+    }
+
+    // field, mode -> Sorter
+    public static Sorter toSorter(final String field, final int mode) {
+        return Pagination.toSorter(field, mode);
+    }
+
     // ---------------------- JsonObject Returned --------------------------
     // T -> JsonObject
     public static <T> JsonObject toJson(final T entity) {
@@ -42,6 +74,14 @@ public final class Ux {
     public static WebException toError(final Class<? extends WebException> clazz, final Object... args
     ) {
         return To.toError(clazz, args);
+    }
+
+    // -> WebException transfer
+    public static WebException toError(
+            final Class<?> clazz,
+            final Throwable error
+    ) {
+        return To.toError(clazz, error);
     }
 
     // ---------------------- JsonArray Returned --------------------------
@@ -102,6 +142,16 @@ public final class Ux {
         return To.toUnique(array, "");
     }
 
+    // ---------------------- Web Flow --------------------------------------
+    public static <T> Handler<AsyncResult<T>> toHandler(final Message<Envelop> message) {
+        return Web.toHandler(message);
+    }
+
+    public static <T> Handler<AsyncResult<Boolean>> toHandler(final Message<Envelop> message, final JsonObject data) {
+        return Web.toHandler(message, data);
+    }
+
+    // ---------------------- Request Data Extract --------------------------
     // -> Message<Envelop> -> JsonObject ( Interface mode )
     public static JsonObject getJson(final Message<Envelop> message) {
         return In.request(message, 0, JsonObject.class);
@@ -117,6 +167,26 @@ public final class Ux {
         return In.request(message, index, String.class);
     }
 
+    // -> Message<Envelop> -> T ( Agent mode )
+    public static <T> T getBodyT(final Message<Envelop> message, final Class<T> clazz) {
+        return In.request(message, clazz);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static <T> T getJsonT(final Message<Envelop> message, final Class<T> clazz) {
+        return In.request(message, 0, clazz);
+    }
+
+    // -> Message<Envelop> -> String ( Security )
+    public static String getUserID(final Message<Envelop> message, final String field) {
+        return In.requestUser(message, field);
+    }
+
+    // -> Message<Envelop> -> UUID ( Security )
+    public static UUID getUserUUID(final Message<Envelop> message, final String field) {
+        return UUID.fromString(getUserID(message, field));
+    }
+
     // -> Message<Envelop> -> Integer ( Interface mode )
     public static Integer getInteger(final Message<Envelop> message, final int index) {
         return In.request(message, index, Integer.class);
@@ -127,6 +197,7 @@ public final class Ux {
         return In.request(message, index, Long.class);
     }
 
+    // ---------------------- Future --------------------------
     // -> CompletableFuture<T> -> Future<JsonObject> ( Async )
     public static <T> Future<JsonObject> thenJson(final CompletableFuture<T> future) {
         return Async.toJsonFuture("", future);
@@ -215,5 +286,79 @@ public final class Ux {
         return Fluctuate.thenComposite(mergeFun, source, functions);
     }
 
+    // -> IfElse true -> Future<T>, false -> Future<F>
+    public static <T, F, R> Future<R> thenOtherwise(final Future<Boolean> condition, final Supplier<Future<T>> trueFuture, final Function<T, R> trueFun, final Supplier<Future<F>> falseFuture, final Function<F, R> falseFun) {
+        return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, falseFuture, falseFun);
+    }
 
+    // -> IfOr true -> Future<T>, false -> Future<R>
+    public static <T, R> Future<R> thenError(final Future<Boolean> condition, final Supplier<Future<T>> trueFuture, final Function<T, R> trueFun, final Class<? extends WebException> clazz, final Object... args) {
+        return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, clazz, args);
+    }
+
+    // -> IfOr true -> Future<JsonObject>, false -> Future<JsonObject>
+    public static Future<JsonObject> thenError(final Future<Boolean> condition, final Supplier<Future<JsonObject>> trueFuture, final Class<? extends WebException> clazz, final Object... args) {
+        return Fluctuate.thenOtherwise(condition, trueFuture, item -> item, clazz, args);
+    }
+
+    // -> To error directly
+    public static <T> Future<T> thenError(final Class<? extends WebException> clazz, final Object... args) {
+        return Fluctuate.thenError(clazz, args);
+    }
+
+    // -> If only true -> Future<T>
+    public static <T, R> Future<R> thenTrue(final Future<Boolean> condition, final Supplier<Future<T>> trueFuture, final Function<T, R> trueFun) {
+        return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, null);
+    }
+
+    // -> Mongo
+    public static class Mongo {
+
+        public static JsonObject termIn(final JsonObject filter, final String field, final JsonArray values) {
+            return MongoUx.termIn(filter, field, values);
+        }
+
+        public static JsonObject termLike(final JsonObject filter, final String field, final String value) {
+            return MongoUx.termLike(filter, field, value);
+        }
+
+        public static Future<Boolean> missing(final String collection, final JsonObject filter) {
+            return MongoUx.missing(collection, filter);
+        }
+
+        public static Future<Boolean> existing(final String collection, final JsonObject filter) {
+            return MongoUx.existing(collection, filter);
+        }
+
+        public static Future<JsonObject> insert(final String collection, final JsonObject data) {
+            return MongoUx.insert(collection, data);
+        }
+
+        public static Future<JsonObject> findOne(final String collection, final JsonObject filter) {
+            return MongoUx.findOne(collection, filter);
+        }
+
+        public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
+                                                           final String field, final Object value) {
+            return MongoUx.findOneAndReplace(collection, filter, new JsonObject().put(field, value));
+        }
+
+        public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
+                                                           final JsonObject data) {
+            return MongoUx.findOneAndReplace(collection, filter, data);
+        }
+
+        public static Future<Long> removeDocument(final String collection, final JsonObject filter) {
+            return MongoUx.removeDocument(collection, filter);
+        }
+
+        public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter,
+                                                        final FindOptions options) {
+            return MongoUx.findWithOptions(collection, filter, options);
+        }
+
+        public static Future<JsonArray> find(final String collection, final JsonObject filter) {
+            return MongoUx.findWithOptions(collection, filter, new FindOptions());
+        }
+    }
 }

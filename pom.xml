@@ -57,6 +57,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <encoding>UTF-8</encoding>
+        <jcabi.version>0.22.6</jcabi.version>
         <!-- Vertx 3.5.1 SNAPSHOT, For testing -->
         <vertx.version>3.5.0</vertx.version>
         <stack.version>3.5.0</stack.version>
@@ -142,6 +143,8 @@
         <maven.plugin.protobuf>0.5.1</maven.plugin.protobuf>
         <maven.plugin.os>1.5.0.Final</maven.plugin.os>
         <maven.plugin.antrun>1.8</maven.plugin.antrun>
+        <maven.plugin.aspectj>1.10</maven.plugin.aspectj>
+        <maven.plugin.jcabi>0.14.1</maven.plugin.jcabi>
     </properties>
     <prerequisites>
         <maven>3.5.0</maven>
@@ -180,6 +183,12 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-tcnative</artifactId>
                 <version>${netty.tcnative.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.jcabi/jcabi-aspects -->
+            <dependency>
+                <groupId>com.jcabi</groupId>
+                <artifactId>jcabi-aspects</artifactId>
+                <version>${jcabi.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
             <dependency>
@@ -677,6 +686,19 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- https://mvnrepository.com/artifact/com.jcabi/jcabi-maven-plugin -->
+                <plugin>
+                    <groupId>com.jcabi</groupId>
+                    <artifactId>jcabi-maven-plugin</artifactId>
+                    <version>${maven.plugin.jcabi}</version>
+                </plugin>
+
+                <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/aspectj-maven-plugin -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>aspectj-maven-plugin</artifactId>
+                    <version>${maven.plugin.aspectj}</version>
+                </plugin>
                 <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-antrun-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

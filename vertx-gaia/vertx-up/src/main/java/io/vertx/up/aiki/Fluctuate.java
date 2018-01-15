@@ -46,7 +46,7 @@ class Fluctuate {
 
     static Future<JsonArray> thenScatterJson(
             final Future<JsonArray> source,
-            final Function<JsonObject, Future<JsonObject>> generateFun,
+            final Function<JsonObject, Future<JsonArray>> generateFun,
             final BiFunction<JsonObject, JsonArray, JsonObject> mergeFun
     ) {
         return source.compose(first -> {

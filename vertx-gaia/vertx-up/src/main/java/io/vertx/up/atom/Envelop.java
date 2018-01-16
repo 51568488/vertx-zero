@@ -4,6 +4,7 @@ import io.vertx.core.MultiMap;
 import io.vertx.core.http.HttpStatusCode;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
+import io.vertx.ext.web.Session;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.func.Fn;
 import io.vertx.up.kidd.Readible;
@@ -18,7 +19,7 @@ public class Envelop implements Serializable {
 
     private static final Annal LOGGER = Annal.get(Envelop.class);
 
-    private HttpStatusCode status = HttpStatusCode.OK;
+    private final HttpStatusCode status;
 
     private MultiMap headers;
 
@@ -27,6 +28,8 @@ public class Envelop implements Serializable {
     private final JsonObject data;
 
     private User user;
+
+    private Session session;
 
     /**
      * Whether this envelop is valid.
@@ -126,23 +129,33 @@ public class Envelop implements Serializable {
         }
         return response.encode();
     }
-
-    /**
-     * Extract status
-     *
-     * @return
-     */
+    
     public HttpStatusCode status() {
         return this.status;
     }
 
-    /**
-     * Simple set/get for User/Headers
-     *
-     * @return
-     */
     public User user() {
         return this.user;
+    }
+
+    public MultiMap headers() {
+        return this.headers;
+    }
+
+    public void setUser(final User user) {
+        this.user = user;
+    }
+
+    public void setHeaders(final MultiMap headers) {
+        this.headers = headers;
+    }
+
+    public Session getSession() {
+        return this.session;
+    }
+
+    public void setSession(final Session session) {
+        this.session = session;
     }
 
     /**
@@ -159,17 +172,6 @@ public class Envelop implements Serializable {
         }, this.user);
     }
 
-    public MultiMap headers() {
-        return this.headers;
-    }
-
-    public void setUser(final User user) {
-        this.user = user;
-    }
-
-    public void setHeaders(final MultiMap headers) {
-        this.headers = headers;
-    }
 
     private <T> Envelop(final T data, final HttpStatusCode status) {
         this.data = this.build(ZeroSerializer.toSupport(data));

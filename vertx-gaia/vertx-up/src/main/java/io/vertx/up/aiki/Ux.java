@@ -380,6 +380,12 @@ public final class Ux {
             return MongoUx.findOne(collection, filter);
         }
 
+        public static Future<JsonObject> findOne(final String collection, final JsonObject filter,
+                                                 final String joinedCollection, final String joinedKey, final JsonObject additional,
+                                                 final BinaryOperator<JsonObject> operatorFun) {
+            return MongoUx.findOne(collection, filter, joinedCollection, joinedKey, additional, operatorFun);
+        }
+
         public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                            final String field, final Object value) {
             return MongoUx.findOneAndReplace(collection, filter, new JsonObject().put(field, value));

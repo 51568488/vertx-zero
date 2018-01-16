@@ -22,6 +22,7 @@ class Flower {
         final Envelop envelop = Envelop.success(entity);
         envelop.setHeaders(context.request().headers());
         envelop.setUser(context.user());
+        envelop.setSession(context.session());
         return envelop;
     }
 

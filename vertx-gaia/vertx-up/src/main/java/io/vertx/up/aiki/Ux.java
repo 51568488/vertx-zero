@@ -139,6 +139,23 @@ public final class Ux {
         return To.toUnique(array, "");
     }
 
+    // ---------------------- User Data -------------------------------------
+
+    // -> Message<Envelop> -> String ( Security )
+    public static String getUserID(final Message<Envelop> message, final String field) {
+        return In.requestUser(message, field);
+    }
+
+    // -> Message<Envelop> -> UUID ( Security )
+    public static UUID getUserUUID(final Message<Envelop> message, final String field) {
+        return UUID.fromString(getUserID(message, field));
+    }
+
+    // -> Message<Envelop> -> Session ( Key )
+    public static Object getSession(final Message<Envelop> message, final String field) {
+        return In.requestSession(message, field);
+    }
+
     // ---------------------- Web Flow --------------------------------------
     public static <T> Handler<AsyncResult<T>> toHandler(final Message<Envelop> message) {
         return Web.toHandler(message);
@@ -172,16 +189,6 @@ public final class Ux {
     // -> Message<Envelop> -> T ( Interface mode )
     public static <T> T getJsonT(final Message<Envelop> message, final Class<T> clazz) {
         return In.request(message, 0, clazz);
-    }
-
-    // -> Message<Envelop> -> String ( Security )
-    public static String getUserID(final Message<Envelop> message, final String field) {
-        return In.requestUser(message, field);
-    }
-
-    // -> Message<Envelop> -> UUID ( Security )
-    public static UUID getUserUUID(final Message<Envelop> message, final String field) {
-        return UUID.fromString(getUserID(message, field));
     }
 
     // -> Message<Envelop> -> Integer ( Interface mode )

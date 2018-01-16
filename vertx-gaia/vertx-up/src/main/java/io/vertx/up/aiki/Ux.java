@@ -15,10 +15,7 @@ import io.vertx.up.exception.WebException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 /**
  * Here Ux is a util interface of uniform to call different tools.
@@ -142,6 +139,23 @@ public final class Ux {
         return To.toUnique(array, "");
     }
 
+    // ---------------------- User Data -------------------------------------
+
+    // -> Message<Envelop> -> String ( Security )
+    public static String getUserID(final Message<Envelop> message, final String field) {
+        return In.requestUser(message, field);
+    }
+
+    // -> Message<Envelop> -> UUID ( Security )
+    public static UUID getUserUUID(final Message<Envelop> message, final String field) {
+        return UUID.fromString(getUserID(message, field));
+    }
+
+    // -> Message<Envelop> -> Session ( Key )
+    public static Object getSession(final Message<Envelop> message, final String field) {
+        return In.requestSession(message, field);
+    }
+
     // ---------------------- Web Flow --------------------------------------
     public static <T> Handler<AsyncResult<T>> toHandler(final Message<Envelop> message) {
         return Web.toHandler(message);
@@ -175,16 +189,6 @@ public final class Ux {
     // -> Message<Envelop> -> T ( Interface mode )
     public static <T> T getJsonT(final Message<Envelop> message, final Class<T> clazz) {
         return In.request(message, 0, clazz);
-    }
-
-    // -> Message<Envelop> -> String ( Security )
-    public static String getUserID(final Message<Envelop> message, final String field) {
-        return In.requestUser(message, field);
-    }
-
-    // -> Message<Envelop> -> UUID ( Security )
-    public static UUID getUserUUID(final Message<Envelop> message, final String field) {
-        return UUID.fromString(getUserID(message, field));
     }
 
     // -> Message<Envelop> -> Integer ( Interface mode )
@@ -224,7 +228,6 @@ public final class Ux {
         return Async.toSingle("", future);
     }
 
-
     // -> CompletableFuture<T> -> Future<Envelop> ( Async with pojo )
     public static <T> Future<Envelop> then(final String pojo, final CompletableFuture<T> future) {
         return Async.toSingle(pojo, future);
@@ -261,6 +264,45 @@ public final class Ux {
     }
 
     /**
+     * Parallel generate
+     * Source ->
+     * source1 -> Future<1>
+     * source2 -> Future<2>
+     * For each element merge 1,2 -> 3
+     *
+     * @param source      List<F>
+     * @param generateFun F -> Future<S>
+     * @param mergeFun    Each element: (F,S) -> T
+     * @param <F>         first
+     * @param <S>         second
+     * @param <T>         third
+     * @return List<T>
+     */
+    public static <F, S, T> Future<List<T>> thenParallel(final Future<List<F>> source, final Function<F, Future<S>> generateFun, final BiFunction<F, S, T> mergeFun) {
+        return Fluctuate.thenParallel(source, generateFun, mergeFun);
+    }
+
+    public static Future<JsonArray> thenParallelJson(final Future<JsonArray> source, final Function<JsonObject, Future<JsonObject>> generateFun, final BinaryOperator<JsonObject> operatorFun) {
+        return Fluctuate.thenParallelJson(source, generateFun, operatorFun);
+    }
+
+    /**
+     * Scatter generate
+     * Source ->
+     * source1 -> Future<List<1>>
+     * source2 -> Future<List<2>>
+     * Fore each element mergage 1, List<2> -> 3
+     *
+     * @param source      JsonArray
+     * @param generateFun JsonObject -> Future<JsonArray>
+     * @param mergeFun    Each element: JsonObject + JsonArray -> JsonObject
+     * @return JsonArray
+     */
+    public static Future<JsonArray> thenScatterJson(final Future<JsonArray> source, final Function<JsonObject, Future<JsonArray>> generateFun, final BiFunction<JsonObject, JsonArray, JsonObject> mergeFun) {
+        return Fluctuate.thenScatterJson(source, generateFun, mergeFun);
+    }
+
+    /**
      * Merge multi Future<> to single one, one for all module.
      * source ->
      * supplier1
@@ -277,13 +319,13 @@ public final class Ux {
      * @param <T>       Type of return
      * @return Future<T> for final result.
      */
-    public static <F, S, T> Future<T> thenComposite(final BiFunction<F, List<S>, T> mergeFun, final Future<F> source, final Supplier<Future<S>>... suppliers) {
-        return Fluctuate.thenComposite(mergeFun, source, suppliers);
+    public static <F, S, T> Future<T> thenComposite(final Future<F> source, final BiFunction<F, List<S>, T> mergeFun, final Supplier<Future<S>>... suppliers) {
+        return Fluctuate.thenComposite(source, mergeFun, suppliers);
     }
 
     // -> Merge multi Future<> to single one, one for all module.
-    public static <F, S, T> Future<T> thenComposite(final BiFunction<F, List<S>, T> mergeFun, final Future<F> source, final Function<F, Future<S>>... functions) {
-        return Fluctuate.thenComposite(mergeFun, source, functions);
+    public static <F, S, T> Future<T> thenComposite(final Future<F> source, final BiFunction<F, List<S>, T> mergeFun, final Function<F, Future<S>>... functions) {
+        return Fluctuate.thenComposite(source, mergeFun, functions);
     }
 
     // -> IfElse true -> Future<T>, false -> Future<F>
@@ -338,6 +380,12 @@ public final class Ux {
             return MongoUx.findOne(collection, filter);
         }
 
+        public static Future<JsonObject> findOne(final String collection, final JsonObject filter,
+                                                 final String joinedCollection, final String joinedKey, final JsonObject additional,
+                                                 final BinaryOperator<JsonObject> operatorFun) {
+            return MongoUx.findOne(collection, filter, joinedCollection, joinedKey, additional, operatorFun);
+        }
+
         public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                            final String field, final Object value) {
             return MongoUx.findOneAndReplace(collection, filter, new JsonObject().put(field, value));
@@ -355,6 +403,14 @@ public final class Ux {
         public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter,
                                                         final FindOptions options) {
             return MongoUx.findWithOptions(collection, filter, options);
+        }
+
+        public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter, final FindOptions options,
+                                                        // Secondary Query
+                                                        final String joinedCollection, final String joinedKey, final JsonObject additional,
+                                                        final BinaryOperator<JsonObject> operatorFun) {
+            return MongoUx.findWithOptions(collection, filter, options,
+                    joinedCollection, joinedKey, additional, operatorFun);
         }
 
         public static Future<JsonArray> find(final String collection, final JsonObject filter) {

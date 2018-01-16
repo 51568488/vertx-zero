@@ -10,6 +10,7 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.plugin.mongo.MongoInfix;
 
 import java.util.Objects;
+import java.util.function.BinaryOperator;
 
 class MongoUx {
 
@@ -66,6 +67,21 @@ class MongoUx {
         }));
     }
 
+    static Future<JsonObject> findOne(final String collection, final JsonObject filter,
+                                      final String joinedCollection, final String joinedKey, final JsonObject additional,
+                                      final BinaryOperator<JsonObject> operatorFun) {
+        final JsonObject data = new JsonObject();
+        return findOne(collection, filter)
+                .compose(result -> {
+                    data.mergeIn(result);
+                    final JsonObject joinedFilter = (null == additional) ? new JsonObject() : additional.copy();
+                    // MongoDB only
+                    joinedFilter.put(joinedKey, result.getValue("_id"));
+                    return findOne(joinedCollection, joinedFilter);
+                })
+                .compose(second -> Future.succeededFuture(operatorFun.apply(data, second)));
+    }
+
     static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                 final JsonObject data) {
         return Ux.thenGeneric(future -> CLIENT.findOneAndReplace(collection, filter, data, result -> {
@@ -92,5 +108,18 @@ class MongoUx {
             LOGGER.debug(Info.MSG_FIND, collection, filter, options.toJson(), result);
             future.complete(result);
         }));
+    }
+
+    static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter, final FindOptions options,
+                                             // Secondary Query
+                                             final String joinedCollection, final String joinedKey, final JsonObject additional,
+                                             final BinaryOperator<JsonObject> operatorFun) {
+        return Ux.thenParallelJson(findWithOptions(collection, filter, options),
+                item -> {
+                    final JsonObject joinedFilter = (null == additional) ? new JsonObject() : additional.copy();
+                    // MongoDB only
+                    joinedFilter.put(joinedKey, item.getValue("_id"));
+                    return findOne(joinedCollection, joinedFilter);
+                }, operatorFun);
     }
 }

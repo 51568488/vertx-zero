@@ -1,6 +1,7 @@
 package io.vertx.up.aiki;
 
 import io.vertx.core.eventbus.Message;
+import io.vertx.ext.web.Session;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.func.Fn;
 
@@ -24,10 +25,18 @@ class In {
                 () -> body.data(index, clazz));
     }
 
-    static <T> String requestUser(
+    static String requestUser(
             final Message<Envelop> message,
             final String field
     ) {
         return message.body().identifier(field);
+    }
+
+    static Object requestSession(
+            final Message<Envelop> message,
+            final String field
+    ) {
+        final Session session = message.body().getSession();
+        return null == session ? null : session.get(field);
     }
 }

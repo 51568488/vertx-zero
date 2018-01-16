@@ -4,10 +4,12 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.zero.eon.Values;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -19,10 +21,10 @@ public final class Statute {
     private static final Annal LOGGER = Annal.get(Statute.class);
 
     /**
-     * @param list
-     * @param fnFilter
-     * @param <T>
-     * @return
+     * @param list     The target list
+     * @param fnFilter the filter for list search.
+     * @param <T>      The generic type of list element.
+     * @return Found type for target generic type.
      */
     public static <T> T findUnique(final List<T> list, final Predicate<T> fnFilter) {
         return Fn.get(() -> {
@@ -89,12 +91,42 @@ public final class Statute {
     ) {
         final ConcurrentMap<F, T> result = new ConcurrentHashMap<>();
         Fn.itList(keys, (key, index) -> {
-            final T value = values.get(index);
+            final T value = getEnsure(values, index);
+            // Ignore for null element
             if (null != key && null != value) {
                 result.put(key, value);
             }
         });
         return result;
+    }
+
+    /**
+     * @param first
+     * @param second
+     * @param function
+     * @param <F>
+     * @param <S>
+     * @param <T>
+     * @return
+     */
+    public static <F, S, T> List<T> zipper(
+            final List<F> first,
+            final List<S> second,
+            final BiFunction<F, S, T> function
+    ) {
+        final List<T> result = new ArrayList<>();
+        Fn.itList(first, (key, index) -> {
+            final S value = getEnsure(second, index);
+            final T merged = function.apply(key, value);
+            if (null != merged) {
+                result.add(merged);
+            }
+        });
+        return result;
+    }
+
+    private static <T> T getEnsure(final List<T> list, final int index) {
+        return (0 <= index) && (index < list.size()) ? list.get(index) : null;
     }
 
     private Statute() {

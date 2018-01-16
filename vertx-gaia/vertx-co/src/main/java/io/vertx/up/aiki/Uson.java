@@ -7,6 +7,7 @@ import io.vertx.up.log.Annal;
 import io.vertx.up.tool.mirror.Types;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * Stream for JsonObject
@@ -19,6 +20,10 @@ public class Uson {
 
     public static Uson create(final String field, final Object value) {
         return new Uson(new JsonObject().put(field, value));
+    }
+
+    public static Uson create() {
+        return new Uson(new JsonObject());
     }
 
     public static Uson create(final JsonObject item) {
@@ -61,6 +66,16 @@ public class Uson {
         return this;
     }
 
+    public <I, O> Uson convert(final String field, final Function<I, O> function) {
+        Self.convert(this.objectReference, field, function, false);
+        return this;
+    }
+
+    public Uson copy(final String from, final String to) {
+        Self.copy(this.objectReference, from, to, false);
+        return this;
+    }
+
     public Uson remove(final String... keys) {
         Self.remove(this.objectReference, false, keys);
         return this;
@@ -74,6 +89,10 @@ public class Uson {
     public JsonObject to() {
         LOGGER.info(Info.STREAM_END, String.valueOf(this.hashCode()), this.objectReference);
         return this.objectReference;
+    }
+
+    public Object get(final String field) {
+        return this.objectReference.getValue(field);
     }
 
     @Override

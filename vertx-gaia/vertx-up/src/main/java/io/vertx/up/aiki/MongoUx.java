@@ -67,6 +67,21 @@ class MongoUx {
         }));
     }
 
+    static Future<JsonObject> findOne(final String collection, final JsonObject filter,
+                                      final String joinedCollection, final String joinedKey, final JsonObject additional,
+                                      final BinaryOperator<JsonObject> operatorFun) {
+        final JsonObject data = new JsonObject();
+        return findOne(collection, filter)
+                .compose(result -> {
+                    data.mergeIn(result);
+                    final JsonObject joinedFilter = (null == additional) ? new JsonObject() : additional.copy();
+                    // MongoDB only
+                    joinedFilter.put(joinedKey, result.getValue("_id"));
+                    return findOne(joinedCollection, joinedFilter);
+                })
+                .compose(second -> Future.succeededFuture(operatorFun.apply(data, second)));
+    }
+
     static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                 final JsonObject data) {
         return Ux.thenGeneric(future -> CLIENT.findOneAndReplace(collection, filter, data, result -> {

@@ -61,7 +61,7 @@ public final class Ux {
     }
 
     // T -> JsonObject ( with convert )
-    public static <T> JsonObject toJson(final T entity, final Function<JsonObject, JsonObject> convert
+    public static <T> JsonObject toJsonFun(final T entity, final Function<JsonObject, JsonObject> convert
     ) {
         return To.toJson(entity, convert);
     }
@@ -93,7 +93,7 @@ public final class Ux {
     }
 
     // -> List<T> -> JsonArray ( convert )
-    public static <T> JsonArray toArray(final List<T> list, final Function<JsonObject, JsonObject> convert) {
+    public static <T> JsonArray toArrayFun(final List<T> list, final Function<JsonObject, JsonObject> convert) {
         return To.toArray(list, convert);
     }
 
@@ -199,6 +199,16 @@ public final class Ux {
     // -> Message<Envelop> -> Long ( Interface mode )
     public static Long getLong(final Message<Envelop> message, final int index) {
         return In.request(message, index, Long.class);
+    }
+
+    // ---------------------- Future --------------------------
+    public static <T> Future<JsonObject> thenRpc(final String name, final String address, final JsonObject params) {
+        return UxRpc.thenRpc(name, address, params);
+    }
+
+    // ---------------------- New future ----------------------
+    public static <T> Future<Envelop> thenMore(final List<T> list, final String pojo) {
+        return Future.succeededFuture(Envelop.success(To.toArray(list, pojo)));
     }
 
     // ---------------------- Future --------------------------
@@ -353,68 +363,76 @@ public final class Ux {
         return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, null);
     }
 
+    // -> Jooq
+    public static class Jooq {
+
+        public static <T, D> Future<List<T>> fetchByAsync(final String column, final String value) {
+            return UxJooq.<T, D>fetchByAsync(column, value);
+        }
+    }
+
     // -> Mongo
     public static class Mongo {
 
         public static JsonObject termIn(final JsonObject filter, final String field, final JsonArray values) {
-            return MongoUx.termIn(filter, field, values);
+            return UxMongo.termIn(filter, field, values);
         }
 
         public static JsonObject termLike(final JsonObject filter, final String field, final String value) {
-            return MongoUx.termLike(filter, field, value);
+            return UxMongo.termLike(filter, field, value);
         }
 
         public static Future<Boolean> missing(final String collection, final JsonObject filter) {
-            return MongoUx.missing(collection, filter);
+            return UxMongo.missing(collection, filter);
         }
 
         public static Future<Boolean> existing(final String collection, final JsonObject filter) {
-            return MongoUx.existing(collection, filter);
+            return UxMongo.existing(collection, filter);
         }
 
         public static Future<JsonObject> insert(final String collection, final JsonObject data) {
-            return MongoUx.insert(collection, data);
+            return UxMongo.insert(collection, data);
         }
 
         public static Future<JsonObject> findOne(final String collection, final JsonObject filter) {
-            return MongoUx.findOne(collection, filter);
+            return UxMongo.findOne(collection, filter);
         }
 
         public static Future<JsonObject> findOne(final String collection, final JsonObject filter,
                                                  final String joinedCollection, final String joinedKey, final JsonObject additional,
                                                  final BinaryOperator<JsonObject> operatorFun) {
-            return MongoUx.findOne(collection, filter, joinedCollection, joinedKey, additional, operatorFun);
+            return UxMongo.findOne(collection, filter, joinedCollection, joinedKey, additional, operatorFun);
         }
 
         public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                            final String field, final Object value) {
-            return MongoUx.findOneAndReplace(collection, filter, new JsonObject().put(field, value));
+            return UxMongo.findOneAndReplace(collection, filter, new JsonObject().put(field, value));
         }
 
         public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                            final JsonObject data) {
-            return MongoUx.findOneAndReplace(collection, filter, data);
+            return UxMongo.findOneAndReplace(collection, filter, data);
         }
 
         public static Future<Long> removeDocument(final String collection, final JsonObject filter) {
-            return MongoUx.removeDocument(collection, filter);
+            return UxMongo.removeDocument(collection, filter);
         }
 
         public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter,
                                                         final FindOptions options) {
-            return MongoUx.findWithOptions(collection, filter, options);
+            return UxMongo.findWithOptions(collection, filter, options);
         }
 
         public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter, final FindOptions options,
                                                         // Secondary Query
                                                         final String joinedCollection, final String joinedKey, final JsonObject additional,
                                                         final BinaryOperator<JsonObject> operatorFun) {
-            return MongoUx.findWithOptions(collection, filter, options,
+            return UxMongo.findWithOptions(collection, filter, options,
                     joinedCollection, joinedKey, additional, operatorFun);
         }
 
         public static Future<JsonArray> find(final String collection, final JsonObject filter) {
-            return MongoUx.findWithOptions(collection, filter, new FindOptions());
+            return UxMongo.findWithOptions(collection, filter, new FindOptions());
         }
     }
 }

@@ -1,4 +1,4 @@
-package io.vertx.up.tool;
+package io.vertx.up.tool.container;
 
 import io.vertx.up.func.Fn;
 

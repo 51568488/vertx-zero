@@ -12,11 +12,11 @@ import io.vertx.up.plugin.mongo.MongoInfix;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 
-class MongoUx {
+class UxMongo {
 
     private static final MongoClient CLIENT = MongoInfix.getClient();
 
-    private static final Annal LOGGER = Annal.get(MongoUx.class);
+    private static final Annal LOGGER = Annal.get(UxMongo.class);
 
     static Future<Boolean> missing(final String collection, final JsonObject filter) {
         return Ux.thenGeneric(future -> CLIENT.findOne(collection, filter, null, res -> {

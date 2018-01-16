@@ -21,9 +21,9 @@ public abstract class AuthPhylum implements AuthHandler {
 
     static final String AUTH_PROVIDER_CONTEXT_KEY = "io.vertx.ext.web.handler.AuthHandler.provider";
 
-    final WebException FORBIDDEN = new _403ForbiddenException(getClass());
-    final WebException UNAUTHORIZED = new _401UnauthorizedException(getClass());
-    final WebException BAD_REQUEST = new _400BadRequestException(getClass());
+    final WebException FORBIDDEN = new _403ForbiddenException(this.getClass());
+    final WebException UNAUTHORIZED = new _401UnauthorizedException(this.getClass());
+    final WebException BAD_REQUEST = new _400BadRequestException(this.getClass());
 
     protected final String realm;
     protected final AuthProvider authProvider;
@@ -96,20 +96,20 @@ public abstract class AuthPhylum implements AuthHandler {
     @Override
     public void handle(final RoutingContext ctx) {
 
-        if (handlePreflight(ctx)) {
+        if (this.handlePreflight(ctx)) {
             return;
         }
 
         final User user = ctx.user();
         if (user != null) {
             // proceed to AuthZ
-            authorizeUser(ctx, user);
+            this.authorizeUser(ctx, user);
             return;
         }
         // parse the request in order to extract the credentials object
-        parseCredentials(ctx, res -> {
+        this.parseCredentials(ctx, res -> {
             if (res.failed()) {
-                processException(ctx, res.cause());
+                this.processException(ctx, res.cause());
                 return;
             }
             // check if the user has been set
@@ -123,12 +123,12 @@ public abstract class AuthPhylum implements AuthHandler {
                     session.regenerateId();
                 }
                 // proceed to AuthZ
-                authorizeUser(ctx, updatedUser);
+                this.authorizeUser(ctx, updatedUser);
                 return;
             }
 
             // proceed to authN
-            getAuthProvider(ctx).authenticate(res.result(), authN -> {
+            this.getAuthProvider(ctx).authenticate(res.result(), authN -> {
                 if (authN.succeeded()) {
                     final User authenticated = authN.result();
                     ctx.setUser(authenticated);
@@ -137,11 +137,12 @@ public abstract class AuthPhylum implements AuthHandler {
                         // the user has upgraded from unauthenticated to authenticated
                         // session should be upgraded as recommended by owasp
                         session.regenerateId();
+                        // Store user's princple into session
                     }
                     // proceed to AuthZ
-                    authorizeUser(ctx, authenticated);
+                    this.authorizeUser(ctx, authenticated);
                 } else {
-                    final String header = authenticateHeader(ctx);
+                    final String header = this.authenticateHeader(ctx);
                     if (header != null) {
                         ctx.response()
                                 .putHeader("WWW-Authenticate", header);
@@ -169,7 +170,7 @@ public abstract class AuthPhylum implements AuthHandler {
                     }
                     return;
                     case UNAUTHORIZED: {
-                        final String header = authenticateHeader(ctx);
+                        final String header = this.authenticateHeader(ctx);
                         if (null != header) {
                             response.putHeader("WWW-Authenticate", header);
                         }
@@ -183,14 +184,14 @@ public abstract class AuthPhylum implements AuthHandler {
             }
         }
         // Fallback 500
-        ctx.fail(new _500InternalServerException(getClass(),
+        ctx.fail(new _500InternalServerException(this.getClass(),
                 null == exception ? null : exception.getMessage()));
     }
 
     private void authorizeUser(final RoutingContext ctx, final User user) {
-        authorize(user, authZ -> {
+        this.authorize(user, authZ -> {
             if (authZ.failed()) {
-                processException(ctx, authZ.cause());
+                this.processException(ctx, authZ.cause());
                 return;
             }
             // success, allowed to continue

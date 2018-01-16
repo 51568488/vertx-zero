@@ -33,10 +33,10 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
     static {
         if (ADDRESS.isEmpty()) {
             /** 1. Get all endpoints **/
-            final Set<Class<?>> queues = ZeroAnno.getEndpoints();
+            final Set<Class<?>> endpoints = ZeroAnno.getEndpoints();
 
             /** 2. Scan for @Address to matching **/
-            Observable.fromIterable(queues)
+            Observable.fromIterable(endpoints)
                     .map(queue -> Anno.query(queue, Address.class))
                     // 3. Scan annotations
                     .subscribe(annotations -> Observable.fromArray(annotations)
@@ -54,7 +54,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
     public Set<Receipt> extract(final Class<?> clazz) {
         return Fn.get(new HashSet<>(), () -> {
             // 1. Class verify
-            verify(clazz);
+            this.verify(clazz);
             // 2. Scan method to find @Address
             final Set<Receipt> receipts = new HashSet<>();
             final Method[] methods = clazz.getDeclaredMethods();
@@ -76,7 +76,7 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
         // 2. Ensure address incoming.
         Fn.flingUp(!ADDRESS.contains(address), LOGGER,
                 AddressWrongException.class,
-                getClass(), address, clazz, method);
+                this.getClass(), address, clazz, method);
 
         final Receipt receipt = new Receipt();
         receipt.setMethod(method);
@@ -92,9 +92,9 @@ public class ReceiptExtractor implements Extractor<Set<Receipt>> {
         // Check basic specification: No Arg Constructor
         Fn.flingUp(!Instance.noarg(clazz), LOGGER,
                 NoArgConstructorException.class,
-                getClass(), clazz);
+                this.getClass(), clazz);
         Fn.flingUp(!Modifier.isPublic(clazz.getModifiers()), LOGGER,
                 AccessProxyException.class,
-                getClass(), clazz);
+                this.getClass(), clazz);
     }
 }

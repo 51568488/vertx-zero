@@ -17,19 +17,19 @@ public class AsyncAim extends BaseAim implements Aim<RoutingContext> {
     public Handler<RoutingContext> attack(final Event event) {
         return Fn.get(() -> (context) -> Responser.exec(() -> {
             // 1. Build Envelop
-            final Envelop request = invoke(context, event);
+            final Envelop request = this.invoke(context, event);
             // 2. Build event bus
             final Vertx vertx = context.vertx();
             final EventBus bus = vertx.eventBus();
             // 3. Send message
-            final String address = address(event);
+            final String address = this.address(event);
             bus.<Envelop>send(address, request, handler -> {
                 final Envelop response;
                 if (handler.succeeded()) {
                     // Request - Response message
-                    response = success(address, handler);
+                    response = this.success(address, handler);
                 } else {
-                    response = failure(address, handler);
+                    response = this.failure(address, handler);
                 }
                 Answer.reply(context, response, event);
             });
@@ -40,7 +40,7 @@ public class AsyncAim extends BaseAim implements Aim<RoutingContext> {
                            final Event event) {
         final Object proxy = event.getProxy();
         // 1. Build Arguments
-        final Object[] arguments = buildArgs(context, event);
+        final Object[] arguments = this.buildArgs(context, event);
         // Interface direct
         final Envelop invoked;
         if (Virtual.is(proxy)) {
@@ -52,12 +52,13 @@ public class AsyncAim extends BaseAim implements Aim<RoutingContext> {
             invoked = Flower.continuous(context, message);
         } else {
             // 2.2. Method call
-            final Object returnValue = invoke(event, arguments);
+            final Object returnValue = this.invoke(event, arguments);
             invoked = Flower.continuous(context, returnValue);
         }
         // 3. Envelop injection for User/Headers
         invoked.setHeaders(context.request().headers());
         invoked.setUser(context.user());
+        invoked.setSession(context.session());
         return invoked;
     }
 }

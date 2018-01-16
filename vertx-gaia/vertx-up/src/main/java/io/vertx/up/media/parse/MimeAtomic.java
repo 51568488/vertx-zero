@@ -34,7 +34,7 @@ public class MimeAtomic<T> implements Atomic<T> {
             epsilon = atomic.ingest(context, income);
         } else {
             /** Resolver **/
-            final Resolver<T> resolver = getResolver(context, income);
+            final Resolver<T> resolver = this.getResolver(context, income);
             epsilon = resolver.resolve(context, income);
         }
         return epsilon;

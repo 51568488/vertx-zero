@@ -101,7 +101,7 @@ class MongoUx {
                                              final BinaryOperator<JsonObject> operatorFun) {
         return Ux.thenParallelJson(findWithOptions(collection, filter, options),
                 item -> {
-                    final JsonObject joinedFilter = (null == additional) ? new JsonObject() : additional;
+                    final JsonObject joinedFilter = (null == additional) ? new JsonObject() : additional.copy();
                     // MongoDB only
                     joinedFilter.put(joinedKey, item.getValue("_id"));
                     return findOne(joinedCollection, joinedFilter);

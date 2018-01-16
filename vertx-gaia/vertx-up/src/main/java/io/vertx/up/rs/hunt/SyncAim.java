@@ -15,10 +15,10 @@ public class SyncAim extends BaseAim implements Aim<RoutingContext> {
     public Handler<RoutingContext> attack(final Event event) {
         return Fn.get(() -> (context) -> Responser.exec(() -> {
             // 1. Build Arguments
-            final Object[] arguments = buildArgs(context, event);
+            final Object[] arguments = this.buildArgs(context, event);
 
             // 2. Method call
-            final Object result = invoke(event, arguments);
+            final Object result = this.invoke(event, arguments);
 
             // 3. Resource model building
             final Envelop data = Flower.continuous(context, result);

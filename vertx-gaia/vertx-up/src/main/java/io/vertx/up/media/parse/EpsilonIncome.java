@@ -43,11 +43,11 @@ public class EpsilonIncome implements Income<List<Epsilon<Object>>> {
             /** For each field specification **/
             final Epsilon<Object> epsilon = new Epsilon<>();
             epsilon.setArgType(paramTypes[idx]);
-            epsilon.setAnnotation(getAnnotation(annoTypes[idx]));
-            epsilon.setName(getName(epsilon.getAnnotation()));
+            epsilon.setAnnotation(this.getAnnotation(annoTypes[idx]));
+            epsilon.setName(this.getName(epsilon.getAnnotation()));
 
             /** Default Value **/
-            epsilon.setDefaultValue(getDefault(annoTypes[idx], epsilon.getArgType()));
+            epsilon.setDefaultValue(this.getDefault(annoTypes[idx], epsilon.getArgType()));
 
             /** Epsilon income -> outcome **/
             final Epsilon<Object> outcome =

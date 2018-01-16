@@ -22,6 +22,10 @@ public class Uson {
         return new Uson(new JsonObject().put(field, value));
     }
 
+    public static Uson create() {
+        return new Uson(new JsonObject());
+    }
+
     public static Uson create(final JsonObject item) {
         return new Uson(item);
     }
@@ -85,6 +89,10 @@ public class Uson {
     public JsonObject to() {
         LOGGER.info(Info.STREAM_END, String.valueOf(this.hashCode()), this.objectReference);
         return this.objectReference;
+    }
+
+    public Object get(final String field) {
+        return this.objectReference.getValue(field);
     }
 
     @Override

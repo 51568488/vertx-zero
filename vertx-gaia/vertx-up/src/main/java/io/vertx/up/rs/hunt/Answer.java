@@ -72,7 +72,7 @@ public final class Answer {
             final Method method
     ) {
         final Session session = context.session();
-        if (null != session && null != data) {
+        if (null != session && null != data && method.isAnnotationPresent(SessionData.class)) {
             final Annotation annotation = method.getAnnotation(SessionData.class);
             final String key = Instance.invoke(annotation, "value");
             final String field = Instance.invoke(annotation, "field");

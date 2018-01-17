@@ -1,6 +1,5 @@
 package io.vertx.up.aiki;
 
-import io.github.jklingsporn.vertx.jooq.future.VertxDAO;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -12,10 +11,10 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.query.Pager;
 import io.vertx.up.atom.query.Sorter;
 import io.vertx.up.exception.WebException;
+import io.vertx.up.func.Fn;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.*;
 
 /**
@@ -67,20 +66,24 @@ public final class Ux {
         return To.toJson(entity, convert);
     }
 
+    // Special Merge
+    public static void appendJson(final JsonObject target, final JsonObject source) {
+        Calculator.appendJson(target, source);
+    }
+
     // ---------------------- Web Error Returned --------------------------
     // -> WebException direct
-    public static WebException toError(final Class<? extends WebException> clazz, final Object... args
-    ) {
+    public static WebException toError(final Class<? extends WebException> clazz, final Object... args) {
         return To.toError(clazz, args);
     }
 
     // -> WebException transfer
-    public static WebException toError(
-            final Class<?> clazz,
-            final Throwable error
-    ) {
+    public static WebException toError(final Class<?> clazz, final Throwable error) {
         return To.toError(clazz, error);
     }
+
+
+    // ---------------------- Future --------------------------
 
     // ---------------------- JsonArray Returned --------------------------
     // -> List<T> -> JsonArray
@@ -120,23 +123,21 @@ public final class Ux {
     }
 
     // -> JsonArray -> Envelop ( To JsonObject, Result length must be 1 )
-    public static Envelop toOne(
-            final JsonArray array
-    ) {
+    public static Envelop toOne(final JsonArray array) {
         return Envelop.success(To.toUnique(array, ""));
     }
 
     // -> List<T> -> JsonObject ( Result length must be 1 )
-    public static <T> JsonObject toUnique(
-            final List<T> list
-    ) {
+    public static <T> JsonObject toUnique(final List<T> list) {
         return To.toUnique(Ux.toArray(list), "");
     }
 
+    public static <T> JsonObject toUnique(final List<T> list, final String pojo) {
+        return To.toUnique(Ux.toArray(list), pojo);
+    }
+
     // -> JsonArray -> JsonObject ( Result length must be 1 )
-    public static <T> JsonObject toUnique(
-            final JsonArray array
-    ) {
+    public static <T> JsonObject toUnique(final JsonArray array) {
         return To.toUnique(array, "");
     }
 
@@ -207,46 +208,29 @@ public final class Ux {
         return UxRpc.thenRpc(name, address, params);
     }
 
+    public static <T> Future<JsonObject> thenRpc(final String name, final String address, final String field, final Object value) {
+        return UxRpc.thenRpc(name, address, new JsonObject().put(field, value));
+    }
+
     // ---------------------- New future ----------------------
+    public static <T> Future<JsonArray> thenJsonMore(final List<T> list, final String pojo) {
+        return Future.succeededFuture(To.toArray(list, pojo));
+    }
+
+    public static <T> Future<JsonObject> thenJsonOne(final List<T> list, final String pojo) {
+        return Future.succeededFuture(To.toUnique(new JsonArray(list), pojo));
+    }
+
+    public static <T> Future<JsonObject> thenJsonOne(final T entity, final String pojo) {
+        return Future.succeededFuture(To.toJson(entity, pojo));
+    }
+
     public static <T> Future<Envelop> thenMore(final List<T> list, final String pojo) {
         return Future.succeededFuture(Envelop.success(To.toArray(list, pojo)));
     }
 
-    // ---------------------- Future --------------------------
-    // -> CompletableFuture<T> -> Future<JsonObject> ( Async )
-    public static <T> Future<JsonObject> thenJson(final CompletableFuture<T> future) {
-        return Async.toJsonFuture("", future);
-    }
-
-    // -> CompletableFuture<T> -> Future<JsonObject> ( Async with Pojo )
-    public static <T> Future<JsonObject> thenJson(final String pojo, final CompletableFuture<T> future
-    ) {
-        return Async.toJsonFuture(pojo, future);
-    }
-
-    // -> CompletableFuture<List<T>> -> Future<JsonArray> ( Async )
-    private static <T> Future<JsonArray> thenArray(final CompletableFuture<List<T>> future) {
-        return Async.toArrayFuture("", future);
-    }
-
-    // -> CompletableFuture<List<T>> -> Future<JsonArray> ( Async with pojo )
-    private static <T> Future<JsonArray> thenArray(final String pojo, final CompletableFuture<List<T>> future) {
-        return Async.toArrayFuture(pojo, future);
-    }
-
-    // -> CompletableFuture<T> -> Future<Envelop> ( Async )
-    public static <T> Future<Envelop> then(final CompletableFuture<T> future) {
-        return Async.toSingle("", future);
-    }
-
-    // -> CompletableFuture<T> -> Future<Envelop> ( Async with pojo )
-    public static <T> Future<Envelop> then(final String pojo, final CompletableFuture<T> future) {
-        return Async.toSingle(pojo, future);
-    }
-
-    // -> CompletableFuture<T> -> Future<T> ( Async direct to Future<T> )
-    public static <T> Future<T> thenGeneric(final CompletableFuture<T> future) {
-        return Async.toFuture(future);
+    public static <T> Future<Envelop> thenOne(final T entity, final String pojo) {
+        return Future.succeededFuture(Envelop.success(To.toJson(entity, pojo)));
     }
 
     // -> Consumer<Future<T>> -> Future<T>
@@ -254,25 +238,7 @@ public final class Ux {
         return Wait.then(consumer);
     }
 
-    // -> CompletableFuture<List<T>> -> Future<Envelop> ( Async )
-    public static <T> Future<Envelop> thenMore(final CompletableFuture<List<T>> future) {
-        return Async.toMulti("", future);
-    }
-
-    // -> CompletableFuture<List<T>> -> Future<Envelop> ( Async with Pojo )
-    public static <T> Future<Envelop> thenMore(final String pojo, final CompletableFuture<List<T>> future) {
-        return Async.toMulti(pojo, future);
-    }
-
-    // -> CompletableFuture<List<T>> -> Future<Envelop> ( Async , Result length must be 1)
-    public static <T> Future<Envelop> thenUnique(final CompletableFuture<List<T>> future) {
-        return Async.toUnique("", future);
-    }
-
-    // -> CompletableFuture<List<T>> -> Future<Envelop> ( Async with Pojo, Result length must be 1)
-    public static <T> Future<Envelop> thenUnique(final String pojo, final CompletableFuture<List<T>> future) {
-        return Async.toUnique(pojo, future);
-    }
+    // ---------------------- Future --------------------------
 
     /**
      * Parallel generate
@@ -293,8 +259,16 @@ public final class Ux {
         return Fluctuate.thenParallel(source, generateFun, mergeFun);
     }
 
-    public static Future<JsonArray> thenParallelJson(final Future<JsonArray> source, final Function<JsonObject, Future<JsonObject>> generateFun, final BinaryOperator<JsonObject> operatorFun) {
+    public static Future<JsonArray> thenParallelArray(final Future<JsonArray> source, final Function<JsonObject, Future<JsonObject>> generateFun, final BinaryOperator<JsonObject> operatorFun) {
+        return Fluctuate.thenParallelArray(source, generateFun, operatorFun);
+    }
+
+    public static Future<JsonObject> thenParallelJson(final Future<JsonObject> source, final Function<JsonObject, List<Future>> generateFun, final BiConsumer<JsonObject, JsonObject>... operatorFun) {
         return Fluctuate.thenParallelJson(source, generateFun, operatorFun);
+    }
+
+    public static Future<JsonObject> thenParallelJson(final JsonObject source, final Function<JsonObject, List<Future>> generateFun, final BiConsumer<JsonObject, JsonObject>... operatorFun) {
+        return Fluctuate.thenParallelJson(Future.succeededFuture(source), generateFun, operatorFun);
     }
 
     /**
@@ -367,8 +341,8 @@ public final class Ux {
     // -> Jooq
     public static class Jooq {
 
-        public static <T, D extends VertxDAO> Future<List<T>> fetchByAsync(final String column, final String value) {
-            return UxJooq.<T, D>fetchByAsync(column, value);
+        public static UxJooq on(final Class<?> clazz) {
+            return Fn.pool(Pool.JOOQ, clazz, () -> new UxJooq(clazz));
         }
     }
 

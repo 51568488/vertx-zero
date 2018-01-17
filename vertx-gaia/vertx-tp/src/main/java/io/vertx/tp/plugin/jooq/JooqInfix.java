@@ -1,6 +1,5 @@
 package io.vertx.tp.plugin.jooq;
 
-import io.github.jklingsporn.vertx.jooq.future.VertxDAO;
 import io.vertx.core.Vertx;
 import io.vertx.tp.hikari.HikariCpPool;
 import io.vertx.up.annotations.Plugin;
@@ -57,9 +56,9 @@ public class JooqInfix implements Infix {
         return CONFIGS.get(NAME);
     }
 
-    public static <T extends VertxDAO> T getDao(final Class<T> clazz) {
+    public static <T> T getDao(final Class<T> clazz) {
         final T dao = Instance.instance(clazz, CONFIGS.get(NAME));
-        dao.setVertx(vertxRef);
+        Instance.invoke(dao, "setVertx", vertxRef);
         return dao;
     }
 

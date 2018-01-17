@@ -114,7 +114,7 @@ class UxMongo {
                                              // Secondary Query
                                              final String joinedCollection, final String joinedKey, final JsonObject additional,
                                              final BinaryOperator<JsonObject> operatorFun) {
-        return Ux.thenParallelJson(findWithOptions(collection, filter, options),
+        return Ux.thenParallelArray(findWithOptions(collection, filter, options),
                 item -> {
                     final JsonObject joinedFilter = (null == additional) ? new JsonObject() : additional.copy();
                     // MongoDB only

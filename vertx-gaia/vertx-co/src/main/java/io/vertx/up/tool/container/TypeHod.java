@@ -1,13 +1,12 @@
 package io.vertx.up.tool.container;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 
 @SuppressWarnings("all")
-public class TypeHod<T> implements Comparable<TypeReference<T>> {
-    protected final Type _type;
+public class TypeHod<T> implements Comparable<TypeHod<T>> {
+    protected Type _type;
 
     protected TypeHod() {
         final Type superClass = this.getClass().getGenericSuperclass();
@@ -19,11 +18,15 @@ public class TypeHod<T> implements Comparable<TypeReference<T>> {
     }
 
     public Type getType() {
+        // Fix issue: sun.reflect.generics.reflectiveObjects.TypeVariableImpl cannot be cast to java.lang.Class
+        if (this._type instanceof TypeVariable) {
+            this._type = ((TypeVariable) this._type).getBounds()[0].getClass();
+        }
         return this._type;
     }
 
     @Override
-    public int compareTo(final TypeReference<T> o) {
+    public int compareTo(final TypeHod<T> o) {
         return 0;
     }
 }

@@ -1,5 +1,6 @@
 package io.vertx.up.aiki;
 
+import io.github.jklingsporn.vertx.jooq.future.VertxDAO;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -366,7 +367,7 @@ public final class Ux {
     // -> Jooq
     public static class Jooq {
 
-        public static <T, D> Future<List<T>> fetchByAsync(final String column, final String value) {
+        public static <T, D extends VertxDAO> Future<List<T>> fetchByAsync(final String column, final String value) {
             return UxJooq.<T, D>fetchByAsync(column, value);
         }
     }

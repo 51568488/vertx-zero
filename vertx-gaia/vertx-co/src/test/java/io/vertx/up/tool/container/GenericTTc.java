@@ -12,19 +12,9 @@ public class GenericTTc {
         }.getType();
         System.out.println(clazz);
         Assert.assertEquals(clazz, User.class);
-        final Class target = Proxy.print();
-        System.out.println(target);
     }
 }
 
 class User {
 
-}
-
-class Proxy {
-
-    public static <T> Class<T> print() {
-        return (Class<T>) (new TypeHod<T>() {
-        }).getType();
-    }
 }

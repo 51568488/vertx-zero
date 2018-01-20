@@ -12,11 +12,11 @@ import io.vertx.up.plugin.mongo.MongoInfix;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 
-class MongoUx {
+class UxMongo {
 
     private static final MongoClient CLIENT = MongoInfix.getClient();
 
-    private static final Annal LOGGER = Annal.get(MongoUx.class);
+    private static final Annal LOGGER = Annal.get(UxMongo.class);
 
     static Future<Boolean> missing(final String collection, final JsonObject filter) {
         return Ux.thenGeneric(future -> CLIENT.findOne(collection, filter, null, res -> {
@@ -114,7 +114,7 @@ class MongoUx {
                                              // Secondary Query
                                              final String joinedCollection, final String joinedKey, final JsonObject additional,
                                              final BinaryOperator<JsonObject> operatorFun) {
-        return Ux.thenParallelJson(findWithOptions(collection, filter, options),
+        return Ux.thenParallelArray(findWithOptions(collection, filter, options),
                 item -> {
                     final JsonObject joinedFilter = (null == additional) ? new JsonObject() : additional.copy();
                     // MongoDB only

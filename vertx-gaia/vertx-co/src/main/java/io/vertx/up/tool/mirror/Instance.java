@@ -43,12 +43,11 @@ public final class Instance {
      * @param target
      * @return
      */
-    public static Class<?> genericT(final Class<?> target) {
+    public static <T> Class<?> genericT(final Class<?> target) {
         return Fn.getJvm(() -> {
             final Type type = target.getGenericSuperclass();
-            final Type[] params = ((ParameterizedType) type).getActualTypeArguments();
-            return Fn.getSemi(0 < params.length, LOGGER,
-                    () -> (Class<?>) params[0]);
+            final Class<T> clazz = (Class) (((ParameterizedType) type).getActualTypeArguments()[0]);
+            return clazz;
         }, target);
     }
 

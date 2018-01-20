@@ -6,16 +6,14 @@ import io.vertx.core.Future;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.exception.WebException;
+import io.vertx.up.func.Fn;
 import io.vertx.up.tool.Statute;
 import io.vertx.up.tool.mirror.Instance;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 @SuppressWarnings("unchecked")
 class Fluctuate {
@@ -66,7 +64,7 @@ class Fluctuate {
         });
     }
 
-    static Future<JsonArray> thenParallelJson(
+    static Future<JsonArray> thenParallelArray(
             final Future<JsonArray> source,
             final Function<JsonObject, Future<JsonObject>> generateFun,
             final BinaryOperator<JsonObject> operatorFun
@@ -83,6 +81,24 @@ class Fluctuate {
                 // Zipper Operation, the base list is first
                 final List<JsonObject> completed = Statute.zipper(first.getList(), secondary, operatorFun);
                 result.complete(new JsonArray(completed));
+            });
+            return result;
+        });
+    }
+
+    static Future<JsonObject> thenParallelJson(
+            final Future<JsonObject> source,
+            final Function<JsonObject, List<Future>> generateFun,
+            final BiConsumer<JsonObject, JsonObject>... operatorFun
+    ) {
+        return source.compose(first -> {
+            final List<Future> secondFutures = generateFun.apply(first);
+            final Future<JsonObject> result = Future.future();
+            CompositeFuture.all(secondFutures).setHandler(res -> {
+                final List<JsonObject> secondary = res.result().list();
+                // Zipper Operation, the base list is first
+                Fn.itList(secondary, (item, index) -> operatorFun[index].accept(first, item));
+                result.complete(first);
             });
             return result;
         });

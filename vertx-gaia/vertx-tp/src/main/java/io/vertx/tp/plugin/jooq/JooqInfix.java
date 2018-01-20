@@ -57,11 +57,11 @@ public class JooqInfix implements Infix {
     }
 
     public static <T> T getDao(final Class<T> clazz) {
-        final Object dao = Instance.instance(clazz, CONFIGS.get(NAME));
+        final T dao = Instance.instance(clazz, CONFIGS.get(NAME));
         Instance.invoke(dao, "setVertx", vertxRef);
-        return (T) dao;
+        return dao;
     }
-    
+
     public static DSLContext getDSL() {
         final Configuration configuration = CONFIGS.get(NAME);
         return configuration.dsl();

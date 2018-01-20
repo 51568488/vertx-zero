@@ -1,6 +1,7 @@
 package io.vertx.up.aiki;
 
 import io.reactivex.Observable;
+import io.vertx.core.Future;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.up.atom.Envelop;
@@ -12,6 +13,7 @@ import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.atom.Mirror;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -75,6 +77,16 @@ class To {
                 entity);
     }
 
+    static <T> Function<T, List<Future<T>>> toFutureList(final Function<T, Future<T>>... functions) {
+        final List<Future<T>> futures = new ArrayList<>();
+        return (entity) -> {
+            Observable.fromArray(functions)
+                    .map(function -> function.apply(entity))
+                    .subscribe(futures::add);
+            return futures;
+        };
+    }
+
     static <T> Envelop toEnvelop(
             final T entity,
             final WebException error
@@ -112,7 +124,7 @@ class To {
         return Envelop.failure(toError(clazz, args));
     }
 
-    static <T> JsonObject toUnique(
+    static JsonObject toUnique(
             final JsonArray array,
             final String pojo
     ) {

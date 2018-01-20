@@ -70,7 +70,7 @@
 
         <!-- Database Needed -->
         <hikari.cp.version>2.7.6</hikari.cp.version>
-        <jooq.version>3.10.3</jooq.version>
+        <jooq.version>3.10.4</jooq.version>
         <vertx.jooq.version>2.4.1</vertx.jooq.version>
         <vertx.jooq.async.version>0.4</vertx.jooq.async.version>
         <mysql.version>8.0.8-dmr</mysql.version>

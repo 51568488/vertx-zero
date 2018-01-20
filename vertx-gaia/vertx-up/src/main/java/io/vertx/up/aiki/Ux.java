@@ -11,10 +11,10 @@ import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.query.Pager;
 import io.vertx.up.atom.query.Sorter;
 import io.vertx.up.exception.WebException;
+import io.vertx.up.func.Fn;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.*;
 
 /**
@@ -61,25 +61,29 @@ public final class Ux {
     }
 
     // T -> JsonObject ( with convert )
-    public static <T> JsonObject toJson(final T entity, final Function<JsonObject, JsonObject> convert
+    public static <T> JsonObject toJsonFun(final T entity, final Function<JsonObject, JsonObject> convert
     ) {
         return To.toJson(entity, convert);
     }
 
+    // Special Merge
+    public static void appendJson(final JsonObject target, final JsonObject source) {
+        Calculator.appendJson(target, source);
+    }
+
     // ---------------------- Web Error Returned --------------------------
     // -> WebException direct
-    public static WebException toError(final Class<? extends WebException> clazz, final Object... args
-    ) {
+    public static WebException toError(final Class<? extends WebException> clazz, final Object... args) {
         return To.toError(clazz, args);
     }
 
     // -> WebException transfer
-    public static WebException toError(
-            final Class<?> clazz,
-            final Throwable error
-    ) {
+    public static WebException toError(final Class<?> clazz, final Throwable error) {
         return To.toError(clazz, error);
     }
+
+
+    // ---------------------- Future --------------------------
 
     // ---------------------- JsonArray Returned --------------------------
     // -> List<T> -> JsonArray
@@ -93,7 +97,7 @@ public final class Ux {
     }
 
     // -> List<T> -> JsonArray ( convert )
-    public static <T> JsonArray toArray(final List<T> list, final Function<JsonObject, JsonObject> convert) {
+    public static <T> JsonArray toArrayFun(final List<T> list, final Function<JsonObject, JsonObject> convert) {
         return To.toArray(list, convert);
     }
 
@@ -119,23 +123,21 @@ public final class Ux {
     }
 
     // -> JsonArray -> Envelop ( To JsonObject, Result length must be 1 )
-    public static Envelop toOne(
-            final JsonArray array
-    ) {
+    public static Envelop toOne(final JsonArray array) {
         return Envelop.success(To.toUnique(array, ""));
     }
 
     // -> List<T> -> JsonObject ( Result length must be 1 )
-    public static <T> JsonObject toUnique(
-            final List<T> list
-    ) {
+    public static <T> JsonObject toUnique(final List<T> list) {
         return To.toUnique(Ux.toArray(list), "");
     }
 
+    public static <T> JsonObject toUnique(final List<T> list, final String pojo) {
+        return To.toUnique(Ux.toArray(list), pojo);
+    }
+
     // -> JsonArray -> JsonObject ( Result length must be 1 )
-    public static <T> JsonObject toUnique(
-            final JsonArray array
-    ) {
+    public static <T> JsonObject toUnique(final JsonArray array) {
         return To.toUnique(array, "");
     }
 
@@ -202,40 +204,33 @@ public final class Ux {
     }
 
     // ---------------------- Future --------------------------
-    // -> CompletableFuture<T> -> Future<JsonObject> ( Async )
-    public static <T> Future<JsonObject> thenJson(final CompletableFuture<T> future) {
-        return Async.toJsonFuture("", future);
+    public static <T> Future<JsonObject> thenRpc(final String name, final String address, final JsonObject params) {
+        return UxRpc.thenRpc(name, address, params);
     }
 
-    // -> CompletableFuture<T> -> Future<JsonObject> ( Async with Pojo )
-    public static <T> Future<JsonObject> thenJson(final String pojo, final CompletableFuture<T> future
-    ) {
-        return Async.toJsonFuture(pojo, future);
+    public static <T> Future<JsonObject> thenRpc(final String name, final String address, final String field, final Object value) {
+        return UxRpc.thenRpc(name, address, new JsonObject().put(field, value));
     }
 
-    // -> CompletableFuture<List<T>> -> Future<JsonArray> ( Async )
-    private static <T> Future<JsonArray> thenArray(final CompletableFuture<List<T>> future) {
-        return Async.toArrayFuture("", future);
+    // ---------------------- New future ----------------------
+    public static <T> Future<JsonArray> thenJsonMore(final List<T> list, final String pojo) {
+        return Future.succeededFuture(To.toArray(list, pojo));
     }
 
-    // -> CompletableFuture<List<T>> -> Future<JsonArray> ( Async with pojo )
-    private static <T> Future<JsonArray> thenArray(final String pojo, final CompletableFuture<List<T>> future) {
-        return Async.toArrayFuture(pojo, future);
+    public static <T> Future<JsonObject> thenJsonOne(final List<T> list, final String pojo) {
+        return Future.succeededFuture(To.toUnique(new JsonArray(list), pojo));
     }
 
-    // -> CompletableFuture<T> -> Future<Envelop> ( Async )
-    public static <T> Future<Envelop> then(final CompletableFuture<T> future) {
-        return Async.toSingle("", future);
+    public static <T> Future<JsonObject> thenJsonOne(final T entity, final String pojo) {
+        return Future.succeededFuture(To.toJson(entity, pojo));
     }
 
-    // -> CompletableFuture<T> -> Future<Envelop> ( Async with pojo )
-    public static <T> Future<Envelop> then(final String pojo, final CompletableFuture<T> future) {
-        return Async.toSingle(pojo, future);
+    public static <T> Future<Envelop> thenMore(final List<T> list, final String pojo) {
+        return Future.succeededFuture(Envelop.success(To.toArray(list, pojo)));
     }
 
-    // -> CompletableFuture<T> -> Future<T> ( Async direct to Future<T> )
-    public static <T> Future<T> thenGeneric(final CompletableFuture<T> future) {
-        return Async.toFuture(future);
+    public static <T> Future<Envelop> thenOne(final T entity, final String pojo) {
+        return Future.succeededFuture(Envelop.success(To.toJson(entity, pojo)));
     }
 
     // -> Consumer<Future<T>> -> Future<T>
@@ -243,25 +238,7 @@ public final class Ux {
         return Wait.then(consumer);
     }
 
-    // -> CompletableFuture<List<T>> -> Future<Envelop> ( Async )
-    public static <T> Future<Envelop> thenMore(final CompletableFuture<List<T>> future) {
-        return Async.toMulti("", future);
-    }
-
-    // -> CompletableFuture<List<T>> -> Future<Envelop> ( Async with Pojo )
-    public static <T> Future<Envelop> thenMore(final String pojo, final CompletableFuture<List<T>> future) {
-        return Async.toMulti(pojo, future);
-    }
-
-    // -> CompletableFuture<List<T>> -> Future<Envelop> ( Async , Result length must be 1)
-    public static <T> Future<Envelop> thenUnique(final CompletableFuture<List<T>> future) {
-        return Async.toUnique("", future);
-    }
-
-    // -> CompletableFuture<List<T>> -> Future<Envelop> ( Async with Pojo, Result length must be 1)
-    public static <T> Future<Envelop> thenUnique(final String pojo, final CompletableFuture<List<T>> future) {
-        return Async.toUnique(pojo, future);
-    }
+    // ---------------------- Future --------------------------
 
     /**
      * Parallel generate
@@ -282,8 +259,16 @@ public final class Ux {
         return Fluctuate.thenParallel(source, generateFun, mergeFun);
     }
 
-    public static Future<JsonArray> thenParallelJson(final Future<JsonArray> source, final Function<JsonObject, Future<JsonObject>> generateFun, final BinaryOperator<JsonObject> operatorFun) {
+    public static Future<JsonArray> thenParallelArray(final Future<JsonArray> source, final Function<JsonObject, Future<JsonObject>> generateFun, final BinaryOperator<JsonObject> operatorFun) {
+        return Fluctuate.thenParallelArray(source, generateFun, operatorFun);
+    }
+
+    public static Future<JsonObject> thenParallelJson(final Future<JsonObject> source, final Function<JsonObject, List<Future>> generateFun, final BiConsumer<JsonObject, JsonObject>... operatorFun) {
         return Fluctuate.thenParallelJson(source, generateFun, operatorFun);
+    }
+
+    public static Future<JsonObject> thenParallelJson(final JsonObject source, final Function<JsonObject, List<Future>> generateFun, final BiConsumer<JsonObject, JsonObject>... operatorFun) {
+        return Fluctuate.thenParallelJson(Future.succeededFuture(source), generateFun, operatorFun);
     }
 
     /**
@@ -353,68 +338,76 @@ public final class Ux {
         return Fluctuate.thenOtherwise(condition, trueFuture, trueFun, null);
     }
 
+    // -> Jooq
+    public static class Jooq {
+
+        public static UxJooq on(final Class<?> clazz) {
+            return Fn.pool(Pool.JOOQ, clazz, () -> new UxJooq(clazz));
+        }
+    }
+
     // -> Mongo
     public static class Mongo {
 
         public static JsonObject termIn(final JsonObject filter, final String field, final JsonArray values) {
-            return MongoUx.termIn(filter, field, values);
+            return UxMongo.termIn(filter, field, values);
         }
 
         public static JsonObject termLike(final JsonObject filter, final String field, final String value) {
-            return MongoUx.termLike(filter, field, value);
+            return UxMongo.termLike(filter, field, value);
         }
 
         public static Future<Boolean> missing(final String collection, final JsonObject filter) {
-            return MongoUx.missing(collection, filter);
+            return UxMongo.missing(collection, filter);
         }
 
         public static Future<Boolean> existing(final String collection, final JsonObject filter) {
-            return MongoUx.existing(collection, filter);
+            return UxMongo.existing(collection, filter);
         }
 
         public static Future<JsonObject> insert(final String collection, final JsonObject data) {
-            return MongoUx.insert(collection, data);
+            return UxMongo.insert(collection, data);
         }
 
         public static Future<JsonObject> findOne(final String collection, final JsonObject filter) {
-            return MongoUx.findOne(collection, filter);
+            return UxMongo.findOne(collection, filter);
         }
 
         public static Future<JsonObject> findOne(final String collection, final JsonObject filter,
                                                  final String joinedCollection, final String joinedKey, final JsonObject additional,
                                                  final BinaryOperator<JsonObject> operatorFun) {
-            return MongoUx.findOne(collection, filter, joinedCollection, joinedKey, additional, operatorFun);
+            return UxMongo.findOne(collection, filter, joinedCollection, joinedKey, additional, operatorFun);
         }
 
         public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                            final String field, final Object value) {
-            return MongoUx.findOneAndReplace(collection, filter, new JsonObject().put(field, value));
+            return UxMongo.findOneAndReplace(collection, filter, new JsonObject().put(field, value));
         }
 
         public static Future<JsonObject> findOneAndReplace(final String collection, final JsonObject filter,
                                                            final JsonObject data) {
-            return MongoUx.findOneAndReplace(collection, filter, data);
+            return UxMongo.findOneAndReplace(collection, filter, data);
         }
 
         public static Future<Long> removeDocument(final String collection, final JsonObject filter) {
-            return MongoUx.removeDocument(collection, filter);
+            return UxMongo.removeDocument(collection, filter);
         }
 
         public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter,
                                                         final FindOptions options) {
-            return MongoUx.findWithOptions(collection, filter, options);
+            return UxMongo.findWithOptions(collection, filter, options);
         }
 
         public static Future<JsonArray> findWithOptions(final String collection, final JsonObject filter, final FindOptions options,
                                                         // Secondary Query
                                                         final String joinedCollection, final String joinedKey, final JsonObject additional,
                                                         final BinaryOperator<JsonObject> operatorFun) {
-            return MongoUx.findWithOptions(collection, filter, options,
+            return UxMongo.findWithOptions(collection, filter, options,
                     joinedCollection, joinedKey, additional, operatorFun);
         }
 
         public static Future<JsonArray> find(final String collection, final JsonObject filter) {
-            return MongoUx.findWithOptions(collection, filter, new FindOptions());
+            return UxMongo.findWithOptions(collection, filter, new FindOptions());
         }
     }
 }

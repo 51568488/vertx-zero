@@ -85,7 +85,7 @@
         <common.lang3.version>3.7</common.lang3.version>
         <guava.version>23.6-jre</guava.version>
         <codehaus.janino.version>3.0.8</codehaus.janino.version>
-        <cglib.version>3.2.5</cglib.version>
+        <cglib.version>3.2.6</cglib.version>
         <ignite.version>2.3.0</ignite.version>
         <etcd.version>2.14.0</etcd.version>
         <mongodb.async.version>3.6.1</mongodb.async.version>
@@ -130,7 +130,7 @@
         <maven.plugin.resource>3.0.2</maven.plugin.resource>
         <maven.plugin.site>3.6</maven.plugin.site>
         <maven.plugin.enforcer>3.0.0-M1</maven.plugin.enforcer>
-        <maven.plugin.lombok>1.16.18.1</maven.plugin.lombok>
+        <maven.plugin.lombok>1.16.20.0</maven.plugin.lombok>
         <maven.plugin.processor>3.3.2</maven.plugin.processor>
         <maven.plugin.source>3.0.1</maven.plugin.source>
         <maven.plugin.javadoc>2.10.4</maven.plugin.javadoc>

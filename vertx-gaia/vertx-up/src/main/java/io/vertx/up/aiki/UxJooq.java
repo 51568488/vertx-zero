@@ -23,13 +23,14 @@ public class UxJooq {
         this.vertxDAO = (VertxDAO) JooqInfix.getDao(clazz);
     }
 
-    public <T> Future<List<T>> fetchAsync(final String column, final String value) {
+    public <T> Future<List<T>> fetchAsync(final String column, final Object value) {
         final CompletableFuture<List<T>> future =
                 this.vertxDAO.fetchAsync(DSL.field(column), Arrays.asList(value));
         return Async.toFuture(future);
     }
 
-    public <T> Future<T> fetchOneAsync(final String column, final String value) {
+
+    public <T> Future<T> fetchOneAsync(final String column, final Object value) {
         final CompletableFuture<T> future =
                 this.vertxDAO.fetchOneAsync(DSL.field(column), value);
         return Async.toFuture(future);

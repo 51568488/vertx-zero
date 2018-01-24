@@ -54,7 +54,11 @@ public class FeignDepot implements Serializable {
      * @return
      */
     public <T> T build(final Class<T> clazz) {
-        return this.build(clazz, null);
+        return this.build(clazz, this.endpoint, null);
+    }
+
+    public <T> T build(final Class<T> clazz, final String endpoint) {
+        return this.build(clazz, endpoint, null);
     }
 
     /**
@@ -64,7 +68,7 @@ public class FeignDepot implements Serializable {
      * @param <T>
      * @return
      */
-    public <T> T build(final Class<T> clazz, final ErrorDecoder decoder) {
+    public <T> T build(final Class<T> clazz, final String endpoint, final ErrorDecoder decoder) {
         final Feign.Builder builder = Feign.builder();
         if (null != this.options) {
             builder.options(this.options);
@@ -77,7 +81,7 @@ public class FeignDepot implements Serializable {
         if (null != decoder) {
             builder.errorDecoder(decoder);
         }
-        return builder.target(clazz, this.endpoint);
+        return builder.target(clazz, endpoint);
     }
 
     private FeignDepot(final String key) {
@@ -99,6 +103,10 @@ public class FeignDepot implements Serializable {
 
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    public void setEndpoint(final String endpoint) {
+        this.endpoint = endpoint;
     }
 
     private void init(final JsonObject raw) {

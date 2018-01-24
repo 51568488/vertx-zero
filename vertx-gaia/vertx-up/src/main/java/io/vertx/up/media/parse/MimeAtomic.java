@@ -45,11 +45,11 @@ public class MimeAtomic<T> implements Atomic<T> {
         /** 1.Read the resolver first **/
         final Annotation annotation = income.getAnnotation();
         final Class<?> resolverCls = Instance.invoke(annotation, "resolver");
+        final String header = context.request().getHeader(HttpHeaders.CONTENT_TYPE);
         /** 2.Check configured in default **/
         if (null == resolverCls) {
             /** 3. Old path **/
             final JsonObject content = NODE.read();
-            final String header = context.request().getHeader(HttpHeaders.CONTENT_TYPE);
             final String resolver;
             if (null == header) {
                 resolver = content.getString("default");
@@ -61,7 +61,7 @@ public class MimeAtomic<T> implements Atomic<T> {
             LOGGER.info(Info.RESOLVER, resolver, header, context.request().absoluteURI());
             return Instance.singleton(resolver);
         } else {
-            LOGGER.info(Info.RESOLVER_CONFIG, resolverCls);
+            LOGGER.info(Info.RESOLVER_CONFIG, resolverCls, header);
             return Instance.singleton(resolverCls);
         }
     }

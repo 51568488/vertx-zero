@@ -27,4 +27,18 @@ public class QiyClientTc extends WebTestBase {
             });
         });
     }
+
+    @Test
+    public void testRequestUpload() {
+        final QiyClient client = QiyClient.createShared(this.vertx);
+        client.authorize(handler -> {
+            Assert.assertNotNull(handler.result());
+            client.requestFile("mp4", "200", res -> {
+                Assert.assertNotNull(res.result());
+                this.getLogger().info("[ TEST ] Data: {0}", res.result());
+                Assert.assertNotNull(res.result().getValue("file_id"));
+                Assert.assertNotNull(res.result().getValue("upload_url"));
+            });
+        });
+    }
 }

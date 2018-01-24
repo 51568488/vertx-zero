@@ -36,7 +36,14 @@ public interface QiyClient {
      * /openupload
      */
     @Fluent
-    QiyClient requestUpload(String fileType,
-                            String size,
-                            Handler<AsyncResult<JsonObject>> handler);
+    QiyClient requestFile(String fileType,
+                          String size,
+                          Handler<AsyncResult<JsonObject>> handler);
+
+    @Fluent
+    QiyClient upload(String address,
+                     String size,
+                     String range,
+                     String fileId,
+                     char[] content);
 }

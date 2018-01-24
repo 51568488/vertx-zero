@@ -1,21 +1,27 @@
 package io.vertx.up.rs.hunt;
 
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.up.annotations.Codex;
 import io.vertx.up.atom.Envelop;
 import io.vertx.up.atom.Rule;
 import io.vertx.up.atom.agent.Depot;
 import io.vertx.up.atom.agent.Event;
 import io.vertx.up.atom.hold.Virtual;
 import io.vertx.up.exception.WebException;
-import io.vertx.up.rs.regular.Ruler;
-import io.vertx.zero.eon.Values;
+import io.vertx.up.log.Annal;
+import io.vertx.up.rs.announce.Rigor;
+import io.vertx.up.rs.validation.Validator;
+import io.vertx.up.tool.container.KeyPair;
+import io.vertx.up.tool.mirror.Anno;
+import io.vertx.up.tool.mirror.Instance;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
 class Flower {
+
+    private static final Annal LOGGER = Annal.get(Flower.class);
 
     static <T> Envelop continuous(final RoutingContext context,
                                   final T entity) {
@@ -32,20 +38,43 @@ class Flower {
                                final Object[] args,
                                final Validator verifier) {
         // Extract major object
-        WebException error = verifyPureArguments(verifier, depot, args);
-        // 1.Basic validation passed.
+        final WebException error = verifyPureArguments(verifier, depot, args);
         if (null == error) {
-            // 2. Body validation for jsonobject
-            error = verifyBody(rulers, args);
-            if (null == error) {
+
+            // Check if annotated with @Codex
+            final KeyPair<Integer, Class<?>> found = Anno.findParameter(depot.getEvent().getAction(), Codex.class);
+            if (null == found.getValue()) {
                 context.next();
             } else {
-                // Body validation of rulers failure
-                replyError(context, error, depot.getEvent());
+                // @Codex validation for different types
+                final Class<?> type = found.getValue();
+                final Object value = args[found.getKey()];
+                verifyCodex(context, rulers, depot, type, value);
             }
         } else {
             // Hibernate validate failure
             replyError(context, error, depot.getEvent());
+        }
+    }
+
+    private static void verifyCodex(final RoutingContext context,
+                                    final Map<String, List<Rule>> rulers,
+                                    final Depot depot,
+                                    final Class<?> type,
+                                    final Object value) {
+        final Rigor rigor = Rigor.get(type);
+        if (null == rigor) {
+            LOGGER.warn(Info.RIGOR_NOT_FOUND, type);
+            context.next();
+        } else {
+            final WebException error = rigor.verify(rulers, value);
+            if (null == error) {
+                // Ignore Errors
+                context.next();
+            } else {
+                // Reply Error
+                replyError(context, error, depot.getEvent());
+            }
         }
     }
 
@@ -54,46 +83,6 @@ class Flower {
                            final Event event) {
         final Envelop envelop = Envelop.failure(error);
         Answer.reply(context, envelop, event);
-    }
-
-    private static WebException verifyBody(
-            final Map<String, List<Rule>> rulers,
-            final Object[] args) {
-        WebException error = null;
-        if (!rulers.isEmpty()) {
-            // Extract the first element
-            final Object body = args[Values.IDX];
-            if (null != body) {
-                final JsonObject data = (JsonObject) body;
-                // Verified
-                error = verifyBody(rulers, data);
-            }
-        }
-        return error;
-    }
-
-    private static WebException verifyBody(
-            final Map<String, List<Rule>> rulers,
-            final JsonObject data) {
-        WebException error = null;
-        outer:
-        for (final String field : rulers.keySet()) {
-            final Object value = data.getValue(field);
-            final List<Rule> rules = rulers.get(field);
-            // Search for each rule
-            for (final Rule rule : rules) {
-                final Ruler ruler = Ruler.get(rule.getType());
-                if (null != ruler) {
-                    error = ruler.verify(field, value, rule);
-                }
-                // Error found.
-                if (null != error) {
-                    break outer;
-                }
-                // Else skip
-            }
-        }
-        return error;
     }
 
     private static WebException verifyPureArguments(
@@ -110,6 +99,8 @@ class Flower {
                 // Validation for dynamic proxy
                 // final Object delegate = Instance.getProxy(method);
                 // verifier.verifyMethod(delegate, method, args);
+                final Object delegate = Instance.getProxy(method);
+                verifier.verifyMethod(delegate, method, args);
             } else {
                 // Validation for proxy
                 verifier.verifyMethod(proxy, method, args);

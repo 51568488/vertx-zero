@@ -53,6 +53,7 @@ class Fantam {
     ) {
         return Fn.get(() -> {
             // TODO: Generate interface proxy
+            
             return null;
         }, interfaceCls);
     }

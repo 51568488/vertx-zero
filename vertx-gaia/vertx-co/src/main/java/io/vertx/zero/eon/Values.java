@@ -10,6 +10,8 @@ public interface Values {
     int BUFFER_SIZE = 16;
     /** **/
     String ENCODING = "UTF-8";
+
+    String ENCODING_ISO_8859_1 = "ISO-8859-1";
     /** **/
     Charset CHARSET = Charset.forName(ENCODING);
     /** **/

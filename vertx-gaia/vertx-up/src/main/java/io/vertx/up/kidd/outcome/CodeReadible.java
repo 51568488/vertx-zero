@@ -21,9 +21,10 @@ public class CodeReadible implements Readible {
             if (null != in) {
                 MESSAGE.mergeIn(IO.getYaml(FILENAME));
             }
+        } else {
+            Fn.safeNull(
+                    () -> error.setReadible(MESSAGE.getString(String.valueOf(Math.abs(error.getCode())))),
+                    error);
         }
-        Fn.safeNull(
-                () -> error.setReadible(MESSAGE.getString(String.valueOf(Math.abs(error.getCode())))),
-                error);
     }
 }

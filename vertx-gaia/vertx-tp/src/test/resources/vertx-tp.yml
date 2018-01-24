@@ -1,5 +1,8 @@
-tlk:
-  endpoint: http://localhost:6083
+qiy:
+  endpoint: https://openapi.iqiyi.com/api
+  config:
+    client_id: 7bbcc8b0145344d38d2bca36e25699b7
+    client_secret: a0a450725074260aa0b019fa4820427e
   timeout:
     connect: 1000
     read: 4500

@@ -14,6 +14,6 @@ public class FeignDepotTc extends ZeroBase {
 
     @Test
     public void testTlk(final TestContext context) {
-        final FeignDepot depot = FeignDepot.create("tlk");
+        final FeignDepot depot = FeignDepot.create("qiy");
     }
 }

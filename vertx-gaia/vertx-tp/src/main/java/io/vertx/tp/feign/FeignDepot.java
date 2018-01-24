@@ -54,7 +54,7 @@ public class FeignDepot implements Serializable {
      * @return
      */
     public <T> T build(final Class<T> clazz) {
-        return build(clazz, null);
+        return this.build(clazz, null);
     }
 
     /**
@@ -85,17 +85,25 @@ public class FeignDepot implements Serializable {
         // Check up exception for key
         Fn.flingUp(null == config || !config.containsKey(key),
                 LOGGER, DynamicKeyMissingException.class,
-                getClass(), key, config);
+                this.getClass(), key, config);
         // Validation passed
-        if (verify(config, key)) {
+        if (this.verify(config, key)) {
             // Attribute, Type are all correct
             this.init(config.getJsonObject(key));
         }
     }
 
+    public JsonObject getConfig() {
+        return this.config;
+    }
+
+    public String getEndpoint() {
+        return this.endpoint;
+    }
+
     private void init(final JsonObject raw) {
         // Options
-        initOpts(raw);
+        this.initOpts(raw);
         // Config
         this.endpoint = raw.getString("endpoint");
         if (raw.containsKey("config")) {
@@ -107,7 +115,7 @@ public class FeignDepot implements Serializable {
 
     private void initOpts(final JsonObject raw) {
         // Options
-        JsonObject normalized = getOptions();
+        JsonObject normalized = this.getOptions();
         if (raw.containsKey("timeout")) {
             final JsonObject options = raw.getJsonObject("timeout");
             normalized = normalized.mergeIn(options);
@@ -116,7 +124,7 @@ public class FeignDepot implements Serializable {
                 normalized.getInteger("connect"),
                 normalized.getInteger("read"));
         // Defaults
-        normalized = getDefaults();
+        normalized = this.getDefaults();
         if (raw.containsKey("retry")) {
             final JsonObject defaults = raw.getJsonObject("retry");
             normalized = normalized.mergeIn(defaults);

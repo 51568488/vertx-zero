@@ -8,10 +8,9 @@ public class ByteArraySaber extends BaseSaber {
     @Override
     public Object from(final Class<?> paramType,
                        final String literal) {
-        return Fn.get(() ->
-                        Fn.getSemi(Byte[].class == paramType ||
-                                        byte[].class == paramType, getLogger(),
-                                () -> literal.getBytes(Values.CHARSET), () -> new byte[0]),
+        return Fn.get(() -> Fn.getSemi(Byte[].class == paramType ||
+                        byte[].class == paramType, this.getLogger(),
+                () -> literal.getBytes(Values.CHARSET), () -> new byte[0]),
                 paramType, literal);
     }
 }

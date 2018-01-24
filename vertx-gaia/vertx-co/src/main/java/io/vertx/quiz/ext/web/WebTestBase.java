@@ -4,6 +4,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.*;
 import io.vertx.ext.web.Router;
 import io.vertx.quiz.core.VertxTestBase;
+import io.vertx.up.log.Annal;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -24,11 +25,11 @@ public class WebTestBase extends VertxTestBase {
     public void setUp() throws Exception {
         super.setUp();
         this.router = Router.router(this.vertx);
-        this.server = this.vertx.createHttpServer(getHttpServerOptions());
-        this.client = this.vertx.createHttpClient(getHttpClientOptions());
+        this.server = this.vertx.createHttpServer(this.getHttpServerOptions());
+        this.client = this.vertx.createHttpClient(this.getHttpClientOptions());
         final CountDownLatch latch = new CountDownLatch(1);
-        this.server.requestHandler(this.router::accept).listen(onSuccess(res -> latch.countDown()));
-        awaitLatch(latch);
+        this.server.requestHandler(this.router::accept).listen(this.onSuccess(res -> latch.countDown()));
+        this.awaitLatch(latch);
     }
 
     protected HttpServerOptions getHttpServerOptions() {
@@ -50,68 +51,68 @@ public class WebTestBase extends VertxTestBase {
         if (this.server != null) {
             final CountDownLatch latch = new CountDownLatch(1);
             this.server.close((asyncResult) -> {
-                assertTrue(asyncResult.succeeded());
+                this.assertTrue(asyncResult.succeeded());
                 latch.countDown();
             });
-            awaitLatch(latch);
+            this.awaitLatch(latch);
         }
         super.tearDown();
     }
 
     protected void testRequest(final HttpMethod method, final String path, final int statusCode, final String statusMessage) throws Exception {
-        testRequest(method, path, null, statusCode, statusMessage, null);
+        this.testRequest(method, path, null, statusCode, statusMessage, null);
     }
 
     protected void testRequest(final HttpMethod method, final String path, final int statusCode, final String statusMessage,
                                final String responseBody) throws Exception {
-        testRequest(method, path, null, statusCode, statusMessage, responseBody);
+        this.testRequest(method, path, null, statusCode, statusMessage, responseBody);
     }
 
     protected void testRequest(final HttpMethod method, final String path, final int statusCode, final String statusMessage,
                                final Buffer responseBody) throws Exception {
-        testRequestBuffer(method, path, null, null, statusCode, statusMessage, responseBody);
+        this.testRequestBuffer(method, path, null, null, statusCode, statusMessage, responseBody);
     }
 
     protected void testRequestWithContentType(final HttpMethod method, final String path, final String contentType, final int statusCode, final String statusMessage) throws Exception {
-        testRequest(method, path, req -> req.putHeader("content-type", contentType), statusCode, statusMessage, null);
+        this.testRequest(method, path, req -> req.putHeader("content-type", contentType), statusCode, statusMessage, null);
     }
 
     protected void testRequestWithAccepts(final HttpMethod method, final String path, final String accepts, final int statusCode, final String statusMessage) throws Exception {
-        testRequest(method, path, req -> req.putHeader("accept", accepts), statusCode, statusMessage, null);
+        this.testRequest(method, path, req -> req.putHeader("accept", accepts), statusCode, statusMessage, null);
     }
 
     protected void testRequestWithCookies(final HttpMethod method, final String path, final String cookieHeader, final int statusCode, final String statusMessage) throws Exception {
-        testRequest(method, path, req -> req.putHeader("cookie", cookieHeader), statusCode, statusMessage, null);
+        this.testRequest(method, path, req -> req.putHeader("cookie", cookieHeader), statusCode, statusMessage, null);
     }
 
     protected void testRequest(final HttpMethod method, final String path, final Consumer<HttpClientRequest> requestAction,
                                final int statusCode, final String statusMessage,
                                final String responseBody) throws Exception {
-        testRequest(method, path, requestAction, null, statusCode, statusMessage, responseBody);
+        this.testRequest(method, path, requestAction, null, statusCode, statusMessage, responseBody);
     }
 
     protected void testRequest(final HttpMethod method, final String path, final Consumer<HttpClientRequest> requestAction, final Consumer<HttpClientResponse> responseAction,
                                final int statusCode, final String statusMessage,
                                final String responseBody) throws Exception {
-        testRequestBuffer(method, path, requestAction, responseAction, statusCode, statusMessage, responseBody != null ? Buffer.buffer(responseBody) : null, true);
+        this.testRequestBuffer(method, path, requestAction, responseAction, statusCode, statusMessage, responseBody != null ? Buffer.buffer(responseBody) : null, true);
     }
 
     protected void testRequestBuffer(final HttpMethod method, final String path, final Consumer<HttpClientRequest> requestAction, final Consumer<HttpClientResponse> responseAction,
                                      final int statusCode, final String statusMessage,
                                      final Buffer responseBodyBuffer) throws Exception {
-        testRequestBuffer(method, path, requestAction, responseAction, statusCode, statusMessage, responseBodyBuffer, false);
+        this.testRequestBuffer(method, path, requestAction, responseAction, statusCode, statusMessage, responseBodyBuffer, false);
     }
 
     protected void testRequestBuffer(final HttpMethod method, final String path, final Consumer<HttpClientRequest> requestAction, final Consumer<HttpClientResponse> responseAction,
                                      final int statusCode, final String statusMessage,
                                      final Buffer responseBodyBuffer, final boolean normalizeLineEndings) throws Exception {
-        testRequestBuffer(this.client, method, 8080, path, requestAction, responseAction, statusCode, statusMessage, responseBodyBuffer, normalizeLineEndings);
+        this.testRequestBuffer(this.client, method, 8080, path, requestAction, responseAction, statusCode, statusMessage, responseBodyBuffer, normalizeLineEndings);
     }
 
     protected void testRequestBuffer(final HttpClient client, final HttpMethod method, final int port, final String path, final Consumer<HttpClientRequest> requestAction, final Consumer<HttpClientResponse> responseAction,
                                      final int statusCode, final String statusMessage,
                                      final Buffer responseBodyBuffer) throws Exception {
-        testRequestBuffer(client, method, port, path, requestAction, responseAction, statusCode, statusMessage, responseBodyBuffer, false);
+        this.testRequestBuffer(client, method, port, path, requestAction, responseAction, statusCode, statusMessage, responseBodyBuffer, false);
     }
 
     protected void testRequestBuffer(final HttpClient client, final HttpMethod method, final int port, final String path, final Consumer<HttpClientRequest> requestAction, final Consumer<HttpClientResponse> responseAction,
@@ -119,8 +120,8 @@ public class WebTestBase extends VertxTestBase {
                                      final Buffer responseBodyBuffer, final boolean normalizeLineEndings) throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
         final HttpClientRequest req = client.request(method, port, "localhost", path, resp -> {
-            assertEquals(statusCode, resp.statusCode());
-            assertEquals(statusMessage, resp.statusMessage());
+            this.assertEquals(statusCode, resp.statusCode());
+            this.assertEquals(statusMessage, resp.statusMessage());
             if (responseAction != null) {
                 responseAction.accept(resp);
             }
@@ -131,7 +132,7 @@ public class WebTestBase extends VertxTestBase {
                     if (normalizeLineEndings) {
                         buff = normalizeLineEndingsFor(buff);
                     }
-                    assertEquals(responseBodyBuffer, buff);
+                    this.assertEquals(responseBodyBuffer, buff);
                     latch.countDown();
                 });
             }
@@ -140,7 +141,7 @@ public class WebTestBase extends VertxTestBase {
             requestAction.accept(req);
         }
         req.end();
-        awaitLatch(latch);
+        this.awaitLatch(latch);
     }
 
     protected static Buffer normalizeLineEndingsFor(final Buffer buff) {
@@ -153,5 +154,9 @@ public class WebTestBase extends VertxTestBase {
             }
         }
         return normalized;
+    }
+
+    protected Annal getLogger() {
+        return Annal.get(this.getClass());
     }
 }

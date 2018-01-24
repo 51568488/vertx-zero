@@ -1,7 +1,9 @@
 package io.vertx.up.rs.config;
 
+import io.reactivex.Observable;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.impl.ConcurrentHashSet;
+import io.vertx.up.annotations.Codex;
 import io.vertx.up.annotations.EndPoint;
 import io.vertx.up.atom.agent.Event;
 import io.vertx.up.atom.hold.Virtual;
@@ -12,14 +14,19 @@ import io.vertx.up.tool.StringUtil;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.up.web.ZeroHelper;
 import io.vertx.zero.exception.AccessProxyException;
+import io.vertx.zero.exception.EventCodexMultiException;
 import io.vertx.zero.exception.EventSourceException;
 import io.vertx.zero.exception.NoArgConstructorException;
 
 import javax.ws.rs.Path;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Scanned @EndPoint clazz to build Event metadata
@@ -71,13 +78,22 @@ public class EventExtractor implements Extractor<Set<Event>> {
         final Set<Event> events = new HashSet<>();
         // 0.Preparing
         final Method[] methods = clazz.getDeclaredMethods();
-        for (final Method method : methods) {
-            // 1.Build Event
-            final Event event = this.extract(method, root);
-            if (null != event) {
-                events.add(event);
-            }
-        }
+        // 1.Validate Codex annotation appears
+        final Long counter = Observable.fromArray(methods)
+                .map(Method::getParameterAnnotations)
+                .flatMap(Observable::fromArray)
+                .map(Arrays::asList)
+                .map(item -> item.stream().map(Annotation::annotationType).collect(Collectors.toList()))
+                .filter(item -> item.contains(Codex.class))
+                .count().blockingGet();
+        Fn.flingUp(methods.length < counter, LOGGER,
+                EventCodexMultiException.class,
+                this.getClass(), clazz);
+        // 2.Build Set
+        Observable.fromArray(methods)
+                .map(item -> this.extract(item, root))
+                .filter(Objects::nonNull)
+                .subscribe(events::add);
         return events;
     }
 

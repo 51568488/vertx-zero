@@ -11,21 +11,6 @@
     <artifactId>vertx-up</artifactId>
     <name>( Vertx Core ) Zero Up Web Container</name>
     <dependencies>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-codegen</artifactId>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-databind</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <!-- Service Discovery -->
         <dependency>
             <groupId>cn.vertxup</groupId>

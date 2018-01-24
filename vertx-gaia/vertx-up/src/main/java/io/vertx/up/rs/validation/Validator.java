@@ -1,4 +1,4 @@
-package io.vertx.up.rs.hunt;
+package io.vertx.up.rs.validation;
 
 import io.reactivex.Observable;
 import io.vertx.core.json.JsonArray;
@@ -26,7 +26,9 @@ import java.util.concurrent.ConcurrentMap;
 public class Validator {
 
     private static final javax.validation.Validator VALIDATOR
-            = Validation.buildDefaultValidatorFactory().getValidator();
+            = Validation.buildDefaultValidatorFactory().usingContext().messageInterpolator(
+            new ValidatorInterpolator()
+    ).getValidator();
 
     private static final ConcurrentMap<String, Map<String, List<Rule>>>
             RULERS = new ConcurrentHashMap<>();
@@ -65,13 +67,18 @@ public class Validator {
         // 3. Throw out exception
         if (!constraints.isEmpty()) {
             final ConstraintViolation<T> item = constraints.iterator().next();
-            if (null != item) {
-                final WebException error
-                        = new _400ValidationException(getClass(),
-                        proxy.getClass(), method, item.getMessage());
-                error.setReadible(item.getMessage());
-                throw error;
-            }
+            this.replyError(proxy, method, item);
+        }
+    }
+
+    private <T> void replyError(final T proxy, final Method method,
+                                final ConstraintViolation<T> item) {
+        if (null != item) {
+            final WebException error
+                    = new _400ValidationException(this.getClass(),
+                    proxy.getClass(), method, item.getMessage());
+            error.setReadible(item.getMessage());
+            throw error;
         }
     }
 
@@ -93,7 +100,7 @@ public class Validator {
                 // 1. Check whether contains @BodyParam
                 .any(item -> BodyParam.class == item)
                 // 2. Build rulers
-                .map(item -> buildKey(depot.getEvent()))
+                .map(item -> this.buildKey(depot.getEvent()))
                 .map(this::buildRulers)
                 .subscribe(rulers::putAll);
         return rulers;
@@ -109,7 +116,7 @@ public class Validator {
             if (null != rule) {
                 Fn.itJObject(rule, (value, field) -> {
                     // Checked valid rule config
-                    final List<Rule> rulers = buildRulers(value);
+                    final List<Rule> rulers = this.buildRulers(value);
                     if (!rulers.isEmpty()) {
                         ruler.put(field, rulers);
                     }

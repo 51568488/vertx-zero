@@ -6,7 +6,7 @@ import io.vertx.up.exception.WebException;
 import io.vertx.up.media.Resolver;
 
 public class BufferResolver<T> implements Resolver<T> {
-    
+
     @Override
     public Epsilon<T> resolve(final RoutingContext context,
                               final Epsilon<T> income)

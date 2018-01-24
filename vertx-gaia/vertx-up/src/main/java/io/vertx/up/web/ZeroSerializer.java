@@ -13,6 +13,7 @@ import io.vertx.up.web.serialization.*;
 import io.vertx.zero.atom.Mirror;
 import io.vertx.zero.eon.Values;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,46 +38,48 @@ public class ZeroSerializer {
     private static final ConcurrentMap<Class<?>, Saber> SABERS =
             new ConcurrentHashMap<Class<?>, Saber>() {
                 {
-                    put(int.class, Instance.singleton(IntegerSaber.class));
-                    put(Integer.class, Instance.singleton(IntegerSaber.class));
-                    put(short.class, Instance.singleton(ShortSaber.class));
-                    put(Short.class, Instance.singleton(ShortSaber.class));
-                    put(long.class, Instance.singleton(LongSaber.class));
-                    put(Long.class, Instance.singleton(LongSaber.class));
+                    this.put(int.class, Instance.singleton(IntegerSaber.class));
+                    this.put(Integer.class, Instance.singleton(IntegerSaber.class));
+                    this.put(short.class, Instance.singleton(ShortSaber.class));
+                    this.put(Short.class, Instance.singleton(ShortSaber.class));
+                    this.put(long.class, Instance.singleton(LongSaber.class));
+                    this.put(Long.class, Instance.singleton(LongSaber.class));
 
-                    put(double.class, Instance.singleton(DoubleSaber.class));
-                    put(Double.class, Instance.singleton(DoubleSaber.class));
+                    this.put(double.class, Instance.singleton(DoubleSaber.class));
+                    this.put(Double.class, Instance.singleton(DoubleSaber.class));
 
-                    put(LocalDate.class, Instance.singleton(Java8DataTimeSaber.class));
-                    put(LocalDateTime.class, Instance.singleton(Java8DataTimeSaber.class));
-                    put(LocalTime.class, Instance.singleton(Java8DataTimeSaber.class));
+                    this.put(LocalDate.class, Instance.singleton(Java8DataTimeSaber.class));
+                    this.put(LocalDateTime.class, Instance.singleton(Java8DataTimeSaber.class));
+                    this.put(LocalTime.class, Instance.singleton(Java8DataTimeSaber.class));
 
-                    put(float.class, Instance.singleton(FloatSaber.class));
-                    put(Float.class, Instance.singleton(FloatSaber.class));
-                    put(BigDecimal.class, Instance.singleton(BigDecimalSaber.class));
+                    this.put(float.class, Instance.singleton(FloatSaber.class));
+                    this.put(Float.class, Instance.singleton(FloatSaber.class));
+                    this.put(BigDecimal.class, Instance.singleton(BigDecimalSaber.class));
 
-                    put(Enum.class, Instance.singleton(EnumSaber.class));
+                    this.put(Enum.class, Instance.singleton(EnumSaber.class));
 
-                    put(boolean.class, Instance.singleton(BooleanSaber.class));
-                    put(Boolean.class, Instance.singleton(BooleanSaber.class));
+                    this.put(boolean.class, Instance.singleton(BooleanSaber.class));
+                    this.put(Boolean.class, Instance.singleton(BooleanSaber.class));
 
-                    put(Date.class, Instance.singleton(DateSaber.class));
-                    put(Calendar.class, Instance.singleton(DateSaber.class));
+                    this.put(Date.class, Instance.singleton(DateSaber.class));
+                    this.put(Calendar.class, Instance.singleton(DateSaber.class));
 
-                    put(JsonObject.class, Instance.singleton(JsonObjectSaber.class));
-                    put(JsonArray.class, Instance.singleton(JsonArraySaber.class));
+                    this.put(JsonObject.class, Instance.singleton(JsonObjectSaber.class));
+                    this.put(JsonArray.class, Instance.singleton(JsonArraySaber.class));
 
-                    put(String.class, Instance.singleton(StringSaber.class));
-                    put(StringBuffer.class, Instance.singleton(StringBufferSaber.class));
-                    put(StringBuilder.class, Instance.singleton(StringBufferSaber.class));
+                    this.put(String.class, Instance.singleton(StringSaber.class));
+                    this.put(StringBuffer.class, Instance.singleton(StringBufferSaber.class));
+                    this.put(StringBuilder.class, Instance.singleton(StringBufferSaber.class));
 
-                    put(Buffer.class, Instance.singleton(BufferSaber.class));
-                    put(Set.class, Instance.singleton(CollectionSaber.class));
-                    put(List.class, Instance.singleton(CollectionSaber.class));
-                    put(Collection.class, Instance.singleton(CollectionSaber.class));
+                    this.put(Buffer.class, Instance.singleton(BufferSaber.class));
+                    this.put(Set.class, Instance.singleton(CollectionSaber.class));
+                    this.put(List.class, Instance.singleton(CollectionSaber.class));
+                    this.put(Collection.class, Instance.singleton(CollectionSaber.class));
 
-                    put(byte[].class, Instance.singleton(ByteArraySaber.class));
-                    put(Byte[].class, Instance.singleton(ByteArraySaber.class));
+                    this.put(byte[].class, Instance.singleton(ByteArraySaber.class));
+                    this.put(Byte[].class, Instance.singleton(ByteArraySaber.class));
+
+                    this.put(File.class, Instance.singleton(FileSaber.class));
                 }
             };
 

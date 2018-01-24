@@ -129,7 +129,7 @@ public class Envelop implements Serializable {
         }
         return response.encode();
     }
-    
+
     public HttpStatusCode status() {
         return this.status;
     }
@@ -227,13 +227,7 @@ public class Envelop implements Serializable {
     }
 
     private JsonObject fail(final WebException error) {
-        final JsonObject data = new JsonObject();
-        data.put(Key.CODE, error.getCode());
-        data.put(Key.MESSAGE, error.getMessage());
-        if (null != error.getReadible()) {
-            data.put(Key.INFO, error.getReadible());
-        }
-        return data;
+        return error.toJson();
     }
 
     @Override

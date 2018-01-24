@@ -54,7 +54,11 @@ public class FeignDepot implements Serializable {
      * @return
      */
     public <T> T build(final Class<T> clazz) {
-        return build(clazz, null);
+        return this.build(clazz, this.endpoint, null);
+    }
+
+    public <T> T build(final Class<T> clazz, final String endpoint) {
+        return this.build(clazz, endpoint, null);
     }
 
     /**
@@ -64,7 +68,7 @@ public class FeignDepot implements Serializable {
      * @param <T>
      * @return
      */
-    public <T> T build(final Class<T> clazz, final ErrorDecoder decoder) {
+    public <T> T build(final Class<T> clazz, final String endpoint, final ErrorDecoder decoder) {
         final Feign.Builder builder = Feign.builder();
         if (null != this.options) {
             builder.options(this.options);
@@ -77,7 +81,7 @@ public class FeignDepot implements Serializable {
         if (null != decoder) {
             builder.errorDecoder(decoder);
         }
-        return builder.target(clazz, this.endpoint);
+        return builder.target(clazz, endpoint);
     }
 
     private FeignDepot(final String key) {
@@ -85,17 +89,29 @@ public class FeignDepot implements Serializable {
         // Check up exception for key
         Fn.flingUp(null == config || !config.containsKey(key),
                 LOGGER, DynamicKeyMissingException.class,
-                getClass(), key, config);
+                this.getClass(), key, config);
         // Validation passed
-        if (verify(config, key)) {
+        if (this.verify(config, key)) {
             // Attribute, Type are all correct
             this.init(config.getJsonObject(key));
         }
     }
 
+    public JsonObject getConfig() {
+        return this.config;
+    }
+
+    public String getEndpoint() {
+        return this.endpoint;
+    }
+
+    public void setEndpoint(final String endpoint) {
+        this.endpoint = endpoint;
+    }
+
     private void init(final JsonObject raw) {
         // Options
-        initOpts(raw);
+        this.initOpts(raw);
         // Config
         this.endpoint = raw.getString("endpoint");
         if (raw.containsKey("config")) {
@@ -107,7 +123,7 @@ public class FeignDepot implements Serializable {
 
     private void initOpts(final JsonObject raw) {
         // Options
-        JsonObject normalized = getOptions();
+        JsonObject normalized = this.getOptions();
         if (raw.containsKey("timeout")) {
             final JsonObject options = raw.getJsonObject("timeout");
             normalized = normalized.mergeIn(options);
@@ -116,7 +132,7 @@ public class FeignDepot implements Serializable {
                 normalized.getInteger("connect"),
                 normalized.getInteger("read"));
         // Defaults
-        normalized = getDefaults();
+        normalized = this.getDefaults();
         if (raw.containsKey("retry")) {
             final JsonObject defaults = raw.getJsonObject("retry");
             normalized = normalized.mergeIn(defaults);

@@ -7,6 +7,9 @@ E10003: (V) - The field {0} value is "{1}", but expected type is "{2}"
 E10004: (V) - The cluster options is enabled, but the "{0}" vertx instance = "{1}"
 E10005: (V) - The dynamic key "{0}" missing in uniform extension configuration data {1}
 E10006: (V) - The data object {0} contains unsupported/forbidden field "{1}"
+# Thirt part error for different integration
+E20001: (401) - Qiy interface of "/iqiyi/authorize" met errors, code = {0}, message = {1}
+E20002: (401) - Qiy token record does not contain "access_token", client_id = {0}.
 # (Runtime) Vertx start up error
 E40001: Vert.x zero boot class should not be null, please provide the entry of this application
 E40002: Vert.x zero boot class must be marked with annotation "Up", but ( name= {0} ) it''s missing
@@ -42,7 +45,7 @@ E40032: You are in mode "Direct", the input index must be greatter and equal to 
 E40033: "(Database) You are trying to initialize \"Xtor\" component, but found invalid component {0} in method {1}"
 E40034: "(Database) Your \"Xtor\" component is not ready, (client, clazz, logger, collection) could not be null"
 E40035: "(Database) You are executing the operations in \"Xtor\" component, but met error: {0}"
-E40036: (Rpc) Zero rpc require SSL with Alpn enabled, please check your configuration of port = {0}, options = {1}
+E40036: "Zero system detected event class {0} contains methods that annotated with @Codex more than once"
 E40037: (Rpc) Enabled in current environment, but remote configuration center ( Etcd ) is not prepared
 E40038: "(Security) Zero system detected duplicated \"Wall\" classes [{0}] (Path & Order) should not be the same, it''s invalid"
 E40039: "The network configured for etcd ( host = {0}, port = {1} ) could not be reached"
@@ -75,3 +78,5 @@ E60017: "(504) - The remote service ( location = {0}, name = {1} ) met error, de
 E60018: "(501) - The micro service could not find method by address = {0}, error occurs"
 E60019: "(500) - Unexpected error found when communitting, details {0}"
 E60020: "(424) - This call dependency Rpc remote service ( name = {0}, address = {1} ) could not be found now"
+E60021: "(400) - File uploading to {0} met errors, please check"
+# (Web) Exception for standard third part

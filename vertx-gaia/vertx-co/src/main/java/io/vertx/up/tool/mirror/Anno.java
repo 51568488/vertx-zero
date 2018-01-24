@@ -1,10 +1,12 @@
 package io.vertx.up.tool.mirror;
 
 import io.vertx.up.func.Fn;
+import io.vertx.up.tool.container.KeyPair;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,6 +81,28 @@ public final class Anno {
             }
         });
         return integer.get();
+    }
+
+    /**
+     * Find type of parameter annotatated with annoCls.
+     *
+     * @param method
+     * @param annoCls
+     * @return
+     */
+    public static KeyPair<Integer, Class<?>> findParameter(
+            final Method method,
+            final Class<? extends Annotation> annoCls) {
+        int index = 0;
+        final KeyPair<Integer, Class<?>> result = KeyPair.create();
+        for (final Parameter parameter : method.getParameters()) {
+            if (parameter.isAnnotationPresent(annoCls)) {
+                result.set(index, parameter.getType());
+                break;
+            }
+            index++;
+        }
+        return result;
     }
 
     /**

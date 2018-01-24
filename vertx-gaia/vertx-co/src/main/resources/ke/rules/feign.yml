@@ -1,5 +1,3 @@
-required:
-- endpoint
 typed:
   endpoint: STRING
   config: JOBJECT

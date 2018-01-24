@@ -13,7 +13,6 @@ import io.vertx.up.rs.announce.Rigor;
 import io.vertx.up.rs.validation.Validator;
 import io.vertx.up.tool.container.KeyPair;
 import io.vertx.up.tool.mirror.Anno;
-import io.vertx.up.tool.mirror.Instance;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -99,8 +98,6 @@ class Flower {
                 // Validation for dynamic proxy
                 // final Object delegate = Instance.getProxy(method);
                 // verifier.verifyMethod(delegate, method, args);
-                final Object delegate = Instance.getProxy(method);
-                verifier.verifyMethod(delegate, method, args);
             } else {
                 // Validation for proxy
                 verifier.verifyMethod(proxy, method, args);

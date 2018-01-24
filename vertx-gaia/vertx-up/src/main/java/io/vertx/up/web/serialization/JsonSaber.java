@@ -14,17 +14,16 @@ public abstract class JsonSaber extends BaseSaber {
     @Override
     public Object from(final Class<?> paramType,
                        final String literal) {
-        return Fn.get(() ->
-                        Fn.getSemi(this.isValid(paramType), this.getLogger(),
-                                () -> {
-                                    try {
-                                        return this.getFun().apply(literal);
-                                    } catch (final DecodeException ex) {
-                                        // Do not do anything
-                                        // getLogger().jvm(ex);
-                                        throw new _400ParameterFromStringException(this.getClass(), paramType, literal);
-                                    }
-                                }, Fn::nil),
+        return Fn.get(() -> Fn.getSemi(this.isValid(paramType), this.getLogger(),
+                () -> {
+                    try {
+                        return this.getFun().apply(literal);
+                    } catch (final DecodeException ex) {
+                        // Do not do anything
+                        // getLogger().jvm(ex);
+                        throw new _400ParameterFromStringException(this.getClass(), paramType, literal);
+                    }
+                }, Fn::nil),
                 paramType, literal);
     }
 

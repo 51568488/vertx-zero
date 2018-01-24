@@ -78,4 +78,5 @@ E60017: "(504) - The remote service ( location = {0}, name = {1} ) met error, de
 E60018: "(501) - The micro service could not find method by address = {0}, error occurs"
 E60019: "(500) - Unexpected error found when communitting, details {0}"
 E60020: "(424) - This call dependency Rpc remote service ( name = {0}, address = {1} ) could not be found now"
+E60021: "(400) - File uploading to {0} met errors, please check"
 # (Web) Exception for standard third part

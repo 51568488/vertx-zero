@@ -15,7 +15,7 @@ public class FileUpload {
     @POST
     @Path("/upload")
     public JsonObject upload(@Codex @StreamParam final File file) {
-        System.out.println(file);
+        System.out.println(file.getAbsoluteFile());
         return null;
     }
 

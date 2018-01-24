@@ -7,6 +7,7 @@ import io.vertx.up.eon.em.MimeFlow;
 import io.vertx.up.exception.WebException;
 import io.vertx.up.log.Annal;
 import io.vertx.up.media.Resolver;
+import io.vertx.up.media.resolver.UnsetResolver;
 import io.vertx.up.tool.mirror.Instance;
 import io.vertx.zero.marshal.node.Node;
 
@@ -47,7 +48,7 @@ public class MimeAtomic<T> implements Atomic<T> {
         final Class<?> resolverCls = Instance.invoke(annotation, "resolver");
         final String header = context.request().getHeader(HttpHeaders.CONTENT_TYPE);
         /** 2.Check configured in default **/
-        if (null == resolverCls) {
+        if (UnsetResolver.class == resolverCls) {
             /** 3. Old path **/
             final JsonObject content = NODE.read();
             final String resolver;

@@ -23,7 +23,7 @@ public interface Orders {
      * Pattern
      * 1,400,000
      */
-    int PATTERN = 1400000;
+    int CONTENT = 1400000;
     /**
      * Acceptor
      * 1,500,000

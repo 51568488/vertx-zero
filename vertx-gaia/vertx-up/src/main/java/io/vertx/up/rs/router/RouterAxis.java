@@ -5,6 +5,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.CorsHandler;
+import io.vertx.ext.web.handler.ResponseContentTypeHandler;
 import io.vertx.up.eon.Orders;
 import io.vertx.up.rs.Axis;
 
@@ -22,6 +23,9 @@ public class RouterAxis implements Axis<Router> {
         router.route()
                 .order(Orders.BODY)
                 .handler(BodyHandler.create());
+        router.route()
+                .order(Orders.CONTENT)
+                .handler(ResponseContentTypeHandler.create());
         // 2. Cors Template Solution
         router.route()
                 .order(Orders.CORS)

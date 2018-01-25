@@ -15,14 +15,14 @@
 ### 1.2. Java Annotations
 
 * [x] `javax.ws.rs.QueryParam` 
-* [ ] `javax.ws.rs.FormParam` 
+* [x] `javax.ws.rs.FormParam` 
 * [ ] `javax.ws.rs.MatrixParam` 
 * [x] `javax.ws.rs.PathParam` 
 * [x] `javax.ws.rs.HeaderParam` 
-* [ ] `javax.ws.rs.CookieParam` 
+* [x] `javax.ws.rs.CookieParam` 
 * [x] `javax.ws.rs.BodyParam` 
-* [ ] `javax.ws.rs.StreamParam` 
-* [ ] `javax.ws.rs.SessionParam` 
+* [x] `javax.ws.rs.StreamParam` 
+* [x] `javax.ws.rs.SessionParam` 
 
 ## 2. Java Types
 
@@ -64,7 +64,7 @@ Ignored `java.lang.char` and `java.lang.byte` because it's not common.
 * `Pojo Collection - Collection<T>`
 * `Pojo Array - T[]`
 
-### 2.3. Typed ( No annotation ) 
+### 2.3. Typed \( No annotation \)
 
 * `io.vertx.ext.web.Session`
 * `io.vertx.core.http.HttpServerRequest`
@@ -77,3 +77,4 @@ Ignored `java.lang.char` and `java.lang.byte` because it's not common.
 ## 3. Specification Definition
 
 ![matrix](image/mime-matrix.png)
+

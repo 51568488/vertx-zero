@@ -2,7 +2,6 @@ package io.vertx.up.web.limit;
 
 import io.vertx.up.boot.Motor;
 import io.vertx.up.eon.em.ServerType;
-import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ZeroApiAgent;
 
 import java.util.HashSet;
@@ -16,8 +15,6 @@ import java.util.concurrent.ConcurrentMap;
  * 2. Rx/Http mode shared.
  */
 public class ApiFactor implements Factor {
-
-    private static final Annal LOGGER = Annal.get(HttpFactor.class);
 
     private static final Class<?>[] DEFAULT_AGENTS = new Class<?>[]{
             ZeroApiAgent.class

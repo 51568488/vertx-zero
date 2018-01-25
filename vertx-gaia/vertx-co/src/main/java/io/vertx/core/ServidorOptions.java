@@ -6,8 +6,8 @@ import java.io.Serializable;
 
 public class ServidorOptions implements Serializable {
 
-    public static final String DEFAULT_NAME = "__RPC__";
-    public static final String DEFAULT_HOST = "0.0.0.0";
+    private static final String DEFAULT_NAME = "__RPC__";
+    private static final String DEFAULT_HOST = "0.0.0.0";
     public static final Integer DEFAULT_PORT = 6084;
 
     private transient String name = DEFAULT_NAME;
@@ -16,7 +16,6 @@ public class ServidorOptions implements Serializable {
     private transient JsonObject options = new JsonObject();
 
     public ServidorOptions() {
-
     }
 
     public ServidorOptions(final ServidorOptions other) {

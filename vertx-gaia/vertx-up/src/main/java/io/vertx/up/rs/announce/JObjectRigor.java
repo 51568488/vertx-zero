@@ -23,25 +23,8 @@ public class JObjectRigor implements Rigor {
                     final Object value = data.getValue(field);
                     final List<Rule> rules = rulers.get(field);
                     // Verify each field.
-                    error = this.verify(rules, field, value);
+                    error = Ruler.verify(rules, field, value);
                 }
-            }
-        }
-        return error;
-    }
-
-    private WebException verify(final List<Rule> rules,
-                                final String field,
-                                final Object value) {
-        WebException error = null;
-        for (final Rule rule : rules) {
-            final Ruler ruler = Ruler.get(rule.getType());
-            if (null != ruler) {
-                error = ruler.verify(field, value, rule);
-            }
-            // Error found.
-            if (null != error) {
-                break;
             }
         }
         return error;

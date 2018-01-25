@@ -19,6 +19,7 @@ class RequiredRuler extends BaseRuler {
                                final Rule rule) {
         WebException error = null;
         if (null == value || StringUtil.isNil(value.toString())) {
+            // Single Field
             error = failure(field, value, rule);
         }
         return error;

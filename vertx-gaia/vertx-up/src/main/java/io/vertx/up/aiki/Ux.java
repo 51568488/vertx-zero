@@ -23,6 +23,17 @@ import java.util.function.*;
  */
 @SuppressWarnings("unchecked")
 public final class Ux {
+    /**
+     * Debug only
+     *
+     * @param objects
+     */
+    public static void debug(final Object... objects) {
+        for (final Object reference : objects) {
+            Debug.monitor(reference);
+        }
+    }
+
     // Business method
     // page, size -> JsonObject
     public static JsonObject toPagerJson(final int page, final int size) {

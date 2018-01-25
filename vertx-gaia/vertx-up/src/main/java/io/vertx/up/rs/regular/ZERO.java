@@ -11,6 +11,8 @@ interface Pool {
             put("length", new LengthRuler());
             put("minlength", new MinLengthRuler());
             put("maxlength", new MaxLengthRuler());
+            put("empty", new EmptyRuler());
+            put("singlefile", new SingleFileRuler());
         }
     };
 }

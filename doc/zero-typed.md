@@ -1,18 +1,18 @@
 # Parameter type supported.
 
-The parameters ( Not belong to specific ), must be annotated with following
+The parameters \( Not belong to specific \), must be annotated with following
 
 * [x] `javax.ws.rs.QueryParam` 
-* [ ] `javax.ws.rs.FormParam` 
+* [x] `javax.ws.rs.FormParam` 
 * [ ] `javax.ws.rs.MatrixParam` 
 * [x] `javax.ws.rs.PathParam` 
 * [x] `javax.ws.rs.HeaderParam` 
-* [ ] `javax.ws.rs.CookieParam` 
+* [x] `javax.ws.rs.CookieParam` 
 * [x] `javax.ws.rs.BodyParam` 
-* [ ] `javax.ws.rs.StreamParam` 
-* [ ] `javax.ws.rs.SessionParam` 
+* [x] `javax.ws.rs.StreamParam` 
+* [x] `javax.ws.rs.SessionParam` 
 
-The following parameter could be used by type without annotation ( Mustn't include )
+The following parameter could be used by type without annotation \( Mustn't include \)
 
 * `io.vertx.ext.web.Session`
 * `io.vertx.core.http.HttpServerRequest`
@@ -58,3 +58,4 @@ public class ZeroExpApi {
 curl http://localhost:6083/up/example/typed/request
 {"brief":"OK","status":200,"data":"http://localhost:8083/up/example/typed/request"}
 ```
+

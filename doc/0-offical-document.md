@@ -10,6 +10,7 @@
    2. [3.2 - Restful Api, @Path usage](zero-path.md)
    3. [3.3 - \( JSR 311 Extend \) @BodyParam usage](zero-param.md)
    4. [3.4 - Set POJO as parameters](zero-pojo.md)
+   5. [3.5 - File/FileUpload as parameters](35-filefileupload-as-parameters.md)
 4. Mime Supported Matrix
    1. [4.1 - Parameter type supported](zero-typed.md)
    2. [4.2 - Mime type Matrix](zero-mime.md)

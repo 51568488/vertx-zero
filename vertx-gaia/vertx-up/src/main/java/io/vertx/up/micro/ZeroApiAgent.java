@@ -29,8 +29,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Agent(type = ServerType.API)
 public class ZeroApiAgent extends AbstractVerticle {
 
-    private static final String PATH_ROUTE = "\\/([^\\/]+)\\/([^\\/]+)";
-
     private static final Annal LOGGER = Annal.get(ZeroApiAgent.class);
 
     private static final ServerVisitor<HttpServerOptions> VISITOR =

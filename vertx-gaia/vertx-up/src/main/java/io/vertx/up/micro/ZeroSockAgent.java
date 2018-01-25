@@ -13,5 +13,9 @@ import io.vertx.up.log.Annal;
 @Agent(type = ServerType.SOCK)
 public class ZeroSockAgent extends AbstractVerticle {
     private static final Annal LOGGER = Annal.get(ZeroSockAgent.class);
-    
+
+    @Override
+    public void start() {
+        
+    }
 }

@@ -49,6 +49,11 @@ public interface ZeroAtomic {
         }
     };
     /**
+     * Socket constants
+     */
+    ConcurrentMap<Integer, HttpServerOptions>
+            SOCK_OPTS = ZeroGrid.getSockOptions();
+    /**
      * Api Gateay
      */
     ConcurrentMap<Integer, HttpServerOptions> API_OPTS =

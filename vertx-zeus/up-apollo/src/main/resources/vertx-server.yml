@@ -4,3 +4,8 @@ server:
   config:
     port: 6800
     host: 0.0.0.0
+- name: up-apollo-sock
+  type: sock
+  config:
+    port: 6888
+    host: 0.0.0.0

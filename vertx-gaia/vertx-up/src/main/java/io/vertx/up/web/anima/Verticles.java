@@ -24,6 +24,10 @@ class Verticles {
         // Verticle deployment
         final String name = clazz.getName();
         final String flag = option.isWorker() ? "Worker" : "Agent";
+        // Multi Thread worker enabled for trying.
+        if (option.isWorker()) {
+            option.setMultiThreaded(true);
+        }
         vertx.deployVerticle(name, option, (result) -> {
             // Success or Failed.
             if (result.succeeded()) {

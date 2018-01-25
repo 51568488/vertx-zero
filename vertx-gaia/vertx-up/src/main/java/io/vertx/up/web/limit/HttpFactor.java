@@ -7,6 +7,7 @@ import io.vertx.up.func.Fn;
 import io.vertx.up.log.Annal;
 import io.vertx.up.micro.ZeroHttpAgent;
 import io.vertx.up.micro.ZeroRpcAgent;
+import io.vertx.up.micro.ZeroSockAgent;
 import io.vertx.zero.exception.RpcPreparingException;
 
 import java.util.HashSet;
@@ -24,7 +25,7 @@ public class HttpFactor implements Factor {
     private static final Annal LOGGER = Annal.get(HttpFactor.class);
 
     private static final Class<?>[] DEFAULT_AGENTS = new Class<?>[]{
-            ZeroHttpAgent.class, ZeroRpcAgent.class
+            ZeroHttpAgent.class, ZeroRpcAgent.class, ZeroSockAgent.class
     };
 
     private static final ConcurrentMap<ServerType, Class<?>> INTERNALS
@@ -32,6 +33,7 @@ public class HttpFactor implements Factor {
         {
             put(ServerType.HTTP, ZeroHttpAgent.class);
             put(ServerType.IPC, ZeroRpcAgent.class);
+            put(ServerType.SOCK, ZeroSockAgent.class);
         }
     };
 

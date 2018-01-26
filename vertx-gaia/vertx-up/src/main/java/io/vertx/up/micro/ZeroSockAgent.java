@@ -1,6 +1,8 @@
 package io.vertx.up.micro;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.http.HttpServer;
+import io.vertx.ext.web.Router;
 import io.vertx.up.annotations.Agent;
 import io.vertx.up.eon.em.ServerType;
 import io.vertx.up.log.Annal;
@@ -16,6 +18,15 @@ public class ZeroSockAgent extends AbstractVerticle {
 
     @Override
     public void start() {
-        
+        // Server Listen
+        ZeroAtomic.SOCK_OPTS.forEach((port, option) -> {
+            /** Create Server **/
+            final HttpServer server = this.vertx.createHttpServer(option);
+
+            final Router router = Router.router(this.vertx);
+            
+            /** Handler **/
+            server.requestHandler(router::accept).listen();
+        });
     }
 }

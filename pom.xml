@@ -62,7 +62,7 @@
         <vertx.version>3.5.0</vertx.version>
         <stack.version>3.5.0</stack.version>
 
-        <jackson.version>2.9.3</jackson.version>
+        <jackson.version>2.9.4</jackson.version>
         <jws.version>2.1</jws.version>
         <jersey.version>2.26</jersey.version>
         <javax.el.version>3.0.1-b04</javax.el.version>
@@ -87,16 +87,16 @@
         <codehaus.janino.version>3.0.8</codehaus.janino.version>
         <cglib.version>3.2.6</cglib.version>
         <ignite.version>2.3.0</ignite.version>
-        <etcd.version>2.14.0</etcd.version>
+        <etcd.version>2.15.0</etcd.version>
         <mongodb.async.version>3.6.1</mongodb.async.version>
         <!-- Rpc -->
         <protobuf.version>3.5.1</protobuf.version>
         <vertx.grpc.version>1.6.1</vertx.grpc.version>
         <grpc.version>1.9.0</grpc.version>
         <!-- Vert.x Addition -->
-        <rxjava2.version>2.1.8</rxjava2.version>
+        <rxjava2.version>2.1.9</rxjava2.version>
         <netty.tcnative.version>2.0.7.Final</netty.tcnative.version>
-        <netty.version>4.1.19.Final</netty.version>
+        <netty.version>4.1.20.Final</netty.version>
         <hazelcast.version>3.9.2</hazelcast.version>
         <swagger.version>1.5.0</swagger.version>
         <error.prone.version>2.2.0</error.prone.version>
@@ -128,7 +128,7 @@
         <maven.plugin.deploy>2.8.2</maven.plugin.deploy>
         <maven.plugin.jar>3.0.2</maven.plugin.jar>
         <maven.plugin.resource>3.0.2</maven.plugin.resource>
-        <maven.plugin.site>3.6</maven.plugin.site>
+        <maven.plugin.site>3.7</maven.plugin.site>
         <maven.plugin.enforcer>3.0.0-M1</maven.plugin.enforcer>
         <maven.plugin.lombok>1.16.20.0</maven.plugin.lombok>
         <maven.plugin.processor>3.3.2</maven.plugin.processor>

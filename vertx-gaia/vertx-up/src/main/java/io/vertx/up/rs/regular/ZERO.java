@@ -16,3 +16,8 @@ interface Pool {
         }
     };
 }
+
+interface Info {
+
+    String MSG_FAILURE = "[ ZERO ] Rule validation failure: {0}";
+}

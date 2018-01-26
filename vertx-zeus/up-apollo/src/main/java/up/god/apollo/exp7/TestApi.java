@@ -17,4 +17,10 @@ public interface TestApi {
     @POST
     @Address("ZERO://EXP7/VERIFY")
     JsonObject verify(@Codex @BodyParam JsonObject data);
+
+
+    @Path("/wrong")
+    @POST
+    @Address("ZERO://EXP7/WRONG")
+    JsonObject wrong(@BodyParam JsonObject data);
 }

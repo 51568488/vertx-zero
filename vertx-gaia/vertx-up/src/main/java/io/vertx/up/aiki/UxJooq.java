@@ -39,6 +39,6 @@ public class UxJooq {
     public <T> Future<T> updateOneAsync(T updated) {
         final CompletableFuture<T> future =
                 this.vertxDAO.updateAsync(updated);
-        return Async.toFuture(future);
+        return Async.toFuture(future.completedFuture(updated));
     }
 }

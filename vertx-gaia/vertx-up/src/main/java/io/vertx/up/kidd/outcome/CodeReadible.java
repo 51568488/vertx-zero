@@ -24,12 +24,11 @@ public class CodeReadible implements Readible {
             if (null != in) {
                 MESSAGE.mergeIn(IO.getYaml(FILENAME));
             }
-        } else {
-            // Pick up message from MESSAGE cache.
-            final String message = MESSAGE.getString(String.valueOf(Math.abs(error.getCode())));
-            // Check whether the readible set.
-            Fn.safeSemi(StringUtil.isNil(error.getReadible()), LOGGER,
-                    () -> Fn.safeNull(() -> error.setReadible(message), error));
         }
+        // Pick up message from MESSAGE cache.
+        final String message = MESSAGE.getString(String.valueOf(Math.abs(error.getCode())));
+        // Check whether the readible set.
+        Fn.safeSemi(StringUtil.isNil(error.getReadible()), LOGGER,
+                () -> Fn.safeNull(() -> error.setReadible(message), error));
     }
 }

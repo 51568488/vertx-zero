@@ -35,4 +35,10 @@ public class UxJooq {
                 this.vertxDAO.fetchOneAsync(DSL.field(column), value);
         return Async.toFuture(future);
     }
+
+    public <T> Future<T> updateOneAsync(T updated) {
+        final CompletableFuture<T> future =
+                this.vertxDAO.updateAsync(updated);
+        return Async.toFuture(future);
+    }
 }

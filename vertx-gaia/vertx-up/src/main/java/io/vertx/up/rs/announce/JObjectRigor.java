@@ -24,6 +24,9 @@ public class JObjectRigor implements Rigor {
                     final List<Rule> rules = rulers.get(field);
                     // Verify each field.
                     error = Ruler.verify(rules, field, value);
+                    if (null != error) {
+                        break;
+                    }
                 }
             }
         }

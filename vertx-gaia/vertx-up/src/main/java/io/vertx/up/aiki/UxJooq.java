@@ -2,21 +2,25 @@ package io.vertx.up.aiki;
 
 import io.github.jklingsporn.vertx.jooq.future.VertxDAO;
 import io.vertx.core.Future;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.tp.plugin.jooq.JooqInfix;
 import io.vertx.up.log.Annal;
 import io.vertx.up.tool.StringUtil;
+import io.vertx.up.tool.mirror.Types;
 import io.vertx.zero.eon.Values;
 import org.jooq.Condition;
 import org.jooq.Operator;
 import org.jooq.impl.DSL;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @SuppressWarnings("all")
 public class UxJooq {
@@ -73,15 +77,18 @@ public class UxJooq {
         Condition condition = null;
         for (final String field : filters.fieldNames()) {
             final String key = getKey(field);
-            final Object value = filters.getValue(field);
+            final String targetField = field.split(",")[Values.IDX];
+            Object value = filters.getValue(field);
             // Function
             final BiFunction<String, Object, Condition> fun = OPS.get(key);
-            final Condition item = fun.apply(field, value);
-            if (null == condition) {
-                condition = item;
-            } else {
-                condition = DSL.condition(operator, condition, item);
+            // JsonArray to List, fix vert.x and jooq connect issue.
+            if (Types.isJArray(value)) {
+                value = ((JsonArray) value).getList().toArray();
             }
+            LOGGER.info(Info.JOOQ_PARSE, targetField, key, value);
+            final Condition item = fun.apply(targetField, value);
+            // Function condition inject
+            condition = opCond(condition, item, operator);
         }
         return condition;
     }
@@ -91,8 +98,47 @@ public class UxJooq {
             return "=";
         } else {
             final String opStr = field.split(",")[Values.ONE];
-            return StringUtil.isNil(opStr) ? "=" : opStr;
+            return StringUtil.isNil(opStr) ? "=" : opStr.trim().toLowerCase();
         }
+    }
+
+    private static Condition opIn(final String field, final Object value) {
+        return opCond(field, value, DSL.field(field)::eq);
+    }
+
+    private static Condition opNotIn(final String field,
+                                     final Object value) {
+        return opCond(field, value, DSL.field(field)::ne);
+    }
+
+    private static Condition opCond(final String field,
+                                    final Object value,
+                                    final Function<Object, Condition> condFun) {
+        // Using or instead of in
+        Condition condition = null;
+        // Params
+        final Collection values = Types.toCollection(value);
+        if (null != values) {
+            for (final Object item : values) {
+                final Condition itemCond = condFun.apply(value);
+                condition = opCond(condition, itemCond, Operator.OR);
+            }
+        }
+        return condition;
+    }
+
+    private static Condition opCond(final Condition cond,
+                                    final Condition item,
+                                    final Operator operator) {
+        Condition condition = null;
+        if (null != item) {
+            if (null == cond) {
+                condition = cond;
+            } else {
+                condition = DSL.condition(operator, cond, item);
+            }
+        }
+        return condition;
     }
 
     private static ConcurrentMap<String, BiFunction<String, Object, Condition>> OPS =
@@ -108,8 +154,8 @@ public class UxJooq {
                     put("n", (field, value) -> DSL.field(field).isNull());
                     put("t", (field, value) -> DSL.field(field).isTrue());
                     put("f", (field, value) -> DSL.field(field).isFalse());
-                    put("i", (field, value) -> DSL.field(field).in(value));
-                    put("!i", (field, value) -> DSL.field(field).notIn(value));
+                    put("i", UxJooq::opIn);
+                    put("!i", UxJooq::opNotIn);
                     put("s", (field, value) -> DSL.field(field).startsWith(value));
                     put("e", (field, value) -> DSL.field(field).endsWith(value));
                     put("c", (field, value) -> DSL.field(field).contains(value));

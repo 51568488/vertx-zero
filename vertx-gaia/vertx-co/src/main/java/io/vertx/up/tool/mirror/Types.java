@@ -10,6 +10,7 @@ import io.vertx.up.tool.Numeric;
 import io.vertx.up.tool.Period;
 import io.vertx.zero.eon.Values;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -91,6 +92,26 @@ public class Types {
         }
         return (value instanceof Collection ||
                 value.getClass().isArray());
+    }
+
+    public static Collection toCollection(final Object value) {
+        return Fn.get(() -> {
+            // Collection
+            if (value instanceof Collection) {
+                return ((Collection) value);
+            }
+            // JsonArray
+            if (Types.isJArray(value)) {
+                return ((JsonArray) value).getList();
+            }
+            // Object[]
+            if (Types.isArray(value)) {
+                // Array
+                final Object[] values = (Object[]) value;
+                return Arrays.asList(values);
+            }
+            return null;
+        }, value);
     }
 
     public static Class<?> toPrimary(final Class<?> source) {

@@ -29,7 +29,12 @@ public class UxJooq {
         return Async.toFuture(future);
     }
 
-
+    public <T> Future<List<T>> fetchInAsync(final String column, final Object... value) {
+        final CompletableFuture<List<T>> future =
+                this.vertxDAO.fetchAsync(DSL.field(column), Arrays.asList(value));
+        return Async.toFuture(future);
+    }
+    
     public <T> Future<T> fetchOneAsync(final String column, final Object value) {
         final CompletableFuture<T> future =
                 this.vertxDAO.fetchOneAsync(DSL.field(column), value);

@@ -73,7 +73,7 @@ public class UxJooq {
         return Async.toFuture(future.completedFuture(updated));
     }
 
-    private Condition transform(final JsonObject filters, final Operator operator) {
+    public static Condition transform(final JsonObject filters, final Operator operator) {
         Condition condition = null;
         for (final String field : filters.fieldNames()) {
             final String key = getKey(field);
@@ -85,15 +85,15 @@ public class UxJooq {
             if (Types.isJArray(value)) {
                 value = ((JsonArray) value).getList().toArray();
             }
-            LOGGER.info(Info.JOOQ_PARSE, targetField, key, value);
             final Condition item = fun.apply(targetField, value);
+            condition = opCond(condition, item, Operator.AND);
             // Function condition inject
-            condition = opCond(condition, item, operator);
         }
+        LOGGER.info(Info.JOOQ_PARSE, condition);
         return condition;
     }
 
-    private String getKey(final String field) {
+    private static String getKey(final String field) {
         if (!field.contains(",")) {
             return "=";
         } else {
@@ -103,16 +103,16 @@ public class UxJooq {
     }
 
     private static Condition opIn(final String field, final Object value) {
-        return opCond(field, value, DSL.field(field)::eq);
+        return opCond(value, Operator.OR, DSL.field(field)::eq);
     }
 
     private static Condition opNotIn(final String field,
                                      final Object value) {
-        return opCond(field, value, DSL.field(field)::ne);
+        return opCond(value, Operator.OR, DSL.field(field)::ne);
     }
 
-    private static Condition opCond(final String field,
-                                    final Object value,
+    private static Condition opCond(final Object value,
+                                    final Operator operator,
                                     final Function<Object, Condition> condFun) {
         // Using or instead of in
         Condition condition = null;
@@ -120,45 +120,49 @@ public class UxJooq {
         final Collection values = Types.toCollection(value);
         if (null != values) {
             for (final Object item : values) {
-                final Condition itemCond = condFun.apply(value);
-                condition = opCond(condition, itemCond, Operator.OR);
+                final Condition itemCond = condFun.apply(item);
+                condition = opCond(condition, itemCond, operator);
             }
         }
         return condition;
     }
 
-    private static Condition opCond(final Condition cond,
-                                    final Condition item,
+    private static Condition opCond(final Condition left,
+                                    final Condition right,
                                     final Operator operator) {
-        Condition condition = null;
-        if (null != item) {
-            if (null == cond) {
-                condition = cond;
+        if (null == left || null == right) {
+            if (null == left && null != right) {
+                return right;
             } else {
-                condition = DSL.condition(operator, cond, item);
+                return null;
+            }
+        } else {
+            if (Operator.AND == operator) {
+                return left.and(right);
+            } else {
+                return left.or(right);
             }
         }
-        return condition;
     }
 
-    private static ConcurrentMap<String, BiFunction<String, Object, Condition>> OPS =
+    private static final ConcurrentMap<String, BiFunction<String, Object, Condition>> OPS =
             new ConcurrentHashMap<String, BiFunction<String, Object, Condition>>() {
                 {
-                    put("<", (field, value) -> DSL.field(field).lt(value));
-                    put(">", (field, value) -> DSL.field(field).gt(value));
-                    put("<=", (field, value) -> DSL.field(field).le(value));
-                    put(">=", (field, value) -> DSL.field(field).ge(value));
-                    put("=", (field, value) -> DSL.field(field).eq(value));
-                    put("<>", (field, value) -> DSL.field(field).ne(value));
-                    put("!n", (field, value) -> DSL.field(field).isNotNull());
-                    put("n", (field, value) -> DSL.field(field).isNull());
-                    put("t", (field, value) -> DSL.field(field).isTrue());
-                    put("f", (field, value) -> DSL.field(field).isFalse());
-                    put("i", UxJooq::opIn);
-                    put("!i", UxJooq::opNotIn);
-                    put("s", (field, value) -> DSL.field(field).startsWith(value));
-                    put("e", (field, value) -> DSL.field(field).endsWith(value));
-                    put("c", (field, value) -> DSL.field(field).contains(value));
+                    this.put("<", (field, value) -> DSL.field(field).lt(value));
+                    this.put(">", (field, value) -> DSL.field(field).gt(value));
+                    this.put("<=", (field, value) -> DSL.field(field).le(value));
+                    this.put(">=", (field, value) -> DSL.field(field).ge(value));
+                    this.put("=", (field, value) -> DSL.field(field).eq(value));
+                    this.put("<>", (field, value) -> DSL.field(field).ne(value));
+                    this.put("!n", (field, value) -> DSL.field(field).isNotNull());
+                    this.put("n", (field, value) -> DSL.field(field).isNull());
+                    this.put("t", (field, value) -> DSL.field(field).isTrue());
+                    this.put("f", (field, value) -> DSL.field(field).isFalse());
+                    this.put("i", UxJooq::opIn);
+                    this.put("!i", UxJooq::opNotIn);
+                    this.put("s", (field, value) -> DSL.field(field).startsWith(value));
+                    this.put("e", (field, value) -> DSL.field(field).endsWith(value));
+                    this.put("c", (field, value) -> DSL.field(field).contains(value));
                 }
             };
 }

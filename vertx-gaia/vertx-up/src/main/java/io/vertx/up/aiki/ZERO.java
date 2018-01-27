@@ -12,7 +12,7 @@ interface Info {
     String MSG_FIND = "[ ZERO ] ( Mongo -> findWithOptions ) collection = {0}, filter = {1}, options = {2}, result = {3}";
 
     String RPC_RESULT = "[ ZERO ] ( Rpc -> thenRpc ) Ipc ( {0},{1} ) with params {2}, response data is {3}.";
-    String JOOQ_PARSE = "[ ZERO ] ( Jooq -> fetchAndAsync ) Parsed result is field = {0}, key = {1}, value = {2}";
+    String JOOQ_PARSE = "[ ZERO ] ( Jooq -> fetchAndAsync ) Parsed result is condition = {0}";
 }
 
 interface Pool {

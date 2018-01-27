@@ -184,6 +184,11 @@ public final class Ux {
         return In.request(message, 0, JsonObject.class);
     }
 
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static JsonArray getArray(final Message<Envelop> message, final int index) {
+        return In.request(message, index, JsonArray.class);
+    }
+
     // -> Message<Envelop> -> JsonObject ( Agent mode )
     public static JsonObject getBody(final Message<Envelop> message) {
         return In.request(message, JsonObject.class);

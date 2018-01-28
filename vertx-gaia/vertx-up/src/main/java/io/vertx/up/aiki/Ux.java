@@ -179,19 +179,29 @@ public final class Ux {
     }
 
     // ---------------------- Request Data Extract --------------------------
-    // -> Message<Envelop> -> JsonObject ( Interface mode )
-    public static JsonObject getJson(final Message<Envelop> message) {
-        return In.request(message, 0, JsonObject.class);
-    }
-
     // -> Message<Envelop> -> T ( Interface mode )
     public static JsonArray getArray(final Message<Envelop> message, final int index) {
         return In.request(message, index, JsonArray.class);
     }
 
-    // -> Message<Envelop> -> JsonObject ( Agent mode )
-    public static JsonObject getBody(final Message<Envelop> message) {
-        return In.request(message, JsonObject.class);
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static JsonArray getArray(final Message<Envelop> message) {
+        return In.request(message, 0, JsonArray.class);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static JsonArray getArray1(final Message<Envelop> message) {
+        return In.request(message, 1, JsonArray.class);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static JsonArray getArray2(final Message<Envelop> message) {
+        return In.request(message, 2, JsonArray.class);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static JsonArray getArray3(final Message<Envelop> message) {
+        return In.request(message, 3, JsonArray.class);
     }
 
     // -> Message<Envelop> -> String ( Interface mode )
@@ -199,14 +209,49 @@ public final class Ux {
         return In.request(message, index, String.class);
     }
 
-    // -> Message<Envelop> -> T ( Agent mode )
-    public static <T> T getBodyT(final Message<Envelop> message, final Class<T> clazz) {
-        return In.request(message, clazz);
+    // -> Message<Envelop> -> String ( Interface mode )
+    public static String getString(final Message<Envelop> message) {
+        return In.request(message, 0, String.class);
     }
 
-    // -> Message<Envelop> -> T ( Interface mode )
-    public static <T> T getJsonT(final Message<Envelop> message, final Class<T> clazz) {
-        return In.request(message, 0, clazz);
+    // -> Message<Envelop> -> String ( Interface mode )
+    public static String getString1(final Message<Envelop> message) {
+        return In.request(message, 1, String.class);
+    }
+
+    // -> Message<Envelop> -> String ( Interface mode )
+    public static String getString2(final Message<Envelop> message) {
+        return In.request(message, 2, String.class);
+    }
+
+    // -> Message<Envelop> -> String ( Interface mode )
+    public static String getString3(final Message<Envelop> message) {
+        return In.request(message, 3, String.class);
+    }
+
+    // -> Message<Envelop> -> JsonObject ( Interface mode )
+    public static JsonObject getJson(final Message<Envelop> message, final int index) {
+        return In.request(message, index, JsonObject.class);
+    }
+
+    // -> Message<Envelop> -> JsonObject ( Interface mode )
+    public static JsonObject getJson(final Message<Envelop> message) {
+        return In.request(message, 0, JsonObject.class);
+    }
+
+    // -> Message<Envelop> -> JsonObject ( Interface mode )
+    public static JsonObject getJson1(final Message<Envelop> message) {
+        return In.request(message, 1, JsonObject.class);
+    }
+
+    // -> Message<Envelop> -> JsonObject ( Interface mode )
+    public static JsonObject getJson2(final Message<Envelop> message) {
+        return In.request(message, 2, JsonObject.class);
+    }
+
+    // -> Message<Envelop> -> JsonObject ( Interface mode )
+    public static JsonObject getJson3(final Message<Envelop> message) {
+        return In.request(message, 3, JsonObject.class);
     }
 
     // -> Message<Envelop> -> Integer ( Interface mode )
@@ -214,10 +259,83 @@ public final class Ux {
         return In.request(message, index, Integer.class);
     }
 
+    // -> Message<Envelop> -> Integer ( Interface mode )
+    public static Integer getInteger1(final Message<Envelop> message) {
+        return In.request(message, 1, Integer.class);
+    }
+
+    // -> Message<Envelop> -> Integer ( Interface mode )
+    public static Integer getInteger2(final Message<Envelop> message) {
+        return In.request(message, 2, Integer.class);
+    }
+
+    // -> Message<Envelop> -> Integer ( Interface mode )
+    public static Integer getInteger3(final Message<Envelop> message) {
+        return In.request(message, 3, Integer.class);
+    }
+
     // -> Message<Envelop> -> Long ( Interface mode )
     public static Long getLong(final Message<Envelop> message, final int index) {
         return In.request(message, index, Long.class);
     }
+
+    // -> Message<Envelop> -> Long ( Interface mode )
+    public static Long getLong(final Message<Envelop> message) {
+        return In.request(message, 0, Long.class);
+    }
+
+    // -> Message<Envelop> -> Long ( Interface mode )
+    public static Long getLong1(final Message<Envelop> message) {
+        return In.request(message, 1, Long.class);
+    }
+
+    // -> Message<Envelop> -> Long ( Interface mode )
+    public static Long getLong2(final Message<Envelop> message) {
+        return In.request(message, 2, Long.class);
+    }
+
+    // -> Message<Envelop> -> Long ( Interface mode )
+    public static Long getLong3(final Message<Envelop> message) {
+        return In.request(message, 3, Long.class);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static <T> T getT(final Message<Envelop> message, final int index, final Class<T> clazz) {
+        return In.request(message, index, clazz);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static <T> T getT(final Message<Envelop> message, final Class<T> clazz) {
+        return In.request(message, 0, clazz);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static <T> T getT1(final Message<Envelop> message, final Class<T> clazz) {
+        return In.request(message, 1, clazz);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static <T> T getT2(final Message<Envelop> message, final Class<T> clazz) {
+        return In.request(message, 2, clazz);
+    }
+
+    // -> Message<Envelop> -> T ( Interface mode )
+    public static <T> T getT3(final Message<Envelop> message, final Class<T> clazz) {
+        return In.request(message, 3, clazz);
+    }
+
+    // ---------------------- Agent mode usage --------------------------
+    // -> Message<Envelop> -> JsonObject ( Agent mode )
+    public static JsonObject getBody(final Message<Envelop> message) {
+        return In.request(message, JsonObject.class);
+    }
+
+    // -> Message<Envelop> -> T ( Agent mode )
+    public static <T> T getBodyT(final Message<Envelop> message, final Class<T> clazz) {
+        return In.request(message, clazz);
+    }
+    // ---------------------- Request Data Ending --------------------------
+
 
     // ---------------------- Future --------------------------
     public static <T> Future<JsonObject> thenRpc(final String name, final String address, final JsonObject params) {

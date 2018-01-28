@@ -7,6 +7,7 @@ import io.vertx.up.log.Annal;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class Uarr {
     private static final Annal LOGGER = Annal.get(Uarr.class);
@@ -36,6 +37,34 @@ public class Uarr {
 
     public <I, O> Uarr convert(final String field, final Function<I, O> function) {
         Self.convert(this.arrayReference, field, function, false);
+        return this;
+    }
+
+    public Uarr filter(final Predicate<JsonObject> testFun) {
+        Self.filter(this.arrayReference, testFun, false);
+        return this;
+    }
+
+    public Uarr filter(final String field, final Object expected) {
+        Self.filter(this.arrayReference, (item) -> {
+            final Object actual = item.getValue(field);
+            return (null != expected && expected.equals(actual));
+        }, false);
+        return this;
+    }
+
+    public Uarr dft(final String field, final Object value) {
+        Self.defaultValue(this.arrayReference, field, value, false);
+        return this;
+    }
+
+    public Uarr dft(final JsonObject values) {
+        Self.defaultValue(this.arrayReference, values, false);
+        return this;
+    }
+
+    public Uarr vertical(final String field) {
+        Self.vertical(this.arrayReference, field, false);
         return this;
     }
 

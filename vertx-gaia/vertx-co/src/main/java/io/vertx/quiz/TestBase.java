@@ -1,5 +1,6 @@
 package io.vertx.quiz;
 
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -17,6 +18,10 @@ public class TestBase {
 
     protected JsonObject getJson(final String filename) {
         return IO.getJObject(getFile(filename));
+    }
+
+    protected JsonArray getArray(final String filename) {
+        return IO.getJArray(getFile(filename));
     }
 
     protected Logger getLogger() {

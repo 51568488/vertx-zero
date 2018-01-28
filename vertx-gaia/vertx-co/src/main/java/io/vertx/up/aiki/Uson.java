@@ -57,6 +57,16 @@ public class Uson {
         return this;
     }
 
+    public Uson dft(final String field, final Object value) {
+        Self.defaultValue(this.objectReference, field, value, false);
+        return this;
+    }
+
+    public Uson dft(final JsonObject values) {
+        Self.defaultValue(this.objectReference, values, false);
+        return this;
+    }
+
     public Uson plus(final String from, final Integer seed) {
         final Object value = this.objectReference.getValue(from);
         if (null != value && Types.isInteger(value)) {

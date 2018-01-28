@@ -72,9 +72,13 @@ public final class Ux {
     }
 
     // T -> JsonObject ( with convert )
-    public static <T> JsonObject toJsonFun(final T entity, final Function<JsonObject, JsonObject> convert
-    ) {
+    public static <T> JsonObject toJsonFun(final T entity, final Function<JsonObject, JsonObject> convert) {
         return To.toJson(entity, convert);
+    }
+
+    // JsonArray -> JsonObject ( with field grouped )
+    public static <T> JsonObject toJsonByGroup(final JsonArray array, final String field) {
+        return Calculator.groupBy(array, field);
     }
 
     // Special Merge

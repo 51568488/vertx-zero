@@ -44,7 +44,10 @@ class Dual {
         final ConcurrentMap<Integer, JsonObject> merged = Statute.reduce(targetMap, sourceMap);
         final JsonArray results = new JsonArray();
         for (int idx = 0; idx < target.size(); idx++) {
-            final JsonObject item = append(target.getJsonObject(idx), merged.get(idx), true);
+            final JsonObject targetItem = merged.get(idx);
+            final JsonObject sourceItem = target.getJsonObject(idx);
+            final JsonObject item = null == targetItem ? sourceItem :
+                    append(sourceItem, targetItem, true);
             results.add(item);
         }
         target.clear();

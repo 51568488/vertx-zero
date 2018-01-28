@@ -48,7 +48,11 @@ class Async {
             final CompletableFuture<T> completableFuture
     ) {
         final Future<T> future = Future.future();
-        completableFuture.thenAcceptAsync(future::complete);
+        completableFuture.thenAcceptAsync(future::complete)
+                .exceptionally((ex) -> {
+                    future.fail(ex);
+                    return null;
+                });
         return future;
     }
 
@@ -63,7 +67,10 @@ class Async {
                         null == item, null,
                         () -> future.complete(new JsonObject()),
                         () -> future.complete(To.toJson(item, pojo))
-                )));
+                )).exceptionally((ex) -> {
+                    future.fail(ex);
+                    return null;
+                }));
         return future;
     }
 
@@ -78,7 +85,10 @@ class Async {
                         null == item, null,
                         () -> future.complete(new JsonArray()),
                         () -> future.complete(To.toArray(item, pojo))
-                )));
+                )).exceptionally((ex) -> {
+                    future.fail(ex);
+                    return null;
+                }));
         return future;
     }
 
